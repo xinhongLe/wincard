@@ -331,11 +331,7 @@ export default defineComponent({
         watch(
             handleElement,
             () => {
-                if (
-                    !handleElement.value ||
-                    handleElement.value.type !== "shape"
-                )
-                    return;
+                if (!handleElement.value || handleElement.value.type !== "shape") return;
                 fill.value = handleElement.value.fill || "#000";
 
                 gradient.value = handleElement.value.gradient || {

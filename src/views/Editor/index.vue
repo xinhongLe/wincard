@@ -1,9 +1,9 @@
 <template>
     <div class="ppt-editor">
-        <editor-header class="layout-header" />
+        <editor-header class="layout-header" @onSave="onSave" />
 
         <div class="layout-content">
-            <thumbnails class="layout-content-left" />
+            <!-- <thumbnails class="layout-content-left" /> -->
             <div class="layout-content-center">
                 <canvas-tool class="center-top" />
                 <canvas-board
@@ -25,28 +25,35 @@
 import EditorHeader from "./EditorHeader/index.vue";
 import CanvasBoard from "./Canvas/index.vue";
 import CanvasTool from "./CanvasTool/index.vue";
-import Thumbnails from "./Thumbnails/index.vue";
+// import Thumbnails from "./Thumbnails/index.vue";
 import Toolbar from "./Toolbar/index.vue";
 import Remark from "./Remark/index.vue";
 import { defineComponent, ref } from "vue";
 
 import useGlobalHotkey from "@/hooks/useGlobalHotkey";
+
+import { Slide } from "@/types/slides";
 export default defineComponent({
     components: {
         EditorHeader,
         CanvasBoard,
         CanvasTool,
-        Thumbnails,
+        // Thumbnails,
         Toolbar,
         Remark
     },
-    setup() {
+    setup(props, { emit }) {
         const remarkHeight = ref(40);
 
         useGlobalHotkey();
 
+        const onSave = (slide: Slide) => {
+            emit("onSave", slide);
+        };
+
         return {
-            remarkHeight
+            remarkHeight,
+            onSave
         };
     }
 });
@@ -71,7 +78,7 @@ export default defineComponent({
         flex-shrink: 0;
     }
     .layout-content-center {
-        width: calc(100% - 160px - 260px);
+        width: calc(100% - 260px);
 
         .center-top {
             height: 40px;

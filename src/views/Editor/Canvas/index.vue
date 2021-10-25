@@ -73,12 +73,22 @@
                 />
             </div>
         </div>
+
+        <a-modal
+            v-model:visible="linkDialogVisible"
+            :footer="null"
+            centered
+            :width="540"
+            destroyOnClose
+        >
+            <LinkDialog @close="linkDialogVisible = false" />
+        </a-modal>
     </div>
 </template>
 
 <script lang="ts">
 import { throttle } from "lodash";
-import { computed, defineComponent, provide, ref, watchEffect } from "vue";
+import { computed, defineComponent, watch, ref, watchEffect } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { removeAllRanges } from "@/utils/selection";
 import { KEYS } from "@/configs/hotkey";
@@ -106,6 +116,7 @@ import AlignmentLine from "./AlignmentLine.vue";
 import MultiSelectOperate from "./Operate/MultiSelectOperate.vue";
 import Operate from "./Operate/index.vue";
 import ViewportBackground from "./ViewportBackground.vue";
+import LinkDialog from "./LinkDialog.vue";
 
 import { PPTElement, Slide } from "@/types/slides";
 import { AlignmentLineProps } from "@/types/edit";
@@ -120,10 +131,15 @@ export default defineComponent({
         ViewportBackground,
         AlignmentLine,
         MultiSelectOperate,
-        Operate
+        Operate,
+        LinkDialog
     },
     setup() {
         const store = useStore();
+        const handleElementId = computed(() => store.state.handleElementId);
+        const activeGroupElementId = computed(
+            () => store.state.activeGroupElementId
+        );
         const viewportRef = ref<HTMLElement>();
         const alignmentLines = ref<AlignmentLineProps[]>([]);
         const activeElementIdList = computed(
@@ -134,6 +150,15 @@ export default defineComponent({
         const ctrlOrShiftKeyActive = computed<boolean>(
             () => store.getters.ctrlOrShiftKeyActive
         );
+
+        const linkDialogVisible = ref(false);
+        const openLinkDialog = () => {
+            linkDialogVisible.value = true;
+        };
+
+        watch(handleElementId, () => {
+            store.commit(MutationTypes.SET_ACTIVE_GROUP_ELEMENT_ID, "");
+        });
 
         // 初始化 canvas 显示
         const canvasRef = ref<HTMLElement>();
@@ -259,9 +284,9 @@ export default defineComponent({
             ];
         };
 
-        provide("slideScale", canvasScale);
-
         return {
+            handleElementId,
+            activeGroupElementId,
             elementList,
             activeElementIdList,
             viewportRef,
@@ -280,7 +305,9 @@ export default defineComponent({
             mouseSelectionState,
             handleClickBlankArea,
             removeEditorAreaFocus,
-            handleMousewheelCanvas
+            handleMousewheelCanvas,
+            openLinkDialog,
+            linkDialogVisible
         };
     }
 });

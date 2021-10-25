@@ -1,7 +1,7 @@
 <template>
     <div class="editor-header">
         <div class="left">
-            <a-dropdown :trigger="['click']">
+            <!-- <a-dropdown :trigger="['click']">
                 <div class="a-menu-item">
                     <IconFolderClose /> <span class="text">文件</span>
                 </div>
@@ -11,7 +11,7 @@
                         <a-menu-item @click="exportPPTX()">导出 PPTX</a-menu-item>
                     </a-menu>
                 </template>
-            </a-dropdown>
+            </a-dropdown> -->
             <a-dropdown :trigger="['click']">
                 <div class="a-menu-item">
                     <IconEdit /> <span class="text">编辑</span>
@@ -29,7 +29,7 @@
                     </a-menu>
                 </template>
             </a-dropdown>
-            <a-dropdown :trigger="['click']">
+            <!-- <a-dropdown :trigger="['click']">
                 <div class="a-menu-item">
                     <IconPpt /> <span class="text">演示</span>
                 </div>
@@ -43,7 +43,7 @@
                         >
                     </a-menu>
                 </template>
-            </a-dropdown>
+            </a-dropdown> -->
             <a-dropdown :trigger="['click']">
                 <div class="a-menu-item">
                     <IconHelpcenter /> <span class="text">帮助</span>
@@ -59,9 +59,14 @@
         </div>
 
         <div class="right">
-            <a-tooltip :mouseLeaveDelay="0" title="幻灯片放映">
+            <!-- <a-tooltip :mouseLeaveDelay="0" title="幻灯片放映">
                 <div class="a-menu-item" @click="enterScreening()">
                     <IconPpt size="18" fill="#666" style="margin-top: 2px;" />
+                </div>
+            </a-tooltip> -->
+            <a-tooltip :mouseLeaveDelay="0" title="保存">
+                <div class="a-menu-item" @click="save()">
+                    <IconSave size="18" fill="#666" style="margin-top: 2px;" />
                 </div>
             </a-tooltip>
         </div>
@@ -94,13 +99,14 @@ export default defineComponent({
     components: {
         HotkeyDoc
     },
-    setup() {
+    setup(props, { emit }) {
         const store = useStore();
 
         const { enterScreening, enterScreeningFromStart } = useScreening();
         const { createSlide, deleteSlide, resetSlides } = useSlideHandler();
         const { redo, undo } = useHistorySnapshot();
         const { exporting, exportJSON, exportPPTX } = useExport();
+        const slides = computed(() => store.state.slides);
 
         const showGridLines = computed(() => store.state.showGridLines);
         const toggleGridLines = () => {
@@ -108,6 +114,10 @@ export default defineComponent({
                 MutationTypes.SET_GRID_LINES_STATE,
                 !showGridLines.value
             );
+        };
+
+        const save = () => {
+            emit("onSave", slides.value[0]);
         };
 
         const hotkeyDrawerVisible = ref(false);
@@ -125,7 +135,8 @@ export default defineComponent({
             toggleGridLines,
             resetSlides,
             exportJSON,
-            exportPPTX
+            exportPPTX,
+            save
         };
     }
 });

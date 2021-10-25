@@ -118,7 +118,7 @@
             </div>
             <div class="row" v-if="background.gradientType === 'linear'">
                 <div style="flex: 2;">渐变角度：</div>
-                <Slider
+                <a-slider
                     :min="0"
                     :max="360"
                     :step="15"

@@ -37,7 +37,7 @@ export default () => {
     const { addHistorySnapshot } = useHistorySnapshot();
 
     // 重置幻灯片
-    const resetSlides = () => {
+    const resetSlides = (slide?: Slide) => {
         const emptySlide = {
             id: createRandomCode(8),
             elements: [],
@@ -48,7 +48,7 @@ export default () => {
         };
         store.commit(MutationTypes.UPDATE_SLIDE_INDEX, 0);
         store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, []);
-        store.commit(MutationTypes.SET_SLIDES, [emptySlide]);
+        store.commit(MutationTypes.SET_SLIDES, [slide || emptySlide]);
     };
 
     /**

@@ -1,4 +1,5 @@
 import { App } from "vue";
+import "@icon-park/vue-next/styles/index.css";
 
 import {
     PlayOne,
@@ -89,11 +90,19 @@ import {
     VolumeSmall,
     CycleOne,
     VideoTwo,
-    Formula
+    Formula,
+    Check
 } from "@icon-park/vue-next";
+import {
+    DEFAULT_ICON_CONFIGS,
+    IconProvider
+} from "@icon-park/vue-next/es/runtime";
 
 export default {
     install(app: App) {
+        IconProvider({ ...DEFAULT_ICON_CONFIGS, prefix: "icon" });
+        // 保存
+        app.component("IconSave", Check);
         // 插入元素
         app.component("IconFontSize", FontSize);
         app.component("IconPicture", Picture);

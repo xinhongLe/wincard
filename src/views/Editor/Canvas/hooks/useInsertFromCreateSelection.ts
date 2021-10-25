@@ -1,8 +1,6 @@
 import { computed, Ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import {
-    CreateElementSelectionData
-} from "@/types/edit";
+import { CreateElementSelectionData, CreatingLineElement, CreatingShapeElement } from "@/types/edit";
 import useCreateElement from "@/hooks/useCreateElement";
 
 export default (viewportRef: Ref<HTMLElement | undefined>) => {
@@ -72,7 +70,11 @@ export default (viewportRef: Ref<HTMLElement | undefined>) => {
         };
     };
 
-    const { createTextElement } = useCreateElement();
+    const {
+        createTextElement,
+        createShapeElement,
+        createLineElement
+    } = useCreateElement();
 
     // 根据鼠标选区的位置大小插入元素
     const insertElementFromCreateSelection = (
@@ -85,7 +87,19 @@ export default (viewportRef: Ref<HTMLElement | undefined>) => {
             const position = formatCreateSelection(selectionData);
             position && createTextElement(position);
         } else if (type === "shape") {
+            const position = formatCreateSelection(selectionData);
+            position &&
+                createShapeElement(
+                    position,
+                    (creatingElement.value as CreatingShapeElement).data
+                );
         } else if (type === "line") {
+            const position = formatCreateSelectionForLine(selectionData);
+            position &&
+                createLineElement(
+                    position,
+                    (creatingElement.value as CreatingLineElement).data
+                );
         }
         store.commit(MutationTypes.SET_CREATING_ELEMENT, null);
     };

@@ -1,24 +1,18 @@
-# ppt_test
+# ppt-editor
 
-## Project setup
-```
-npm install
-```
+# use
+main.js中引用 PPTEditor：
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+import PPTEditor from "@window-card/ppt-editor";
 
-### Compiles and minifies for production
+createApp(App).use(PPTEditor).mount('#app')
 ```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
+vue中使用：
+```html
+<PPTEditor :slide="slide" @onSave="onSave" />
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+***【注】：支持数据导入和导出***

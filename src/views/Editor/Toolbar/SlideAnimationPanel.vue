@@ -12,9 +12,9 @@
                 <div class="animation-text">{{ item.label }}</div>
             </div>
         </div>
-        <a-button style="width: 100%;" @click="applyAllSlide()"
+        <!-- <a-button style="width: 100%;" @click="applyAllSlide()"
             >应用到全部</a-button
-        >
+        > -->
     </div>
 </template>
 
@@ -32,7 +32,7 @@ export default defineComponent({
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
 
         const currentTurningMode = computed(
-            () => currentSlide.value.turningMode || "slideY"
+            () => currentSlide.value.turningMode || "fade"
         );
 
         const animations = [
