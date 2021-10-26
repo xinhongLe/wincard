@@ -1,7 +1,7 @@
 {
-    "name": "@window-card/ppt-editor",
-    "version": "1.0.6",
-    "main": "./dist/ppt-editor.umd.min.js",
+    "name": "win-card",
+    "version": "1.0.0",
+    "main": "./dist/win-card.umd.min.js",
     "files": [
         "dist"
     ],
@@ -10,7 +10,7 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
-        "build-bundle": "vue-cli-service build --target lib --name ppt-editor ./src/components/index.ts"
+        "build-bundle": "vue-cli-service build --target lib --name win-card ./src/components/index.ts"
     },
     "dependencies": {
         "@icon-park/vue-next": "^1.3.5",
