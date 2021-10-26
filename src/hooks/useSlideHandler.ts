@@ -40,15 +40,17 @@ export default () => {
     const resetSlides = (slide?: Slide) => {
         const emptySlide = {
             id: createRandomCode(8),
+            viewportRatio: 0.5625,
             elements: [],
             background: {
                 type: "solid",
                 color: theme.value.backgroundColor
             }
         };
+        store.commit(MutationTypes.SET_VIEWPORT_RATIO, slide?.viewportRatio || 0.5625);
         store.commit(MutationTypes.UPDATE_SLIDE_INDEX, 0);
         store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, []);
-        store.commit(MutationTypes.SET_SLIDES, [slide || emptySlide]);
+        store.commit(MutationTypes.SET_SLIDES, [slide ? { ...emptySlide, ...slide } : emptySlide]);
     };
 
     /**

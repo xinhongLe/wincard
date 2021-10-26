@@ -438,6 +438,13 @@ export default defineComponent({
         // 设置画布尺寸（宽高比例）
         const updateViewportRatio = (value: number) => {
             store.commit(MutationTypes.SET_VIEWPORT_RATIO, value);
+            const newSlides = slides.value.map(slide => {
+                return {
+                    ...slide,
+                    viewportRatio: value
+                };
+            });
+            store.commit(MutationTypes.SET_SLIDES, newSlides);
         };
 
         return {

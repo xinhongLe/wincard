@@ -569,6 +569,8 @@ export interface SlideBackground {
  *
  * id: 页面ID
  *
+ * viewportRatio: 画布尺寸
+ *
  * elements: 元素集合
  *
  * remark?: 备注
@@ -581,6 +583,7 @@ export interface SlideBackground {
  */
 export interface Slide {
     id: string;
+    viewportRatio?: number;
     elements: PPTElement[];
     remark?: string;
     background?: SlideBackground;
