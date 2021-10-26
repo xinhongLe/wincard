@@ -1,16 +1,22 @@
-# ppt-editor
+# WinCard
 
 # use
-main.js中引用 WinCard：
+
+main.js 中引用 WinCard：
+
 ```js
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
 
-import WinCard from "win-card";
+import WinCard from "wincard";
 
-createApp(App).use(WinCard).mount('#app')
+createApp(App)
+    .use(WinCard)
+    .mount("#app");
 ```
-vue中使用：
+
+vue 中使用：
+
 ```html
 <!-- 素材页编辑 -->
 <PPTEditor :slide="slide" @onSave="onSave" />
@@ -19,4 +25,4 @@ vue中使用：
 <ScreenView :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" />
 ```
 
-***【注】：支持数据导入和导出***
+**_【注】：支持数据导入和导出_**
