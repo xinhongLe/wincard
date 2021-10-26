@@ -1,5 +1,6 @@
 <template>
     <PPTEditor :slide="slide" @onSave="onSave" />
+    <!-- <ScreenView :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" /> -->
 </template>
 
 <script lang="ts">
@@ -14,11 +15,21 @@ export default defineComponent({
             console.log(slide);
         };
 
-        const slide = ref("");
+        const slide = ref(slides[0]);
+
+        const pagePrev = () => {
+            console.log("上一页");
+        };
+
+        const pageNext = () => {
+            console.log("下一页");
+        };
 
         return {
             onSave,
-            slide
+            slide,
+            pagePrev,
+            pageNext
         };
     }
 });

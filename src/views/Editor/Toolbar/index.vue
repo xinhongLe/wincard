@@ -57,7 +57,7 @@ export default defineComponent({
         });
         const slideTabs = [
             { label: "设计", value: ToolbarStates.SLIDE_DESIGN },
-            { label: "切换", value: ToolbarStates.SLIDE_ANIMATION },
+            // { label: "切换", value: ToolbarStates.SLIDE_ANIMATION },
             { label: "动画", value: ToolbarStates.EL_ANIMATION }
         ];
         const multiSelectTabs = [

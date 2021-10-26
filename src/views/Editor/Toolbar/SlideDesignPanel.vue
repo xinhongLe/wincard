@@ -131,11 +131,11 @@
             </div>
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
             <a-button style="flex: 1;" @click="applyBackgroundAllSlide()"
                 >应用背景到全部</a-button
             >
-        </div>
+        </div> -->
 
         <a-divider />
 
@@ -154,7 +154,7 @@
 
         <a-divider />
 
-        <div class="title">全局主题</div>
+        <!-- <div class="title">全局主题</div>
         <div class="row">
             <div style="flex: 2;">字体：</div>
             <a-select
@@ -257,13 +257,13 @@
                     ></div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="row">
+        <!-- <div class="row">
             <a-button style="flex: 1;" @click="applyThemeAllSlide()"
                 >应用主题到全部</a-button
             >
-        </div>
+        </div> -->
     </div>
 </template>
 

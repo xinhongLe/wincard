@@ -1,6 +1,7 @@
 import { App } from "vue";
 
 import PPTEditor from "./PPTEditor.vue";
+import ScreenView from "./ScreenView.vue";
 import { store, key } from "@/store";
 import Antd from "ant-design-vue";
 
@@ -28,5 +29,6 @@ export default {
         app.use(Antd);
         app.use(store, key);
         app.component("PPTEditor", PPTEditor);
+        app.component("ScreenView", ScreenView);
     }
 };
