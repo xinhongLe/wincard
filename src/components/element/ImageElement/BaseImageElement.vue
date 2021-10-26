@@ -27,7 +27,7 @@
                     :style="{ clipPath: clipShape.style }"
                 >
                     <img
-                        :src="elementInfo.src"
+                        :src="imageUrl"
                         :draggable="false"
                         :style="{
                             top: imgPosition.top,
@@ -51,6 +51,7 @@ import useElementShadow from "@/components/element/hooks/useElementShadow";
 import useElementFlip from "@/components/element/hooks/useElementFlip";
 import useClipImage from "./useClipImage";
 import useFilter from "./useFilter";
+import useOssImage from "./useOssImage";
 
 import ImageOutline from "./ImageOutline/index.vue";
 
@@ -79,12 +80,16 @@ export default defineComponent({
         const filters = computed(() => props.elementInfo.filters);
         const { filter } = useFilter(filters);
 
+        const imageElement = computed(() => props.elementInfo);
+        const { imageUrl } = useOssImage(imageElement);
+
         return {
             imgPosition,
             filter,
             flipStyle,
             shadowStyle,
-            clipShape
+            clipShape,
+            imageUrl
         };
     }
 });

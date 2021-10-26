@@ -1,6 +1,6 @@
 import { computed, onMounted, onUnmounted, Ref } from "vue";
 import { useStore } from "@/store";
-import { getImageDataURL } from "@/utils/image";
+import { getImageDataURL, uploadImage } from "@/utils/image";
 import { parseText2Paragraphs } from "@/utils/textParser";
 import useCreateElement from "@/hooks/useCreateElement";
 
@@ -22,9 +22,12 @@ export default (elementRef: Ref<HTMLElement | undefined>) => {
         ) {
             const imageFile = dataTransferItem.getAsFile();
             if (imageFile) {
-                getImageDataURL(imageFile).then(dataURL =>
-                    createImageElement(dataURL)
-                );
+                uploadImage(imageFile).then(key => {
+                    createImageElement(key);
+                });
+                // getImageDataURL(imageFile).then(dataURL =>
+                //     createImageElement(dataURL)
+                // );
             }
         } else if (
             dataTransferItem.kind === "string" &&

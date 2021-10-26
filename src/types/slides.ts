@@ -177,7 +177,11 @@ export interface ImageElementClip {
  *
  * fixedRatio: 固定图片宽高比例
  *
- * src: 图片地址
+ * src: 图片 fileName 请求 oss 使用
+ *
+ * ossSrc: 图片 oss 访问地址
+ *
+ * ossExpiration: 图片 oss 访问地址过期时间
  *
  * rotate: 旋转角度
  *
@@ -197,6 +201,8 @@ export interface PPTImageElement extends PPTBaseElement {
     type: "image";
     fixedRatio: boolean;
     src: string;
+    ossSrc?: string;
+    ossExpiration?: string;
     rotate: number;
     outline?: PPTElementOutline;
     filters?: ImageElementFilters;
@@ -534,6 +540,10 @@ export interface PPTAnimation {
  *
  * image?: 图片地址（图片）
  *
+ * ossSrc: 图片 oss 访问地址
+ *
+ * ossExpiration: 图片 oss 访问地址过期时间
+ *
  * imageSize?: 图片填充方式
  *
  * gradientType?: 渐变类型（线性、径向）
@@ -546,6 +556,8 @@ export interface SlideBackground {
     type: "solid" | "image" | "gradient";
     color?: string;
     image?: string;
+    ossSrc?: string;
+    ossExpiration?: string;
     imageSize?: "cover" | "contain" | "repeat";
     gradientType?: "linear" | "radial";
     gradientColor?: [string, string];

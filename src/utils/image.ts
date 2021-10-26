@@ -1,3 +1,5 @@
+import { downloadFile, uploadFile } from "./oss";
+
 interface ImageSize {
     width: number;
     height: number;
@@ -45,4 +47,20 @@ export const getImageDataURL = (file: File): Promise<string> => {
         });
         reader.readAsDataURL(file);
     });
+};
+
+/**
+ * 上传图片到oss获取fileName
+ * @param file 图片文件
+ */
+export const uploadImage = (file: File) => {
+    return uploadFile(file);
+};
+
+/**
+ * 处理获取oss img 访问链接
+ * @param key oss访问key
+ */
+export const getOssImageUrl = async (key: string) => {
+    return await downloadFile(key);
 };

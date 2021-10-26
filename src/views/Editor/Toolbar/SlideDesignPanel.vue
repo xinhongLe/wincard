@@ -58,7 +58,7 @@
                 <div class="background-image">
                     <div
                         class="content"
-                        :style="{ backgroundImage: `url(${background.image})` }"
+                        :style="{ backgroundImage: `url(${background.ossSrc})` }"
                     >
                         <IconPlus />
                     </div>
@@ -276,7 +276,7 @@ import { WEB_FONTS } from "@/configs/font";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 import ColorButton from "./common/ColorButton.vue";
-import { getImageDataURL } from "@/utils/image";
+import { getImageDataURL, uploadImage } from "@/utils/image";
 
 const themes = PRESET_THEMES;
 const webFonts = WEB_FONTS;
@@ -357,9 +357,12 @@ export default defineComponent({
         const uploadBackgroundImage = (files: File[]) => {
             const imageFile = files[0];
             if (!imageFile) return;
-            getImageDataURL(imageFile).then(dataURL =>
-                updateBackground({ image: dataURL })
-            );
+            uploadImage(imageFile).then(key => {
+                updateBackground({ image: key });
+            });
+            // getImageDataURL(imageFile).then(dataURL =>
+            //     updateBackground({ image: dataURL })
+            // );
         };
 
         // 应用当前页背景到全部页面

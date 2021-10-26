@@ -31,6 +31,7 @@ import Remark from "./Remark/index.vue";
 import { defineComponent, ref } from "vue";
 
 import useGlobalHotkey from "@/hooks/useGlobalHotkey";
+import usePasteEvent from "@/hooks/usePasteEvent";
 
 import { Slide } from "@/types/slides";
 export default defineComponent({
@@ -46,6 +47,7 @@ export default defineComponent({
         const remarkHeight = ref(40);
 
         useGlobalHotkey();
+        usePasteEvent();
 
         const onSave = (slide: Slide) => {
             emit("onSave", slide);

@@ -61,7 +61,10 @@ module.exports = {
             "svg-arc-to-cubic-bezier",
             "svg-pathdata",
             "tinycolor2",
-            "vuedraggable"
+            "vuedraggable",
+            "ali-oss",
+            "spark-md5",
+            "axios"
         ],
         plugins: [
             new StyleLintPlugin({

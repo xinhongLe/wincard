@@ -2,7 +2,7 @@
     <div class="image-style-panel">
         <div
             class="origin-image"
-            :style="{ backgroundImage: `url(${handleElement.src})` }"
+            :style="{ backgroundImage: `url(${handleElement.ossSrc})` }"
         ></div>
 
         <a-button-group class="row">
@@ -104,7 +104,7 @@ import { computed, defineComponent, ref, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTImageElement, Slide } from "@/types/slides";
 import { CLIPPATHS } from "@/configs/imageClip";
-import { getImageDataURL } from "@/utils/image";
+import { getImageDataURL, uploadImage } from "@/utils/image";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 import ElementOutline from "../common/ElementOutline.vue";
@@ -356,10 +356,8 @@ export default defineComponent({
                         clip: { ...handleElement.value.clip, shape, range },
                         left: originLeft + originWidth * (range[0][0] / 100),
                         top: originTop + originHeight * (range[0][1] / 100),
-                        width:
-                            (originWidth * (range[1][0] - range[0][0])) / 100,
-                        height:
-                            (originHeight * (range[1][1] - range[0][1])) / 100
+                        width: (originWidth * (range[1][0] - range[0][0])) / 100,
+                        height: (originHeight * (range[1][1] - range[0][1])) / 100
                     }
                 });
             } else {
@@ -383,13 +381,21 @@ export default defineComponent({
         const replaceImage = (files: File[]) => {
             const imageFile = files[0];
             if (!imageFile) return;
-            getImageDataURL(imageFile).then(dataURL => {
-                const props = { src: dataURL };
+            uploadImage(imageFile).then(key => {
+                const props = { src: key, ossSrc: "" };
                 store.commit(MutationTypes.UPDATE_ELEMENT, {
                     id: handleElement.value.id,
                     props
                 });
             });
+            // getImageDataURL(imageFile).then(dataURL => {
+            //     const props = { src: dataURL };
+            //     store.commit(MutationTypes.UPDATE_ELEMENT, {
+            //         id: handleElement.value.id,
+            //         props
+            //     });
+            // });
+
             addHistorySnapshot();
         };
 

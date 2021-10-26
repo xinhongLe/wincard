@@ -10,6 +10,7 @@ import { useStore } from "@/store";
 import { SlideBackground } from "@/types/slides";
 import GridLines from "./GridLines.vue";
 import useSlideBackgroundStyle from "@/hooks/useSlideBackgroundStyle";
+import useOssBackground from "./hooks/useOssBackground";
 
 export default defineComponent({
     name: "viewport-background",
@@ -22,6 +23,8 @@ export default defineComponent({
         const background = computed<SlideBackground | undefined>(
             () => store.getters.currentSlide?.background
         );
+
+        useOssBackground(background);
 
         const { backgroundStyle } = useSlideBackgroundStyle(background);
 

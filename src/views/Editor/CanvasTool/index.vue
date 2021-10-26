@@ -190,7 +190,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { getImageDataURL } from "@/utils/image";
+import { getImageDataURL, uploadImage } from "@/utils/image";
 import { ShapePoolItem } from "@/configs/shapes";
 import { LinePoolItem } from "@/configs/lines";
 import useScaleCanvas from "@/hooks/useScaleCanvas";
@@ -239,9 +239,12 @@ export default defineComponent({
         const insertImageElement = (files: File[]) => {
             const imageFile = files[0];
             if (!imageFile) return;
-            getImageDataURL(imageFile).then(dataURL =>
-                createImageElement(dataURL)
-            );
+            uploadImage(imageFile).then(key => {
+                createImageElement(key);
+            });
+            // getImageDataURL(imageFile).then(dataURL =>
+            //     createImageElement(dataURL)
+            // );
         };
 
         const shapePoolVisible = ref(false);

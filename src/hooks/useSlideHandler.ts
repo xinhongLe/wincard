@@ -92,7 +92,7 @@ export default () => {
             .then(text => {
                 pasteTextClipboardData(text, { onlySlide: true });
             })
-            .catch(err => message.warning(err));
+            .catch(err => message.warning(err.message));
     };
 
     // 创建一页空白页并添加到下一页

@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { createRandomCode } from "@/utils/common";
-import { getImageSize } from "@/utils/image";
+import { getImageSize, getOssImageUrl } from "@/utils/image";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import {
     PPTLineElement,
@@ -59,8 +59,9 @@ export default () => {
      * 创建图片元素
      * @param src 图片地址
      */
-    const createImageElement = (src: string) => {
-        getImageSize(src).then(({ width, height }) => {
+    const createImageElement = async (src: string) => {
+        const { url, expiration } = await getOssImageUrl(src);
+        getImageSize(url).then(({ width, height }) => {
             const scale = height / width;
 
             if (scale < viewportRatio.value && width > VIEWPORT_SIZE) {
@@ -75,6 +76,8 @@ export default () => {
                 type: "image",
                 id: createRandomCode(),
                 src,
+                ossSrc: url,
+                ossExpiration: expiration,
                 width,
                 height,
                 left: (VIEWPORT_SIZE - width) / 2,

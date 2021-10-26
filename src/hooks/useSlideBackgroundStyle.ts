@@ -10,6 +10,7 @@ export default (background: Ref<SlideBackground | undefined>) => {
             type,
             color,
             image,
+            ossSrc,
             imageSize,
             gradientColor,
             gradientRotate,
@@ -22,16 +23,16 @@ export default (background: Ref<SlideBackground | undefined>) => {
         } else if (type === "image") {
             // 背景图模式
             // 包括：背景图、背景大小，是否重复
-            if (!image) return { backgroundColor: "#fff" };
+            if (!ossSrc) return { backgroundColor: "#fff" };
             if (imageSize === "repeat") {
                 return {
-                    backgroundImage: `url(${image}`,
+                    backgroundImage: `url(${ossSrc}`,
                     backgroundRepeat: "repeat",
                     backgroundSize: "contain"
                 };
             }
             return {
-                backgroundImage: `url(${image}`,
+                backgroundImage: `url(${ossSrc}`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: imageSize || "cover"
             };

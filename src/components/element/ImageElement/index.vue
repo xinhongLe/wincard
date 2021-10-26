@@ -15,7 +15,7 @@
         >
             <ImageClipHandler
                 v-if="isCliping"
-                :src="elementInfo.src"
+                :src="imageUrl"
                 :clipData="elementInfo.clip"
                 :width="elementInfo.width"
                 :height="elementInfo.height"
@@ -41,7 +41,8 @@
                     :style="{ clipPath: clipShape.style }"
                 >
                     <img
-                        :src="elementInfo.src"
+                        v-if="imageUrl"
+                        :src="imageUrl"
                         :draggable="false"
                         :style="{
                             top: imgPosition.top,
@@ -73,6 +74,7 @@ import useFilter from "./useFilter";
 
 import ImageOutline from "./ImageOutline/index.vue";
 import ImageClipHandler from "./ImageClipHandler.vue";
+import useOssImage from "./useOssImage";
 
 export default defineComponent({
     name: "editable-element-image",
@@ -158,6 +160,9 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
+        const imageElement = computed(() => props.elementInfo);
+        const { imageUrl } = useOssImage(imageElement);
+
         return {
             isCliping,
             handleClip,
@@ -167,7 +172,8 @@ export default defineComponent({
             clipShape,
             imgPosition,
             filter,
-            flipStyle
+            flipStyle,
+            imageUrl
         };
     }
 });

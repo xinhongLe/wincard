@@ -44,7 +44,7 @@ export default () => {
         readClipboard().then(text => {
             pasteTextClipboardData(text);
         }).catch(err => {
-            message.warning(err);
+            message.warning(err.message);
         });
     };
 
