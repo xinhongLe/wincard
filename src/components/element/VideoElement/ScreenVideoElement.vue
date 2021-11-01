@@ -10,12 +10,15 @@
     >
         <div class="element-content">
             <VideoPlayer
+                :videoElement="elementInfo"
                 :width="elementInfo.width"
                 :height="elementInfo.height"
                 :src="elementInfo.src"
                 :poster="elementInfo.poster"
                 :scale="scale"
+                v-if="elementInfo.showType == 0"
             />
+            <IconVideoTwo v-if="elementInfo.showType == 1" class="video-btn" />
         </div>
     </div>
 </template>
@@ -55,5 +58,9 @@ export default defineComponent({
 .element-content {
     width: 100%;
     height: 100%;
+}
+
+.video-btn {
+    font-size: 40px;
 }
 </style>

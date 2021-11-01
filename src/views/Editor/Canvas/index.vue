@@ -274,12 +274,6 @@ export default defineComponent({
                 {
                     text: "重置当前页",
                     handler: deleteAllElements
-                },
-                { divider: true },
-                {
-                    text: "从当前页演示",
-                    subText: "Ctrl+F",
-                    handler: enterScreening
                 }
             ];
         };

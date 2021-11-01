@@ -8,7 +8,7 @@
             :style="line.style"
         />
         <template
-            v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)"
+            v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect) && (elementInfo.type != 'video' || elementInfo.showType != 1)"
         >
             <resize-handler
                 class="operate-resize-handler"

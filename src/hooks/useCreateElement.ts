@@ -290,13 +290,15 @@ export default () => {
      * @param src 视频地址
      */
     const createVideoElement = (src: string, showType: number) => {
+        const width = showType === 0 ? 500 : 41;
+        const height = showType === 0 ? 300 : 41;
         createElement({
             type: "video",
             id: createRandomCode(),
-            width: 500,
-            height: 300,
-            left: (VIEWPORT_SIZE - 500) / 2,
-            top: (VIEWPORT_SIZE * viewportRatio.value - 300) / 2,
+            width,
+            height,
+            left: (VIEWPORT_SIZE - width) / 2,
+            top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
             src,
             showType
         });

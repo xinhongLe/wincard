@@ -21,7 +21,9 @@
                 :src="elementInfo.src"
                 :poster="elementInfo.poster"
                 :scale="scale"
+                v-if="elementInfo.showType == 0"
             />
+            <IconVideoTwo v-if="elementInfo.showType == 1" class="video-btn" />
             <div
                 :class="['handler-border', item]"
                 v-for="item in ['t', 'b', 'l', 'r']"
@@ -125,5 +127,8 @@ export default defineComponent({
         right: 0;
         top: 0;
     }
+}
+.video-btn {
+    font-size: 40px;
 }
 </style>
