@@ -15,3 +15,11 @@ export const uploadVideo = (file: File) => {
 export const getOssVideoUrl = async (key: string) => {
     return await downloadFile(key);
 };
+
+/**
+ * 处理获取oss video 封面图 访问链接
+ * @param key oss访问key
+ */
+export const getOssPosterUrl = async (key: string) => {
+    return await downloadFile(key);
+};

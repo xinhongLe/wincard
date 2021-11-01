@@ -1,29 +1,45 @@
-import { PPTImageElement, PPTVideoElement } from "@/types/slides";
-import { getOssImageUrl } from "@/utils/image";
+import { PPTVideoElement } from "@/types/slides";
 import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, ComputedRef, computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
+import { getOssPosterUrl, getOssVideoUrl } from "@/utils/video";
 
 export default (videoElement: ComputedRef<PPTVideoElement>) => {
     const videoUrl = ref("");
+    const posterUrl = ref("");
     const store = useStore();
 
     const updateVideo = () => {
         // 目前切换图片编辑 会重复拉取图片 后面考虑要不要缓存成base64进行存储
-        getToken((ossToken: OssToken) => {
+        getToken(async (ossToken: OssToken) => {
             if (videoElement.value.ossSrc && videoElement.value.ossExpiration === ossToken.Expiration) {
                 // ossSrc 存在 且 ossToken 未过期 则不请求 直接返回
                 videoUrl.value = videoElement.value.ossSrc;
             } else {
-                getOssImageUrl(videoElement.value.src).then(res => {
-                    videoUrl.value = res.url;
+                const res = await getOssVideoUrl(videoElement.value.src);
+                videoUrl.value = res.url;
+                // 更新 PPTVideoElement
+                const props = {
+                    ossSrc: res.url,
+                    ossExpiration: ossToken.Expiration
+                };
+                store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+            }
+
+            if (videoElement.value.ossPoster && videoElement.value.ossExpiration === ossToken.Expiration) {
+                // ossPoster 存在 且 ossToken 未过期 则不请求 直接返回
+                posterUrl.value = videoElement.value.ossPoster;
+            } else {
+                if (videoElement.value.poster) {
+                    const res = await getOssPosterUrl(videoElement.value.poster);
+                    posterUrl.value = res.url;
                     // 更新 PPTVideoElement
                     const props = {
-                        ossSrc: res.url,
+                        ossPoster: res.url,
                         ossExpiration: ossToken.Expiration
                     };
                     store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
-                });
+                }
             }
         });
     };
@@ -32,13 +48,18 @@ export default (videoElement: ComputedRef<PPTVideoElement>) => {
         return videoElement.value ? videoElement.value.src : "";
     });
 
-    watch(key, () => {
+    const keyPoster = computed(() => {
+        return videoElement.value ? videoElement.value.poster : "";
+    });
+
+    watch([key, keyPoster], () => {
         updateVideo();
     });
 
     updateVideo();
 
     return {
-        videoUrl
+        videoUrl,
+        posterUrl
     };
 };

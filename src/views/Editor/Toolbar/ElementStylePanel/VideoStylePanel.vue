@@ -7,7 +7,7 @@
                     <div
                         class="content"
                         :style="{
-                            backgroundImage: `url(${handleElement.poster})`
+                            backgroundImage: `url(${handleElement.ossPoster})`
                         }"
                     >
                         <IconPlus />
@@ -27,7 +27,7 @@
 import { computed, defineComponent } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTVideoElement } from "@/types/slides";
-import { getImageDataURL } from "@/utils/image";
+import { uploadImage } from "@/utils/image";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 export default defineComponent({
@@ -52,9 +52,12 @@ export default defineComponent({
         const setVideoPoster = (files: File[]) => {
             const imageFile = files[0];
             if (!imageFile) return;
-            getImageDataURL(imageFile).then(dataURL =>
-                updateVideo({ poster: dataURL })
-            );
+            uploadImage(imageFile).then(key => {
+                updateVideo({ poster: key });
+            });
+            // getImageDataURL(imageFile).then(dataURL =>
+            //     updateVideo({ poster: dataURL })
+            // );
         };
 
         return {

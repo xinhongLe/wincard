@@ -17,7 +17,7 @@
                 ref="videoRef"
                 :src="videoUrl"
                 v-if="videoUrl"
-                :poster="poster"
+                :poster="posterUrl"
                 webkit-playsinline
                 playsinline
                 @durationchange="handleDurationchange()"
@@ -422,7 +422,7 @@ export default defineComponent({
         };
 
         const videoElement = computed(() => props.videoElement);
-        const { videoUrl } = useOssVideo(videoElement);
+        const { videoUrl, posterUrl } = useOssVideo(videoElement);
 
         useMSE(props.src, videoRef);
 
@@ -448,6 +448,7 @@ export default defineComponent({
             speedMenuVisible,
             speedOptions,
             videoUrl,
+            posterUrl,
             seek,
             play,
             pause,
