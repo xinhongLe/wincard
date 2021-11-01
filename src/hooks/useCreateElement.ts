@@ -289,7 +289,7 @@ export default () => {
      * 创建视频元素
      * @param src 视频地址
      */
-    const createVideoElement = (src: string) => {
+    const createVideoElement = (src: string, showType: number) => {
         createElement({
             type: "video",
             id: createRandomCode(),
@@ -297,7 +297,8 @@ export default () => {
             height: 300,
             left: (VIEWPORT_SIZE - 500) / 2,
             top: (VIEWPORT_SIZE * viewportRatio.value - 300) / 2,
-            src
+            src,
+            showType
         });
     };
 

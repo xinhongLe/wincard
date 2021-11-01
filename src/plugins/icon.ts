@@ -90,6 +90,8 @@ import {
     VolumeSmall,
     CycleOne,
     VideoTwo,
+    VideoOne,
+    Video,
     Formula,
     Check
 } from "@icon-park/vue-next";
@@ -219,5 +221,7 @@ export default {
         app.component("IconVolumeNotice", VolumeNotice);
         app.component("IconVolumeSmall", VolumeSmall);
         app.component("IconCycleOne", CycleOne);
+        app.component("IconVideoOne", VideoOne);
+        app.component("IconBigVideo", Video);
     }
 };

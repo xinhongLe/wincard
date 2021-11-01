@@ -1,37 +1,50 @@
 <template>
     <div class="video-input">
-        <Input
-            v-model:value="src"
-            placeholder="请输入视频地址，e.g. https://xxx.mp4"
-        ></Input>
-        <div class="btns">
-            <a-button @click="close()" style="margin-right: 10px;">取消</a-button>
-            <a-button type="primary" @click="intsertVideo()">确认</a-button>
-        </div>
+        <FileInput accept="video/*" @change="(files) => insertVideoElement(files, 1)">
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="插入小视频"
+            >
+                <IconVideoOne class="handler-item" />
+            </a-tooltip>
+        </FileInput>
+
+        <FileInput accept="video/*" @change="(files) => insertVideoElement(files, 0)">
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="插入大视频"
+            >
+                <IconBigVideo class="handler-item" />
+            </a-tooltip>
+        </FileInput>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { message } from "ant-design-vue";
+import FileInput from "@/components/FileInput.vue";
+import useCreateElement from "@/hooks/useCreateElement";
+
+import { uploadVideo } from "@/utils/video";
 
 export default defineComponent({
+    components: { FileInput },
     name: "video-input",
-    emits: ["insert", "close"],
-    setup(props, { emit }) {
-        const src = ref("https://www.w3school.com.cn/i/movie.ogg");
+    setup() {
+        const { createVideoElement } = useCreateElement();
 
-        const intsertVideo = () => {
-            if (!src.value) return message.error("请先输入正确的视频地址");
-            emit("insert", src.value);
+        const insertVideoElement = (files: File[], type: number) => {
+            const videoFile = files[0];
+            if (!videoFile) return;
+            uploadVideo(videoFile).then(key => {
+                createVideoElement(key, type);
+            });
         };
 
-        const close = () => emit("close");
-
         return {
-            src,
-            intsertVideo,
-            close
+            insertVideoElement
         };
     }
 });
@@ -39,10 +52,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .video-input {
-    width: 480px;
+    display: flex;
+    align-items: center;
 }
-.btns {
-    margin-top: 10px;
-    text-align: right;
+
+.handler-item {
+    cursor: pointer;
+    font-size: 26px;
+    margin: 0 10px;
+    color: #666666;
 }
 </style>

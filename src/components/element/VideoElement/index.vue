@@ -15,6 +15,7 @@
             @mousedown="$event => handleSelectElement($event, false)"
         >
             <VideoPlayer
+                :videoElement="elementInfo"
                 :width="elementInfo.width"
                 :height="elementInfo.height"
                 :src="elementInfo.src"

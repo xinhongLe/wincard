@@ -15,7 +15,8 @@
             <video
                 class="video"
                 ref="videoRef"
-                :src="src"
+                :src="videoUrl"
+                v-if="videoUrl"
                 :poster="poster"
                 webkit-playsinline
                 playsinline
@@ -141,9 +142,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, PropType, ref } from "vue";
 import useMSE from "./useMSE";
+import useOssVideo from "./useOssVideo";
 import { message } from "ant-design-vue";
+import { PPTVideoElement } from "@/types/slides";
 
 const secondToTime = (second = 0) => {
     if (second === 0 || isNaN(second)) return "00:00";
@@ -172,6 +175,10 @@ export default defineComponent({
         },
         src: {
             type: String,
+            required: true
+        },
+        videoElement: {
+            type: Object as PropType<PPTVideoElement>,
             required: true
         },
         poster: {
@@ -414,6 +421,9 @@ export default defineComponent({
             }, 3000);
         };
 
+        const videoElement = computed(() => props.videoElement);
+        const { videoUrl } = useOssVideo(videoElement);
+
         useMSE(props.src, videoRef);
 
         return {
@@ -437,6 +447,7 @@ export default defineComponent({
             playbackRate,
             speedMenuVisible,
             speedOptions,
+            videoUrl,
             seek,
             play,
             pause,

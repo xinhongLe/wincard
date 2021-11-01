@@ -498,11 +498,16 @@ export interface PPTLatexElement extends PPTBaseElement {
  *
  * src: 视频地址
  *
+ * showType: 视频预览形式 0: 视频普通展示（大视频） 1: 视频只展示按钮，需要点击弹框展示（小视频）
+ *
  * poster: 预览封面
  */
 export interface PPTVideoElement extends PPTBaseElement {
     type: "video";
     src: string;
+    ossSrc?: string;
+    ossExpiration?: string;
+    showType: number;
     poster?: string;
 }
 

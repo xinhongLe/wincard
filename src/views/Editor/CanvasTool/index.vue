@@ -123,15 +123,7 @@
             </a-tooltip>
             <a-popover trigger="click" v-model:visible="videoInputVisible">
                 <template #content>
-                    <VideoInput
-                        @close="videoInputVisible = false"
-                        @insert="
-                            src => {
-                                createVideoElement(src);
-                                videoInputVisible = false;
-                            }
-                        "
-                    />
+                    <VideoInput />
                 </template>
                 <a-tooltip
                     :mouseLeaveDelay="0"
@@ -232,8 +224,7 @@ export default defineComponent({
             createImageElement,
             createChartElement,
             createTableElement,
-            createLatexElement,
-            createVideoElement
+            createLatexElement
         } = useCreateElement();
 
         const insertImageElement = (files: File[]) => {
@@ -301,7 +292,6 @@ export default defineComponent({
             createChartElement,
             createTableElement,
             createLatexElement,
-            createVideoElement,
             creatingElement
         };
     }
