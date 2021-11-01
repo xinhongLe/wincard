@@ -20,8 +20,8 @@
                     <a-menu>
                         <a-menu-item @click="undo()">撤销</a-menu-item>
                         <a-menu-item @click="redo()">重做</a-menu-item>
-                        <a-menu-item @click="createSlide()">添加页面</a-menu-item>
-                        <a-menu-item @click="deleteSlide()">删除页面</a-menu-item>
+                        <!-- <a-menu-item @click="createSlide()">添加页面</a-menu-item>
+                        <a-menu-item @click="deleteSlide()">删除页面</a-menu-item> -->
                         <a-menu-item @click="toggleGridLines()">{{
                             showGridLines ? "关闭网格线" : "打开网格线"
                         }}</a-menu-item>

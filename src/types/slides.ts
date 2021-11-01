@@ -76,6 +76,7 @@ interface PPTBaseElement {
     width: number;
     height: number;
     link?: string;
+    display?: boolean;
 }
 
 /**

@@ -29,6 +29,12 @@
         >
             {{ elementIndexInAnimation + 1 }}
         </div>
+        <div
+            class="display-index"
+            v-if="elementInfo.display === false"
+        >
+            隐
+        </div>
 
         <link-handler
             :elementInfo="elementInfo"
@@ -159,6 +165,21 @@ export default defineComponent({
     position: absolute;
     top: 0;
     left: -24px;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    color: $themeColor;
+    border: 1px solid $themeColor;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.display-index {
+    position: absolute;
+    top: 4px;
+    left: 4px;
     font-size: 12px;
     width: 18px;
     height: 18px;

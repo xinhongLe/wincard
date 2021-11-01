@@ -28,6 +28,7 @@ import useOrderElement from "@/hooks/useOrderElement";
 import useAlignElementToCanvas from "@/hooks/useAlignElementToCanvas";
 import useCopyAndPasteElement from "@/hooks/useCopyAndPasteElement";
 import useSelectAllElement from "@/hooks/useSelectAllElement";
+import useDisplayElement from "@/hooks/useDisplayElement";
 
 import { ElementOrderCommands, ElementAlignCommands } from "@/types/edit";
 
@@ -86,6 +87,7 @@ export default defineComponent({
         const { combineElements, uncombineElements } = useCombineElement();
         const { deleteElement } = useDeleteElement();
         const { lockElement, unlockElement } = useLockElement();
+        const { showElement, hideElement } = useDisplayElement();
         const {
             copyElement,
             pasteElement,
@@ -118,6 +120,17 @@ export default defineComponent({
                     text: "粘贴",
                     subText: "Ctrl + V",
                     handler: pasteElement
+                },
+                { divider: true },
+                {
+                    text: "显示",
+                    subText: "",
+                    handler: showElement
+                },
+                {
+                    text: "隐藏",
+                    subText: "",
+                    handler: hideElement
                 },
                 { divider: true },
                 {

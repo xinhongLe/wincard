@@ -46,19 +46,22 @@ export default defineComponent({
                     { label: "样式", value: ToolbarStates.EL_STYLE },
                     { label: "符号", value: ToolbarStates.SYMBOL },
                     { label: "位置", value: ToolbarStates.EL_POSITION },
-                    { label: "动画", value: ToolbarStates.EL_ANIMATION }
+                    { label: "动画", value: ToolbarStates.EL_ANIMATION },
+                    { label: "事件", value: ToolbarStates.EL_EVENT }
                 ];
             }
             return [
                 { label: "样式", value: ToolbarStates.EL_STYLE },
                 { label: "位置", value: ToolbarStates.EL_POSITION },
-                { label: "动画", value: ToolbarStates.EL_ANIMATION }
+                { label: "动画", value: ToolbarStates.EL_ANIMATION },
+                ...["shape", "image"].indexOf(handleElement.value.type) > -1 ? [{ label: "事件", value: ToolbarStates.EL_EVENT }] : []
             ];
         });
         const slideTabs = [
             { label: "设计", value: ToolbarStates.SLIDE_DESIGN },
             // { label: "切换", value: ToolbarStates.SLIDE_ANIMATION },
-            { label: "动画", value: ToolbarStates.EL_ANIMATION }
+            // { label: "动画", value: ToolbarStates.EL_ANIMATION },
+            { label: "步骤", value: ToolbarStates.SLIDE_STEP }
         ];
         const multiSelectTabs = [
             { label: "位置", value: ToolbarStates.MULTI_POSITION },
