@@ -12,7 +12,7 @@
         <div
             class="element-content"
             v-contextmenu="contextmenus"
-            @mousedown="$event => handleSelectElement($event, false)"
+            @mousedown="($event) => handleSelectElement($event, false)"
         >
             <VideoPlayer
                 :videoElement="elementInfo"
@@ -23,19 +23,37 @@
                 :scale="scale"
                 v-if="elementInfo.showType == 0"
             />
-            <IconVideoTwo v-if="elementInfo.showType == 1" class="video-btn" />
+            <IconVideoTwo v-if="elementInfo.showType == 1" class="video-btn" @click="openVideo" />
             <div
                 :class="['handler-border', item]"
                 v-for="item in ['t', 'b', 'l', 'r']"
                 :key="item"
-                @mousedown="$event => handleSelectElement($event)"
+                @mousedown="($event) => handleSelectElement($event)"
             ></div>
+
+            <a-modal
+                title="视频"
+                v-model:visible="visible"
+                :footer="null"
+                width="50%"
+            >
+                <VideoPlayer
+                    :noTransform="true"
+                    :videoElement="elementInfo"
+                    :width="elementInfo.width"
+                    :height="elementInfo.height"
+                    :src="elementInfo.src"
+                    :poster="elementInfo.poster"
+                    :scale="scale"
+                    v-if="elementInfo.showType == 1"
+                />
+            </a-modal>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType, ref } from "vue";
 import { useStore } from "@/store";
 import { PPTTableElement } from "@/types/slides";
 import { ContextmenuItem } from "@/types/contextmenu";
@@ -69,6 +87,7 @@ export default defineComponent({
     setup(props) {
         const store = useStore();
         const scale = computed(() => store.state.canvasScale);
+        const visible = ref(false);
 
         const handleSelectElement = (e: MouseEvent, canMove = true) => {
             if (props.elementInfo.lock) return;
@@ -77,9 +96,15 @@ export default defineComponent({
             props.selectElement(e, props.elementInfo, canMove);
         };
 
+        const openVideo = () => {
+            visible.value = true;
+        };
+
         return {
             scale,
-            handleSelectElement
+            handleSelectElement,
+            visible,
+            openVideo
         };
     }
 });

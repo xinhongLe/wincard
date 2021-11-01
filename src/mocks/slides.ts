@@ -71,6 +71,27 @@ export const slides: Slide[] = [
                 color: "#5b9bd5",
                 style: "solid",
                 width: 2
+            },
+            {
+                height: 300,
+                id: "E8YQyi",
+                left: 355,
+                poster: "TeachPageFile/1f92c4ef765cdd90d4f106e5dc5e3cd8.png",
+                showType: 0,
+                src: "TeachPageFile/3cf571d4cf2a4c4b2df823a27852a7d5.mp4",
+                top: 131.24999999999997,
+                type: "video",
+                width: 500
+            },
+            {
+                height: 41,
+                id: "RSeOX5",
+                left: 76.55937092871773,
+                showType: 1,
+                src: "TeachPageFile/3cf571d4cf2a4c4b2df823a27852a7d5.mp4",
+                top: 44.75,
+                type: "video",
+                width: 41
             }
         ],
         background: {

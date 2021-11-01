@@ -3,9 +3,9 @@
         class="player"
         :class="{ 'hide-controller': hideController }"
         :style="{
-            width: width * scale + 'px',
-            height: height * scale + 'px',
-            transform: `scale(${1 / scale})`
+            width: noTransform ? '100%' : width * scale + 'px',
+            height: noTransform ? 'auto' : height * scale + 'px',
+            transform: `scale(${noTransform ? 1 : 1 / scale})`
         }"
         ref="containerRef"
         @mousemove="autoHideController()"
@@ -165,6 +165,10 @@ const getBoundingClientRectViewLeft = (element: HTMLElement) => {
 export default defineComponent({
     name: "Player",
     props: {
+        noTransform: {
+            type: Boolean,
+            default: false
+        },
         width: {
             type: Number,
             required: true

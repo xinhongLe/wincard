@@ -18,7 +18,24 @@
                 :scale="scale"
                 v-if="elementInfo.showType == 0"
             />
-            <IconVideoTwo v-if="elementInfo.showType == 1" class="video-btn" />
+            <IconVideoTwo v-if="elementInfo.showType == 1" class="video-btn" @click="openVideo"  />
+            <a-modal
+                title="视频"
+                v-model:visible="visible"
+                :footer="null"
+                width="50%"
+            >
+                <VideoPlayer
+                    :noTransform="true"
+                    :videoElement="elementInfo"
+                    :width="elementInfo.width"
+                    :height="elementInfo.height"
+                    :src="elementInfo.src"
+                    :poster="elementInfo.poster"
+                    :scale="scale"
+                    v-if="elementInfo.showType == 1"
+                />
+            </a-modal>
         </div>
     </div>
 </template>
@@ -43,8 +60,15 @@ export default defineComponent({
     setup() {
         const scale: Ref<number> = inject("slideScale") || ref(1);
 
+        const visible = ref(false);
+        const openVideo = () => {
+            visible.value = true;
+        };
+
         return {
-            scale
+            scale,
+            visible,
+            openVideo
         };
     }
 });
@@ -62,5 +86,6 @@ export default defineComponent({
 
 .video-btn {
     font-size: 40px;
+    cursor: pointer;
 }
 </style>
