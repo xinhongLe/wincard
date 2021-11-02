@@ -276,7 +276,7 @@ import { WEB_FONTS } from "@/configs/font";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 import ColorButton from "./common/ColorButton.vue";
-import { getImageDataURL, uploadImage } from "@/utils/image";
+import { uploadImage } from "@/utils/image";
 
 const themes = PRESET_THEMES;
 const webFonts = WEB_FONTS;

@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import FileInput from "@/components/FileInput.vue";
 import useCreateElement from "@/hooks/useCreateElement";
 

@@ -9,7 +9,7 @@ export default (background: Ref<SlideBackground | undefined>) => {
         const {
             type,
             color,
-            image,
+            // image,
             ossSrc,
             imageSize,
             gradientColor,

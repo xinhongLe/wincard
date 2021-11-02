@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { computed, PropType, defineComponent, ref } from "vue";
-import { MutationTypes, useStore } from "@/store";
+import { useStore } from "@/store";
 import { PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import useSlideBackgroundStyle from "@/hooks/useSlideBackgroundStyle";

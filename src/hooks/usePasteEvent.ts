@@ -1,6 +1,6 @@
 import { computed, onMounted, onUnmounted } from "vue";
 import { useStore } from "@/store";
-import { getImageDataURL, uploadImage } from "@/utils/image";
+import { uploadImage } from "@/utils/image";
 import usePasteTextClipboardData from "./usePasteTextClipboardData";
 import useCreateElement from "./useCreateElement";
 

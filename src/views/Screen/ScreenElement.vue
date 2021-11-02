@@ -82,9 +82,9 @@ export default defineComponent({
         });
 
         // 打开元素绑定的超链接
-        const openLink = () => {
-            if (props.elementInfo.link) window.open(props.elementInfo.link);
-        };
+        // const openLink = () => {
+        //     if (props.elementInfo.link) window.open(props.elementInfo.link);
+        // };
 
         return {
             currentElementComponent,

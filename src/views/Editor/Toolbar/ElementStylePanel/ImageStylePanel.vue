@@ -104,7 +104,7 @@ import { computed, defineComponent, ref, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTImageElement, Slide } from "@/types/slides";
 import { CLIPPATHS } from "@/configs/imageClip";
-import { getImageDataURL, uploadImage } from "@/utils/image";
+import { uploadImage } from "@/utils/image";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 import ElementOutline from "../common/ElementOutline.vue";

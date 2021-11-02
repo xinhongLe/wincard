@@ -1,4 +1,4 @@
-import { slides } from "@/mocks/slides";
+// import { slides } from "@/mocks/slides";
 import { theme } from "@/mocks/theme";
 import { SYS_FONTS } from "@/configs/font";
 import { CreatingElement } from "@/types/edit";

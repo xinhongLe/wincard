@@ -199,13 +199,13 @@ export default defineComponent({
         };
         onUnmounted(closeAutoPlay);
 
-        const throttleMassage = throttle(
-            function(msg) {
-                message.success(msg);
-            },
-            1000,
-            { leading: true, trailing: false }
-        );
+        // const throttleMassage = throttle(
+        //     function(msg) {
+        //         message.success(msg);
+        //     },
+        //     1000,
+        //     { leading: true, trailing: false }
+        // );
 
         // 向上/向下播放
         // 遇到元素动画时，优先执行动画播放，无动画则执行翻页

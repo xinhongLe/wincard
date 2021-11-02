@@ -7,7 +7,7 @@
 import Editor from "@/views/Editor/index.vue";
 import Screen from "@/views/Screen/index.vue";
 import { computed, defineComponent, onMounted, PropType, provide } from "vue";
-import { Modal } from "ant-design-vue";
+// import { Modal } from "ant-design-vue";
 import { ActionTypes, MutationTypes, useStore } from "@/store";
 
 import useSlideHandler from "@/hooks/useSlideHandler";
@@ -24,7 +24,7 @@ export default defineComponent({
     setup(props) {
         const store = useStore();
         const screening = computed(() => store.state.screening);
-        const oldSlides = computed(() => store.state.oldSlides);
+        // const oldSlides = computed(() => store.state.oldSlides);
 
         const canvasScale = computed(() => store.state.canvasScale);
         provide("slideScale", canvasScale);

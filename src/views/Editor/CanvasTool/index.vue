@@ -182,7 +182,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { getImageDataURL, uploadImage } from "@/utils/image";
+import { uploadImage } from "@/utils/image";
 import { ShapePoolItem } from "@/configs/shapes";
 import { LinePoolItem } from "@/configs/lines";
 import useScaleCanvas from "@/hooks/useScaleCanvas";

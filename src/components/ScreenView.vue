@@ -17,7 +17,7 @@ export default defineComponent({
     components: {
         Screen
     },
-    setup(props, { emit }) {
+    setup(props) {
         const store = useStore();
 
         store.commit(MutationTypes.SET_SLIDES, [props.slide]);
