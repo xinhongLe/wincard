@@ -60,6 +60,6 @@ export default defineComponent({
     cursor: pointer;
     font-size: 26px;
     margin: 0 10px;
-    color: #666666;
+    color: #666;
 }
 </style>

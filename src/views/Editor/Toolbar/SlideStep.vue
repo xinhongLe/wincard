@@ -2,7 +2,7 @@
     <div class="el-event-box">
         <a-button type="primary" block @click="addStep">新增步骤</a-button>
 
-        <a-divider style="margin: 12px 0" />
+        <a-divider style="margin: 12px 0;" />
 
         <a-modal
             v-model:visible="addActionVisible"
@@ -94,7 +94,7 @@
                             </div>
                         </template>
                         <a-button class="element-animation-btn">
-                            <IconEffects style="margin-right: 5px" />
+                            <IconEffects style="margin-right: 5px;" />
                             {{
                                 formState.inAni
                                     ? animationTypes[formState.inAni]
@@ -153,7 +153,7 @@
                             </div>
                         </template>
                         <a-button class="element-animation-btn">
-                            <IconEffects style="margin-right: 5px" />
+                            <IconEffects style="margin-right: 5px;" />
                             {{
                                 formState.outAni
                                     ? animationTypes[formState.outAni]
@@ -172,7 +172,7 @@
                         @change="
                             (value) => updateElementAnimationDuration(value)
                         "
-                        style="width: 100%"
+                        style="width: 100%;"
                     />
                 </a-form-item>
             </a-form>
@@ -202,7 +202,7 @@
                         </a-tooltip>
                     </div>
 
-                    <a-divider style="margin: 12px 0" />
+                    <a-divider style="margin: 12px 0;" />
 
                     <a-button
                         type="primary"
@@ -211,7 +211,7 @@
                         >新增事件</a-button
                     >
 
-                    <a-divider style="margin: 12px 0" v-if="element && element.length > 0" />
+                    <a-divider style="margin: 12px 0;" v-if="element && element.length > 0" />
 
                     <div
                         v-for="(action, actionIndex) in element"
@@ -573,7 +573,7 @@ export default defineComponent({
 .step-box {
     padding: 10px;
     border: 1px dashed #ccc;
-    background-color: #ffffff;
+    background-color: #fff;
     margin-bottom: 12px;
 }
 </style>

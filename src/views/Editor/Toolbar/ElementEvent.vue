@@ -84,7 +84,7 @@
                             </div>
                         </template>
                         <a-button class="element-animation-btn">
-                            <IconEffects style="margin-right: 5px" />
+                            <IconEffects style="margin-right: 5px;" />
                             {{
                                 formState.inAni
                                     ? animationTypes[formState.inAni]
@@ -136,7 +136,7 @@
                             </div>
                         </template>
                         <a-button class="element-animation-btn">
-                            <IconEffects style="margin-right: 5px" />
+                            <IconEffects style="margin-right: 5px;" />
                             {{
                                 formState.outAni
                                     ? animationTypes[formState.outAni]
@@ -153,7 +153,7 @@
                         :step="100"
                         :value="formState.duration"
                         @change="(value) => updateElementAnimationDuration(value)"
-                        style="width: 100%"
+                        style="width: 100%;"
                     />
                 </a-form-item>
             </a-form>

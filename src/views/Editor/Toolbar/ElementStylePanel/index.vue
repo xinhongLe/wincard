@@ -1,15 +1,24 @@
 <template>
     <div class="element-style-panel">
-        <div v-if="!currentPanelComponent">
-            请先选中要编辑的元素
-        </div>
+        <div v-if="!currentPanelComponent">请先选中要编辑的元素</div>
+        <a-form
+            v-if="currentPanelComponent"
+            :model="formState"
+            :label-col="{ span: 7 }"
+            :wrapper-col="{ span: 17 }"
+        >
+            <a-form-item label="元素名称" style="margin-bottom: 10px;">
+                <a-input style="width: 100%;" v-model:value="formState.name" @change="updateName" />
+            </a-form-item>
+        </a-form>
         <component v-if="handleElement" :is="currentPanelComponent"></component>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
-import { useStore } from "@/store";
+import { debounce } from "lodash";
+import { computed, defineComponent, reactive } from "vue";
+import { MutationTypes, useStore } from "@/store";
 import { ElementTypes, PPTElement } from "@/types/slides";
 
 import TextStylePanel from "./TextStylePanel.vue";
@@ -45,8 +54,23 @@ export default defineComponent({
             return panelMap[handleElement.value.type] || null;
         });
 
+        const formState = reactive({
+            name: handleElement.value.name
+        });
+
+        const updateName = debounce(() => {
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props: {
+                    name: formState.name
+                }
+            });
+        }, 300);
+
         return {
+            formState,
             handleElement,
+            updateName,
             currentPanelComponent
         };
     }
