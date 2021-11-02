@@ -59,7 +59,7 @@
         </div>
 
         <div class="right">
-            <a-tooltip :mouseLeaveDelay="0" title="幻灯片放映">
+            <a-tooltip :mouseLeaveDelay="0" title="预览">
                 <div class="a-menu-item" @click="enterScreening()">
                     <IconPpt size="18" fill="#666" style="margin-top: 2px;" />
                 </div>

@@ -79,32 +79,26 @@ export default defineComponent({
                 `#screen-element-${action.target} [class^=base-element-]`
             );
 
-            if (elRef) {
-                // 如果是执行显示动画，需要先将display设置为true
-                if (animationType === "show") {
-                    element.display = true;
+            setTimeout(() => {
+                if (elRef) {
+                    // 如果是执行显示动画，需要先将display设置为true
+                    if (animationType === "show") {
+                        element.display = true;
+                    }
+
+                    const animationName = `${prefix}${animation}`;
+                    elRef.classList.add(`${prefix}animated`, animationName);
+
+                    const handleAnimationEnd = () => {
+                        element.display = animationType === "show";
+
+                        elRef.classList.remove(`${prefix}animated`, animationName);
+                    };
+                    elRef.addEventListener("animationend", handleAnimationEnd, {
+                        once: true
+                    });
                 }
-
-                const animationName = `${prefix}${animation}`;
-                document.documentElement.style.setProperty(
-                    "--animate-delay",
-                    `${action.duration || 0}ms`
-                );
-                elRef.classList.add(`${prefix}animated`, animationName);
-
-                const handleAnimationEnd = () => {
-                    document.documentElement.style.removeProperty(
-                        "--animate-delay"
-                    );
-
-                    element.display = animationType === "show";
-
-                    elRef.classList.remove(`${prefix}animated`, animationName);
-                };
-                elRef.addEventListener("animationend", handleAnimationEnd, {
-                    once: true
-                });
-            }
+            }, action.duration || 0);
         };
 
         return {
