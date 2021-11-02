@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, defineComponent } from "vue";
+import { computed, PropType, defineComponent, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
@@ -54,7 +54,7 @@ export default defineComponent({
         const background = computed(() => props.slide.background);
         const { backgroundStyle } = useSlideBackgroundStyle(background);
 
-        const elements = computed(() => props.slide.elements);
+        const elements = ref<PPTElement[]>(JSON.parse(JSON.stringify(props.slide.elements)));
 
         // 处理元素点击事件
         const handleAction = (element: PPTElement) => {
@@ -82,12 +82,7 @@ export default defineComponent({
             if (elRef) {
                 // 如果是执行显示动画，需要先将display设置为true
                 if (animationType === "show") {
-                    store.commit(MutationTypes.UPDATE_ELEMENT, {
-                        id: element.id,
-                        props: {
-                            display: true
-                        }
-                    });
+                    element.display = true;
                 }
 
                 const animationName = `${prefix}${animation}`;
@@ -102,12 +97,7 @@ export default defineComponent({
                         "--animate-delay"
                     );
 
-                    store.commit(MutationTypes.UPDATE_ELEMENT, {
-                        id: element.id,
-                        props: {
-                            display: animationType === "show"
-                        }
-                    });
+                    element.display = animationType === "show";
 
                     elRef.classList.remove(`${prefix}animated`, animationName);
                 };
