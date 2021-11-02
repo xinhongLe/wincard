@@ -136,7 +136,7 @@
 
         <ElementOutline />
 
-        <Modal
+        <a-modal
             v-model:visible="chartDataEditorVisible"
             :footer="null"
             centered
@@ -149,7 +149,7 @@
                 @close="chartDataEditorVisible = false"
                 @save="value => updateData(value)"
             />
-        </Modal>
+        </a-modal>
     </div>
 </template>
 

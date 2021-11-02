@@ -33,7 +33,7 @@
             />
         </div>
 
-        <Modal
+        <a-modal
             v-model:visible="latexEditorVisible"
             :footer="null"
             centered
@@ -50,7 +50,7 @@
                     }
                 "
             />
-        </Modal>
+        </a-modal>
     </div>
 </template>
 
