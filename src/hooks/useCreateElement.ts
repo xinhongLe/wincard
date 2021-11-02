@@ -72,9 +72,12 @@ export default () => {
                 width = height / scale;
             }
 
+            const id = createRandomCode();
+
             createElement({
+                name: "图片-" + id,
                 type: "image",
-                id: createRandomCode(),
+                id,
                 src,
                 ossSrc: url,
                 ossExpiration: expiration,
@@ -93,9 +96,12 @@ export default () => {
      * @param chartType 图表类型
      */
     const createChartElement = (chartType: ChartType) => {
+        const id = createRandomCode();
+
         createElement({
+            name: "图表-" + id,
             type: "chart",
-            id: createRandomCode(),
+            id,
             chartType,
             left: 300,
             top: 81.25,
@@ -144,9 +150,12 @@ export default () => {
         const width = col * DEFAULT_CELL_WIDTH;
         const height = row * DEFAULT_CELL_HEIGHT;
 
+        const id = createRandomCode();
+
         createElement({
+            name: "表格-" + id,
             type: "table",
-            id: createRandomCode(),
+            id,
             width,
             height,
             colWidths,
@@ -178,9 +187,11 @@ export default () => {
         content = "请输入内容"
     ) => {
         const { left, top, width, height } = position;
+        const id = createRandomCode();
         createElement({
+            name: "文本-" + id,
             type: "text",
-            id: createRandomCode(),
+            id,
             left,
             top,
             width,
@@ -202,9 +213,11 @@ export default () => {
         data: ShapePoolItem
     ) => {
         const { left, top, width, height } = position;
+        const id = createRandomCode();
         const newElement: PPTShapeElement = {
+            name: "形状-" + id,
             type: "shape",
-            id: createRandomCode(),
+            id,
             left,
             top,
             width,
@@ -229,10 +242,11 @@ export default () => {
         data: LinePoolItem
     ) => {
         const { left, top, start, end } = position;
-
+        const id = createRandomCode();
         const newElement: PPTLineElement = {
+            name: "线条-" + id,
             type: "line",
-            id: createRandomCode(),
+            id,
             left,
             top,
             start,
@@ -269,9 +283,11 @@ export default () => {
         w: number;
         h: number;
     }) => {
+        const id = createRandomCode();
         createElement({
+            name: "公式-" + id,
             type: "latex",
-            id: createRandomCode(),
+            id,
             width: data.w,
             height: data.h,
             left: (VIEWPORT_SIZE - data.w) / 2,
@@ -292,9 +308,11 @@ export default () => {
     const createVideoElement = (src: string, showType: number) => {
         const width = showType === 0 ? 500 : 41;
         const height = showType === 0 ? 300 : 41;
+        const id = createRandomCode();
         createElement({
+            name: "视频-" + id,
             type: "video",
-            id: createRandomCode(),
+            id,
             width,
             height,
             left: (VIEWPORT_SIZE - width) / 2,

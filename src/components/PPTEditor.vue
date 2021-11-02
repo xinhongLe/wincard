@@ -1,9 +1,11 @@
 <template>
-    <Editor />
+    <Editor v-if="!screening" />
+    <Screen v-else />
 </template>
 
 <script lang="ts">
 import Editor from "@/views/Editor/index.vue";
+import Screen from "@/views/Screen/index.vue";
 import { computed, defineComponent, onMounted, PropType, provide } from "vue";
 import { Modal } from "ant-design-vue";
 import { ActionTypes, MutationTypes, useStore } from "@/store";
@@ -13,7 +15,7 @@ import { Slide } from "@/types/slides";
 
 export default defineComponent({
     name: "PPTEditor",
-    components: { Editor },
+    components: { Editor, Screen },
     props: {
         slide: {
             type: Object as PropType<Slide>

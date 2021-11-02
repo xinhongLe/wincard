@@ -7,6 +7,7 @@ export const layouts: Slide[] = [
         id: "template",
         elements: [
             {
+                name: "形状",
                 type: "shape",
                 id: "4cbRxp",
                 left: 0,
@@ -21,6 +22,7 @@ export const layouts: Slide[] = [
                 rotate: 0
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "ookHrf",
                 left: 0,
@@ -35,6 +37,7 @@ export const layouts: Slide[] = [
                 rotate: 0
             },
             {
+                name: "文本",
                 type: "text",
                 id: "AkIh3E",
                 left: 355,
@@ -50,6 +53,7 @@ export const layouts: Slide[] = [
                 wordSpace: 6
             },
             {
+                name: "文本",
                 type: "text",
                 id: "7stmVP",
                 left: 355,
@@ -63,6 +67,7 @@ export const layouts: Slide[] = [
                 defaultColor: "{{fontColor}}"
             },
             {
+                name: "线条",
                 type: "line",
                 id: "FnpZs4",
                 left: 361,
@@ -84,6 +89,7 @@ export const layouts: Slide[] = [
         id: "template",
         elements: [
             {
+                name: "文本",
                 type: "text",
                 id: "ptNnUJ",
                 left: 145,
@@ -98,6 +104,7 @@ export const layouts: Slide[] = [
                 defaultColor: "{{fontColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "mRHvQN",
                 left: 207.50000000000003,
@@ -111,6 +118,7 @@ export const layouts: Slide[] = [
                 defaultColor: "{{fontColor}}"
             },
             {
+                name: "线条",
                 type: "line",
                 id: "7CQDwc",
                 left: 323.09259259259267,
@@ -123,6 +131,7 @@ export const layouts: Slide[] = [
                 width: 4
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "09wqWw",
                 left: -27.648148148148138,
@@ -146,6 +155,7 @@ export const layouts: Slide[] = [
         id: "template",
         elements: [
             {
+                name: "形状",
                 type: "shape",
                 id: "vSheCJ",
                 left: 183.5185185185185,
@@ -159,6 +169,7 @@ export const layouts: Slide[] = [
                 rotate: 0
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "Mpwv7x",
                 left: 211.29629629629628,
@@ -173,6 +184,7 @@ export const layouts: Slide[] = [
                 opacity: 0.7
             },
             {
+                name: "文本",
                 type: "text",
                 id: "WQOTAp",
                 left: 304.9074074074074,
@@ -196,6 +208,7 @@ export const layouts: Slide[] = [
         id: "MZVO1kkj",
         elements: [
             {
+                name: "形状",
                 type: "shape",
                 id: "cql0h8",
                 left: 0,
@@ -209,6 +222,7 @@ export const layouts: Slide[] = [
                 rotate: 0
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "_RTaF4",
                 left: 171.4814814814814,
@@ -227,6 +241,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "UZfo8N",
                 left: 216.66666666666663,
@@ -247,6 +262,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "文本",
                 type: "text",
                 id: "ysqtBg",
                 left: 561.4814814814814,
@@ -260,6 +276,7 @@ export const layouts: Slide[] = [
                 defaultColor: "{{fontColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "lXsoHa",
                 left: 572.5925925925925,
@@ -284,6 +301,7 @@ export const layouts: Slide[] = [
         id: "template",
         elements: [
             {
+                name: "形状",
                 type: "shape",
                 id: "EBBnTr",
                 left: 360.5996472663139,
@@ -302,6 +320,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "gDIWDH",
                 left: 456.4373897707231,
@@ -327,6 +346,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "DUWT7E",
                 left: 317.037037037037,
@@ -352,6 +372,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "pbhn38",
                 left: 456.43738977072303,
@@ -377,6 +398,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "CvMKrO",
                 left: 595.8377425044091,
@@ -402,6 +424,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "文本",
                 type: "text",
                 id: "adudHB",
                 left: 402.962962962963,
@@ -414,6 +437,7 @@ export const layouts: Slide[] = [
                 defaultColor: "{{fontColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "9UpDwg",
                 left: 402.962962962963,
@@ -426,6 +450,7 @@ export const layouts: Slide[] = [
                 defaultColor: "{{fontColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "GERdpB",
                 left: 111.48148148148151,
@@ -438,6 +463,7 @@ export const layouts: Slide[] = [
                 defaultColor: "{{fontColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "G5qoho",
                 left: 691.1111111111111,
@@ -450,6 +476,7 @@ export const layouts: Slide[] = [
                 defaultColor: "{{fontColor}}"
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "vdZcI6",
                 left: 415.18518518518516,
@@ -472,6 +499,7 @@ export const layouts: Slide[] = [
         id: "template",
         elements: [
             {
+                name: "形状",
                 type: "shape",
                 id: "tYUmrx",
                 left: 156.66666666666683,
@@ -492,6 +520,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "0GVHf8",
                 left: 342.2222222222223,
@@ -505,6 +534,7 @@ export const layouts: Slide[] = [
                 rotate: 0
             },
             {
+                name: "文本",
                 type: "text",
                 id: "BO33Sv",
                 left: 378.8888888888889,
@@ -527,6 +557,7 @@ export const layouts: Slide[] = [
         id: "template",
         elements: [
             {
+                name: "文本",
                 type: "text",
                 id: "Hj7ttp",
                 left: 69.35185185185185,
@@ -542,6 +573,7 @@ export const layouts: Slide[] = [
                 fill: "{{themeColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "FmKMNB",
                 left: 69.35185185185185,
@@ -556,6 +588,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "rI7ZeO",
                 left: 510.64814814814815,
@@ -571,6 +604,7 @@ export const layouts: Slide[] = [
                 fill: "{{themeColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "KspwGc",
                 left: 510.64814814814815,
@@ -594,6 +628,7 @@ export const layouts: Slide[] = [
         id: "template",
         elements: [
             {
+                name: "文本",
                 type: "text",
                 id: "Rx63Jo",
                 left: 69.35185185185179,
@@ -609,6 +644,7 @@ export const layouts: Slide[] = [
                 fill: "{{themeColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "ulyuzE",
                 left: 69.35185185185179,
@@ -623,6 +659,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "kr35Ca",
                 left: 510.6481481481481,
@@ -638,6 +675,7 @@ export const layouts: Slide[] = [
                 fill: "{{themeColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "BNQSpC",
                 left: 510.6481481481481,
@@ -652,6 +690,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "Vr38Nu",
                 left: 69.35185185185185,
@@ -667,6 +706,7 @@ export const layouts: Slide[] = [
                 fill: "{{themeColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "IwKRSu",
                 left: 69.35185185185185,
@@ -681,6 +721,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "0Opr1v",
                 left: 510.64814814814815,
@@ -696,6 +737,7 @@ export const layouts: Slide[] = [
                 fill: "{{themeColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "4L9Uzz",
                 left: 510.64814814814815,
@@ -719,6 +761,7 @@ export const layouts: Slide[] = [
         id: "template",
         elements: [
             {
+                name: "文本",
                 type: "text",
                 id: "GdEGxg",
                 left: 134.53703703703704,
@@ -735,6 +778,7 @@ export const layouts: Slide[] = [
                 fill: "{{themeColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "y5sAfw",
                 left: 332.8703703703704,
@@ -749,6 +793,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "VeuocM",
                 left: 332.8703703703704,
@@ -763,6 +808,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "RyFWQe",
                 left: 332.8703703703704,
@@ -777,6 +823,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "文本",
                 type: "text",
                 id: "Q56viI",
                 left: 332.8703703703704,
@@ -800,6 +847,7 @@ export const layouts: Slide[] = [
         id: "template",
         elements: [
             {
+                name: "形状",
                 type: "shape",
                 id: "SUWirT",
                 left: 73.8888888888889,
@@ -820,6 +868,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "文本",
                 type: "text",
                 id: "YjzN1M",
                 left: 148.70370370370372,
@@ -834,6 +883,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "fS09I7",
                 left: 527.5925925925926,
@@ -854,6 +904,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "文本",
                 type: "text",
                 id: "qCnfB1",
                 left: 602.4074074074074,
@@ -868,6 +919,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "difAAT",
                 left: 73.8888888888889,
@@ -888,6 +940,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "文本",
                 type: "text",
                 id: "EUlvMo",
                 left: 148.70370370370372,
@@ -902,6 +955,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "US_9jB",
                 left: 527.5925925925926,
@@ -922,6 +976,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "文本",
                 type: "text",
                 id: "243MnQ",
                 left: 602.4074074074074,
@@ -936,6 +991,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "Y_KUj0",
                 left: 73.8888888888889,
@@ -956,6 +1012,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "文本",
                 type: "text",
                 id: "9GglMe",
                 left: 148.70370370370372,
@@ -970,6 +1027,7 @@ export const layouts: Slide[] = [
                 fill: "{{subColor}}"
             },
             {
+                name: "形状",
                 type: "shape",
                 id: "eSInje",
                 left: 527.5925925925926,
@@ -990,6 +1048,7 @@ export const layouts: Slide[] = [
                 }
             },
             {
+                name: "文本",
                 type: "text",
                 id: "0S3yUg",
                 left: 602.4074074074074,

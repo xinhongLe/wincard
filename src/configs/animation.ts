@@ -1,4 +1,4 @@
-export const ANIMATIONS = [
+export const INANIMATIONS = [
     {
         type: "bounce",
         name: "弹跳",
@@ -85,6 +85,97 @@ export const ANIMATIONS = [
         children: [
             { name: "从右飞入", value: "lightSpeedInRight" },
             { name: "从左飞入", value: "lightSpeedInLeft" }
+        ]
+    }
+];
+
+export const OUTANIMATIONS = [
+    {
+        type: "bounce",
+        name: "弹跳",
+        children: [
+            { name: "弹出", value: "bounceOut" },
+            { name: "向右弹出", value: "bounceOutLeft" },
+            { name: "向左弹出", value: "bounceOutRight" },
+            { name: "向上弹出", value: "bounceOutUp" },
+            { name: "向下弹出", value: "bounceOutDown" }
+        ]
+    },
+    {
+        type: "fade",
+        name: "浮现",
+        children: [
+            { name: "浮出", value: "fadeOut" },
+            { name: "向下浮出", value: "fadeOutDown" },
+            { name: "向下长距浮出", value: "fadeOutDownBig" },
+            { name: "向右浮出", value: "fadeOutLeft" },
+            { name: "向右长距浮出", value: "fadeOutLeftBig" },
+            { name: "向左浮出", value: "fadeOutRight" },
+            { name: "向左长距浮出", value: "fadeOutRightBig" },
+            { name: "向上浮出", value: "fadeOutUp" },
+            { name: "向上长距浮出", value: "fadeOutUpBig" },
+            { name: "从左上浮出", value: "fadeOutTopLeft" },
+            { name: "从右上浮出", value: "fadeOutTopRight" },
+            { name: "从左下浮出", value: "fadeOutBottomLeft" },
+            { name: "从右下浮出", value: "fadeOutBottomRight" }
+        ]
+    },
+    {
+        type: "rotate",
+        name: "旋转",
+        children: [
+            { name: "旋转退出", value: "rotateOut" },
+            { name: "绕左下旋转退出", value: "rotateOutDownLeft" },
+            { name: "绕右下旋转退出", value: "rotateOutDownRight" },
+            { name: "绕左上旋转退出", value: "rotateOutUpLeft" },
+            { name: "绕右上旋转退出", value: "rotateOutUpRight" }
+        ]
+    },
+    {
+        type: "zoom",
+        name: "缩放",
+        children: [
+            { name: "放大退出", value: "zoomOut" },
+            { name: "向下放大退出", value: "zoomOutDown" },
+            { name: "从左放大退出", value: "zoomOutLeft" },
+            { name: "从右放大退出", value: "zoomOutRight" },
+            { name: "向上放大退出", value: "zoomOutUp" }
+        ]
+    },
+    {
+        type: "slide",
+        name: "滑入",
+        children: [
+            { name: "向下滑出", value: "slideOutDown" },
+            { name: "从右滑出", value: "slideOutLeft" },
+            { name: "从左滑出", value: "slideOutRight" },
+            { name: "向上滑出", value: "slideOutUp" }
+        ]
+    },
+    {
+        type: "flip",
+        name: "翻转",
+        children: [
+            { name: "X轴翻转退出", value: "flipOutX" },
+            { name: "Y轴翻转退出", value: "flipOutY" }
+        ]
+    },
+    {
+        type: "back",
+        name: "放大滑出",
+        children: [
+            { name: "向下放大滑出", value: "backOutDown" },
+            { name: "从左放大滑出", value: "backOutLeft" },
+            { name: "从右放大滑出", value: "backOutRight" },
+            { name: "向上放大滑出", value: "backOutUp" }
+        ]
+    },
+    {
+        type: "lightSpeed",
+        name: "飞出",
+        children: [
+            { name: "从右飞出", value: "lightSpeedOutRight" },
+            { name: "从左飞出", value: "lightSpeedOutLeft" }
         ]
     }
 ];

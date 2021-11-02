@@ -124,7 +124,7 @@
 import { computed, defineComponent, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTAnimation, PPTElement, Slide } from "@/types/slides";
-import { ANIMATIONS } from "@/configs/animation";
+import { INANIMATIONS } from "@/configs/animation";
 import { ELEMENT_TYPE_ZH } from "@/configs/element";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
@@ -133,7 +133,7 @@ import Draggable from "vuedraggable";
 const defaultDuration = 1000;
 
 const animationTypes: { [key: string]: string } = {};
-for (const type of ANIMATIONS) {
+for (const type of INANIMATIONS) {
     for (const animation of type.children) {
         animationTypes[animation.value] = animation.name;
     }
@@ -159,7 +159,7 @@ export default defineComponent({
 
         const { addHistorySnapshot } = useHistorySnapshot();
 
-        const animations = ANIMATIONS;
+        const animations = INANIMATIONS;
 
         // 当前页面的动画列表
         const animationSequence = computed(() => {

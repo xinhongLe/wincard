@@ -59,11 +59,11 @@
         </div>
 
         <div class="right">
-            <!-- <a-tooltip :mouseLeaveDelay="0" title="幻灯片放映">
+            <a-tooltip :mouseLeaveDelay="0" title="幻灯片放映">
                 <div class="a-menu-item" @click="enterScreening()">
                     <IconPpt size="18" fill="#666" style="margin-top: 2px;" />
                 </div>
-            </a-tooltip> -->
+            </a-tooltip>
             <a-tooltip :mouseLeaveDelay="0" title="保存">
                 <div class="a-menu-item" @click="save()">
                     <IconSave size="18" fill="#666" style="margin-top: 2px;" />

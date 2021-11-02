@@ -30,6 +30,7 @@ import SlideDesignPanel from "./SlideDesignPanel.vue";
 import SlideAnimationPanel from "./SlideAnimationPanel.vue";
 import MultiPositionPanel from "./MultiPositionPanel.vue";
 import SymbolPanel from "./SymbolPanel.vue";
+import ElementEvent from "./ElementEvent.vue";
 
 export default defineComponent({
     name: "toolbar",
@@ -46,14 +47,14 @@ export default defineComponent({
                     { label: "样式", value: ToolbarStates.EL_STYLE },
                     { label: "符号", value: ToolbarStates.SYMBOL },
                     { label: "位置", value: ToolbarStates.EL_POSITION },
-                    { label: "动画", value: ToolbarStates.EL_ANIMATION },
+                    // { label: "动画", value: ToolbarStates.EL_ANIMATION },
                     { label: "事件", value: ToolbarStates.EL_EVENT }
                 ];
             }
             return [
                 { label: "样式", value: ToolbarStates.EL_STYLE },
                 { label: "位置", value: ToolbarStates.EL_POSITION },
-                { label: "动画", value: ToolbarStates.EL_ANIMATION },
+                // { label: "动画", value: ToolbarStates.EL_ANIMATION },
                 ...["shape", "image"].indexOf(handleElement.value.type) > -1 ? [{ label: "事件", value: ToolbarStates.EL_EVENT }] : []
             ];
         });
@@ -99,7 +100,8 @@ export default defineComponent({
                 [ToolbarStates.SLIDE_DESIGN]: SlideDesignPanel,
                 [ToolbarStates.SLIDE_ANIMATION]: SlideAnimationPanel,
                 [ToolbarStates.MULTI_POSITION]: MultiPositionPanel,
-                [ToolbarStates.SYMBOL]: SymbolPanel
+                [ToolbarStates.SYMBOL]: SymbolPanel,
+                [ToolbarStates.EL_EVENT]: ElementEvent
             };
             return panelMap[toolbarState.value] || null;
         });

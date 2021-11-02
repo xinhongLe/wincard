@@ -49,9 +49,32 @@ export interface PPTElementOutline {
 }
 
 /**
+ * 执行事件
+ *
+ * type: 事件的类型 显示 隐藏 切换
+ *
+ * target: 事件触发执行的对象id
+ *
+ * inAni?: 进入动画
+ *
+ * outAni?: 退出动画
+ *
+ * duration?: 执行延迟时间
+ */
+export interface PPTElementAction {
+    type: "show" | "hide" | "toggle";
+    target: string;
+    inAni?: string;
+    outAni?: string;
+    duration?: number;
+}
+
+/**
  * 元素通用属性
  *
  * id: 元素ID
+ *
+ * name: 元素名
  *
  * left: 元素水平方向位置（距离画布左侧）
  *
@@ -66,9 +89,12 @@ export interface PPTElementOutline {
  * height: 元素高度
  *
  * link?: 超链接地址
+ *
+ * actions: 执行事件
  */
 interface PPTBaseElement {
     id: string;
+    name: string,
     left: number;
     top: number;
     lock?: boolean;
@@ -77,6 +103,7 @@ interface PPTBaseElement {
     height: number;
     link?: string;
     display?: boolean;
+    actions?: PPTElementAction[]
 }
 
 /**
