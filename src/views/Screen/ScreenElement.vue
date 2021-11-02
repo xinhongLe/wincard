@@ -7,10 +7,10 @@
             zIndex: elementIndex,
             color: theme.fontColor,
             fontFamily: theme.fontName,
+            display: (typeof elementInfo.display === 'undefined' || elementInfo.display) ? 'block' : 'none',
             visibility: needWaitAnimation ? 'hidden' : 'visible'
         }"
         :title="elementInfo.link || ''"
-        @click="openLink()"
     >
         <component
             :is="currentElementComponent"
@@ -89,8 +89,7 @@ export default defineComponent({
         return {
             currentElementComponent,
             needWaitAnimation,
-            theme,
-            openLink
+            theme
         };
     }
 });
