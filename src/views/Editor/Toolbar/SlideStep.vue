@@ -1,6 +1,9 @@
 <template>
     <div class="el-event-box">
-        <div class="tip"><IconClick />该元素点击触发事件</div>
+        <a-button type="primary" block @click="addStep">新增步骤</a-button>
+
+        <a-divider style="margin: 12px 0" />
+
         <a-modal
             v-model:visible="addActionVisible"
             title="事件"
@@ -54,17 +57,24 @@
                                     v-for="type in inAnimations"
                                     :key="type.name"
                                 >
-                                    <div class="type-title">{{ type.name }}：</div>
+                                    <div class="type-title">
+                                        {{ type.name }}：
+                                    </div>
                                     <div class="pool-item-wrapper">
                                         <div
                                             class="pool-item"
                                             v-for="item in type.children"
                                             :key="item.name"
                                             @mouseenter="
-                                                hoverPreviewAnimation = item.value
+                                                hoverPreviewAnimation =
+                                                    item.value
                                             "
-                                            @mouseleave="hoverPreviewAnimation = ''"
-                                            @click="addAnimation(item.value, 'in')"
+                                            @mouseleave="
+                                                hoverPreviewAnimation = ''
+                                            "
+                                            @click="
+                                                addAnimation(item.value, 'in')
+                                            "
                                         >
                                             <div
                                                 class="animation-box"
@@ -106,17 +116,24 @@
                                     v-for="type in outAnimations"
                                     :key="type.name"
                                 >
-                                    <div class="type-title">{{ type.name }}：</div>
+                                    <div class="type-title">
+                                        {{ type.name }}：
+                                    </div>
                                     <div class="pool-item-wrapper">
                                         <div
                                             class="pool-item"
                                             v-for="item in type.children"
                                             :key="item.name"
                                             @mouseenter="
-                                                hoverPreviewAnimation = item.value
+                                                hoverPreviewAnimation =
+                                                    item.value
                                             "
-                                            @mouseleave="hoverPreviewAnimation = ''"
-                                            @click="addAnimation(item.value, 'out')"
+                                            @mouseleave="
+                                                hoverPreviewAnimation = ''
+                                            "
+                                            @click="
+                                                addAnimation(item.value, 'out')
+                                            "
                                         >
                                             <div
                                                 class="animation-box"
@@ -152,67 +169,110 @@
                         :max="5000"
                         :step="100"
                         :value="formState.duration"
-                        @change="(value) => updateElementAnimationDuration(value)"
+                        @change="
+                            (value) => updateElementAnimationDuration(value)
+                        "
                         style="width: 100%"
                     />
                 </a-form-item>
             </a-form>
         </a-modal>
 
-        <a-button type="primary" block @click="isEdit = false; addActionVisible = true">新增事件</a-button>
-
-        <a-divider />
-
-        <div
-            v-for="(item, index) in actionList"
-            :key="index"
-            class="sequence-item"
+        <Draggable
+            :modelValue="steps"
+            :animation="300"
+            :scroll="true"
+            :scrollSensitivity="50"
+            @end="handleDragEnd"
+            itemKey="id"
         >
-            <div class="index">{{ index + 1 }}</div>
-            <a-tooltip
-                :mouseLeaveDelay="0"
-                :mouseEnterDelay="0.5"
-            >
-                <template v-slot:title>
-                    <div>进入动画: {{ item.inAni ? animationTypes[item.inAni] : "无" }}</div>
-                    <div>退出动画: {{ item.outAni ? animationTypes[item.outAni] : "无" }}</div>
-                    <div>{{ item.duration ? "延迟时间:" + item.duration : "" }}</div>
-                </template>
-                <div class="text">
-                    【{{
-                        elementList.find((el) => {
-                            return item.target === el.id;
-                        }).name
-                    }}】{{
-                        { show: "显示", hide: "隐藏", toggle: "切换" }[
-                            item.type
-                        ]
-                    }}
+            <template #item="{ element, index }">
+                <div class="step-box">
+                    <div class="step-title">
+                        步骤{{ index + 1 }}
+                        <a-tooltip
+                            :mouseLeaveDelay="0"
+                            :mouseEnterDelay="0.5"
+                            title="删除"
+                        >
+                            <IconCloseSmall
+                                class="handler-btn"
+                                @click="deleteStep(index)"
+                            />
+                        </a-tooltip>
+                    </div>
+
+                    <a-divider style="margin: 12px 0" />
+
+                    <a-button
+                        type="primary"
+                        block
+                        @click="openAddAction(index)"
+                        >新增事件</a-button
+                    >
+
+                    <a-divider style="margin: 12px 0" v-if="element && element.length > 0" />
+
+                    <div
+                        v-for="(action, actionIndex) in element"
+                        :key="actionIndex"
+                        class="sequence-item"
+                    >
+                        <div class="index">{{ actionIndex + 1 }}</div>
+                        <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5">
+                            <template v-slot:title>
+                                <div>
+                                    进入动画: {{ action.inAni ? animationTypes[action.inAni] : "无" }}
+                                </div>
+                                <div>
+                                    退出动画: {{ action.outAni ? animationTypes[action.outAni] : "无" }}
+                                </div>
+                                <div>
+                                    {{
+                                        action.duration
+                                            ? "延迟时间:" + action.duration
+                                            : ""
+                                    }}
+                                </div>
+                            </template>
+                            <div class="text">
+                                【{{
+                                    elementList.find((el) => {
+                                        return action.target === el.id;
+                                    }).name
+                                }}】{{
+                                    { show: "显示", hide: "隐藏", toggle: "切换" }[
+                                        action.type
+                                    ]
+                                }}
+                            </div>
+                        </a-tooltip>
+                        <div class="handler">
+                            <a-tooltip
+                                :mouseLeaveDelay="0"
+                                :mouseEnterDelay="0.5"
+                                title="编辑"
+                            >
+                                <IconEdit
+                                    class="handler-btn"
+                                    @click="openEditAction(index, actionIndex)"
+                                />
+                            </a-tooltip>
+                            <a-tooltip
+                                :mouseLeaveDelay="0"
+                                :mouseEnterDelay="0.5"
+                                title="删除"
+                            >
+                                <IconCloseSmall
+                                    class="handler-btn"
+                                    @click="deleteAction(index, actionIndex)"
+                                />
+                            </a-tooltip>
+                        </div>
+                    </div>
                 </div>
-            </a-tooltip>
-            <div class="handler">
-                <a-tooltip
-                    :mouseLeaveDelay="0"
-                    :mouseEnterDelay="0.5"
-                    title="编辑"
-                >
-                    <IconEdit
-                        class="handler-btn"
-                        @click="openEditAction(index)"
-                    />
-                </a-tooltip>
-                <a-tooltip
-                    :mouseLeaveDelay="0"
-                    :mouseEnterDelay="0.5"
-                    title="删除"
-                >
-                    <IconCloseSmall
-                        class="handler-btn"
-                        @click="deleteAction(index)"
-                    />
-                </a-tooltip>
-            </div>
-        </div>
+            </template>
+        </Draggable>
     </div>
 </template>
 
@@ -223,6 +283,8 @@ import { MutationTypes, useStore } from "@/store";
 import { INANIMATIONS, OUTANIMATIONS } from "@/configs/animation";
 import { message } from "ant-design-vue";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
+
+import Draggable from "vuedraggable";
 
 const animationTypes: { [key: string]: string } = {};
 
@@ -239,16 +301,9 @@ for (const type of OUTANIMATIONS) {
 }
 
 export default defineComponent({
+    components: { Draggable },
     setup() {
         const store = useStore();
-        const handleElement = computed<PPTElement>(
-            () => store.getters.handleElement
-        );
-
-        const actionList = computed<PPTElementAction[]>(
-            () => store.getters.handleElement.actions || []
-        );
-
         const formState = reactive<PPTElementAction>({
             target: "",
             inAni: "",
@@ -276,6 +331,7 @@ export default defineComponent({
 
         // 监听 当前页面数据变化  初始化 页面 elements
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
+        const steps = computed(() => currentSlide.value.steps || []);
         const elementList = ref<PPTElement[]>([]);
         const setLocalElementList = () => {
             elementList.value = currentSlide.value
@@ -291,6 +347,7 @@ export default defineComponent({
         const outAnimationPoolVisible = ref(false);
         const addActionVisible = ref(false);
         const isEdit = ref(false);
+        const stepIndex = ref(0);
         const editIndex = ref(0);
 
         const addAnimation = (animation: string, type: string) => {
@@ -306,18 +363,23 @@ export default defineComponent({
 
         const { addHistorySnapshot } = useHistorySnapshot();
 
-        const openEditAction = (i: number) => {
-            editIndex.value = i;
+        const openAddAction = (i: number) => {
+            stepIndex.value = i;
+            isEdit.value = false;
+            addActionVisible.value = true;
+        };
 
-            const _actions: PPTElementAction[] = handleElement.value.actions || [];
-            const _action: PPTElementAction = _actions[i];
+        const openEditAction = (i: number, actionIndex: number) => {
+            stepIndex.value = i;
+            editIndex.value = actionIndex;
+            isEdit.value = true;
+
+            const _action = steps.value[i][actionIndex];
             formState.target = _action.target;
             formState.type = _action.type;
             formState.inAni = _action.inAni || "";
             formState.outAni = _action.outAni || "";
             formState.duration = _action.duration || 0;
-
-            isEdit.value = true;
 
             addActionVisible.value = true;
         };
@@ -326,14 +388,10 @@ export default defineComponent({
         const addAction = () => {
             if (!formState.target) return message.warning("请选择事件目标元素");
 
-            const _actions: PPTElementAction[] = handleElement.value.actions || [];
-            _actions.push(JSON.parse(JSON.stringify(formState)));
+            steps.value[stepIndex.value].push(JSON.parse(JSON.stringify(formState)));
 
-            store.commit(MutationTypes.UPDATE_ELEMENT, {
-                id: handleElement.value.id,
-                props: {
-                    actions: _actions
-                }
+            store.commit(MutationTypes.UPDATE_SLIDE, {
+                steps: steps.value
             });
 
             addActionVisible.value = false;
@@ -343,14 +401,12 @@ export default defineComponent({
 
         // 编辑事件
         const editAction = () => {
-            const _actions: PPTElementAction[] = handleElement.value.actions || [];
-            _actions[editIndex.value] = JSON.parse(JSON.stringify(formState));
+            if (!formState.target) return message.warning("请选择事件目标元素");
 
-            store.commit(MutationTypes.UPDATE_ELEMENT, {
-                id: handleElement.value.id,
-                props: {
-                    actions: _actions
-                }
+            steps.value[stepIndex.value][editIndex.value] = JSON.parse(JSON.stringify(formState));
+
+            store.commit(MutationTypes.UPDATE_SLIDE, {
+                steps: steps.value
             });
 
             addActionVisible.value = false;
@@ -361,25 +417,47 @@ export default defineComponent({
         };
 
         // 删除事件
-        const deleteAction = (i: number) => {
-            const _actions: PPTElementAction[] = handleElement.value.actions || [];
-            _actions.splice(i, 1);
+        const deleteAction = (i: number, actionIndex: number) => {
+            stepIndex.value = i;
+            editIndex.value = actionIndex;
+            steps.value[stepIndex.value].splice(editIndex.value, 1);
 
             store.commit(MutationTypes.UPDATE_ELEMENT, {
-                id: handleElement.value.id,
-                props: {
-                    actions: _actions
-                }
+                steps: steps.value
             });
 
             addHistorySnapshot();
         };
 
+        // 新增步骤
+        const addStep = () => {
+            steps.value.push([]);
+            store.commit(MutationTypes.UPDATE_SLIDE, {
+                steps: steps.value
+            });
+            addHistorySnapshot();
+        };
+
+        // 删除步骤
+        const deleteStep = (i: number) => {
+            steps.value.splice(i, 1);
+            store.commit(MutationTypes.UPDATE_SLIDE, {
+                steps: steps.value
+            });
+            addHistorySnapshot();
+        };
+
+        // 排序
+        const handleDragEnd = () => {
+            //
+        };
+
         return {
+            isEdit,
+            steps,
             actions,
-            actionList,
-            elementList,
             formState,
+            elementList,
             inAnimations,
             outAnimations,
             hoverPreviewAnimation,
@@ -387,12 +465,15 @@ export default defineComponent({
             outAnimationPoolVisible,
             addActionVisible,
             animationTypes,
-            isEdit,
+            addStep,
             addAction,
+            deleteStep,
             editAction,
             deleteAction,
             addAnimation,
             openEditAction,
+            openAddAction,
+            handleDragEnd,
             updateElementAnimationDuration
         };
     }
@@ -400,11 +481,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.tip {
-    text-align: center;
-    font-style: italic;
-    padding-top: 12px;
-    margin-bottom: 15px;
+.step-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 5px;
 }
 
 .animation-pool {
@@ -464,17 +545,25 @@ export default defineComponent({
         flex: 6;
     }
     .handler {
-        flex: 2;
+        flex: 3;
         font-size: 15px;
         text-align: right;
     }
-    .handler-btn {
-        margin-left: 8px;
-        cursor: pointer;
-    }
+}
+
+.handler-btn {
+    margin-left: 8px;
+    cursor: pointer;
 }
 
 .element-animation-btn {
     width: 100%;
+}
+
+.step-box {
+    padding: 10px;
+    border: 1px dashed #ccc;
+    background-color: #ffffff;
+    margin-bottom: 12px;
 }
 </style>

@@ -31,6 +31,7 @@ import SlideAnimationPanel from "./SlideAnimationPanel.vue";
 import MultiPositionPanel from "./MultiPositionPanel.vue";
 import SymbolPanel from "./SymbolPanel.vue";
 import ElementEvent from "./ElementEvent.vue";
+import SlideStep from "./SlideStep.vue";
 
 export default defineComponent({
     name: "toolbar",
@@ -101,7 +102,8 @@ export default defineComponent({
                 [ToolbarStates.SLIDE_ANIMATION]: SlideAnimationPanel,
                 [ToolbarStates.MULTI_POSITION]: MultiPositionPanel,
                 [ToolbarStates.SYMBOL]: SymbolPanel,
-                [ToolbarStates.EL_EVENT]: ElementEvent
+                [ToolbarStates.EL_EVENT]: ElementEvent,
+                [ToolbarStates.SLIDE_STEP]: SlideStep
             };
             return panelMap[toolbarState.value] || null;
         });

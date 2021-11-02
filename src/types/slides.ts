@@ -618,6 +618,8 @@ export interface SlideBackground {
  * animations?: 元素动画集合
  *
  * turningMode?: 翻页方式
+ *
+ * steps: 操作步骤
  */
 export interface Slide {
     id: string;
@@ -627,6 +629,7 @@ export interface Slide {
     background?: SlideBackground;
     animations?: PPTAnimation[];
     turningMode?: "no" | "fade" | "slideX" | "slideY";
+    steps?: PPTElementAction[][]
 }
 
 /**
