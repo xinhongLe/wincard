@@ -448,8 +448,18 @@ export default defineComponent({
         };
 
         // 排序
-        const handleDragEnd = () => {
-            //
+        const handleDragEnd = (eventData: {
+            newIndex: number;
+            oldIndex: number;
+        }) => {
+            const { newIndex, oldIndex } = eventData;
+            if (oldIndex === newIndex) return;
+            const step: PPTElementAction[] = steps.value[oldIndex];
+            steps.value[oldIndex] = steps.value[newIndex];
+            steps.value[newIndex] = step;
+
+            store.commit(MutationTypes.UPDATE_SLIDE, { steps: steps.value });
+            addHistorySnapshot();
         };
 
         return {
