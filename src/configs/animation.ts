@@ -1,5 +1,12 @@
 export const INANIMATIONS = [
     {
+        type: "none",
+        name: "无",
+        children: [
+            { name: "无", value: "" }
+        ]
+    },
+    {
         type: "bounce",
         name: "弹跳",
         children: [
@@ -90,6 +97,13 @@ export const INANIMATIONS = [
 ];
 
 export const OUTANIMATIONS = [
+    {
+        type: "none",
+        name: "无",
+        children: [
+            { name: "无", value: "" }
+        ]
+    },
     {
         type: "bounce",
         name: "弹跳",
