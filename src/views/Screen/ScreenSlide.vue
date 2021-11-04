@@ -20,11 +20,12 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, defineComponent, ref } from "vue";
-import { useStore } from "@/store";
-import { PPTElement, PPTElementAction, Slide } from "@/types/slides";
+import { computed, PropType, defineComponent, watch } from "vue";
+import { MutationTypes, useStore } from "@/store";
+import { PPTElement, Slide } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import useSlideBackgroundStyle from "@/hooks/useSlideBackgroundStyle";
+import useActionAnimation from "@/hooks/useActionAnimation";
 
 import ScreenElement from "./ScreenElement.vue";
 
@@ -54,7 +55,14 @@ export default defineComponent({
         const background = computed(() => props.slide.background);
         const { backgroundStyle } = useSlideBackgroundStyle(background);
 
-        const elements = ref<PPTElement[]>(JSON.parse(JSON.stringify(props.slide.elements)));
+        const elements = computed(() => store.state.previewElements);
+        store.commit(MutationTypes.UPDATE_PREVIEW_ELEMENTS, JSON.parse(JSON.stringify(props.slide.elements)));
+
+        watch(props.slide, () => {
+            store.commit(MutationTypes.UPDATE_PREVIEW_ELEMENTS, JSON.parse(JSON.stringify(props.slide.elements)));
+        });
+
+        const { runAnimation } = useActionAnimation();
 
         // 处理元素点击事件
         const handleAction = (element: PPTElement) => {
@@ -64,41 +72,6 @@ export default defineComponent({
             element.actions.map(a => {
                 runAnimation(a);
             });
-        };
-
-        // 执行元素的动画
-        const runAnimation = (action: PPTElementAction) => {
-            const prefix = "animate__";
-            const element = elements.value.find(el => { return el.id === action.target; });
-            if (!element) return;
-            const display = typeof element?.display === "undefined" || element.display;
-            const animationType = action.type === "show" ? "show" : (action.type === "toggle" ? (display ? "hide" : "show") : "hide");
-            const animation = animationType === "show" ? action.inAni : action.outAni;
-
-            const elRef = document.querySelector(
-                `#screen-element-${action.target} [class^=base-element-]`
-            );
-
-            setTimeout(() => {
-                if (elRef) {
-                    // 如果是执行显示动画，需要先将display设置为true
-                    if (animationType === "show") {
-                        element.display = true;
-                    }
-
-                    const animationName = `${prefix}${animation}`;
-                    elRef.classList.add(`${prefix}animated`, animationName);
-
-                    const handleAnimationEnd = () => {
-                        element.display = animationType === "show";
-
-                        elRef.classList.remove(`${prefix}animated`, animationName);
-                    };
-                    elRef.addEventListener("animationend", handleAnimationEnd, {
-                        once: true
-                    });
-                }
-            }, action.duration || 0);
         };
 
         return {

@@ -15,7 +15,6 @@ export default () => {
 
     // 粘贴图片到幻灯片元素
     const pasteImageFile = (imageFile: File) => {
-        console.log(imageFile);
         uploadImage(imageFile).then(key => {
             createImageElement(key);
         });

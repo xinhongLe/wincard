@@ -2,7 +2,7 @@
 import { theme } from "@/mocks/theme";
 import { SYS_FONTS } from "@/configs/font";
 import { CreatingElement } from "@/types/edit";
-import { Slide, SlideTheme } from "@/types/slides";
+import { PPTElement, Slide, SlideTheme } from "@/types/slides";
 import { defaultRichTextAttrs, TextAttrs } from "@/utils/prosemirror/utils";
 import { ToolbarState } from "@/types/toolbar";
 
@@ -35,6 +35,7 @@ export interface State {
     thumbnailsFocus: boolean;
     selectedTableCells: string[];
     editingShapeElementId: string;
+    previewElements: PPTElement[];
 }
 
 export const state: State = {
@@ -65,5 +66,6 @@ export const state: State = {
     toolbarState: "slideDesign", // 右侧工具栏状态
     thumbnailsFocus: false, // 左侧导航缩略图区域聚焦
     selectedTableCells: [], // 选中的表格单元格
-    editingShapeElementId: "" // 当前正处在编辑文字状态的形状ID
+    editingShapeElementId: "", // 当前正处在编辑文字状态的形状ID
+    previewElements: [] // 预览暂存u=元素
 };

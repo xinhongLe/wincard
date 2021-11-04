@@ -82,11 +82,10 @@ import {
     ref
 } from "vue";
 import { throttle } from "lodash";
-import { MutationTypes, useStore } from "@/store";
-import { Slide } from "@/types/slides";
+import { useStore } from "@/store";
+import { PPTElementAction, Slide } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { KEYS } from "@/configs/hotkey";
-import { ContextmenuItem } from "@/types/contextmenu";
 import { isFullscreen } from "@/utils/fullscreen";
 import useScreening from "@/hooks/useScreening";
 
@@ -94,6 +93,7 @@ import { message } from "ant-design-vue";
 
 import ScreenSlide from "./ScreenSlide.vue";
 import WritingBoardTool from "./WritingBoardTool.vue";
+import useActionAnimation from "@/hooks/useActionAnimation";
 
 export default defineComponent({
     name: "screen",
@@ -107,6 +107,8 @@ export default defineComponent({
         const slideIndex = computed(() => store.state.slideIndex);
         const viewportRatio = computed(() => store.state.viewportRatio);
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
+        const steps = computed(() => currentSlide.value.steps || []);
+        const stepIndex = ref(-1);
 
         const slideWidth = ref(0);
         const slideHeight = ref(0);
@@ -156,39 +158,6 @@ export default defineComponent({
             window.removeEventListener("resize", windowResizeListener);
         });
 
-        // 当前页的元素动画列表和当前执行到的位置
-        const animations = computed(() => currentSlide.value.animations || []);
-        const animationIndex = ref(0);
-
-        // 执行元素的入场动画
-        const runAnimation = () => {
-            const prefix = "animate__";
-            const animation = animations.value[animationIndex.value];
-            animationIndex.value += 1;
-
-            const elRef = document.querySelector(
-                `#screen-element-${animation.elId} [class^=base-element-]`
-            );
-            if (elRef) {
-                const animationName = `${prefix}${animation.type}`;
-                document.documentElement.style.setProperty(
-                    "--animate-duration",
-                    `${animation.duration}ms`
-                );
-                elRef.classList.add(`${prefix}animated`, animationName);
-
-                const handleAnimationEnd = () => {
-                    document.documentElement.style.removeProperty(
-                        "--animate-duration"
-                    );
-                    elRef.classList.remove(`${prefix}animated`, animationName);
-                };
-                elRef.addEventListener("animationend", handleAnimationEnd, {
-                    once: true
-                });
-            }
-        };
-
         // 关闭自动播放
         const autoPlayTimer = ref(0);
         const closeAutoPlay = () => {
@@ -207,43 +176,29 @@ export default defineComponent({
         //     { leading: true, trailing: false }
         // );
 
+        const { runAnimation } = useActionAnimation();
+
         // 向上/向下播放
-        // 遇到元素动画时，优先执行动画播放，无动画则执行翻页
-        // 向上播放遇到动画时，仅撤销到动画执行前的状态，不需要反向播放动画
         const execPrev = () => {
-            if (animations.value.length && animationIndex.value > 0) {
-                animationIndex.value -= 1;
-            } else if (slideIndex.value > 0) {
-                store.commit(
-                    MutationTypes.UPDATE_SLIDE_INDEX,
-                    slideIndex.value - 1
-                );
-                const lastIndex = animations.value
-                    ? animations.value.length
-                    : 0;
-                animationIndex.value = lastIndex;
-            } else {
-                // throttleMassage("已经是第一页了");
-                emit("pagePrev");
-            }
+            if (stepIndex.value === -1) return emit("pagePrev");
+            const step = steps.value[stepIndex.value];
+            // 向上 step 要逆向执行
+            step.map(a => {
+                const action: PPTElementAction = {
+                    ...a,
+                    type: a.type === "show" ? "hide" : (a.type === "toggle" ? "toggle" : "show")
+                };
+                runAnimation(action);
+            });
+            stepIndex.value--;
         };
         const execNext = () => {
-            if (
-                animations.value.length &&
-                animationIndex.value < animations.value.length
-            ) {
-                runAnimation();
-            } else if (slideIndex.value < slides.value.length - 1) {
-                store.commit(
-                    MutationTypes.UPDATE_SLIDE_INDEX,
-                    slideIndex.value + 1
-                );
-                animationIndex.value = 0;
-            } else {
-                // throttleMassage("已经是最后一页了");
-                // closeAutoPlay();
-                emit("pageNext");
-            }
+            if (stepIndex.value === steps.value.length - 1) return emit("pageNext");
+            stepIndex.value++;
+            const step = steps.value[stepIndex.value];
+            step.map(a => {
+                runAnimation(a);
+            });
         };
 
         // 自动播放
@@ -307,81 +262,6 @@ export default defineComponent({
             document.removeEventListener("keydown", keydownListener);
         });
 
-        // 切换到上一张/上一张幻灯片（无视元素的入场动画）
-        const turnPrevSlide = () => {
-            store.commit(
-                MutationTypes.UPDATE_SLIDE_INDEX,
-                slideIndex.value - 1
-            );
-            animationIndex.value = 0;
-        };
-        const turnNextSlide = () => {
-            store.commit(
-                MutationTypes.UPDATE_SLIDE_INDEX,
-                slideIndex.value + 1
-            );
-            animationIndex.value = 0;
-        };
-
-        // 切换幻灯片到指定的页面
-        const turnSlideToIndex = (index: number) => {
-            slideThumbnailModelVisible.value = false;
-            store.commit(MutationTypes.UPDATE_SLIDE_INDEX, index);
-            animationIndex.value = 0;
-        };
-
-        const contextmenus = (): ContextmenuItem[] => {
-            return [
-                {
-                    text: "上一页",
-                    subText: "↑ ←",
-                    disable: slideIndex.value <= 0,
-                    handler: () => turnPrevSlide()
-                },
-                {
-                    text: "下一页",
-                    subText: "↓ →",
-                    disable: slideIndex.value >= slides.value.length - 1,
-                    handler: () => turnNextSlide()
-                },
-                {
-                    text: "第一页",
-                    disable: slideIndex.value === 0,
-                    handler: () => turnSlideToIndex(0)
-                },
-                {
-                    text: "最后一页",
-                    disable: slideIndex.value === slides.value.length - 1,
-                    handler: () => turnSlideToIndex(slides.value.length - 1)
-                },
-                { divider: true },
-                {
-                    text: "显示页码",
-                    subText: showPageNumber.value ? "√" : "",
-                    handler: () =>
-                        (showPageNumber.value = !showPageNumber.value)
-                },
-                {
-                    text: "查看所有幻灯片",
-                    handler: () => (slideThumbnailModelVisible.value = true)
-                },
-                {
-                    text: "画笔",
-                    handler: () => (writingBoardToolVisible.value = true)
-                },
-                { divider: true },
-                {
-                    text: autoPlayTimer.value ? "取消自动放映" : "自动放映",
-                    handler: autoPlayTimer.value ? closeAutoPlay : autoPlay
-                },
-                {
-                    text: "结束放映",
-                    subText: "ESC",
-                    handler: exitScreening
-                }
-            ];
-        };
-
         provide("slideScale", scale);
 
         return {
@@ -394,12 +274,9 @@ export default defineComponent({
             mousewheelListener,
             touchStartListener,
             touchEndListener,
-            animationIndex,
-            contextmenus,
             execPrev,
             execNext,
             slideThumbnailModelVisible,
-            turnSlideToIndex,
             writingBoardToolVisible,
             showPageNumber
         };

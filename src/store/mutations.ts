@@ -184,6 +184,20 @@ export const mutations: MutationTree<State> = {
         state.slides = state.slides.filter(item => !slidesId.includes(item.id));
     },
 
+    [MutationTypes.UPDATE_PREVIEW_ELEMENTS](state, elements: PPTElement[]) {
+        state.previewElements = elements;
+    },
+
+    [MutationTypes.UPDATE_PREVIEW_ELEMENT](state, data: UpdateElementData) {
+        const { id, props } = data;
+        const elIdList = typeof id === "string" ? [id] : id;
+
+        const elements = state.previewElements.map(el => {
+            return elIdList.includes(el.id) ? { ...el, ...props } : el;
+        });
+        state.previewElements = elements as PPTElement[];
+    },
+
     // snapshot
 
     [MutationTypes.SET_SNAPSHOT_CURSOR](state, cursor: number) {
