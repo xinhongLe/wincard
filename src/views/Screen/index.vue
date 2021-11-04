@@ -180,6 +180,8 @@ export default defineComponent({
 
         // 向上/向下播放
         const execPrev = () => {
+            // 非素材页直接跳过
+            if (currentSlide.value.type !== 0) return emit("pagePrev");
             if (stepIndex.value === -1) return emit("pagePrev");
             const step = steps.value[stepIndex.value];
             // 向上 step 要逆向执行
@@ -193,6 +195,8 @@ export default defineComponent({
             stepIndex.value--;
         };
         const execNext = () => {
+            // 非素材页直接跳过
+            if (currentSlide.value.type !== 0) return emit("pageNext");
             if (stepIndex.value === steps.value.length - 1) return emit("pageNext");
             stepIndex.value++;
             const step = steps.value[stepIndex.value];

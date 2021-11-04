@@ -3,6 +3,7 @@ import { Slide } from "@/types/slides";
 export const slides: Slide[] = [
     {
         id: "test123456",
+        type: 1,
         viewportRatio: 0.5625,
         elements: [
             {

@@ -1,7 +1,7 @@
 <template>
     <div class="slide-design-panel">
-        <div class="title">背景填充</div>
-        <div class="row">
+        <div class="title" v-if="isBasePPT">背景填充</div>
+        <div class="row" v-if="isBasePPT">
             <a-select
                 style="flex: 10;"
                 :value="background.type"
@@ -447,7 +447,10 @@ export default defineComponent({
             store.commit(MutationTypes.SET_SLIDES, newSlides);
         };
 
+        const isBasePPT = computed(() => store.getters.isBasePPT);
+
         return {
+            isBasePPT,
             availableFonts,
             background,
             updateBackgroundType,

@@ -42,6 +42,8 @@ export default defineComponent({
             () => store.getters.handleElement
         );
 
+        const currentSlide = computed(() => store.getters.currentSlide);
+
         const elementTabs = computed(() => {
             if (handleElement.value?.type === "text") {
                 return [
@@ -63,7 +65,8 @@ export default defineComponent({
             { label: "设计", value: ToolbarStates.SLIDE_DESIGN },
             // { label: "切换", value: ToolbarStates.SLIDE_ANIMATION },
             // { label: "动画", value: ToolbarStates.EL_ANIMATION },
-            { label: "步骤", value: ToolbarStates.SLIDE_STEP }
+            ...currentSlide.value.type === 0 ? [{ label: "步骤", value: ToolbarStates.SLIDE_STEP }] : [],
+            ...currentSlide.value.type === 1 ? [{ label: "听写", value: ToolbarStates.SLIDE_LISTEN }] : []
         ];
         const multiSelectTabs = [
             { label: "位置", value: ToolbarStates.MULTI_POSITION },

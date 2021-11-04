@@ -35,11 +35,13 @@ export default defineComponent({
             store.dispatch(ActionTypes.DELETE_SNAPSHOT);
             store.dispatch(ActionTypes.INIT_SNAPSHOT_DATABASE);
         };
+        store.commit(MutationTypes.SET_AVAILABLE_FONTS);
+        initSlides();
 
         onMounted(async () => {
-            store.commit(MutationTypes.SET_AVAILABLE_FONTS);
+            // store.commit(MutationTypes.SET_AVAILABLE_FONTS);
             // await store.dispatch(ActionTypes.CHECK_SNAPSHOT_DATABASE);
-            initSlides();
+            // initSlides();
             // if (oldSlides.value) {
             //     Modal.confirm({
             //         title: "提示",

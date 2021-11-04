@@ -8,6 +8,10 @@ export const getters: GetterTree<State, State> = {
         return state.slides[state.slideIndex] || null;
     },
 
+    isBasePPT(state) {
+        return (state.slides[state.slideIndex] && state.slides[state.slideIndex].type === 0) || false;
+    },
+
     currentSlideAnimations(state) {
         const currentSlide = state.slides[state.slideIndex];
         if (!currentSlide) return null;

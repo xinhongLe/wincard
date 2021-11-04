@@ -7,6 +7,12 @@
             <div class="layout-content-center">
                 <canvas-tool class="center-top" />
                 <canvas-board
+                    v-if="currentSlide.type === 0"
+                    class="center-body"
+                    :style="{ height: `calc(100% - ${remarkHeight + 40}px)` }"
+                />
+                <listen
+                    v-if="currentSlide.type === 1"
                     class="center-body"
                     :style="{ height: `calc(100% - ${remarkHeight + 40}px)` }"
                 />
@@ -28,22 +34,28 @@ import CanvasTool from "./CanvasTool/index.vue";
 // import Thumbnails from "./Thumbnails/index.vue";
 import Toolbar from "./Toolbar/index.vue";
 import Remark from "./Remark/index.vue";
-import { defineComponent, ref } from "vue";
+import Listen from "./Listen/index.vue";
+import { computed, defineComponent, ref } from "vue";
 
 import useGlobalHotkey from "@/hooks/useGlobalHotkey";
 import usePasteEvent from "@/hooks/usePasteEvent";
 
 import { Slide } from "@/types/slides";
+import { useStore } from "@/store";
 export default defineComponent({
     components: {
         EditorHeader,
         CanvasBoard,
         CanvasTool,
+        Listen,
         // Thumbnails,
         Toolbar,
         Remark
     },
     setup(props, { emit }) {
+        const store = useStore();
+        const currentSlide = computed<Slide>(() => store.getters.currentSlide);
+
         const remarkHeight = ref(40);
 
         useGlobalHotkey();
@@ -55,6 +67,7 @@ export default defineComponent({
 
         return {
             remarkHeight,
+            currentSlide,
             onSave
         };
     }

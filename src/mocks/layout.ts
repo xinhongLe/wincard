@@ -5,6 +5,7 @@ import { Slide } from "@/types/slides";
 export const layouts: Slide[] = [
     {
         id: "template",
+        type: 0,
         elements: [
             {
                 name: "形状",
@@ -87,6 +88,7 @@ export const layouts: Slide[] = [
     },
     {
         id: "template",
+        type: 0,
         elements: [
             {
                 name: "文本",
@@ -153,6 +155,7 @@ export const layouts: Slide[] = [
     },
     {
         id: "template",
+        type: 0,
         elements: [
             {
                 name: "形状",
@@ -206,6 +209,7 @@ export const layouts: Slide[] = [
     },
     {
         id: "MZVO1kkj",
+        type: 0,
         elements: [
             {
                 name: "形状",
@@ -299,6 +303,7 @@ export const layouts: Slide[] = [
     },
     {
         id: "template",
+        type: 0,
         elements: [
             {
                 name: "形状",
@@ -497,6 +502,7 @@ export const layouts: Slide[] = [
     },
     {
         id: "template",
+        type: 0,
         elements: [
             {
                 name: "形状",
@@ -555,6 +561,7 @@ export const layouts: Slide[] = [
     },
     {
         id: "template",
+        type: 0,
         elements: [
             {
                 name: "文本",
@@ -626,6 +633,7 @@ export const layouts: Slide[] = [
     },
     {
         id: "template",
+        type: 0,
         elements: [
             {
                 name: "文本",
@@ -759,6 +767,7 @@ export const layouts: Slide[] = [
     },
     {
         id: "template",
+        type: 0,
         elements: [
             {
                 name: "文本",
@@ -845,6 +854,7 @@ export const layouts: Slide[] = [
     },
     {
         id: "template",
+        type: 0,
         elements: [
             {
                 name: "形状",

@@ -607,6 +607,8 @@ export interface SlideBackground {
  *
  * id: 页面ID
  *
+ * type: 页面类型 0 普通素材页 1 听写页 2 跟读页
+ *
  * viewportRatio: 画布尺寸
  *
  * elements: 元素集合
@@ -623,6 +625,7 @@ export interface SlideBackground {
  */
 export interface Slide {
     id: string;
+    type: number,
     viewportRatio?: number;
     elements: PPTElement[];
     remark?: string;

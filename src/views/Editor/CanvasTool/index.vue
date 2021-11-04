@@ -1,6 +1,6 @@
 <template>
     <div class="canvas-tool">
-        <div class="left-handler">
+        <div class="left-handler" v-if="isBasePPT">
             <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="撤销">
                 <IconBack
                     class="handler-item"
@@ -16,8 +16,8 @@
                 />
             </a-tooltip>
         </div>
-
-        <div class="add-element-handler">
+        <div class="left-handler" v-if="!isBasePPT"></div>
+        <div class="add-element-handler" v-if="isBasePPT">
             <a-tooltip
                 :mouseLeaveDelay="0"
                 :mouseEnterDelay="0.5"
@@ -271,9 +271,12 @@ export default defineComponent({
             linePoolVisible.value = false;
         };
 
+        const isBasePPT = computed(() => store.getters.isBasePPT);
+
         return {
             scaleCanvas,
             setCanvasPercentage,
+            isBasePPT,
             canvasScalePercentage,
             canUndo,
             canRedo,

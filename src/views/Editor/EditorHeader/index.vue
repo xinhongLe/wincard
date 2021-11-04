@@ -12,7 +12,7 @@
                     </a-menu>
                 </template>
             </a-dropdown> -->
-            <a-dropdown :trigger="['click']">
+            <a-dropdown :trigger="['click']" v-if="isBasePPT">
                 <div class="a-menu-item">
                     <IconEdit /> <span class="text">编辑</span>
                 </div>
@@ -44,7 +44,7 @@
                     </a-menu>
                 </template>
             </a-dropdown> -->
-            <a-dropdown :trigger="['click']">
+            <a-dropdown :trigger="['click']" v-if="isBasePPT">
                 <div class="a-menu-item">
                     <IconHelpcenter /> <span class="text">帮助</span>
                 </div>
@@ -116,6 +116,8 @@ export default defineComponent({
             );
         };
 
+        const isBasePPT = computed(() => store.getters.isBasePPT);
+
         const save = () => {
             emit("onSave", slides.value[0]);
         };
@@ -125,6 +127,7 @@ export default defineComponent({
         return {
             redo,
             undo,
+            isBasePPT,
             showGridLines,
             hotkeyDrawerVisible,
             exporting,

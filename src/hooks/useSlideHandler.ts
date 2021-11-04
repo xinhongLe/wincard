@@ -40,6 +40,7 @@ export default () => {
     const resetSlides = (slide?: Slide) => {
         const emptySlide = {
             id: createRandomCode(8),
+            type: slide?.type || 0,
             viewportRatio: 0.5625,
             elements: [],
             background: {
