@@ -7,15 +7,18 @@
             transform: `scale(${scale})`
         }"
     >
-        <div class="background" :style="{ ...backgroundStyle }"></div>
-        <ScreenElement
-            v-for="(element, index) in elements"
-            :key="element.id"
-            :elementInfo="element"
-            :elementIndex="index + 1"
-            :animationIndex="animationIndex"
-            @click="handleAction(element)"
-        />
+        <div class="background" :style="{ ...backgroundStyle }" v-if="slideType === 0"></div>
+        <div v-if="slideType === 0">
+            <ScreenElement
+                v-for="(element, index) in elements"
+                :key="element.id"
+                :elementInfo="element"
+                :elementIndex="index + 1"
+                :animationIndex="animationIndex"
+                @click="handleAction(element)"
+            />
+        </div>
+        <ListenView :listenWords="listenWords" v-if="slideType === 1" />
     </div>
 </template>
 
@@ -28,11 +31,13 @@ import useSlideBackgroundStyle from "@/hooks/useSlideBackgroundStyle";
 import useActionAnimation from "@/hooks/useActionAnimation";
 
 import ScreenElement from "./ScreenElement.vue";
+import ListenView from "./ListenView.vue";
 
 export default defineComponent({
     name: "screen-slide",
     components: {
-        ScreenElement
+        ScreenElement,
+        ListenView
     },
     props: {
         slide: {
@@ -51,6 +56,8 @@ export default defineComponent({
     setup(props) {
         const store = useStore();
         const viewportRatio = computed(() => store.state.viewportRatio);
+        const slideType = computed(() => props.slide.type);
+        const listenWords = computed(() => props.slide.listenWords);
 
         const background = computed(() => props.slide.background);
         const { backgroundStyle } = useSlideBackgroundStyle(background);
@@ -76,9 +83,11 @@ export default defineComponent({
 
         return {
             elements,
+            slideType,
             backgroundStyle,
             VIEWPORT_SIZE,
             viewportRatio,
+            listenWords,
             handleAction
         };
     }

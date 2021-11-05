@@ -95,8 +95,8 @@ export default defineComponent({
     position: absolute;
     box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
     background-image: url(~@/assets/images/bg_blue.png);
-    background-size: 100% 100%;
-    border-radius: 10px;
+    background-size: 110% 110%;
+    background-position: center;
 }
 
 .viewport {
@@ -109,17 +109,17 @@ export default defineComponent({
 .listen-word-list {
     width: 1000px;
     box-sizing: border-box;
-    padding: 20px;
+    padding: 20px 0 20px 20px;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     .listen-word-item {
         background-image: url(~@/assets/images/bg_card.png);
         background-size: 100% 100%;
-        height: 100px;
-        width: 220px;
+        height: 80px;
+        width: 176px;
         margin-bottom: 20px;
-        font-size: 30px;
+        font-size: 24px;
         font-weight: 600;
         white-space: nowrap;
         text-align: center;
@@ -127,7 +127,8 @@ export default defineComponent({
         box-sizing: border-box;
         padding: 10px;
         text-overflow: ellipsis;
-        line-height: 74px;
+        line-height: 54px;
+        margin-right: 20px;
     }
 }
 </style>
