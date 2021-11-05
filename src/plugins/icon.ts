@@ -93,7 +93,9 @@ import {
     VideoOne,
     Video,
     Formula,
-    Check
+    Check,
+    AudioFile,
+    Delete
 } from "@icon-park/vue-next";
 import {
     DEFAULT_ICON_CONFIGS,
@@ -214,6 +216,7 @@ export default {
         app.component("IconLogout", Logout);
         app.component("IconClear", Clear);
         app.component("IconFolderClose", FolderClose);
+        app.component("IconDelete", Delete);
 
         // 视频播放器
         app.component("IconPause", Pause);
@@ -223,5 +226,8 @@ export default {
         app.component("IconCycleOne", CycleOne);
         app.component("IconVideoOne", VideoOne);
         app.component("IconBigVideo", Video);
+
+        // 音频
+        app.component("IconAudioFile", AudioFile);
     }
 };

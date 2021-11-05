@@ -33,6 +33,12 @@ export const enum MutationTypes {
     UPDATE_PREVIEW_ELEMENTS = "updatePreviewElements",
     UPDATE_PREVIEW_ELEMENT = "updatePreviewElement",
 
+    // listen
+    UPDATE_LISTEN_SYSTEM_LIST = "updateListeSystemList",
+    UPDATE_LISTEN_PAGE_LIST = "updateListenPageList",
+    UPDATE_LISTEN_PAGE = "updateListenPage",
+    UPDATE_LISTEN_TOTAL = "updateListenTotal",
+
     // snapshot
     SET_SNAPSHOT_CURSOR = "setSnapshotCursor",
     SET_SNAPSHOT_LENGTH = "setSnapshotLength",

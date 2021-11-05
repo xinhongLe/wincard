@@ -2,7 +2,7 @@ import { Slide } from "@/types/slides";
 
 export const slides: Slide[] = [
     {
-        id: "test123456",
+        id: "39FFFBBE2B08D1CFD8FCA24DE655B35B",
         type: 1,
         viewportRatio: 0.5625,
         elements: [
@@ -77,6 +77,43 @@ export const slides: Slide[] = [
                 color: "#5b9bd5",
                 style: "solid",
                 width: 2
+            }
+        ],
+        listenWords: [
+            {
+                id: "39FED7308B47FE07436EC33844DE78F5",
+                name: "苹果1",
+                file: "TeachPageFile/EFF4D19486842BDF411839B61AE22B71.mp3",
+                extention: "mp3",
+                pageWordID: "39FFFC10573FB3AD0BC87C17A08E2AD5"
+            },
+            {
+                name: "121212",
+                id: "39FECC5CDF3022C43C032688958B16BF",
+                file: "TeachPageFile/28D7326F7772879CDCF564A2A755B264.m4a",
+                extention: "m4a",
+                pageWordID: "39FFFC10574015C89FAEF9355BB5E7CB"
+            },
+            {
+                name: "121212",
+                id: "39FECC5CDF3022C43C032688958B16BF",
+                file: "TeachPageFile/28D7326F7772879CDCF564A2A755B264.m4a",
+                extention: "m4a",
+                pageWordID: "39FFFC65054430D68B36F090A1875989"
+            },
+            {
+                name: "测试",
+                id: "39FEBCA9648BE111E08E1B4CD1C5104E",
+                file: "TeachPageFile/814F94E1DBA66566099B0787FA7678D7.mp4",
+                extention: "mp4",
+                pageWordID: "39FFFC654B2BDC6027B84AE7E1021F3A"
+            },
+            {
+                name: "敦实",
+                id: "39FEBCA933D981CE5D2A348A65ABC0DB",
+                file: "TeachPageFile/CA7DC5A89DD86B2DD66B8D996EAB67E3.mp3",
+                extention: "mp3",
+                pageWordID: "39FFFC654B2B2A9804F1F6914BF1D786"
             }
         ],
         background: {

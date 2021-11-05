@@ -16,6 +16,17 @@ export const enum ElementTypes {
 }
 
 /**
+ * 听写页单词
+ */
+export interface ListenWord {
+    id: string;
+    file: string;
+    name: string;
+    extention: string;
+    pageWordID?: string;
+}
+
+/**
  * 元素阴影
  *
  * h: 水平偏移量
@@ -628,6 +639,7 @@ export interface Slide {
     type: number,
     viewportRatio?: number;
     elements: PPTElement[];
+    listenWords?: ListenWord[];
     remark?: string;
     background?: SlideBackground;
     animations?: PPTAnimation[];

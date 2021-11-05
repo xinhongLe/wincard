@@ -2,7 +2,7 @@
     <div
         class="canvas"
         ref="canvasRef"
-        @mousewheel="$event => handleMousewheelCanvas($event)"
+        @mousewheel="($event) => handleMousewheelCanvas($event)"
     >
         <div
             class="viewport-wrapper"
@@ -18,6 +18,11 @@
                 ref="viewportRef"
                 :style="{ transform: `scale(${canvasScale})` }"
             >
+                <div class="listen-word-list">
+                    <div class="listen-word-item" v-for="(item, index) in listenWords" :key="index">
+                        {{item.name}}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -49,6 +54,8 @@ export default defineComponent({
             trailing: false
         });
 
+        const listenWords = computed(() => store.getters.currentSlide.listenWords);
+
         const handleMousewheelCanvas = (e: WheelEvent) => {
             e.preventDefault();
 
@@ -68,7 +75,8 @@ export default defineComponent({
             canvasRef,
             canvasScale,
             viewportStyles,
-            handleMousewheelCanvas
+            handleMousewheelCanvas,
+            listenWords
         };
     }
 });
@@ -86,7 +94,9 @@ export default defineComponent({
 .viewport-wrapper {
     position: absolute;
     box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    background-image: url(~@/assets/images/bg_blue.png);
+    background-size: 100% 100%;
+    border-radius: 10px;
 }
 
 .viewport {
@@ -94,5 +104,30 @@ export default defineComponent({
     top: 0;
     left: 0;
     transform-origin: 0 0;
+}
+
+.listen-word-list {
+    width: 1000px;
+    box-sizing: border-box;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .listen-word-item {
+        background-image: url(~@/assets/images/bg_card.png);
+        background-size: 100% 100%;
+        height: 100px;
+        width: 220px;
+        margin-bottom: 20px;
+        font-size: 30px;
+        font-weight: 600;
+        white-space: nowrap;
+        text-align: center;
+        overflow: hidden;
+        box-sizing: border-box;
+        padding: 10px;
+        text-overflow: ellipsis;
+        line-height: 74px;
+    }
 }
 </style>

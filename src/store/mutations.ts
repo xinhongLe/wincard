@@ -3,6 +3,7 @@ import { State } from "./state";
 import { omit } from "lodash";
 import { MutationTypes } from "./constants";
 import {
+    ListenWord,
     PPTElement,
     RemoveElementPropData,
     Slide,
@@ -196,6 +197,24 @@ export const mutations: MutationTree<State> = {
             return elIdList.includes(el.id) ? { ...el, ...props } : el;
         });
         state.previewElements = elements as PPTElement[];
+    },
+
+    // listen
+    [MutationTypes.UPDATE_LISTEN_SYSTEM_LIST](state, list: ListenWord[]) {
+        state.listenSystemList = list;
+    },
+
+    [MutationTypes.UPDATE_LISTEN_PAGE_LIST](state, list: ListenWord[]) {
+        const slideIndex = state.slideIndex;
+        state.slides[slideIndex].listenWords = list;
+    },
+
+    [MutationTypes.UPDATE_LISTEN_PAGE](state, page: number) {
+        state.listenPage = page;
+    },
+
+    [MutationTypes.UPDATE_LISTEN_TOTAL](state, total: number) {
+        state.listenTotal = total;
     },
 
     // snapshot
