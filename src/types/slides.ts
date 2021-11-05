@@ -620,6 +620,8 @@ export interface SlideBackground {
  *
  * type: 页面类型 0 普通素材页 1 听写页 2 跟读页
  *
+ * listenWords: 听写页单词列表
+ *
  * viewportRatio: 画布尺寸
  *
  * elements: 元素集合
