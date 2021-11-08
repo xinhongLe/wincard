@@ -44,6 +44,11 @@ export default () => {
                 elRef.addEventListener("animationend", handleAnimationEnd, {
                     once: true
                 });
+
+                if (animationType === "hide" && !action.outAni) {
+                    // 当需要执行隐藏 却没有隐藏动画时 直接 隐藏
+                    handleAnimationEnd();
+                }
             }
         }, action.duration || 0);
     };
