@@ -1,5 +1,5 @@
 import { OSS_PATH } from "@/configs/filePath";
-import { PPTElement, PPTImageElement, PPTTextElement, Slide, SlideBackground } from "@/types/slides";
+import { PPTElement, PPTImageElement, PPTShapeElement, PPTTextElement, Slide, SlideBackground } from "@/types/slides";
 import { createRandomCode } from "./common";
 
 interface IOldSlide {
@@ -57,14 +57,18 @@ const getElementsData = (oldElements: string[]) => {
         case 1:
             elements.push(dealText(oldElement));
             break;
+        case 3:
+            elements.push(dealCircle(oldElement));
+            break;
         case 5:
             elements.push(dealImage(oldElement));
+            break;
         }
     });
     return elements;
 };
 
-interface oldTextElement {
+interface IOldTextElement {
     Angle: number;
     Background: string;
     CornerRadius: number; // 缺
@@ -90,7 +94,7 @@ interface oldTextElement {
 }
 
 // 处理文本
-const dealText = (oldText: oldTextElement) => {
+const dealText = (oldText: IOldTextElement) => {
     const element: PPTTextElement = {
         id: "",
         name: "",
@@ -126,7 +130,7 @@ const dealText = (oldText: oldTextElement) => {
     return element;
 };
 
-interface oldImageElement {
+interface IOldImageElement {
     Angle: number;
     Height: number;
     ImageStretch: number;
@@ -142,7 +146,7 @@ interface oldImageElement {
 }
 
 // 处理图片
-const dealImage = (oldImage: oldImageElement) => {
+const dealImage = (oldImage: IOldImageElement) => {
     const element: PPTImageElement = {
         id: "",
         name: "",
@@ -165,6 +169,56 @@ const dealImage = (oldImage: oldImageElement) => {
     element.src = OSS_PATH + "/" + oldImage.OssFileName;
     element.display = oldImage.IsVisibility;
     element.fixedRatio = oldImage.ImageStretch === 0;
+    return element;
+};
+
+interface IOldCircleElement {
+    Angle: number;
+    Background: string;
+    Height: number;
+    IsVisibility: boolean;
+    Left: number;
+    LineBrush: string;
+    LineType: number;
+    LineWidth: number;
+    Name: string;
+    Top: number;
+    Type: number;
+    UUID: string;
+    Width: number;
+    ZIndex: number;
+}
+
+// 处理圆
+const dealCircle = (oldCircle: IOldCircleElement) => {
+    const element: PPTShapeElement = {
+        id: "",
+        type: "shape",
+        viewBox: 200,
+        path: "M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z",
+        fixedRatio: true,
+        fill: "",
+        rotate: 0,
+        name: "",
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0
+    };
+    console.log(oldCircle);
+    element.id = oldCircle.UUID;
+    element.name = oldCircle.Name;
+    element.width = oldCircle.Width;
+    element.height = oldCircle.Height;
+    element.rotate = oldCircle.Angle;
+    element.left = oldCircle.Left;
+    element.top = oldCircle.Top;
+    element.outline = {};
+    element.outline.color = converColor(oldCircle.LineBrush);
+    element.outline.width = oldCircle.LineWidth;
+    element.outline.style = oldCircle.LineType === 0 ? "dashed" : "solid";
+    element.display = oldCircle.IsVisibility;
+    element.fill = oldCircle.Background;
     return element;
 };
 
