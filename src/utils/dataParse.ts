@@ -1,5 +1,5 @@
 import { OSS_PATH } from "@/configs/filePath";
-import { PPTElement, PPTImageElement, PPTShapeElement, PPTTextElement, Slide, SlideBackground } from "@/types/slides";
+import { PPTElement, PPTElementAction, PPTImageElement, PPTShapeElement, PPTTextElement, Slide, SlideBackground } from "@/types/slides";
 import { createRandomCode } from "./common";
 
 interface IOldSlide {
@@ -17,6 +17,7 @@ export const dealOldData = (oldSlide: IOldSlide) => {
         elements: []
     };
     slide.background = getSlideData(oldSlide.PageSetting);
+    slide.steps = getSlideStepData(oldSlide.Steps);
     const sortOldElenents = sortElementsByZIndex(oldSlide.Elements);
     slide.elements = getElementsData(sortOldElenents);
     return slide;
@@ -39,6 +40,27 @@ const getSlideData = (slideBackgroundString: string) => {
         background.imageSize = "cover";
     }
     return background;
+};
+
+interface IOldAction {
+    ActionType: number;
+    TargetID: string;
+}
+
+// 处理页面步骤数据
+const getSlideStepData = (oldSteps: string[]) => {
+    const steps: PPTElementAction[][] = [];
+    oldSteps.forEach((item: string) => {
+        const oldStep = JSON.parse(item);
+        const actions: PPTElementAction[] = oldStep.Actions.map((action: IOldAction) => {
+            return {
+                type: ["", "show", "hide", "toggle"][action.ActionType],
+                target: action.TargetID
+            };
+        });
+        steps.push(actions);
+    });
+    return steps;
 };
 
 // 根据 ZIndex 进行排序
@@ -205,7 +227,6 @@ const dealCircle = (oldCircle: IOldCircleElement) => {
         width: 0,
         height: 0
     };
-    console.log(oldCircle);
     element.id = oldCircle.UUID;
     element.name = oldCircle.Name;
     element.width = oldCircle.Width;
