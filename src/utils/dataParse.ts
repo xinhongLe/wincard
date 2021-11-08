@@ -36,7 +36,8 @@ const getSlideData = (slideBackgroundString: string) => {
     }
     if (setting.OssFileName) {
         // 背景图填充
-        background.image = setting.OssFileName;
+        background.type = "image";
+        background.image = OSS_PATH + "/" + setting.OssFileName;
         background.imageSize = "cover";
     }
     return background;
@@ -238,6 +239,7 @@ const dealCircle = (oldCircle: IOldCircleElement) => {
     element.outline.color = converColor(oldCircle.LineBrush);
     element.outline.width = oldCircle.LineWidth;
     element.outline.style = oldCircle.LineType === 0 ? "dashed" : "solid";
+    // element.backgroundColor = oldCircle.Background;
     element.display = oldCircle.IsVisibility;
     element.fill = oldCircle.Background;
     return element;
