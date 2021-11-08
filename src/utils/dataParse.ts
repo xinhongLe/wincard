@@ -35,6 +35,7 @@ const getSlideData = (slideBackgroundString: string) => {
     }
     if (setting.OssFileName) {
         // 背景图填充
+        background.type = "image";
         background.image = OSS_PATH + "/" + setting.OssFileName;
         background.imageSize = "cover";
     }
