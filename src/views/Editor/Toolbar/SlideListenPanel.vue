@@ -181,7 +181,6 @@ export default defineComponent({
 
         const savePageList = () => {
             const list = listenPageList.value.concat(selectedWords.value);
-            console.log(list);
             store.commit(MutationTypes.UPDATE_LISTEN_PAGE_LIST, list);
             addListenVisible.value = false;
         };

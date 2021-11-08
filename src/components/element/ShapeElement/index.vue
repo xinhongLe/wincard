@@ -73,6 +73,7 @@
                         :elementId="elementInfo.id"
                         :defaultColor="text.defaultColor"
                         :defaultFontName="text.defaultFontName"
+                        :defaultFontSize="text.defaultFontSize"
                         :editable="!elementInfo.lock"
                         :autoFocus="true"
                         :value="text.content"
@@ -179,6 +180,7 @@ export default defineComponent({
                 content: "",
                 defaultFontName: "微软雅黑",
                 defaultColor: "#000",
+                defaultFontSize: "14px",
                 align: "middle"
             };
             if (!props.elementInfo.text) return defaultText;

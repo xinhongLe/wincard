@@ -2,6 +2,7 @@ import OSS from "ali-oss";
 import SparkMD5 from "spark-md5";
 import { getOssToken } from "@/api";
 import { throttle } from "lodash";
+import { OSS_PATH } from "@/configs/filePath";
 
 export interface OssToken {
     AccessKeyId: string;
@@ -22,7 +23,7 @@ export const uploadFile = (file: File): Promise<string> => {
                 file.name.split(".").length - 1
             ];
             const name: string = md5;
-            const objectKey = "TeachPageFile" + "/" + name + "." + fileExtention;
+            const objectKey = OSS_PATH + "/" + name + "." + fileExtention;
             getToken((ossToken: OssToken) => {
                 const region = "oss-cn-shanghai";
                 const accessKeyId = ossToken && ossToken.AccessKeyId;
@@ -51,10 +52,21 @@ export const uploadFile = (file: File): Promise<string> => {
     });
 };
 
-export const getToken = throttle(async function(callback) {
+// 为了防止多次请求ossToken getOssToken 这里对请求加上锁 进行排队处理
+let callbackStash: any = null;
+export const getToken = async (callback: any) => {
     const time = Number(localStorage.getItem("ossTokenExpireTime") || 0);
     const currentTime = new Date().getTime();
+    if (callbackStash) {
+        setTimeout(() => {
+            // 延迟 100毫秒 处理
+            getToken(callback);
+        }, 100);
+        return;
+    }
     if (currentTime > time) {
+        // 没有token或者token过期 需要请求token
+        callbackStash = callback;
         const res: any = await getOssToken();
         if (res.resultCode === 200) {
             localStorage.setItem(
@@ -69,10 +81,11 @@ export const getToken = throttle(async function(callback) {
         } else {
             callback(JSON.parse(localStorage.getItem("ossToken") || "{}"));
         }
+        callbackStash = null;
     } else {
         callback(JSON.parse(localStorage.getItem("ossToken") || "{}"));
     }
-}, 500);
+};
 
 const fileMd5 = (file: File): Promise<string> => {
     return new Promise(resolve => {

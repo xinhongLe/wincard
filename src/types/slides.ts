@@ -130,6 +130,8 @@ interface PPTBaseElement {
  *
  * defaultColor: 默认颜色（会被文本内容中的HTML内联样式覆盖）
  *
+ * defaultFontSize: 默认字体大小（会被文本内容中的HTML内联样式覆盖）
+ *
  * outline?: 边框
  *
  * fill?: 填充色
@@ -148,6 +150,7 @@ export interface PPTTextElement extends PPTBaseElement {
     rotate: number;
     defaultFontName: string;
     defaultColor: string;
+    defaultFontSize: string;
     outline?: PPTElementOutline;
     fill?: string;
     lineHeight?: number;
@@ -275,12 +278,15 @@ export interface ShapeGradient {
  *
  * defaultColor: 默认颜色（会被文本内容中的HTML内联样式覆盖）
  *
+ * defaultFontSize: 默认字体大小（会被文本内容中的HTML内联样式覆盖）
+ *
  * align: 文本对齐方向（垂直方向）
  */
 export interface ShapeText {
     content: string;
     defaultFontName: string;
     defaultColor: string;
+    defaultFontSize: string;
     align: "top" | "middle" | "bottom";
 }
 
@@ -659,12 +665,15 @@ export interface Slide {
  * fontColor: 字体颜色
  *
  * fontName: 字体
+ *
+ * fontSize: 字体大小
  */
 export interface SlideTheme {
     backgroundColor: string;
     themeColor: string;
     fontColor: string;
     fontName: string;
+    fontSize: string;
 }
 
 export interface UpdateElementData {

@@ -3,7 +3,7 @@ import { Slide } from "@/types/slides";
 export const slides: Slide[] = [
     {
         id: "39FFFBBE2B08D1CFD8FCA24DE655B35B",
-        type: 1,
+        type: 0,
         viewportRatio: 0.5625,
         elements: [
             {
@@ -49,7 +49,8 @@ export const slides: Slide[] = [
                     "<p><strong><span style='font-size:  112px'>PPTIST</span></strong></p>",
                 rotate: 0,
                 defaultFontName: "Microsoft Yahei",
-                defaultColor: "#333"
+                defaultColor: "#333",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本2",
@@ -63,7 +64,8 @@ export const slides: Slide[] = [
                     "<p><span style='font-size:  24px'>基于 Vue 3.x + TypeScript 的在线演示文稿应用</span></p>",
                 rotate: 0,
                 defaultFontName: "Microsoft Yahei",
-                defaultColor: "#333"
+                defaultColor: "#333",
+                defaultFontSize: "14px"
             },
             {
                 name: "线条",

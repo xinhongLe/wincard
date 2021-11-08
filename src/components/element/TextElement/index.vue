@@ -22,7 +22,8 @@
                     lineHeight: elementInfo.lineHeight,
                     letterSpacing: (elementInfo.wordSpace || 0) + 'px',
                     color: elementInfo.defaultColor,
-                    fontFamily: elementInfo.defaultFontName
+                    fontFamily: elementInfo.defaultFontName,
+                    fontSize: elementInfo.defaultFontSize
                 }"
                 v-contextmenu="contextmenus"
                 @mousedown="$event => handleSelectElement($event)"
@@ -37,6 +38,7 @@
                     :elementId="elementInfo.id"
                     :defaultColor="elementInfo.defaultColor"
                     :defaultFontName="elementInfo.defaultFontName"
+                    :defaultFontSize="elementInfo.defaultFontSize"
                     :editable="!elementInfo.lock"
                     :value="elementInfo.content"
                     @update="value => updateContent(value)"

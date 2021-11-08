@@ -51,7 +51,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                wordSpace: 6
+                wordSpace: 6,
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -65,7 +66,8 @@ export const layouts: Slide[] = [
                     "<p><span style='font-size:  24px'>请在此处输入副标题</span></p>",
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
-                defaultColor: "{{fontColor}}"
+                defaultColor: "{{fontColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "线条",
@@ -103,7 +105,8 @@ export const layouts: Slide[] = [
                     "<p style='text-align: center;'><strong><span style='font-size: 48px'>在此处添加标题</span></strong></p>",
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
-                defaultColor: "{{fontColor}}"
+                defaultColor: "{{fontColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -117,7 +120,8 @@ export const layouts: Slide[] = [
                     "<p style='text-align: center;'><span style='font-size: 24px'>在此处添加副标题</span></p>",
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
-                defaultColor: "{{fontColor}}"
+                defaultColor: "{{fontColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "线条",
@@ -199,7 +203,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                wordSpace: 5
+                wordSpace: 5,
+                defaultFontSize: "14px"
             }
         ],
         background: {
@@ -262,7 +267,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='font-size: 80px'>01</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -277,7 +283,8 @@ export const layouts: Slide[] = [
                     "<p style=''><strong><span style='font-size: 40px'>在此处输入标题</span></strong></p>",
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
-                defaultColor: "{{fontColor}}"
+                defaultColor: "{{fontColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -293,7 +300,8 @@ export const layouts: Slide[] = [
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
                 lineHeight: 2,
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             }
         ],
         background: {
@@ -347,7 +355,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'>1</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -373,7 +382,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'>4</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -399,7 +409,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'>3</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -425,7 +436,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'>2</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -439,7 +451,8 @@ export const layouts: Slide[] = [
                 content: "<p style='text-align: center;'>在此输入内容</p>",
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
-                defaultColor: "{{fontColor}}"
+                defaultColor: "{{fontColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -452,7 +465,8 @@ export const layouts: Slide[] = [
                 content: "<p style='text-align: center;'>在此输入内容</p>",
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
-                defaultColor: "{{fontColor}}"
+                defaultColor: "{{fontColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -465,7 +479,8 @@ export const layouts: Slide[] = [
                 content: "<p style='text-align: center;'>在此输入内容</p>",
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
-                defaultColor: "{{fontColor}}"
+                defaultColor: "{{fontColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -478,7 +493,8 @@ export const layouts: Slide[] = [
                 content: "<p style='text-align: center;'>在此输入内容</p>",
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
-                defaultColor: "{{fontColor}}"
+                defaultColor: "{{fontColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "形状",
@@ -522,7 +538,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'><span style='font-size: 60px'>01</span></span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -551,7 +568,8 @@ export const layouts: Slide[] = [
                     "<p style=''><strong><span style='font-size: 48px'>在此处添加标题</span></strong></p>",
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
-                defaultColor: "{{fontColor}}"
+                defaultColor: "{{fontColor}}",
+                defaultFontSize: "14px"
             }
         ],
         background: {
@@ -577,7 +595,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{themeColor}}"
+                fill: "{{themeColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -592,7 +611,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -608,7 +628,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{themeColor}}"
+                fill: "{{themeColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -623,7 +644,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             }
         ],
         background: {
@@ -649,7 +671,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{themeColor}}"
+                fill: "{{themeColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -664,7 +687,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -680,7 +704,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{themeColor}}"
+                fill: "{{themeColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -695,7 +720,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -711,7 +737,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{themeColor}}"
+                fill: "{{themeColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -726,7 +753,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -742,7 +770,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{themeColor}}"
+                fill: "{{themeColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -757,7 +786,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             }
         ],
         background: {
@@ -784,7 +814,8 @@ export const layouts: Slide[] = [
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
                 wordSpace: 8,
-                fill: "{{themeColor}}"
+                fill: "{{themeColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -799,7 +830,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -814,7 +846,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -829,7 +862,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "文本",
@@ -844,7 +878,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             }
         ],
         background: {
@@ -874,7 +909,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'>1</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -890,7 +926,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "形状",
@@ -910,7 +947,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'>2</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -926,7 +964,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "形状",
@@ -946,7 +985,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'>3</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -962,7 +1002,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "形状",
@@ -982,7 +1023,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'>4</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -998,7 +1040,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "形状",
@@ -1018,7 +1061,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'>5</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -1034,7 +1078,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             },
             {
                 name: "形状",
@@ -1054,7 +1099,8 @@ export const layouts: Slide[] = [
                         "<p style='text-align: center;'><span style='color: #ffffff;'>6</span></p>",
                     defaultFontName: "{{fontName}}",
                     defaultColor: "{{fontColor}}",
-                    align: "middle"
+                    align: "middle",
+                    defaultFontSize: "14px"
                 }
             },
             {
@@ -1070,7 +1116,8 @@ export const layouts: Slide[] = [
                 rotate: 0,
                 defaultFontName: "{{fontName}}",
                 defaultColor: "{{fontColor}}",
-                fill: "{{subColor}}"
+                fill: "{{subColor}}",
+                defaultFontSize: "14px"
             }
         ],
         background: {

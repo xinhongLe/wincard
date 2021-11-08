@@ -109,7 +109,8 @@ export default defineComponent({
                 content: "",
                 defaultFontName: "微软雅黑",
                 defaultColor: "#000",
-                align: "middle"
+                align: "middle",
+                defaultFontSize: "14px"
             };
             if (!props.elementInfo.text) return defaultText;
 

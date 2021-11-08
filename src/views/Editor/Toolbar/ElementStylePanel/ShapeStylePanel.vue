@@ -82,7 +82,7 @@
         <a-divider />
 
         <template v-if="showTextTools">
-            <a-input-group compact class="row">
+            <a-input-group class="row">
                 <a-select
                     style="flex: 3;"
                     :value="richTextAttrs.fontname"
@@ -393,6 +393,7 @@ export default defineComponent({
                 content: "",
                 defaultFontName: "微软雅黑",
                 defaultColor: "#000",
+                defaultFontSize: "14px",
                 align: "middle"
             };
             const _text = handleElement.value.text || defaultText;

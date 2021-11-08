@@ -7,6 +7,7 @@
 import { defineComponent, ref } from "vue";
 import { slides } from "./mocks/slides";
 import { Slide } from "./types/slides";
+import { dealOldData } from "@/utils/dataParse";
 
 export default defineComponent({
     name: "APP",
@@ -15,7 +16,12 @@ export default defineComponent({
             console.log(slide);
         };
 
-        const slide = ref(slides[0]);
+        const slideString = localStorage.exampleSlide;
+
+        const oldSlide = JSON.parse(slideString);
+        const newSlide = dealOldData(oldSlide);
+        console.log(oldSlide, newSlide);
+        const slide = ref(newSlide);
 
         const pagePrev = () => {
             console.log("上一页");

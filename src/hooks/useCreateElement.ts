@@ -34,6 +34,7 @@ export default () => {
     const themeColor = computed(() => store.state.theme.themeColor);
     const fontColor = computed(() => store.state.theme.fontColor);
     const fontName = computed(() => store.state.theme.fontName);
+    const fontSize = computed(() => store.state.theme.fontSize);
     const viewportRatio = computed(() => store.state.viewportRatio);
     const creatingElement = computed(() => store.state.creatingElement);
 
@@ -199,7 +200,8 @@ export default () => {
             content,
             rotate: 0,
             defaultFontName: fontName.value,
-            defaultColor: fontColor.value
+            defaultColor: fontColor.value,
+            defaultFontSize: fontSize.value
         });
     };
 

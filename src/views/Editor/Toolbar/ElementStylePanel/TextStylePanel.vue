@@ -14,7 +14,7 @@
 
         <a-divider />
 
-        <a-input-group compact class="row">
+        <a-input-group class="row">
             <a-select
                 style="flex: 3;"
                 :value="richTextAttrs.fontname"

@@ -37,6 +37,10 @@ export default defineComponent({
             type: String,
             required: true
         },
+        defaultFontSize: {
+            type: String,
+            required: true
+        },
         editable: {
             type: Boolean,
             default: false
@@ -89,7 +93,8 @@ export default defineComponent({
             function() {
                 const attrs = getTextAttrs(editorView, {
                     color: props.defaultColor,
-                    fontname: props.defaultFontName
+                    fontname: props.defaultFontName,
+                    fontsize: props.defaultFontSize
                 });
                 store.commit(MutationTypes.SET_RICHTEXT_ATTRS, attrs);
             },

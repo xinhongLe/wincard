@@ -5,6 +5,7 @@ import { ListenWord } from "@/types/slides";
 import { getOssAudioUrl, uploadAudio } from "@/utils/audio";
 import { message } from "ant-design-vue";
 import { debounce } from "lodash";
+import { OSS_PATH } from "@/configs/filePath";
 
 interface IPage {
     current: number;
@@ -69,7 +70,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
                 return {
                     name: item.Name,
                     id: item.WordID,
-                    file: "TeachPageFile/" + item.File.FileName + "." + item.File.Extention,
+                    file: OSS_PATH + "/" + item.File.FileName + "." + item.File.Extention,
                     extention: item.File.Extention
                 };
             });
@@ -129,12 +130,11 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
                 return {
                     name: item.Name,
                     id: item.WordID,
-                    file: "TeachPageFile/" + item.File.FileName + "." + item.File.Extention,
+                    file: OSS_PATH + "/" + item.File.FileName + "." + item.File.Extention,
                     extention: item.File.Extention,
                     pageWordID: item.PageWordID
                 };
             });
-            console.log(JSON.stringify(list));
             store.commit(MutationTypes.UPDATE_LISTEN_PAGE_LIST, list);
         }
     };
