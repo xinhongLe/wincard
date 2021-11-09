@@ -9,6 +9,23 @@ interface IOldSlide {
     Steps: string[];
 }
 
+interface IAction {
+    ActionType: number;
+    TargetID: string;
+}
+
+interface IEvent {
+    Actions: IAction[];
+    CustomActions: IAction[];
+    EventType: number;
+    SourceID: string;
+}
+
+interface IOldAction {
+    ActionType: number;
+    TargetID: string;
+}
+
 export const dealOldData = (oldSlide: IOldSlide) => {
     const slide: Slide = {
         id: createRandomCode(),
@@ -16,10 +33,14 @@ export const dealOldData = (oldSlide: IOldSlide) => {
         viewportRatio: 0.5625,
         elements: []
     };
+
     slide.background = getSlideData(oldSlide.PageSetting);
+
     slide.steps = getSlideStepData(oldSlide.Steps);
+
     const sortOldElenents = sortElementsByZIndex(oldSlide.Elements);
-    slide.elements = getElementsData(sortOldElenents);
+
+    slide.elements = getElementsData(sortOldElenents, oldSlide.Events);
     return slide;
 };
 
@@ -43,10 +64,27 @@ const getSlideData = (slideBackgroundString: string) => {
     return background;
 };
 
-interface IOldAction {
-    ActionType: number;
-    TargetID: string;
-}
+// 处理事件
+const getSlideEventData = (oldEvents: string[]) => {
+    return oldEvents.map(item => {
+        const event: IEvent = JSON.parse(item);
+        return event;
+    });
+};
+
+// 获取对应元素的事件
+const getElementActionsById = (events: IEvent[], id: string) => {
+    const event = events.find((event: IEvent) => {
+        return event.SourceID === id;
+    });
+    const actions: PPTElementAction[] = (event?.Actions || []).map(item => {
+        return {
+            type: item.ActionType === 1 ? "show" : item.ActionType === 2 ? "hide" : "toggle",
+            target: item.TargetID
+        };
+    });
+    return actions;
+};
 
 // 处理页面步骤数据
 const getSlideStepData = (oldSteps: string[]) => {
@@ -72,19 +110,21 @@ const sortElementsByZIndex = (oldElements: string[]) => {
 };
 
 // 处理获取元素集合
-const getElementsData = (oldElements: string[]) => {
+const getElementsData = (oldElements: string[], oldActions: string[]) => {
+    const events: IEvent[] = getSlideEventData(oldActions);
     const elements: PPTElement[] = [];
     oldElements.forEach((item: string) => {
         const oldElement = JSON.parse(item);
+        const actions: PPTElementAction[] = getElementActionsById(events, oldElement.UUID);
         switch (oldElement.Type) {
         case 1:
-            elements.push(dealText(oldElement));
+            elements.push({ ...dealText(oldElement), actions });
             break;
         case 3:
-            elements.push(dealCircle(oldElement));
+            elements.push({ ...dealCircle(oldElement), actions });
             break;
         case 5:
-            elements.push(dealImage(oldElement));
+            elements.push({ ...dealImage(oldElement), actions });
             break;
         }
     });
