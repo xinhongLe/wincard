@@ -1,5 +1,5 @@
 import { OSS_PATH } from "@/configs/filePath";
-import { PPTElement, PPTElementAction, PPTImageElement, PPTShapeElement, PPTTextElement, Slide, SlideBackground } from "@/types/slides";
+import { PPTElement, PPTElementAction, PPTImageElement, PPTLineElement, PPTShapeElement, PPTTextElement, Slide, SlideBackground } from "@/types/slides";
 import { createRandomCode } from "./common";
 
 interface IOldSlide {
@@ -120,8 +120,14 @@ const getElementsData = (oldElements: string[], oldActions: string[]) => {
         case 1:
             elements.push({ ...dealText(oldElement), actions });
             break;
+        case 2:
+            elements.push({ ...dealRect(oldElement), actions });
+            break;
         case 3:
             elements.push({ ...dealCircle(oldElement), actions });
+            break;
+        case 4:
+            elements.push({ ...dealLine(oldElement), actions });
             break;
         case 5:
             elements.push({ ...dealImage(oldElement), actions });
@@ -279,9 +285,109 @@ const dealCircle = (oldCircle: IOldCircleElement) => {
     element.outline.color = converColor(oldCircle.LineBrush);
     element.outline.width = oldCircle.LineWidth;
     element.outline.style = oldCircle.LineType === 0 ? "dashed" : "solid";
-    // element.backgroundColor = oldCircle.Background;
     element.display = oldCircle.IsVisibility;
     element.fill = oldCircle.Background;
+    return element;
+};
+
+interface IOldRectElement {
+    Angle: number;
+    Background: string;
+    CornerRadius: number; // 缺
+    Height: number;
+    IsVisibility: boolean;
+    Left: number;
+    LineBrush: string;
+    LineType: number;
+    LineWidth: number;
+    Name: string;
+    Top: number;
+    Type: number;
+    UUID: string;
+    Width: number;
+    ZIndex: number;
+}
+
+// 处理矩形
+const dealRect = (oldRect: IOldRectElement) => {
+    const element: PPTShapeElement = {
+        id: "",
+        type: "shape",
+        viewBox: 200,
+        path: "M 0 0 L 200 0 L 200 200 L 0 200 Z",
+        fixedRatio: true,
+        fill: "",
+        rotate: 0,
+        name: "",
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0
+    };
+    element.id = oldRect.UUID;
+    element.name = oldRect.Name;
+    element.width = oldRect.Width;
+    element.height = oldRect.Height;
+    element.rotate = oldRect.Angle;
+    element.left = oldRect.Left;
+    element.top = oldRect.Top;
+    element.outline = {};
+    element.outline.color = converColor(oldRect.LineBrush);
+    element.outline.width = oldRect.LineWidth;
+    element.outline.style = oldRect.LineType === 0 ? "dashed" : "solid";
+    element.display = oldRect.IsVisibility;
+    element.fill = oldRect.Background;
+    return element;
+};
+
+interface IOldLineElement {
+    Angle: number;
+    Background: string;
+    CornerRadius: number; // 缺
+    Height: number;
+    IsVisibility: boolean;
+    Left: number;
+    LineBrush: string;
+    LineType: number;
+    LineWidth: number;
+    Name: string;
+    Top: number;
+    Type: number;
+    UUID: string;
+    Width: number;
+    ZIndex: number;
+}
+
+// 处理线段
+const dealLine = (oldLine: IOldLineElement) => {
+    const element: PPTLineElement = {
+        id: "",
+        type: "line",
+        name: "",
+        left: 0,
+        top: 0,
+        width: 0,
+        start: [0, 0],
+        end: [0, 0],
+        style: "solid",
+        color: "",
+        points: ["", ""]
+    };
+    element.id = oldLine.UUID;
+    element.name = oldLine.Name;
+    element.width = oldLine.LineWidth;
+    element.left = oldLine.Left;
+    element.top = oldLine.Top + oldLine.Height / 2;
+    element.style = oldLine.LineType === 0 ? "dashed" : "solid";
+    element.color = converColor(oldLine.LineBrush);
+    element.display = oldLine.IsVisibility;
+    if (oldLine.Angle <= 90 || (oldLine.Angle > 180 && oldLine.Angle <= 270)) {
+        element.start = [oldLine.Width / 2 * (1 - Math.cos(oldLine.Angle * Math.PI / 180)), oldLine.Width / 2 * Math.sin(oldLine.Angle * Math.PI / 180)];
+        element.end = [oldLine.Width / 2 * (1 + Math.cos(oldLine.Angle * Math.PI / 180)), -oldLine.Width / 2 * Math.sin(oldLine.Angle * Math.PI / 180)];
+    } else {
+        element.start = [oldLine.Width / 2 * (1 - Math.cos(oldLine.Angle * Math.PI / 180)), -oldLine.Width / 2 * Math.cos(oldLine.Angle * Math.PI / 180)];
+        element.end = [oldLine.Width / 2 * (1 + Math.cos(oldLine.Angle * Math.PI / 180)), oldLine.Width / 2 * Math.cos(oldLine.Angle * Math.PI / 180)];
+    }
     return element;
 };
 
