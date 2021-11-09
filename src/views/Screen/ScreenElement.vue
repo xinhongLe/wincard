@@ -7,6 +7,7 @@
             zIndex: elementIndex,
             color: theme.fontColor,
             fontFamily: theme.fontName,
+            fontSize: theme.fontSize,
             display: (typeof elementInfo.display === 'undefined' || elementInfo.display) ? 'block' : 'none',
             visibility: needWaitAnimation ? 'hidden' : 'visible'
         }"

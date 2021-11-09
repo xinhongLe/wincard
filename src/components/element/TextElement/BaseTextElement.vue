@@ -20,7 +20,8 @@
                     lineHeight: elementInfo.lineHeight,
                     letterSpacing: (elementInfo.wordSpace || 0) + 'px',
                     color: elementInfo.defaultColor,
-                    fontFamily: elementInfo.defaultFontName
+                    fontFamily: elementInfo.defaultFontName,
+                    fontSize: elementInfo.defaultFontSize
                 }"
             >
                 <ElementOutline
