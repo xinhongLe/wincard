@@ -30,11 +30,6 @@ export default defineComponent({
     setup(props) {
         const scale: Ref<number> = inject("slideScale") || ref(1);
 
-        const visible = ref(false);
-        const openVideo = () => {
-            visible.value = true;
-        };
-
         const { playAudio } = useAudio();
         const handleAudioEvent = () => {
             playAudio(props.elementInfo.src);
@@ -42,7 +37,6 @@ export default defineComponent({
 
         return {
             scale,
-            visible,
             handleAudioEvent
         };
     }
