@@ -121,6 +121,17 @@
                     @click="latexEditorVisible = true"
                 />
             </a-tooltip>
+            <FileInput accept="audio/*" @change="files => insertAudioElement(files)">
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="插入音频"
+                >
+                    <IconAudioFile
+                        class="handler-item"
+                    />
+                </a-tooltip>
+            </FileInput>
             <a-popover trigger="click" v-model:visible="videoInputVisible">
                 <template #content>
                     <VideoInput />
@@ -195,6 +206,7 @@ import ChartPool from "./ChartPool.vue";
 import TableGenerator from "./TableGenerator.vue";
 import VideoInput from "./VideoInput.vue";
 import LaTeXEditor from "@/components/LaTeXEditor/index.vue";
+import { uploadAudio } from "@/utils/audio";
 
 export default defineComponent({
     name: "canvas-tool",
@@ -224,7 +236,8 @@ export default defineComponent({
             createImageElement,
             createChartElement,
             createTableElement,
-            createLatexElement
+            createLatexElement,
+            createAudioElement
         } = useCreateElement();
 
         const insertImageElement = (files: File[]) => {
@@ -233,9 +246,14 @@ export default defineComponent({
             uploadImage(imageFile).then(key => {
                 createImageElement(key);
             });
-            // getImageDataURL(imageFile).then(dataURL =>
-            //     createImageElement(dataURL)
-            // );
+        };
+
+        const insertAudioElement = (files: File[]) => {
+            const audioFile = files[0];
+            if (!audioFile) return;
+            uploadAudio(audioFile).then(key => {
+                createAudioElement(key);
+            });
         };
 
         const shapePoolVisible = ref(false);
@@ -282,6 +300,7 @@ export default defineComponent({
             canRedo,
             redo,
             undo,
+            insertAudioElement,
             insertImageElement,
             shapePoolVisible,
             linePoolVisible,

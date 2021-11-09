@@ -1,6 +1,6 @@
 <template>
     <div
-        class="editable-element-video"
+        class="editable-element-aduio"
         :class="{ lock: elementInfo.lock }"
         :style="{
             top: elementInfo.top + 'px',
@@ -14,67 +14,36 @@
             v-contextmenu="contextmenus"
             @mousedown="($event) => handleSelectElement($event, false)"
         >
-            <VideoPlayer
-                :videoElement="elementInfo"
-                :width="elementInfo.width"
-                :height="elementInfo.height"
-                :src="elementInfo.src"
-                :poster="elementInfo.poster"
-                :scale="scale"
-                v-if="elementInfo.showType == 0"
-            />
-            <IconVideoTwo v-if="elementInfo.showType == 1" class="video-btn" @click="openVideo" />
+            <IconAudioFile class="aduio-btn" @click="handleAudioEvent" />
             <div
                 :class="['handler-border', item]"
                 v-for="item in ['t', 'b', 'l', 'r']"
                 :key="item"
                 @mousedown="($event) => handleSelectElement($event)"
             ></div>
-
-            <a-modal
-                title="视频"
-                v-model:visible="visible"
-                :footer="null"
-                width="50%"
-            >
-                <VideoPlayer
-                    :noTransform="true"
-                    :videoElement="elementInfo"
-                    :width="elementInfo.width"
-                    :height="elementInfo.height"
-                    :src="elementInfo.src"
-                    :poster="elementInfo.poster"
-                    :scale="scale"
-                    v-if="elementInfo.showType == 1"
-                />
-            </a-modal>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 import { useStore } from "@/store";
-import { PPTVideoElement } from "@/types/slides";
+import { PPTAudioElement } from "@/types/slides";
 import { ContextmenuItem } from "@/types/contextmenu";
-
-import VideoPlayer from "./VideoPlayer/index.vue";
+import useAudio from "./useAudio";
 
 export default defineComponent({
-    name: "editable-element-video",
-    components: {
-        VideoPlayer
-    },
+    name: "editable-element-aduio",
     props: {
         elementInfo: {
-            type: Object as PropType<PPTVideoElement>,
+            type: Object as PropType<PPTAudioElement>,
             required: true
         },
         selectElement: {
             type: Function as PropType<
                 (
                     e: MouseEvent,
-                    element: PPTVideoElement,
+                    element: PPTAudioElement,
                     canMove?: boolean
                 ) => void
             >,
@@ -87,7 +56,6 @@ export default defineComponent({
     setup(props) {
         const store = useStore();
         const scale = computed(() => store.state.canvasScale);
-        const visible = ref(false);
 
         const handleSelectElement = (e: MouseEvent, canMove = true) => {
             if (props.elementInfo.lock) return;
@@ -96,22 +64,22 @@ export default defineComponent({
             props.selectElement(e, props.elementInfo, canMove);
         };
 
-        const openVideo = () => {
-            visible.value = true;
+        const { playAudio } = useAudio();
+        const handleAudioEvent = () => {
+            playAudio(props.elementInfo.src);
         };
 
         return {
             scale,
             handleSelectElement,
-            visible,
-            openVideo
+            handleAudioEvent
         };
     }
 });
 </script>
 
 <style lang="scss" scoped>
-.editable-element-video {
+.editable-element-aduio {
     position: absolute;
 
     &.lock .handler-border {
@@ -153,7 +121,7 @@ export default defineComponent({
         top: 0;
     }
 }
-.video-btn {
+.aduio-btn {
     font-size: 40px;
 }
 </style>

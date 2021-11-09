@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, PropType, Ref, ref } from "vue";
-import { PPTTableElement } from "@/types/slides";
+import { PPTVideoElement } from "@/types/slides";
 
 import VideoPlayer from "./VideoPlayer/index.vue";
 
@@ -53,7 +53,7 @@ export default defineComponent({
     },
     props: {
         elementInfo: {
-            type: Object as PropType<PPTTableElement>,
+            type: Object as PropType<PPTVideoElement>,
             required: true
         }
     },

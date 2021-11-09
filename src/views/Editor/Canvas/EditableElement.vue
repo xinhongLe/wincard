@@ -39,6 +39,7 @@ import LineElement from "@/components/element/LineElement/index.vue";
 import ChartElement from "@/components/element/ChartElement/index.vue";
 import TableElement from "@/components/element/TableElement/index.vue";
 import LatexElement from "@/components/element/LatexElement/index.vue";
+import AudioElement from "@/components/element/AudioElement/index.vue";
 import VideoElement from "@/components/element/VideoElement/index.vue";
 
 export default defineComponent({
@@ -77,6 +78,7 @@ export default defineComponent({
                 [ElementTypes.CHART]: ChartElement,
                 [ElementTypes.TABLE]: TableElement,
                 [ElementTypes.LATEX]: LatexElement,
+                [ElementTypes.AUDIO]: AudioElement,
                 [ElementTypes.VIDEO]: VideoElement
             };
             return elementTypeMap[props.elementInfo.type] || null;

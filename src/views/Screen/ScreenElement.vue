@@ -32,6 +32,7 @@ import BaseLineElement from "@/components/element/LineElement/BaseLineElement.vu
 import ScreenChartElement from "@/components/element/ChartElement/ScreenChartElement.vue";
 import BaseTableElement from "@/components/element/TableElement/BaseTableElement.vue";
 import BaseLatexElement from "@/components/element/LatexElement/BaseLatexElement.vue";
+import ScreenAudioElement from "@/components/element/AudioElement/ScreenAudioElement.vue";
 import ScreenVideoElement from "@/components/element/VideoElement/ScreenVideoElement.vue";
 
 export default defineComponent({
@@ -60,6 +61,7 @@ export default defineComponent({
                 [ElementTypes.CHART]: ScreenChartElement,
                 [ElementTypes.TABLE]: BaseTableElement,
                 [ElementTypes.LATEX]: BaseLatexElement,
+                [ElementTypes.AUDIO]: ScreenAudioElement,
                 [ElementTypes.VIDEO]: ScreenVideoElement
             };
             return elementTypeMap[props.elementInfo.type] || null;

@@ -12,6 +12,7 @@ export const enum ElementTypes {
     CHART = "chart",
     TABLE = "table",
     LATEX = "latex",
+    AUDIO = "audio",
     VIDEO = "video"
 }
 
@@ -561,6 +562,25 @@ export interface PPTVideoElement extends PPTBaseElement {
     ossPoster?: string;
 }
 
+/**
+ * 音频元素
+ *
+ * type: 元素类型（audio）
+ *
+ * src: 音频地址
+ *
+ * ossSrc: 音频 oss 访问地址
+ *
+ * ossExpiration: 音频 oss 访问地址过期时间
+ *
+ */
+export interface PPTAudioElement extends PPTBaseElement {
+    type: "audio";
+    src: string;
+    ossSrc?: string;
+    ossExpiration?: string;
+}
+
 export type PPTElement =
     | PPTTextElement
     | PPTImageElement
@@ -569,6 +589,7 @@ export type PPTElement =
     | PPTChartElement
     | PPTTableElement
     | PPTLatexElement
+    | PPTAudioElement
     | PPTVideoElement;
 
 /**

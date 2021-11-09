@@ -10,22 +10,21 @@
     >
         <div
             class="element-content"
-            :style="{ backgroundImage: `url(${elementInfo.poster})` }"
         >
-            <IconPlayOne class="icon" />
+            <IconAudioFile class="icon" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { PPTVideoElement } from "@/types/slides";
+import { PPTAudioElement } from "@/types/slides";
 
 export default defineComponent({
     name: "base-element-video",
     props: {
         elementInfo: {
-            type: Object as PropType<PPTVideoElement>,
+            type: Object as PropType<PPTAudioElement>,
             required: true
         }
     }

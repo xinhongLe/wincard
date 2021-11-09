@@ -324,6 +324,24 @@ export default () => {
         });
     };
 
+    /**
+     * 创建音频元素
+     * @param src 音频地址
+     */
+    const createAudioElement = (src: string) => {
+        const id = createRandomCode();
+        createElement({
+            name: "音频-" + id,
+            type: "audio",
+            id,
+            width: 41,
+            height: 41,
+            left: (VIEWPORT_SIZE - 41) / 2,
+            top: (VIEWPORT_SIZE * viewportRatio.value - 41) / 2,
+            src
+        });
+    };
+
     return {
         createImageElement,
         createChartElement,
@@ -332,6 +350,7 @@ export default () => {
         createShapeElement,
         createLineElement,
         createLatexElement,
-        createVideoElement
+        createVideoElement,
+        createAudioElement
     };
 };
