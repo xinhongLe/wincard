@@ -1,10 +1,11 @@
 {
     "name": "wincard",
-    "version": "1.0.4",
+    "version": "1.0.9",
     "main": "./dist/wincard.umd.min.js",
     "typings": "./index.d.ts",
     "files": [
         "dist",
+        "src/types/slides.ts",
         "index.d.ts"
     ],
     "author": "moneyinto",
