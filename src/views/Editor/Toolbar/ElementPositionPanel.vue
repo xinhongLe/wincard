@@ -180,7 +180,7 @@
         </template>
 
         <template
-            v-if="['text', 'image', 'shape'].includes(handleElement.type)"
+            v-if="['text', 'image', 'shape', 'audio'].includes(handleElement.type) || (handleElement.type === 'video' && handleElement.showType === 1)"
         >
             <a-divider />
 

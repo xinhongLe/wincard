@@ -7,6 +7,7 @@ import { getOssPosterUrl, getOssVideoUrl } from "@/utils/video";
 export default (videoElement: ComputedRef<PPTVideoElement>) => {
     const videoUrl = ref("");
     const posterUrl = ref("");
+    const iconUrl = ref("");
     const store = useStore();
 
     const updateVideo = () => {
@@ -41,6 +42,24 @@ export default (videoElement: ComputedRef<PPTVideoElement>) => {
                     store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
                 }
             }
+
+            if (videoElement.value.ossIcon && videoElement.value.ossExpiration === ossToken.Expiration) {
+                // ossPoster 存在 且 ossToken 未过期 则不请求 直接返回
+                iconUrl.value = videoElement.value.ossIcon;
+            } else {
+                if (videoElement.value.icon) {
+                    const res = await getOssPosterUrl(videoElement.value.icon);
+                    iconUrl.value = res.url;
+                    // 更新 PPTVideoElement
+                    const props = {
+                        ossIcon: res.url,
+                        ossExpiration: ossToken.Expiration
+                    };
+                    store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+                } else {
+                    iconUrl.value = "";
+                }
+            }
         });
     };
 
@@ -52,7 +71,11 @@ export default (videoElement: ComputedRef<PPTVideoElement>) => {
         return videoElement.value ? videoElement.value.poster : "";
     });
 
-    watch([key, keyPoster], () => {
+    const keyIcon = computed(() => {
+        return videoElement.value ? videoElement.value.icon : "";
+    });
+
+    watch([key, keyPoster, keyIcon], () => {
         updateVideo();
     });
 
@@ -60,6 +83,7 @@ export default (videoElement: ComputedRef<PPTVideoElement>) => {
 
     return {
         videoUrl,
-        posterUrl
+        posterUrl,
+        iconUrl
     };
 };

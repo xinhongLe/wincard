@@ -8,16 +8,23 @@
             height: elementInfo.height + 'px'
         }"
     >
-        <div class="element-content">
-            <IconAudioFile class="audio-btn" @click="handleAudioEvent"  />
+        <div
+            class="rotate-wrapper"
+            :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
+        >
+            <div class="element-content">
+                <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="" @click="handleAudioEvent">
+                <img class="icon-image" v-else src="@/assets/images/audio.png" alt="" @click="handleAudioEvent">
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType, Ref, ref } from "vue";
+import { computed, defineComponent, inject, PropType, Ref, ref } from "vue";
 import { PPTAudioElement } from "@/types/slides";
 import useAudio from "./useAudio";
+import useOssAudio from "./useOssAudio";
 
 export default defineComponent({
     name: "screen-element-video",
@@ -35,8 +42,12 @@ export default defineComponent({
             playAudio(props.elementInfo.src);
         };
 
+        const audioElenent = computed(() => props.elementInfo);
+        const { iconUrl } = useOssAudio(audioElenent);
+
         return {
             scale,
+            iconUrl,
             handleAudioEvent
         };
     }
@@ -48,6 +59,11 @@ export default defineComponent({
     position: absolute;
 }
 
+.rotate-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
 .element-content {
     width: 100%;
     height: 100%;
@@ -56,5 +72,15 @@ export default defineComponent({
 .audio-btn {
     font-size: 40px;
     cursor: pointer;
+}
+
+.icon-image {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+    -webkit-user-drag: none;
 }
 </style>

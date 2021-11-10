@@ -308,8 +308,8 @@ export default () => {
      * @param src 视频地址
      */
     const createVideoElement = (src: string, showType: number) => {
-        const width = showType === 0 ? 500 : 41;
-        const height = showType === 0 ? 300 : 41;
+        const width = showType === 0 ? 500 : 100;
+        const height = showType === 0 ? 300 : 100;
         const id = createRandomCode();
         createElement({
             name: "视频-" + id,
@@ -317,6 +317,7 @@ export default () => {
             id,
             width,
             height,
+            rotate: 0,
             left: (VIEWPORT_SIZE - width) / 2,
             top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
             src,
@@ -334,10 +335,11 @@ export default () => {
             name: "音频-" + id,
             type: "audio",
             id,
-            width: 41,
-            height: 41,
-            left: (VIEWPORT_SIZE - 41) / 2,
-            top: (VIEWPORT_SIZE * viewportRatio.value - 41) / 2,
+            rotate: 0,
+            width: 100,
+            height: 100,
+            left: (VIEWPORT_SIZE - 100) / 2,
+            top: (VIEWPORT_SIZE * viewportRatio.value - 100) / 2,
             src
         });
     };

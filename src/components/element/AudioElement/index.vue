@@ -10,17 +10,17 @@
         }"
     >
         <div
-            class="element-content"
-            v-contextmenu="contextmenus"
-            @mousedown="($event) => handleSelectElement($event, false)"
+            class="rotate-wrapper"
+            :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
         >
-            <IconAudioFile class="aduio-btn" @click="handleAudioEvent" />
             <div
-                :class="['handler-border', item]"
-                v-for="item in ['t', 'b', 'l', 'r']"
-                :key="item"
+                class="element-content"
+                v-contextmenu="contextmenus"
                 @mousedown="($event) => handleSelectElement($event)"
-            ></div>
+            >
+                <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="">
+                <img class="icon-image" v-else src="@/assets/images/audio.png" alt="">
+            </div>
         </div>
     </div>
 </template>
@@ -31,6 +31,7 @@ import { useStore } from "@/store";
 import { PPTAudioElement } from "@/types/slides";
 import { ContextmenuItem } from "@/types/contextmenu";
 import useAudio from "./useAudio";
+import useOssAudio from "./useOssAudio";
 
 export default defineComponent({
     name: "editable-element-aduio",
@@ -69,8 +70,12 @@ export default defineComponent({
             playAudio(props.elementInfo.src);
         };
 
+        const audioElenent = computed(() => props.elementInfo);
+        const { iconUrl } = useOssAudio(audioElenent);
+
         return {
             scale,
+            iconUrl,
             handleSelectElement,
             handleAudioEvent
         };
@@ -86,11 +91,15 @@ export default defineComponent({
         cursor: default;
     }
 }
-
+.rotate-wrapper {
+    width: 100%;
+    height: 100%;
+}
 .element-content {
     width: 100%;
     height: 100%;
     position: relative;
+    cursor: move;
 }
 .handler-border {
     position: absolute;
@@ -123,5 +132,13 @@ export default defineComponent({
 }
 .aduio-btn {
     font-size: 40px;
+}
+.icon-image {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-user-drag: none;
 }
 </style>

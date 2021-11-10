@@ -1,28 +1,8 @@
 <template>
-    <div class="video-style-panel">
-        <div class="title">视频预览封面</div>
+    <div class="aduio-style-panel">
+        <div class="title">音频图标</div>
         <div class="background-image-wrapper">
-            <FileInput @change="files => setVideoPoster(files)">
-                <div class="background-image">
-                    <div
-                        class="content"
-                        :style="{
-                            backgroundImage: `url(${handleElement.ossPoster})`
-                        }"
-                    >
-                        <IconPlus />
-                    </div>
-                </div>
-            </FileInput>
-        </div>
-        <div class="row">
-            <a-button style="flex: 1;" @click="updateVideo({ poster: '', ossPoster: '' })"
-                >重置封面</a-button
-            >
-        </div>
-        <div class="title" style="margin-top: 20px;" v-if="handleElement.showType === 1">小视频图标</div>
-        <div class="background-image-wrapper" v-if="handleElement.showType === 1">
-            <FileInput @change="files => setVideoIcon(files)">
+            <FileInput @change="files => setAduioIcon(files)">
                 <div class="background-image">
                     <div
                         class="content"
@@ -35,8 +15,8 @@
                 </div>
             </FileInput>
         </div>
-        <div class="row" v-if="handleElement.showType === 1">
-            <a-button style="flex: 1;" @click="updateVideo({ icon: '', ossIcon: '' })"
+        <div class="row">
+            <a-button style="flex: 1;" @click="updateAduio({ icon: '', ossIcon: '' })"
                 >重置图标</a-button
             >
         </div>
@@ -46,21 +26,21 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { PPTVideoElement } from "@/types/slides";
+import { PPTAudioElement } from "@/types/slides";
 import { uploadImage } from "@/utils/image";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 export default defineComponent({
-    name: "video-style-panel",
+    name: "aduio-style-panel",
     setup() {
         const store = useStore();
-        const handleElement = computed<PPTVideoElement>(
+        const handleElement = computed<PPTAudioElement>(
             () => store.getters.handleElement
         );
 
         const { addHistorySnapshot } = useHistorySnapshot();
 
-        const updateVideo = (props: Partial<PPTVideoElement>) => {
+        const updateAduio = (props: Partial<PPTAudioElement>) => {
             store.commit(MutationTypes.UPDATE_ELEMENT, {
                 id: handleElement.value.id,
                 props
@@ -68,29 +48,19 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
-        // 设置视频预览封面
-        const setVideoPoster = (files: File[]) => {
+        // 设置音频图标
+        const setAduioIcon = (files: File[]) => {
             const imageFile = files[0];
             if (!imageFile) return;
             uploadImage(imageFile).then(key => {
-                updateVideo({ poster: key });
-            });
-        };
-
-        // 设置视频图标
-        const setVideoIcon = (files: File[]) => {
-            const imageFile = files[0];
-            if (!imageFile) return;
-            uploadImage(imageFile).then(key => {
-                updateVideo({ icon: key });
+                updateAduio({ icon: key });
             });
         };
 
         return {
             handleElement,
-            updateVideo,
-            setVideoPoster,
-            setVideoIcon
+            updateAduio,
+            setAduioIcon
         };
     }
 });

@@ -129,8 +129,10 @@ export default defineComponent({
                 [ElementTypes.TABLE]: TableElementOperate,
                 [ElementTypes.CHART]: CommonElementOperate,
                 [ElementTypes.LATEX]: CommonElementOperate,
-                [ElementTypes.VIDEO]: CommonElementOperate
+                [ElementTypes.AUDIO]: ImageElementOperate,
+                [ElementTypes.VIDEO]: [CommonElementOperate, ImageElementOperate]
             };
+            if (props.elementInfo.type === ElementTypes.VIDEO) return elementTypeMap[props.elementInfo.type][props.elementInfo.showType] || null;
             return elementTypeMap[props.elementInfo.type] || null;
         });
 

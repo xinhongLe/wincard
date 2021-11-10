@@ -424,7 +424,8 @@ const dealAudio = (oldAudio: IOldAudio) => {
         top: 0,
         width: 0,
         height: 0,
-        src: ""
+        src: "",
+        rotate: 0
     };
 
     element.id = oldAudio.UUID;
@@ -433,6 +434,7 @@ const dealAudio = (oldAudio: IOldAudio) => {
     element.top = oldAudio.Top;
     element.width = oldAudio.Width;
     element.height = oldAudio.Height;
+    element.rotate = oldAudio.Angle;
     element.src = OSS_PATH + "/" + oldAudio.OssFileName;
     element.display = oldAudio.IsVisibility;
     return element;
@@ -469,15 +471,16 @@ const dealVideo = (oldVideo: IOldVideo) => {
         width: 0,
         height: 0,
         src: "",
-        showType: 0
+        showType: 0,
+        rotate: 0
     };
 
     element.id = oldVideo.UUID;
     element.name = oldVideo.Name;
     element.left = oldVideo.Left;
     element.top = oldVideo.Top;
-    element.width = oldVideo.Type === 7 ? 41 : oldVideo.Width;
-    element.height = oldVideo.Type === 7 ? 41 : oldVideo.Height;
+    element.width = oldVideo.Width;
+    element.height = oldVideo.Height;
     element.src = OSS_PATH + "/" + oldVideo.OssFileName;
     element.showType = oldVideo.Type === 7 ? 1 : 0;
     element.display = oldVideo.IsVisibility;

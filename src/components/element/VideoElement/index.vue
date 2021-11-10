@@ -10,9 +10,24 @@
         }"
     >
         <div
+            class="rotate-wrapper"
+            :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
+            v-if="elementInfo.showType == 1"
+        >
+            <div
+                class="element-content"
+                v-contextmenu="contextmenus"
+                @mousedown="($event) => handleSelectElement($event)"
+            >
+                <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="">
+                <img class="icon-image" v-else src="@/assets/images/video.png" alt="">
+            </div>
+        </div>
+        <div
             class="element-content"
             v-contextmenu="contextmenus"
             @mousedown="($event) => handleSelectElement($event, false)"
+            v-if="elementInfo.showType == 0"
         >
             <VideoPlayer
                 :videoElement="elementInfo"
@@ -21,34 +36,32 @@
                 :src="elementInfo.src"
                 :poster="elementInfo.poster"
                 :scale="scale"
-                v-if="elementInfo.showType == 0"
             />
-            <IconVideoTwo v-if="elementInfo.showType == 1" class="video-btn" @click="openVideo" />
+
             <div
                 :class="['handler-border', item]"
                 v-for="item in ['t', 'b', 'l', 'r']"
                 :key="item"
                 @mousedown="($event) => handleSelectElement($event)"
             ></div>
-
-            <a-modal
-                title="视频"
-                v-model:visible="visible"
-                :footer="null"
-                width="50%"
-            >
-                <VideoPlayer
-                    :noTransform="true"
-                    :videoElement="elementInfo"
-                    :width="elementInfo.width"
-                    :height="elementInfo.height"
-                    :src="elementInfo.src"
-                    :poster="elementInfo.poster"
-                    :scale="scale"
-                    v-if="elementInfo.showType == 1"
-                />
-            </a-modal>
         </div>
+        <a-modal
+            title="视频"
+            v-model:visible="visible"
+            :footer="null"
+            width="50%"
+        >
+            <VideoPlayer
+                :noTransform="true"
+                :videoElement="elementInfo"
+                :width="elementInfo.width"
+                :height="elementInfo.height"
+                :src="elementInfo.src"
+                :poster="elementInfo.poster"
+                :scale="scale"
+                v-if="elementInfo.showType == 1"
+            />
+        </a-modal>
     </div>
 </template>
 
@@ -59,6 +72,7 @@ import { PPTVideoElement } from "@/types/slides";
 import { ContextmenuItem } from "@/types/contextmenu";
 
 import VideoPlayer from "./VideoPlayer/index.vue";
+import useOssVideo from "./VideoPlayer/useOssVideo";
 
 export default defineComponent({
     name: "editable-element-video",
@@ -100,8 +114,12 @@ export default defineComponent({
             visible.value = true;
         };
 
+        const videoElement = computed(() => props.elementInfo);
+        const { iconUrl } = useOssVideo(videoElement);
+
         return {
             scale,
+            iconUrl,
             handleSelectElement,
             visible,
             openVideo
@@ -118,7 +136,10 @@ export default defineComponent({
         cursor: default;
     }
 }
-
+.rotate-wrapper {
+    width: 100%;
+    height: 100%;
+}
 .element-content {
     width: 100%;
     height: 100%;
@@ -155,5 +176,14 @@ export default defineComponent({
 }
 .video-btn {
     font-size: 40px;
+}
+.icon-image {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-user-drag: none;
+    cursor: move;
 }
 </style>

@@ -8,7 +8,7 @@
             height: elementInfo.height + 'px'
         }"
     >
-        <div class="element-content">
+        <div class="element-content" v-if="elementInfo.showType == 0">
             <VideoPlayer
                 :videoElement="elementInfo"
                 :width="elementInfo.width"
@@ -16,9 +16,11 @@
                 :src="elementInfo.src"
                 :poster="elementInfo.poster"
                 :scale="scale"
-                v-if="elementInfo.showType == 0"
             />
-            <IconVideoTwo v-if="elementInfo.showType == 1" class="video-btn" @click="openVideo"  />
+        </div>
+        <div class="element-content" v-if="elementInfo.showType == 1">
+            <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="" @click="openVideo">
+            <img class="icon-image" v-else src="@/assets/images/video.png" alt="" @click="openVideo">
             <a-modal
                 title="视频"
                 v-model:visible="visible"
@@ -41,10 +43,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType, Ref, ref } from "vue";
+import { computed, defineComponent, inject, PropType, Ref, ref } from "vue";
 import { PPTVideoElement } from "@/types/slides";
 
 import VideoPlayer from "./VideoPlayer/index.vue";
+import useOssVideo from "./VideoPlayer/useOssVideo";
 
 export default defineComponent({
     name: "screen-element-video",
@@ -57,7 +60,7 @@ export default defineComponent({
             required: true
         }
     },
-    setup() {
+    setup(props) {
         const scale: Ref<number> = inject("slideScale") || ref(1);
 
         const visible = ref(false);
@@ -65,8 +68,12 @@ export default defineComponent({
             visible.value = true;
         };
 
+        const videoElement = computed(() => props.elementInfo);
+        const { iconUrl } = useOssVideo(videoElement);
+
         return {
             scale,
+            iconUrl,
             visible,
             openVideo
         };
@@ -87,5 +94,14 @@ export default defineComponent({
 .video-btn {
     font-size: 40px;
     cursor: pointer;
+}
+.icon-image {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+    -webkit-user-drag: none;
 }
 </style>

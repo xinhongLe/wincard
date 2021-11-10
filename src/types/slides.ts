@@ -551,6 +551,12 @@ export interface PPTLatexElement extends PPTBaseElement {
  * showType: 视频预览形式 0: 视频普通展示（大视频） 1: 视频只展示按钮，需要点击弹框展示（小视频）
  *
  * poster: 预览封面
+ *
+ * ossPoster: 视频封面 oss 访问地址
+ *
+ * icon: 音频图标地址
+ *
+ * ossIcon: 音频图标 oss 访问地址
  */
 export interface PPTVideoElement extends PPTBaseElement {
     type: "video";
@@ -558,6 +564,9 @@ export interface PPTVideoElement extends PPTBaseElement {
     ossSrc?: string;
     ossExpiration?: string;
     showType: number;
+    rotate: number;
+    icon?: string;
+    ossIcon?: string;
     poster?: string;
     ossPoster?: string;
 }
@@ -573,12 +582,18 @@ export interface PPTVideoElement extends PPTBaseElement {
  *
  * ossExpiration: 音频 oss 访问地址过期时间
  *
+ * icon: 音频图标地址
+ *
+ * ossIcon: 音频图标 oss 访问地址
  */
 export interface PPTAudioElement extends PPTBaseElement {
     type: "audio";
     src: string;
+    rotate: number;
     ossSrc?: string;
     ossExpiration?: string;
+    icon?: string;
+    ossIcon?: string;
 }
 
 export type PPTElement =

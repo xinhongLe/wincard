@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watch } from "vue";
+import { computed, ComputedRef, defineComponent, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTElement } from "@/types/slides";
 import { ToolbarState, ToolbarStates } from "@/types/toolbar";
@@ -97,7 +97,7 @@ export default defineComponent({
             }
         });
 
-        const currentPanelComponent = computed(() => {
+        const currentPanelComponent: ComputedRef | null = computed(() => {
             const panelMap = {
                 [ToolbarStates.EL_STYLE]: ElementStylePanel,
                 [ToolbarStates.EL_POSITION]: ElementPositionPanel,

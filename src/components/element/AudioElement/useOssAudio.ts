@@ -3,9 +3,11 @@ import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, ComputedRef, computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssAudioUrl } from "@/utils/audio";
+import { getOssImageUrl } from "@/utils/image";
 
 export default (audioElement: ComputedRef<PPTAudioElement>) => {
     const audioUrl = ref("");
+    const iconUrl = ref("");
     const store = useStore();
 
     const updateAudio = () => {
@@ -24,6 +26,24 @@ export default (audioElement: ComputedRef<PPTAudioElement>) => {
                 };
                 store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
             }
+
+            if (audioElement.value.ossIcon && audioElement.value.ossExpiration === ossToken.Expiration) {
+                // ossIcon 存在 且 ossToken 未过期 则不请求 直接返回
+                iconUrl.value = audioElement.value.ossIcon;
+            } else {
+                if (audioElement.value.icon) {
+                    const res = await getOssImageUrl(audioElement.value.icon);
+                    iconUrl.value = res.url;
+                    // 更新 PPTVideoElement
+                    const props = {
+                        ossIcon: res.url,
+                        ossExpiration: ossToken.Expiration
+                    };
+                    store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
+                } else {
+                    iconUrl.value = "";
+                }
+            }
         });
     };
 
@@ -31,13 +51,18 @@ export default (audioElement: ComputedRef<PPTAudioElement>) => {
         return audioElement.value ? audioElement.value.src : "";
     });
 
-    watch([key], () => {
+    const keyIcon = computed(() => {
+        return audioElement.value ? audioElement.value.icon : "";
+    });
+
+    watch([key, keyIcon], () => {
         updateAudio();
     });
 
     updateAudio();
 
     return {
+        iconUrl,
         audioUrl
     };
 };

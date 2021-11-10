@@ -12,14 +12,16 @@
             class="element-content"
             :style="{ backgroundImage: `url(${elementInfo.poster})` }"
         >
-            <IconPlayOne class="icon" />
+            <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="">
+            <img class="icon-image" v-else src="@/assets/images/video.png" alt="">
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 import { PPTVideoElement } from "@/types/slides";
+import useOssVideo from "./VideoPlayer/useOssVideo";
 
 export default defineComponent({
     name: "base-element-video",
@@ -28,6 +30,14 @@ export default defineComponent({
             type: Object as PropType<PPTVideoElement>,
             required: true
         }
+    },
+    setup(props) {
+        const videoElement = computed(() => props.elementInfo);
+        const { iconUrl } = useOssVideo(videoElement);
+
+        return {
+            iconUrl
+        };
     }
 });
 </script>
@@ -51,5 +61,13 @@ export default defineComponent({
 .icon {
     font-size: 140px;
     color: #aaa;
+}
+.icon-image {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-user-drag: none;
 }
 </style>

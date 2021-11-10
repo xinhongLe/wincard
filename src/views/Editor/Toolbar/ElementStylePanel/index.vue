@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { debounce } from "lodash";
-import { computed, defineComponent, reactive } from "vue";
+import { computed, ComputedRef, defineComponent, reactive, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { ElementTypes, PPTElement } from "@/types/slides";
 
@@ -29,6 +29,7 @@ import ChartStylePanel from "./ChartStylePanel/index.vue";
 import TableStylePanel from "./TableStylePanel.vue";
 import LatexStylePanel from "./LatexStylePanel.vue";
 import VideoStylePanel from "./VideoStylePanel.vue";
+import AudioStylePanel from "./AudioStylePanel.vue";
 
 export default defineComponent({
     name: "element-style-panel",
@@ -38,7 +39,7 @@ export default defineComponent({
             () => store.getters.handleElement
         );
 
-        const currentPanelComponent = computed(() => {
+        const currentPanelComponent: ComputedRef | null = computed(() => {
             if (!handleElement.value) return null;
 
             const panelMap = {
@@ -49,6 +50,7 @@ export default defineComponent({
                 [ElementTypes.CHART]: ChartStylePanel,
                 [ElementTypes.TABLE]: TableStylePanel,
                 [ElementTypes.LATEX]: LatexStylePanel,
+                [ElementTypes.AUDIO]: AudioStylePanel,
                 [ElementTypes.VIDEO]: VideoStylePanel
             };
             return panelMap[handleElement.value.type] || null;
@@ -56,6 +58,10 @@ export default defineComponent({
 
         const formState = reactive({
             name: handleElement.value.name
+        });
+
+        watch(handleElement, () => {
+            formState.name = handleElement.value ? handleElement.value.name : "";
         });
 
         const updateName = debounce(() => {
