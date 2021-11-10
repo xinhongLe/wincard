@@ -26,6 +26,10 @@ export default () => {
      */
     const setCanvasPercentage = (percentage: number) => {
         store.commit(MutationTypes.SET_CANVAS_PERCENTAGE, percentage);
+
+        // 重置canvas移动距离
+        store.commit(MutationTypes.SET_VIEWPORT_MOVE_X, 0);
+        store.commit(MutationTypes.SET_VIEWPORT_MOVE_Y, 0);
     };
 
     return {

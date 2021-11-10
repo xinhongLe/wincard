@@ -35,7 +35,8 @@ export const HOTKEY_DOC = [
             { label: "撤销", value: "Ctrl + Z" },
             { label: "恢复", value: "Ctrl + Y" },
             { label: "删除", value: "Delete / Backspace" },
-            { label: "多选", value: "按住 Ctrl 或 Shift" }
+            { label: "多选", value: "按住 Ctrl 或 Shift" },
+            { label: "移动画布", value: "按住 Alt 鼠标拖动" }
         ]
     },
     {

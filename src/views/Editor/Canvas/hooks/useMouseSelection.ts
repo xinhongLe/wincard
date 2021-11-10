@@ -9,6 +9,7 @@ export default (
 ) => {
     const store = useStore();
     const canvasScale = computed(() => store.state.canvasScale);
+    const altKeyActive = computed(() => store.state.altKeyState);
 
     const mouseSelectionState = reactive({
         isShow: false,
@@ -21,7 +22,7 @@ export default (
 
     // 更新鼠标框选范围
     const updateMouseSelection = (e: MouseEvent) => {
-        if (!viewportRef.value) return;
+        if (!viewportRef.value || altKeyActive.value) return;
 
         let isMouseDown = true;
         const viewportRect = viewportRef.value.getBoundingClientRect();

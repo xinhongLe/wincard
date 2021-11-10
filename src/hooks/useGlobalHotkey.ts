@@ -21,6 +21,7 @@ export default () => {
 
     const ctrlKeyActive = computed(() => store.state.ctrlKeyState);
     const shiftKeyActive = computed(() => store.state.shiftKeyState);
+    const altKeyActive = computed(() => store.state.altKeyState);
     const disableHotkeys = computed(() => store.state.disableHotkeys);
     const activeElementIdList = computed(() => store.state.activeElementIdList);
     const handleElement = computed<PPTElement>(
@@ -140,6 +141,7 @@ export default () => {
 
         if (ctrlOrMetaKeyActive && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true);
         if (shiftKey && !shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, true);
+        if (altKey && !altKeyActive.value) store.commit(MutationTypes.SET_ALT_KEY_STATE, true);
 
         if (ctrlOrMetaKeyActive && key === KEYS.F) {
             e.preventDefault();
@@ -259,6 +261,7 @@ export default () => {
     const keyupListener = () => {
         if (ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, false);
         if (shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, false);
+        if (altKeyActive.value) store.commit(MutationTypes.SET_ALT_KEY_STATE, false);
     };
 
     onMounted(() => {

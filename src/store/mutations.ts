@@ -115,6 +115,14 @@ export const mutations: MutationTree<State> = {
         state.viewportRatio = viewportRatio;
     },
 
+    [MutationTypes.SET_VIEWPORT_MOVE_X](state, x: number) {
+        state.canvasMoveX = x;
+    },
+
+    [MutationTypes.SET_VIEWPORT_MOVE_Y](state, y: number) {
+        state.canvasMoveY = y;
+    },
+
     [MutationTypes.SET_SLIDES](state, slides: Slide[]) {
         state.slides = slides;
     },
@@ -236,8 +244,13 @@ export const mutations: MutationTree<State> = {
     [MutationTypes.SET_CTRL_KEY_STATE](state, isActive: boolean) {
         state.ctrlKeyState = isActive;
     },
+
     [MutationTypes.SET_SHIFT_KEY_STATE](state, isActive: boolean) {
         state.shiftKeyState = isActive;
+    },
+
+    [MutationTypes.SET_ALT_KEY_STATE](state, isActive: boolean) {
+        state.altKeyState = isActive;
     },
 
     // screen

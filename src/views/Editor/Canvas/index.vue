@@ -13,11 +13,12 @@
         />
         <div
             class="viewport-wrapper"
+            @mousedown="$event => moveCanvas($event)"
             :style="{
                 width: viewportStyles.width * canvasScale + 'px',
                 height: viewportStyles.height * canvasScale + 'px',
-                left: viewportStyles.left + 'px',
-                top: viewportStyles.top + 'px'
+                left: viewportStyles.left + canvasMoveX + 'px',
+                top: viewportStyles.top + canvasMoveY + 'px'
             }"
         >
             <div class="operates">
@@ -108,6 +109,7 @@ import useDeleteElement from "@/hooks/useDeleteElement";
 import useCopyAndPasteElement from "@/hooks/useCopyAndPasteElement";
 import useSelectAllElement from "@/hooks/useSelectAllElement";
 import useScreening from "@/hooks/useScreening";
+import useMoveCanvas from "@/hooks/useMoveCanvas";
 
 import ElementCreateSelection from "./ElementCreateSelection.vue";
 import EditableElement from "./EditableElement.vue";
@@ -164,6 +166,11 @@ export default defineComponent({
         const canvasRef = ref<HTMLElement>();
         const canvasScale = computed(() => store.state.canvasScale);
         const { viewportStyles } = useViewportSize(canvasRef);
+
+        // canvas 移动
+        const canvasMoveX = computed(() => store.state.canvasMoveX);
+        const canvasMoveY = computed(() => store.state.canvasMoveY);
+        const { moveCanvas } = useMoveCanvas();
 
         // 监听 当前页面数据变化  初始化 页面 elements
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
@@ -301,7 +308,10 @@ export default defineComponent({
             removeEditorAreaFocus,
             handleMousewheelCanvas,
             openLinkDialog,
-            linkDialogVisible
+            linkDialogVisible,
+            moveCanvas,
+            canvasMoveX,
+            canvasMoveY
         };
     }
 });

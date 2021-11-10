@@ -22,6 +22,8 @@ export const enum MutationTypes {
     // slides
     SET_THEME = "setTheme",
     SET_VIEWPORT_RATIO = "setViewportRatio",
+    SET_VIEWPORT_MOVE_X = "setViewportMoveX",
+    SET_VIEWPORT_MOVE_Y = "setViewportMoveY",
     SET_SLIDES = "setSlides",
     UPDATE_SLIDE_INDEX = "updateSlideIndex",
     UPDATE_ELEMENT = "updateElement",
@@ -47,6 +49,7 @@ export const enum MutationTypes {
     // keyboard
     SET_CTRL_KEY_STATE = "setCtrlKeyState",
     SET_SHIFT_KEY_STATE = "setShiftKeyState",
+    SET_ALT_KEY_STATE = "setAltKeyState",
 
     // screen
     SET_SCREENING = "setScreening"

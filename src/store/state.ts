@@ -30,6 +30,7 @@ export interface State {
     disableHotkeys: boolean;
     ctrlKeyState: boolean;
     shiftKeyState: boolean;
+    altKeyState: boolean;
     clipingImageElementId: string;
     toolbarState: ToolbarState;
     thumbnailsFocus: boolean;
@@ -39,6 +40,8 @@ export interface State {
     listenSystemList: ListenWord[];
     listenPage: number;
     listenTotal: number;
+    canvasMoveX: number;
+    canvasMoveY: number;
 }
 
 export const state: State = {
@@ -65,6 +68,7 @@ export const state: State = {
     disableHotkeys: false, // 禁用快捷键
     ctrlKeyState: false, // ctrl键按下状态
     shiftKeyState: false, // shift键按下状态
+    altKeyState: false, // alt键按下状态
     clipingImageElementId: "", // 当前正在裁剪的图片ID
     toolbarState: "slideDesign", // 右侧工具栏状态
     thumbnailsFocus: false, // 左侧导航缩略图区域聚焦
@@ -73,5 +77,7 @@ export const state: State = {
     previewElements: [], // 预览暂存预览元素
     listenSystemList: [], // 存字词库数据
     listenPage: 1, // 字词库分页
-    listenTotal: 0 // 字词库总数
+    listenTotal: 0, // 字词库总数
+    canvasMoveX: 0, // 画布横向移动距离
+    canvasMoveY: 0 // 画布纵向移动距离
 };
