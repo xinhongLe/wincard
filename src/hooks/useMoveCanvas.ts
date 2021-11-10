@@ -34,7 +34,7 @@ export default () => {
             store.commit(MutationTypes.SET_VIEWPORT_MOVE_Y, y);
         };
 
-        document.onmouseup = e => {
+        document.onmouseup = () => {
             isMouseDown = false;
             document.onmousemove = null;
             document.onmouseup = null;

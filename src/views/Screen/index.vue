@@ -89,7 +89,7 @@ import { KEYS } from "@/configs/hotkey";
 import { isFullscreen } from "@/utils/fullscreen";
 import useScreening from "@/hooks/useScreening";
 
-import { message } from "ant-design-vue";
+// import { message } from "ant-design-vue";
 
 import ScreenSlide from "./ScreenSlide.vue";
 import WritingBoardTool from "./WritingBoardTool.vue";
@@ -206,11 +206,11 @@ export default defineComponent({
         };
 
         // 自动播放
-        const autoPlay = () => {
-            closeAutoPlay();
-            message.success("开始自动放映");
-            autoPlayTimer.value = setInterval(execNext, 2500);
-        };
+        // const autoPlay = () => {
+        //     closeAutoPlay();
+        //     message.success("开始自动放映");
+        //     autoPlayTimer.value = setInterval(execNext, 2500);
+        // };
 
         // 鼠标滚动翻页
         const mousewheelListener = throttle(

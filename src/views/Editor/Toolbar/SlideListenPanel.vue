@@ -38,7 +38,7 @@
                 <a-button type="primary" @click="search">查询</a-button>
                 <a-button
                     type="primary"
-                    style="margin-left: 10px"
+                    style="margin-left: 10px;"
                     @click="addWordVisible = true">
                     新增
                 </a-button>
@@ -50,7 +50,7 @@
                 :rowKey="(record, index) => record.id"
                 bordered
                 :pagination="pagination"
-                @change="sizeChange"
+                @change="handleSizeChange"
                 :row-selection="rowSelection"
             >
                 <template #options="{ record }">
@@ -95,14 +95,21 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import useListen from "@/hooks/useListen";
 
 import Draggable from "vuedraggable";
 import { ListenWord } from "@/types/slides";
 
+interface IPage {
+    current: number;
+    pageSize: number;
+    total: number;
+}
+
 export default defineComponent({
+    name: "slide-listen-panel",
     components: { Draggable },
     setup() {
         const store = useStore();
@@ -139,6 +146,10 @@ export default defineComponent({
             playAudio,
             deleteAudio
         } = useListen(addListenVisible, addWordVisible);
+
+        const handleSizeChange = (page: IPage) => {
+            sizeChange(page);
+        };
 
         const openEditWord = (word: ListenWord) => {
             addWordVisible.value = true;
@@ -202,7 +213,7 @@ export default defineComponent({
             keyword,
             columns,
             pagination,
-            sizeChange,
+            handleSizeChange,
             search,
             formState,
             beforeUpload,

@@ -1,6 +1,6 @@
 import { computed, reactive, ref, Ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { addSystemWord, editSystemWord, getSystemWordList, getPageWordList } from "@/api";
+import { addSystemWord, editSystemWord, getSystemWordList } from "@/api";
 import { ListenWord } from "@/types/slides";
 import { getOssAudioUrl, uploadAudio } from "@/utils/audio";
 import { message } from "ant-design-vue";
@@ -123,21 +123,21 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
         });
     };
 
-    const getWordList = async () => {
-        const res: any = await getPageWordList({ pageID: currentSlide.value.id });
-        if (res.success) {
-            const list: ListenWord[] = res.result.map((item: any) => {
-                return {
-                    name: item.Name,
-                    id: item.WordID,
-                    file: OSS_PATH + "/" + item.File.FileName + "." + item.File.Extention,
-                    extention: item.File.Extention,
-                    pageWordID: item.PageWordID
-                };
-            });
-            store.commit(MutationTypes.UPDATE_LISTEN_PAGE_LIST, list);
-        }
-    };
+    // const getWordList = async () => {
+    //     const res: any = await getPageWordList({ pageID: currentSlide.value.id });
+    //     if (res.success) {
+    //         const list: ListenWord[] = res.result.map((item: any) => {
+    //             return {
+    //                 name: item.Name,
+    //                 id: item.WordID,
+    //                 file: OSS_PATH + "/" + item.File.FileName + "." + item.File.Extention,
+    //                 extention: item.File.Extention,
+    //                 pageWordID: item.PageWordID
+    //             };
+    //         });
+    //         store.commit(MutationTypes.UPDATE_LISTEN_PAGE_LIST, list);
+    //     }
+    // };
 
     // getWordList();
 
