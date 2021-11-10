@@ -1,5 +1,5 @@
 import { OSS_PATH } from "@/configs/filePath";
-import { PPTElement, PPTElementAction, PPTImageElement, PPTLineElement, PPTShapeElement, PPTTextElement, Slide, SlideBackground } from "@/types/slides";
+import { PPTElement, PPTElementAction, PPTImageElement, PPTLineElement, PPTShapeElement, PPTTextElement, PPTVideoElement, Slide, SlideBackground } from "@/types/slides";
 import { createRandomCode } from "./common";
 
 interface IOldSlide {
@@ -131,6 +131,10 @@ const getElementsData = (oldElements: string[], oldActions: string[]) => {
             break;
         case 5:
             elements.push({ ...dealImage(oldElement), actions });
+            break;
+        case 7:
+        case 8:
+            elements.push({ ...dealVideo(oldElement), actions });
             break;
         }
     });
@@ -388,6 +392,52 @@ const dealLine = (oldLine: IOldLineElement) => {
         element.start = [oldLine.Width / 2 * (1 - Math.cos(oldLine.Angle * Math.PI / 180)), -oldLine.Width / 2 * Math.cos(oldLine.Angle * Math.PI / 180)];
         element.end = [oldLine.Width / 2 * (1 + Math.cos(oldLine.Angle * Math.PI / 180)), oldLine.Width / 2 * Math.cos(oldLine.Angle * Math.PI / 180)];
     }
+    return element;
+};
+
+interface IOldVideo {
+    Background: string;
+    FileID: string;
+    Foreground: string;
+    Height: number;
+    HorizontalAlignment: number;
+    IsVisibility: boolean;
+    Left: number;
+    LineBrush: string;
+    LineType: number;
+    Name: string;
+    OssFileName: string;
+    Text: string;
+    Top: number;
+    Type: number;
+    UUID: string;
+    Width: number;
+    ZIndex: number;
+}
+
+// 处理视频
+const dealVideo = (oldVideo: IOldVideo) => {
+    const element: PPTVideoElement = {
+        id: "",
+        type: "video",
+        name: "",
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0,
+        src: "",
+        showType: 0
+    };
+
+    element.id = oldVideo.UUID;
+    element.name = oldVideo.Name;
+    element.left = oldVideo.Left;
+    element.top = oldVideo.Top;
+    element.width = oldVideo.Type === 7 ? 41 : oldVideo.Width;
+    element.height = oldVideo.Type === 7 ? 41 : oldVideo.Height;
+    element.src = OSS_PATH + "/" + oldVideo.OssFileName;
+    element.showType = oldVideo.Type === 7 ? 1 : 0;
+    element.display = oldVideo.IsVisibility;
     return element;
 };
 
