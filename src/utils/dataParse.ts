@@ -1,5 +1,5 @@
 import { OSS_PATH } from "@/configs/filePath";
-import { PPTElement, PPTElementAction, PPTImageElement, PPTLineElement, PPTShapeElement, PPTTextElement, PPTVideoElement, Slide, SlideBackground } from "@/types/slides";
+import { PPTAudioElement, PPTElement, PPTElementAction, PPTImageElement, PPTLineElement, PPTShapeElement, PPTTextElement, PPTVideoElement, Slide, SlideBackground } from "@/types/slides";
 import { createRandomCode } from "./common";
 
 interface IOldSlide {
@@ -131,6 +131,9 @@ const getElementsData = (oldElements: string[], oldActions: string[]) => {
             break;
         case 5:
             elements.push({ ...dealImage(oldElement), actions });
+            break;
+        case 6:
+            elements.push({ ...dealAudio(oldElement), actions });
             break;
         case 7:
         case 8:
@@ -392,6 +395,46 @@ const dealLine = (oldLine: IOldLineElement) => {
         element.start = [oldLine.Width / 2 * (1 - Math.cos(oldLine.Angle * Math.PI / 180)), -oldLine.Width / 2 * Math.cos(oldLine.Angle * Math.PI / 180)];
         element.end = [oldLine.Width / 2 * (1 + Math.cos(oldLine.Angle * Math.PI / 180)), oldLine.Width / 2 * Math.cos(oldLine.Angle * Math.PI / 180)];
     }
+    return element;
+};
+
+interface IOldAudio {
+    Angle: number;
+    Height: number;
+    IsVisibility: boolean;
+    Left: number;
+    Name: string;
+    OssFileName: string;
+    OssImageFileName: string | null;
+    OssPlayingImageName: string | null;
+    Top: number;
+    Type: number;
+    UUID: string;
+    Width: number;
+    ZIndex: number;
+}
+
+// 处理音频
+const dealAudio = (oldAudio: IOldAudio) => {
+    const element: PPTAudioElement = {
+        id: "",
+        type: "audio",
+        name: "",
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0,
+        src: ""
+    };
+
+    element.id = oldAudio.UUID;
+    element.name = oldAudio.Name;
+    element.left = oldAudio.Left;
+    element.top = oldAudio.Top;
+    element.width = oldAudio.Width;
+    element.height = oldAudio.Height;
+    element.src = OSS_PATH + "/" + oldAudio.OssFileName;
+    element.display = oldAudio.IsVisibility;
     return element;
 };
 
