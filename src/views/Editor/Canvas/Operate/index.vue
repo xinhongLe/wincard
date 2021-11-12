@@ -130,7 +130,8 @@ export default defineComponent({
                 [ElementTypes.CHART]: CommonElementOperate,
                 [ElementTypes.LATEX]: CommonElementOperate,
                 [ElementTypes.AUDIO]: ImageElementOperate,
-                [ElementTypes.VIDEO]: [CommonElementOperate, ImageElementOperate]
+                [ElementTypes.VIDEO]: [CommonElementOperate, ImageElementOperate],
+                [ElementTypes.TEACH]: CommonElementOperate
             };
             if (props.elementInfo.type === ElementTypes.VIDEO) return elementTypeMap[props.elementInfo.type][props.elementInfo.showType] || null;
             return elementTypeMap[props.elementInfo.type] || null;

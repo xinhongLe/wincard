@@ -6,7 +6,8 @@ export const ELEMENT_TYPE_ZH = {
     chart: "图表",
     table: "表格",
     audio: "音频",
-    video: "视频"
+    video: "视频",
+    teach: "教具"
 };
 
 export const MIN_SIZE = {
@@ -16,5 +17,6 @@ export const MIN_SIZE = {
     chart: 200,
     table: 20,
     audio: 50,
-    video: 50
+    video: 50,
+    teach: 300
 };

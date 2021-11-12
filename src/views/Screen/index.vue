@@ -30,7 +30,6 @@
                     <ScreenSlide
                         :slide="slide"
                         :scale="scale"
-                        :animationIndex="animationIndex"
                     />
                 </div>
             </div>

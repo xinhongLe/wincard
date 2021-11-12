@@ -344,6 +344,24 @@ export default () => {
         });
     };
 
+    /**
+     * 创建教具
+     * @param src 教具链接地址
+     */
+    const createTeachAidElement = (src: string) => {
+        const id = createRandomCode();
+        createElement({
+            name: "教具-" + id,
+            type: "teach",
+            id,
+            width: 400,
+            height: 300,
+            left: (VIEWPORT_SIZE - 400) / 2,
+            top: (VIEWPORT_SIZE * viewportRatio.value - 300) / 2,
+            src
+        });
+    };
+
     return {
         createImageElement,
         createChartElement,
@@ -353,6 +371,7 @@ export default () => {
         createLineElement,
         createLatexElement,
         createVideoElement,
-        createAudioElement
+        createAudioElement,
+        createTeachAidElement
     };
 };

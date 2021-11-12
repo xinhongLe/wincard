@@ -95,7 +95,8 @@ import {
     Formula,
     Check,
     AudioFile,
-    Delete
+    Delete,
+    Page
 } from "@icon-park/vue-next";
 import {
     DEFAULT_ICON_CONFIGS,
@@ -229,5 +230,8 @@ export default {
 
         // 音频
         app.component("IconAudioFile", AudioFile);
+
+        // 教具
+        app.component("IconTeachAid", Page);
     }
 };

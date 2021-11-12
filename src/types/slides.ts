@@ -13,7 +13,8 @@ export const enum ElementTypes {
     TABLE = "table",
     LATEX = "latex",
     AUDIO = "audio",
-    VIDEO = "video"
+    VIDEO = "video",
+    TEACH = "teach"
 }
 
 /**
@@ -596,6 +597,11 @@ export interface PPTAudioElement extends PPTBaseElement {
     ossIcon?: string;
 }
 
+export interface PPTTeachAidElement extends PPTBaseElement {
+    type: "teach";
+    src: string;
+}
+
 export type PPTElement =
     | PPTTextElement
     | PPTImageElement
@@ -605,7 +611,8 @@ export type PPTElement =
     | PPTTableElement
     | PPTLatexElement
     | PPTAudioElement
-    | PPTVideoElement;
+    | PPTVideoElement
+    | PPTTeachAidElement;
 
 /**
  * 元素动画

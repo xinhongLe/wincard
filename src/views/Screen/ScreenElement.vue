@@ -34,6 +34,7 @@ import BaseTableElement from "@/components/element/TableElement/BaseTableElement
 import BaseLatexElement from "@/components/element/LatexElement/BaseLatexElement.vue";
 import ScreenAudioElement from "@/components/element/AudioElement/ScreenAudioElement.vue";
 import ScreenVideoElement from "@/components/element/VideoElement/ScreenVideoElement.vue";
+import ScreenTeachElement from "@/components/element/TeachAidElement/ScreenTeachElement.vue";
 
 export default defineComponent({
     name: "screen-element",
@@ -62,7 +63,8 @@ export default defineComponent({
                 [ElementTypes.TABLE]: BaseTableElement,
                 [ElementTypes.LATEX]: BaseLatexElement,
                 [ElementTypes.AUDIO]: ScreenAudioElement,
-                [ElementTypes.VIDEO]: ScreenVideoElement
+                [ElementTypes.VIDEO]: ScreenVideoElement,
+                [ElementTypes.TEACH]: ScreenTeachElement
             };
             return elementTypeMap[props.elementInfo.type] || null;
         });

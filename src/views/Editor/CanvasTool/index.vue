@@ -146,6 +146,20 @@
                     />
                 </a-tooltip>
             </a-popover>
+            <a-popover trigger="click" v-model:visible="teachAidsVisible">
+                <template #content>
+                    <TeachAid @close="teachAidsVisible = false;" @insert="insertTeachAidElement" />
+                </template>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="插入教具"
+                >
+                    <IconTeachAid
+                        class="handler-item"
+                    />
+                </a-tooltip>
+            </a-popover>
         </div>
 
         <div class="right-handler">
@@ -206,6 +220,7 @@ import ChartPool from "./ChartPool.vue";
 import TableGenerator from "./TableGenerator.vue";
 import VideoInput from "./VideoInput.vue";
 import LaTeXEditor from "@/components/LaTeXEditor/index.vue";
+import TeachAid from "./TeachAid.vue";
 import { uploadAudio } from "@/utils/audio";
 
 export default defineComponent({
@@ -216,7 +231,8 @@ export default defineComponent({
         ChartPool,
         TableGenerator,
         VideoInput,
-        LaTeXEditor
+        LaTeXEditor,
+        TeachAid
     },
     setup() {
         const store = useStore();
@@ -237,7 +253,8 @@ export default defineComponent({
             createChartElement,
             createTableElement,
             createLatexElement,
-            createAudioElement
+            createAudioElement,
+            createTeachAidElement
         } = useCreateElement();
 
         const insertImageElement = (files: File[]) => {
@@ -262,6 +279,7 @@ export default defineComponent({
         const tableGeneratorVisible = ref(false);
         const videoInputVisible = ref(false);
         const latexEditorVisible = ref(false);
+        const teachAidsVisible = ref(false);
 
         // 绘制文字范围
         const drawText = () => {
@@ -289,6 +307,12 @@ export default defineComponent({
             linePoolVisible.value = false;
         };
 
+        // 插入教具
+        const insertTeachAidElement = (src: string) => {
+            createTeachAidElement(src);
+            teachAidsVisible.value = false;
+        };
+
         const isBasePPT = computed(() => store.getters.isBasePPT);
 
         return {
@@ -302,12 +326,14 @@ export default defineComponent({
             undo,
             insertAudioElement,
             insertImageElement,
+            insertTeachAidElement,
             shapePoolVisible,
             linePoolVisible,
             chartPoolVisible,
             tableGeneratorVisible,
             videoInputVisible,
             latexEditorVisible,
+            teachAidsVisible,
             drawText,
             drawShape,
             drawLine,

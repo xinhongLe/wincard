@@ -30,6 +30,7 @@ import TableStylePanel from "./TableStylePanel.vue";
 import LatexStylePanel from "./LatexStylePanel.vue";
 import VideoStylePanel from "./VideoStylePanel.vue";
 import AudioStylePanel from "./AudioStylePanel.vue";
+import TeachStylePanel from "./TeachStylePanel.vue";
 
 export default defineComponent({
     name: "element-style-panel",
@@ -51,7 +52,8 @@ export default defineComponent({
                 [ElementTypes.TABLE]: TableStylePanel,
                 [ElementTypes.LATEX]: LatexStylePanel,
                 [ElementTypes.AUDIO]: AudioStylePanel,
-                [ElementTypes.VIDEO]: VideoStylePanel
+                [ElementTypes.VIDEO]: VideoStylePanel,
+                [ElementTypes.TEACH]: TeachStylePanel
             };
             return panelMap[handleElement.value.type] || null;
         });
