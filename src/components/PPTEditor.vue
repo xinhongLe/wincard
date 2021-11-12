@@ -1,6 +1,6 @@
 <template>
     <Editor v-if="!screening" />
-    <Screen v-else />
+    <Screen style="position: fixed;inset: 0;z-index: 1000;" v-else />
 </template>
 
 <script lang="ts">
