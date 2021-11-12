@@ -6,7 +6,7 @@
 <script lang="ts">
 import Editor from "@/views/Editor/index.vue";
 import Screen from "@/views/Screen/index.vue";
-import { computed, defineComponent, onMounted, PropType, provide } from "vue";
+import { computed, defineComponent, onMounted, PropType, provide, watch } from "vue";
 // import { Modal } from "ant-design-vue";
 import { ActionTypes, MutationTypes, useStore } from "@/store";
 
@@ -28,6 +28,12 @@ export default defineComponent({
 
         const canvasScale = computed(() => store.state.canvasScale);
         provide("slideScale", canvasScale);
+
+        const slide = computed(() => props.slide);
+
+        watch(slide, () => {
+            initSlides();
+        });
 
         const { resetSlides } = useSlideHandler();
         const initSlides = () => {
