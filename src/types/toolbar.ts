@@ -17,5 +17,6 @@ export const ToolbarStates = {
     SLIDE_ANIMATION: "slideAnimation",
     MULTI_POSITION: "multiPosition",
     SLIDE_STEP: "slideStep",
-    SLIDE_LISTEN: "slideListen"
+    SLIDE_LISTEN: "slideListen",
+    SLIDE_FOLLOW: "slideFollow"
 };

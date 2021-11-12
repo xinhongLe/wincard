@@ -29,6 +29,33 @@ export interface ListenWord {
 }
 
 /**
+ * 断点数据
+ *
+ */
+export interface PauseList {
+    isEnd?: boolean;
+    time?: string;
+}
+
+/**
+ * 跟读页
+ *
+ * src: 跟读视频 fileName 请求 oss 使用
+ *
+ * ossSrc: 跟读视频 oss 访问地址
+ *
+ * ossExpiration: 跟读视频 oss 访问地址过期时间
+ *
+ * pauseList: 断点数据
+ */
+export interface Follow {
+    src: string;
+    ossSrc?: string;
+    ossExpiration?: string;
+    pauseList?: PauseList[]
+}
+
+/**
  * 元素阴影
  *
  * h: 水平偏移量
@@ -691,6 +718,7 @@ export interface Slide {
     viewportRatio?: number;
     elements: PPTElement[];
     listenWords?: ListenWord[];
+    follow?: Follow;
     remark?: string;
     background?: SlideBackground;
     animations?: PPTAnimation[];

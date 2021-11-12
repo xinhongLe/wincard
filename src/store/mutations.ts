@@ -3,6 +3,7 @@ import { State } from "./state";
 import { omit } from "lodash";
 import { MutationTypes } from "./constants";
 import {
+    Follow,
     ListenWord,
     PPTElement,
     RemoveElementPropData,
@@ -205,6 +206,10 @@ export const mutations: MutationTree<State> = {
             return elIdList.includes(el.id) ? { ...el, ...props } : el;
         });
         state.previewElements = elements as PPTElement[];
+    },
+
+    [MutationTypes.UPDATE_FOLLOW](state, follow: Follow) {
+        state.slides[state.slideIndex].follow = follow;
     },
 
     // listen

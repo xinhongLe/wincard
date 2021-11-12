@@ -3,6 +3,7 @@ import SparkMD5 from "spark-md5";
 import { getOssToken } from "@/api";
 import { throttle } from "lodash";
 import { OSS_PATH } from "@/configs/filePath";
+import { message } from "ant-design-vue";
 
 export interface OssToken {
     AccessKeyId: string;
@@ -45,6 +46,7 @@ export const uploadFile = (file: File): Promise<string> => {
                     })
                     .catch(err => {
                         console.error(err);
+                        message.error("上传失败！");
                         reject(new Error("上传出错了"));
                     });
             });

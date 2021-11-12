@@ -33,6 +33,8 @@ import SymbolPanel from "./SymbolPanel.vue";
 import ElementEventPanel from "./ElementEventPanel.vue";
 import SlideStepPanel from "./SlideStepPanel.vue";
 import SlideListenPanel from "./SlideListenPanel.vue";
+import SlideFollowPanel from "./SlideFollowPanel.vue";
+import { PAGE_TYPE } from "@/configs/page";
 
 export default defineComponent({
     name: "toolbar",
@@ -62,13 +64,16 @@ export default defineComponent({
                 ...["shape", "image"].indexOf(handleElement.value.type) > -1 ? [{ label: "事件", value: ToolbarStates.EL_EVENT }] : []
             ];
         });
-        const slideTabs = [
-            { label: "设计", value: ToolbarStates.SLIDE_DESIGN },
-            // { label: "切换", value: ToolbarStates.SLIDE_ANIMATION },
-            // { label: "动画", value: ToolbarStates.EL_ANIMATION },
-            ...currentSlide.value.type === 0 ? [{ label: "步骤", value: ToolbarStates.SLIDE_STEP }] : [],
-            ...currentSlide.value.type === 1 ? [{ label: "听写", value: ToolbarStates.SLIDE_LISTEN }] : []
-        ];
+        const slideTabs = computed(() => {
+            return [
+                { label: "设计", value: ToolbarStates.SLIDE_DESIGN },
+                // { label: "切换", value: ToolbarStates.SLIDE_ANIMATION },
+                // { label: "动画", value: ToolbarStates.EL_ANIMATION },
+                ...currentSlide.value.type === PAGE_TYPE.ELEMENT ? [{ label: "步骤", value: ToolbarStates.SLIDE_STEP }] : [],
+                ...currentSlide.value.type === PAGE_TYPE.LISTEN ? [{ label: "听写", value: ToolbarStates.SLIDE_LISTEN }] : [],
+                ...currentSlide.value.type === PAGE_TYPE.FOLLOW ? [{ label: "跟读", value: ToolbarStates.SLIDE_FOLLOW }] : []
+            ];
+        });
         const multiSelectTabs = [
             { label: "位置", value: ToolbarStates.MULTI_POSITION },
             { label: "样式", value: ToolbarStates.EL_STYLE }
@@ -82,7 +87,7 @@ export default defineComponent({
             () => store.state.activeElementIdList
         );
         const currentTabs = computed(() => {
-            if (!activeElementIdList.value.length) return slideTabs;
+            if (!activeElementIdList.value.length) return slideTabs.value;
             else if (activeElementIdList.value.length > 1) return multiSelectTabs;
             return elementTabs.value;
         });
@@ -108,7 +113,8 @@ export default defineComponent({
                 [ToolbarStates.SYMBOL]: SymbolPanel,
                 [ToolbarStates.EL_EVENT]: ElementEventPanel,
                 [ToolbarStates.SLIDE_STEP]: SlideStepPanel,
-                [ToolbarStates.SLIDE_LISTEN]: SlideListenPanel
+                [ToolbarStates.SLIDE_LISTEN]: SlideListenPanel,
+                [ToolbarStates.SLIDE_FOLLOW]: SlideFollowPanel
             };
             return panelMap[toolbarState.value] || null;
         });

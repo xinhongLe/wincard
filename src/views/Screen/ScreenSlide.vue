@@ -19,10 +19,11 @@ import { computed, PropType, defineComponent } from "vue";
 import { useStore } from "@/store";
 import { Slide } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
+import { PAGE_TYPE } from "@/configs/page";
 
 import ElementView from "./ElementView.vue";
 import ListenView from "./ListenView.vue";
-import { PAGE_TYPE } from "@/configs/page";
+import FollowView from "./FollowView.vue";
 
 export default defineComponent({
     name: "screen-slide",
@@ -48,7 +49,8 @@ export default defineComponent({
         const currentPageComponent = computed(() => {
             const pageTypeMap = {
                 [PAGE_TYPE.ELEMENT]: ElementView,
-                [PAGE_TYPE.LISTEN]: ListenView
+                [PAGE_TYPE.LISTEN]: ListenView,
+                [PAGE_TYPE.FOLLOW]: FollowView
             };
             return pageTypeMap[slideType.value] || null;
         });

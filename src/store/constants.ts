@@ -34,6 +34,7 @@ export const enum MutationTypes {
     DELETE_SLIDE = "deleteSlide",
     UPDATE_PREVIEW_ELEMENTS = "updatePreviewElements",
     UPDATE_PREVIEW_ELEMENT = "updatePreviewElement",
+    UPDATE_FOLLOW = "updateFollow",
 
     // listen
     UPDATE_LISTEN_SYSTEM_LIST = "updateListeSystemList",
