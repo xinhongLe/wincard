@@ -7,38 +7,25 @@
             transform: `scale(${scale})`
         }"
     >
-        <div class="background" :style="{ ...backgroundStyle }" v-if="slideType === 0"></div>
-        <div v-if="slideType === 0">
-            <ScreenElement
-                v-for="(element, index) in elements"
-                :key="element.id"
-                :elementInfo="element"
-                :elementIndex="index + 1"
-                :animationIndex="animationIndex"
-                @click="handleAction(element)"
-            />
-        </div>
-        <ListenView :listenWords="listenWords" v-if="slideType === 1" />
+        <component
+            :is="currentPageComponent"
+            :slide="slide"
+        ></component>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, PropType, defineComponent, watch } from "vue";
-import { MutationTypes, useStore } from "@/store";
-import { PPTElement, Slide } from "@/types/slides";
+import { computed, PropType, defineComponent } from "vue";
+import { useStore } from "@/store";
+import { Slide } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
-import useSlideBackgroundStyle from "@/hooks/useSlideBackgroundStyle";
-import useActionAnimation from "@/hooks/useActionAnimation";
 
-import ScreenElement from "./ScreenElement.vue";
+import ElementView from "./ElementView.vue";
 import ListenView from "./ListenView.vue";
+import { PAGE_TYPE } from "@/configs/page";
 
 export default defineComponent({
     name: "screen-slide",
-    components: {
-        ScreenElement,
-        ListenView
-    },
     props: {
         slide: {
             type: Object as PropType<Slide>,
@@ -57,38 +44,19 @@ export default defineComponent({
         const store = useStore();
         const viewportRatio = computed(() => store.state.viewportRatio);
         const slideType = computed(() => props.slide.type);
-        const listenWords = computed(() => props.slide.listenWords);
 
-        const background = computed(() => props.slide.background);
-        const { backgroundStyle } = useSlideBackgroundStyle(background);
-
-        const elements = computed(() => store.state.previewElements);
-        store.commit(MutationTypes.UPDATE_PREVIEW_ELEMENTS, JSON.parse(JSON.stringify(props.slide.elements)));
-
-        watch(props.slide, () => {
-            store.commit(MutationTypes.UPDATE_PREVIEW_ELEMENTS, JSON.parse(JSON.stringify(props.slide.elements)));
+        const currentPageComponent = computed(() => {
+            const pageTypeMap = {
+                [PAGE_TYPE.ELEMENT]: ElementView,
+                [PAGE_TYPE.LISTEN]: ListenView
+            };
+            return pageTypeMap[slideType.value] || null;
         });
 
-        const { runAnimation } = useActionAnimation();
-
-        // 处理元素点击事件
-        const handleAction = (element: PPTElement) => {
-            if (element.link) window.open(element.link);
-            if (!element.actions || element.actions.length === 0) return;
-
-            element.actions.map(a => {
-                runAnimation(a);
-            });
-        };
-
         return {
-            elements,
-            slideType,
-            backgroundStyle,
             VIEWPORT_SIZE,
             viewportRatio,
-            listenWords,
-            handleAction
+            currentPageComponent
         };
     }
 });

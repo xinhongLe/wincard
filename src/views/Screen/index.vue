@@ -94,6 +94,8 @@ import ScreenSlide from "./ScreenSlide.vue";
 import WritingBoardTool from "./WritingBoardTool.vue";
 import useActionAnimation from "@/hooks/useActionAnimation";
 
+import { PAGE_TYPE } from "@/configs/page";
+
 export default defineComponent({
     name: "screen",
     components: {
@@ -180,7 +182,7 @@ export default defineComponent({
         // 向上/向下播放
         const execPrev = () => {
             // 非素材页直接跳过
-            if (currentSlide.value.type !== 0) return emit("pagePrev");
+            if (currentSlide.value.type !== PAGE_TYPE.ELEMENT) return emit("pagePrev");
             if (stepIndex.value === -1) return emit("pagePrev");
             const step = steps.value[stepIndex.value];
             // 向上 step 要逆向执行
@@ -195,7 +197,7 @@ export default defineComponent({
         };
         const execNext = () => {
             // 非素材页直接跳过
-            if (currentSlide.value.type !== 0) return emit("pageNext");
+            if (currentSlide.value.type !== PAGE_TYPE.ELEMENT) return emit("pageNext");
             if (stepIndex.value === steps.value.length - 1) return emit("pageNext");
             stepIndex.value++;
             const step = steps.value[stepIndex.value];

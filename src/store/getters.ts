@@ -2,6 +2,7 @@ import { GetterTree } from "vuex";
 import tinycolor from "tinycolor2";
 import { State } from "./state";
 import { layouts } from "@/mocks/layout";
+import { PAGE_TYPE } from "@/configs/page";
 
 export const getters: GetterTree<State, State> = {
     currentSlide(state) {
@@ -9,7 +10,7 @@ export const getters: GetterTree<State, State> = {
     },
 
     isBasePPT(state) {
-        return (state.slides[state.slideIndex] && state.slides[state.slideIndex].type === 0) || false;
+        return (state.slides[state.slideIndex] && state.slides[state.slideIndex].type === PAGE_TYPE.ELEMENT) || false;
     },
 
     currentSlideAnimations(state) {

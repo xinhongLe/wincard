@@ -29,7 +29,7 @@ interface IOldAction {
 export const dealOldData = (oldSlide: IOldSlide) => {
     const slide: Slide = {
         id: createRandomCode(),
-        type: 0,
+        type: "element",
         viewportRatio: 0.5625,
         elements: []
     };

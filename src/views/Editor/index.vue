@@ -6,16 +6,11 @@
             <!-- <thumbnails class="layout-content-left" /> -->
             <div class="layout-content-center">
                 <canvas-tool class="center-top" />
-                <canvas-board
-                    v-if="currentSlide.type === 0"
+                <component
                     class="center-body"
                     :style="{ height: `calc(100% - ${remarkHeight + 40}px)` }"
-                />
-                <listen
-                    v-if="currentSlide.type === 1"
-                    class="center-body"
-                    :style="{ height: `calc(100% - ${remarkHeight + 40}px)` }"
-                />
+                    :is="currentPageComponent"
+                ></component>
                 <remark
                     class="center-bottom"
                     v-model:height="remarkHeight"
@@ -42,12 +37,11 @@ import usePasteEvent from "@/hooks/usePasteEvent";
 
 import { Slide } from "@/types/slides";
 import { useStore } from "@/store";
+import { PAGE_TYPE } from "@/configs/page";
 export default defineComponent({
     components: {
         EditorHeader,
-        CanvasBoard,
         CanvasTool,
-        Listen,
         // Thumbnails,
         Toolbar,
         Remark
@@ -58,6 +52,14 @@ export default defineComponent({
 
         const remarkHeight = ref(40);
 
+        const currentPageComponent = computed(() => {
+            const pageTypeMap = {
+                [PAGE_TYPE.ELEMENT]: CanvasBoard,
+                [PAGE_TYPE.LISTEN]: Listen
+            };
+            return pageTypeMap[currentSlide.value.type] || null;
+        });
+
         useGlobalHotkey();
         usePasteEvent();
 
@@ -66,6 +68,7 @@ export default defineComponent({
         };
 
         return {
+            currentPageComponent,
             remarkHeight,
             currentSlide,
             onSave

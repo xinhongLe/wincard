@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType, watch } from "vue";
 import Screen from "@/views/Screen/index.vue";
 import { Slide } from "@/types/slides";
 import { MutationTypes, useStore } from "@/store";
@@ -19,8 +19,11 @@ export default defineComponent({
     },
     setup(props) {
         const store = useStore();
-
+        const slide = computed(() => props.slide);
         store.commit(MutationTypes.SET_SLIDES, [props.slide]);
+        watch(slide, () => {
+            store.commit(MutationTypes.SET_SLIDES, [props.slide]);
+        });
     }
 });
 </script>

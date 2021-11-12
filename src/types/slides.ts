@@ -667,7 +667,7 @@ export interface SlideBackground {
  *
  * id: 页面ID
  *
- * type: 页面类型 0 普通素材页 1 听写页 2 跟读页
+ * type: 页面类型 element 普通素材页 listen 听写页 follow 跟读页
  *
  * listenWords: 听写页单词列表
  *
@@ -687,7 +687,7 @@ export interface SlideBackground {
  */
 export interface Slide {
     id: string;
-    type: number,
+    type: "element" | "listen" | "follow",
     viewportRatio?: number;
     elements: PPTElement[];
     listenWords?: ListenWord[];

@@ -48,18 +48,18 @@
 
 <script lang="ts">
 import useListen from "@/hooks/useListen";
-import { ListenWord } from "@/types/slides";
+import { Slide } from "@/types/slides";
 import { computed, defineComponent, onUnmounted, PropType, ref } from "vue";
 
 export default defineComponent({
     props: {
-        listenWords: {
-            type: Array as PropType<ListenWord[]>,
+        slide: {
+            type: Object as PropType<Slide>,
             required: true
         }
     },
     setup(props) {
-        const wordList = computed(() => props.listenWords);
+        const wordList = computed(() => props.slide.listenWords || []);
         const current = ref(-1);
         const count = ref(2);
         const time = ref(2);
