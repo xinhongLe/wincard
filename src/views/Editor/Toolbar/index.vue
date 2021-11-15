@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="content">
-            <component :is="currentPanelComponent"></component>
+            <component :is="currentPanelComponent" @addCard="addCard"></component>
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@
 <script lang="ts">
 import { computed, ComputedRef, defineComponent, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { PPTElement } from "@/types/slides";
+import { IWin, PPTElement } from "@/types/slides";
 import { ToolbarState, ToolbarStates } from "@/types/toolbar";
 
 import ElementStylePanel from "./ElementStylePanel/index.vue";
@@ -38,7 +38,7 @@ import { PAGE_TYPE } from "@/configs/page";
 
 export default defineComponent({
     name: "toolbar",
-    setup() {
+    setup(props, { emit }) {
         const store = useStore();
         const toolbarState = computed(() => store.state.toolbarState);
         const handleElement = computed<PPTElement>(
@@ -119,11 +119,16 @@ export default defineComponent({
             return panelMap[toolbarState.value] || null;
         });
 
+        const addCard = (callback: (win: IWin) => void) => {
+            emit("addCard", callback);
+        };
+
         return {
             toolbarState,
             currentTabs,
             setToolbarState,
-            currentPanelComponent
+            currentPanelComponent,
+            addCard
         };
     }
 });

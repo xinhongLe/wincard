@@ -69,7 +69,7 @@
                 </div>
                 {{ ["开始", "暂停", "", "继续", "重播"][videoStatus] }}
             </div>
-            <div style="width: 371px"></div>
+            <div style="width: 371px;"></div>
         </div>
     </div>
 </template>

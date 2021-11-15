@@ -158,6 +158,17 @@
                 </a-form-item>
             </a-form>
         </a-modal>
+        <a-button type="primary" block @click="addCard">编辑弹卡</a-button>
+
+        <a-divider />
+
+        <a-collapse v-model:activeCard="activeCard">
+            <a-collapse-panel v-for="(item, index) in cardList" :key="index" :header="item.name">
+                <p class="card-item" v-for="slide in item.slides" :key="slide.id">{{ slide.name }}</p>
+            </a-collapse-panel>
+        </a-collapse>
+
+        <a-divider v-if="cardList.length > 0" />
 
         <a-button type="primary" block @click="isEdit = false; addActionVisible = true">新增事件</a-button>
 
@@ -218,7 +229,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
-import { PPTElement, PPTElementAction, Slide } from "@/types/slides";
+import { IWin, PPTCard, PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import { MutationTypes, useStore } from "@/store";
 import { INANIMATIONS, OUTANIMATIONS } from "@/configs/animation";
 import { message } from "ant-design-vue";
@@ -239,7 +250,7 @@ for (const type of OUTANIMATIONS) {
 }
 
 export default defineComponent({
-    setup() {
+    setup(props, { emit }) {
         const store = useStore();
         const handleElement = computed<PPTElement>(
             () => store.getters.handleElement
@@ -375,6 +386,21 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
+        const activeCard = ref(0);
+        const cardList = ref<PPTCard[]>([]);
+
+        const addCard = () => {
+            emit("addCard", (win: IWin) => {
+                cardList.value = win.cards;
+                store.commit(MutationTypes.UPDATE_ELEMENT, {
+                    id: handleElement.value.id,
+                    props: {
+                        win
+                    }
+                });
+            });
+        };
+
         return {
             actions,
             actionList,
@@ -393,7 +419,10 @@ export default defineComponent({
             deleteAction,
             addAnimation,
             openEditAction,
-            updateElementAnimationDuration
+            updateElementAnimationDuration,
+            addCard,
+            activeCard,
+            cardList
         };
     }
 });
@@ -476,5 +505,18 @@ export default defineComponent({
 
 .element-animation-btn {
     width: 100%;
+}
+
+.card-item {
+    padding: 10px 16px;
+    border-bottom: 1px solid #ccc;
+    &:last-child {
+        border-bottom: 0;
+    }
+}
+</style>
+<style>
+.el-event-box .ant-collapse-content-box {
+    padding: 0;
 }
 </style>

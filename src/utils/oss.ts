@@ -1,7 +1,6 @@
 import OSS from "ali-oss";
 import SparkMD5 from "spark-md5";
 import { getOssToken } from "@/api";
-import { throttle } from "lodash";
 import { OSS_PATH } from "@/configs/filePath";
 import { message } from "ant-design-vue";
 

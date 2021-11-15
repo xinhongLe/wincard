@@ -345,14 +345,14 @@ export default () => {
     };
 
     /**
-     * 创建教具
-     * @param src 教具链接地址
+     * 创建网页
+     * @param src 网页链接地址
      */
-    const createTeachAidElement = (src: string) => {
+    const createWebIFrameElement = (src: string) => {
         const id = createRandomCode();
         createElement({
-            name: "教具-" + id,
-            type: "teach",
+            name: "网页-" + id,
+            type: "iframe",
             id,
             width: 400,
             height: 300,
@@ -372,6 +372,6 @@ export default () => {
         createLatexElement,
         createVideoElement,
         createAudioElement,
-        createTeachAidElement
+        createWebIFrameElement
     };
 };

@@ -18,7 +18,7 @@
                         }}</span>
                     </a-select-option>
                 </a-select-opt-group>
-                <a-select-opt-option label="在线字体">
+                <a-select-opt-group label="在线字体">
                     <a-select-option
                         v-for="font in webFonts"
                         :key="font.value"
@@ -26,7 +26,7 @@
                     >
                         <span>{{ font.label }}</span>
                     </a-select-option>
-                </a-select-opt-option>
+                </a-select-opt-group>
             </a-select>
             <a-select
                 style="flex: 2;"

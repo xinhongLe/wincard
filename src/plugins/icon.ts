@@ -231,7 +231,7 @@ export default {
         // 音频
         app.component("IconAudioFile", AudioFile);
 
-        // 教具
-        app.component("IconTeachAid", Page);
+        // 网页
+        app.component("IconWeb", Page);
     }
 };

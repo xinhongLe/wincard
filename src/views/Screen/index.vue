@@ -30,6 +30,7 @@
                     <ScreenSlide
                         :slide="slide"
                         :scale="scale"
+                        @openCard="openCard"
                     />
                 </div>
             </div>
@@ -82,7 +83,7 @@ import {
 } from "vue";
 import { throttle } from "lodash";
 import { useStore } from "@/store";
-import { PPTElementAction, Slide } from "@/types/slides";
+import { IWin, PPTElementAction, Slide } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { KEYS } from "@/configs/hotkey";
 import { isFullscreen } from "@/utils/fullscreen";
@@ -269,6 +270,10 @@ export default defineComponent({
 
         provide("slideScale", scale);
 
+        const openCard = (win: IWin) => {
+            emit("openCard", win);
+        };
+
         return {
             slides,
             slideIndex,
@@ -283,7 +288,8 @@ export default defineComponent({
             execNext,
             slideThumbnailModelVisible,
             writingBoardToolVisible,
-            showPageNumber
+            showPageNumber,
+            openCard
         };
     }
 });

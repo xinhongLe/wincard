@@ -1,5 +1,5 @@
 <template>
-    <div class="teach-input">
+    <div class="iframe-input">
         <a-input
             v-model:value="src"
             placeholder="请输入链接地址，e.g. https://xxx.xx"
@@ -18,7 +18,7 @@ import { defineComponent, ref } from "vue";
 import { message } from "ant-design-vue";
 
 export default defineComponent({
-    name: "teach-aid",
+    name: "web-iframe",
     emits: ["insert", "close"],
     setup(props, { emit }) {
         const src = ref("");
@@ -40,7 +40,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.teach-input {
+.iframe-input {
     width: 480px;
 }
 

@@ -146,16 +146,16 @@
                     />
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click" v-model:visible="teachAidsVisible">
+            <a-popover trigger="click" v-model:visible="WebIFramesVisible">
                 <template #content>
-                    <TeachAid @close="teachAidsVisible = false;" @insert="insertTeachAidElement" />
+                    <WebIFrame @close="WebIFramesVisible = false;" @insert="insertWebIFrameElement" />
                 </template>
                 <a-tooltip
                     :mouseLeaveDelay="0"
                     :mouseEnterDelay="0.5"
-                    title="插入教具"
+                    title="插入网页"
                 >
-                    <IconTeachAid
+                    <IconWeb
                         class="handler-item"
                     />
                 </a-tooltip>
@@ -220,7 +220,7 @@ import ChartPool from "./ChartPool.vue";
 import TableGenerator from "./TableGenerator.vue";
 import VideoInput from "./VideoInput.vue";
 import LaTeXEditor from "@/components/LaTeXEditor/index.vue";
-import TeachAid from "./TeachAid.vue";
+import WebIFrame from "./WebIFrame.vue";
 import { uploadAudio } from "@/utils/audio";
 
 export default defineComponent({
@@ -232,7 +232,7 @@ export default defineComponent({
         TableGenerator,
         VideoInput,
         LaTeXEditor,
-        TeachAid
+        WebIFrame
     },
     setup() {
         const store = useStore();
@@ -254,7 +254,7 @@ export default defineComponent({
             createTableElement,
             createLatexElement,
             createAudioElement,
-            createTeachAidElement
+            createWebIFrameElement
         } = useCreateElement();
 
         const insertImageElement = (files: File[]) => {
@@ -279,7 +279,7 @@ export default defineComponent({
         const tableGeneratorVisible = ref(false);
         const videoInputVisible = ref(false);
         const latexEditorVisible = ref(false);
-        const teachAidsVisible = ref(false);
+        const WebIFramesVisible = ref(false);
 
         // 绘制文字范围
         const drawText = () => {
@@ -307,10 +307,10 @@ export default defineComponent({
             linePoolVisible.value = false;
         };
 
-        // 插入教具
-        const insertTeachAidElement = (src: string) => {
-            createTeachAidElement(src);
-            teachAidsVisible.value = false;
+        // 插入网页
+        const insertWebIFrameElement = (src: string) => {
+            createWebIFrameElement(src);
+            WebIFramesVisible.value = false;
         };
 
         const isBasePPT = computed(() => store.getters.isBasePPT);
@@ -326,14 +326,14 @@ export default defineComponent({
             undo,
             insertAudioElement,
             insertImageElement,
-            insertTeachAidElement,
+            insertWebIFrameElement,
             shapePoolVisible,
             linePoolVisible,
             chartPoolVisible,
             tableGeneratorVisible,
             videoInputVisible,
             latexEditorVisible,
-            teachAidsVisible,
+            WebIFramesVisible,
             drawText,
             drawShape,
             drawLine,

@@ -1,6 +1,6 @@
 <template>
     <div
-        class="editable-element-teach"
+        class="editable-element-iframe"
         :class="{ lock: elementInfo.lock }"
         :style="{
             top: elementInfo.top + 'px',
@@ -28,21 +28,21 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 import { useStore } from "@/store";
-import { PPTTeachAidElement } from "@/types/slides";
+import { PPTWebIFrameElement } from "@/types/slides";
 import { ContextmenuItem } from "@/types/contextmenu";
 
 export default defineComponent({
-    name: "editable-element-teach",
+    name: "editable-element-iframe",
     props: {
         elementInfo: {
-            type: Object as PropType<PPTTeachAidElement>,
+            type: Object as PropType<PPTWebIFrameElement>,
             required: true
         },
         selectElement: {
             type: Function as PropType<
                 (
                     e: MouseEvent,
-                    element: PPTTeachAidElement,
+                    element: PPTWebIFrameElement,
                     canMove?: boolean
                 ) => void
             >,
@@ -72,7 +72,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.editable-element-teach {
+.editable-element-iframe {
     position: absolute;
 
     &.lock .handler-border {

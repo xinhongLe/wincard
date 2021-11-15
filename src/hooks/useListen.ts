@@ -145,7 +145,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
         message.warning("暂不支持该功能");
     };
 
-    const playAudio = debounce(async (word: ListenWord, callback?) => {
+    const playAudio = debounce(async (word: ListenWord, callback?: () => void) => {
         const res = await getOssAudioUrl(word.file);
         const audio = new Audio();
         audio.src = res.url;

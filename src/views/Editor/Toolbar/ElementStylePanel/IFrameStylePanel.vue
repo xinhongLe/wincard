@@ -1,11 +1,11 @@
 <template>
-    <div class="teach-style-panel"></div>
+    <div class="iframe-style-panel"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
 export default defineComponent({
-    name: "teach-style-panel"
+    name: "iframe-style-panel"
 });
 </script>

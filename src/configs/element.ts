@@ -7,7 +7,7 @@ export const ELEMENT_TYPE_ZH = {
     table: "表格",
     audio: "音频",
     video: "视频",
-    teach: "教具"
+    frame: "网页"
 };
 
 export const MIN_SIZE = {
@@ -18,5 +18,5 @@ export const MIN_SIZE = {
     table: 20,
     audio: 50,
     video: 50,
-    teach: 300
+    frame: 300
 };

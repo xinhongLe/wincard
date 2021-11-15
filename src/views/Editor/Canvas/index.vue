@@ -108,7 +108,7 @@ import useSlideHandler from "@/hooks/useSlideHandler";
 import useDeleteElement from "@/hooks/useDeleteElement";
 import useCopyAndPasteElement from "@/hooks/useCopyAndPasteElement";
 import useSelectAllElement from "@/hooks/useSelectAllElement";
-import useScreening from "@/hooks/useScreening";
+// import useScreening from "@/hooks/useScreening";
 import useMoveCanvas from "@/hooks/useMoveCanvas";
 
 import ElementCreateSelection from "./ElementCreateSelection.vue";
@@ -205,7 +205,7 @@ export default defineComponent({
         const { selectAllElement } = useSelectAllElement();
         const { deleteAllElements } = useDeleteElement();
         const { pasteElement } = useCopyAndPasteElement();
-        const { enterScreening } = useScreening();
+        // const { enterScreening } = useScreening();
         const { updateSlideIndex } = useSlideHandler();
 
         // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区

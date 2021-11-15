@@ -9,6 +9,7 @@
     >
         <component
             :is="currentPageComponent"
+            @openCard="openCard"
             :slide="slide"
         ></component>
     </div>
@@ -17,7 +18,7 @@
 <script lang="ts">
 import { computed, PropType, defineComponent } from "vue";
 import { useStore } from "@/store";
-import { Slide } from "@/types/slides";
+import { IWin, Slide } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { PAGE_TYPE } from "@/configs/page";
 
@@ -41,7 +42,7 @@ export default defineComponent({
             default: -1
         }
     },
-    setup(props) {
+    setup(props, { emit }) {
         const store = useStore();
         const viewportRatio = computed(() => store.state.viewportRatio);
         const slideType = computed(() => props.slide.type);
@@ -55,10 +56,15 @@ export default defineComponent({
             return pageTypeMap[slideType.value] || null;
         });
 
+        const openCard = (win: IWin) => {
+            emit("openCard", win);
+        };
+
         return {
             VIEWPORT_SIZE,
             viewportRatio,
-            currentPageComponent
+            currentPageComponent,
+            openCard
         };
     }
 });

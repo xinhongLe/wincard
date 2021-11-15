@@ -35,7 +35,7 @@ export default defineComponent({
             default: -1
         }
     },
-    setup(props) {
+    setup(props, { emit }) {
         const store = useStore();
 
         const background = computed(() => props.slide.background);
@@ -53,6 +53,12 @@ export default defineComponent({
         // 处理元素点击事件
         const handleAction = (element: PPTElement) => {
             if (element.link) window.open(element.link);
+
+            // 弹卡事件
+            if (element.win) {
+                emit("openCard", element.win);
+            }
+
             if (!element.actions || element.actions.length === 0) return;
 
             element.actions.map(a => {

@@ -17,7 +17,7 @@
                     :style="{ height: `${remarkHeight}px` }"
                 />
             </div>
-            <toolbar class="layout-content-right" />
+            <toolbar class="layout-content-right" @addCard="addCard" />
         </div>
     </div>
 </template>
@@ -36,7 +36,7 @@ import { computed, defineComponent, ref } from "vue";
 import useGlobalHotkey from "@/hooks/useGlobalHotkey";
 import usePasteEvent from "@/hooks/usePasteEvent";
 
-import { Slide } from "@/types/slides";
+import { IWin, Slide } from "@/types/slides";
 import { useStore } from "@/store";
 import { PAGE_TYPE } from "@/configs/page";
 export default defineComponent({
@@ -69,11 +69,16 @@ export default defineComponent({
             emit("onSave", slide);
         };
 
+        const addCard = (callback: (win: IWin) => void) => {
+            emit("addCard", callback);
+        };
+
         return {
             currentPageComponent,
             remarkHeight,
             currentSlide,
-            onSave
+            onSave,
+            addCard
         };
     }
 });

@@ -1,6 +1,13 @@
 <template>
     <Editor v-if="!screening" />
-    <Screen style="position: fixed;inset: 0;z-index: 1000;" v-else />
+    <Screen
+        style="
+        position: fixed;
+        inset: 0;
+        z-index: 1000;"
+        @openCard="openCard"
+        v-else
+    />
 </template>
 
 <script lang="ts">
@@ -11,7 +18,8 @@ import { computed, defineComponent, onMounted, PropType, provide, watch } from "
 import { ActionTypes, MutationTypes, useStore } from "@/store";
 
 import useSlideHandler from "@/hooks/useSlideHandler";
-import { Slide } from "@/types/slides";
+import { IWin, Slide } from "@/types/slides";
+import { message } from "ant-design-vue";
 
 export default defineComponent({
     name: "PPTEditor",
@@ -67,8 +75,13 @@ export default defineComponent({
             // }
         });
 
+        const openCard = () => {
+            message.warning("编辑模式下预览不支持弹卡！");
+        };
+
         return {
-            screening
+            screening,
+            openCard
         };
     }
 });

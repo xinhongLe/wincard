@@ -19,7 +19,54 @@ export const slides: Slide[] = [
                 fill: "#5b9bd5",
                 fixedRatio: false,
                 opacity: 0.7,
-                rotate: 0
+                rotate: 0,
+                win: {
+                    id: "xxx",
+                    cards: [
+                        {
+                            id: "sdfs",
+                            name: "卡1",
+                            slides: [
+                                {
+                                    id: "232",
+                                    name: "页面一",
+                                    type: 11
+                                },
+                                {
+                                    id: "23s2",
+                                    name: "页面一",
+                                    type: 11
+                                },
+                                {
+                                    id: "23d2",
+                                    name: "页面一",
+                                    type: 11
+                                }
+                            ]
+                        },
+                        {
+                            id: "sdfs",
+                            name: "卡1",
+                            slides: [
+                                {
+                                    id: "23df2",
+                                    name: "页面一",
+                                    type: 11
+                                },
+                                {
+                                    id: "2ddf32",
+                                    name: "页面一",
+                                    type: 11
+                                },
+                                {
+                                    id: "2sdfsd32",
+                                    name: "页面一",
+                                    type: 11
+                                }
+                            ]
+                        }
+                    ]
+                }
             },
             {
                 name: "形状2",

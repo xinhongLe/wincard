@@ -14,7 +14,7 @@ export const enum ElementTypes {
     LATEX = "latex",
     AUDIO = "audio",
     VIDEO = "video",
-    TEACH = "teach"
+    IFRAME = "iframe"
 }
 
 /**
@@ -110,6 +110,44 @@ export interface PPTElementAction {
 }
 
 /**
+ * 关联页的集合
+ *
+ * id: 页id
+ *
+ * name: 页名称
+ *
+ * type: 页类型 组件不管，暂存只为了返回
+ */
+export interface PPTRelation {
+    id: string;
+    name: string;
+    type: number;
+}
+
+/**
+ * 卡集合 由于数据库接口结构问题 这里处理页集合上面多一层卡集合，为了方面存储
+ *
+ * id: 卡id
+ *
+ * name: 卡名称
+ *
+ * slides: 页的集合
+ */
+export interface PPTCard {
+    id: string;
+    name: string;
+    slides: PPTRelation[]
+}
+
+/**
+ * 窗 卡集合的存储数据 该插件内不做处理
+ */
+export interface IWin {
+    id: string;
+    cards: PPTCard[]
+}
+
+/**
  * 元素通用属性
  *
  * id: 元素ID
@@ -131,6 +169,8 @@ export interface PPTElementAction {
  * link?: 超链接地址
  *
  * actions: 执行事件
+ *
+ * cards: 关联其他页面集合
  */
 interface PPTBaseElement {
     id: string;
@@ -143,7 +183,8 @@ interface PPTBaseElement {
     height: number;
     link?: string;
     display?: boolean;
-    actions?: PPTElementAction[]
+    actions?: PPTElementAction[],
+    win?: IWin
 }
 
 /**
@@ -624,8 +665,8 @@ export interface PPTAudioElement extends PPTBaseElement {
     ossIcon?: string;
 }
 
-export interface PPTTeachAidElement extends PPTBaseElement {
-    type: "teach";
+export interface PPTWebIFrameElement extends PPTBaseElement {
+    type: "iframe";
     src: string;
 }
 
@@ -639,7 +680,7 @@ export type PPTElement =
     | PPTLatexElement
     | PPTAudioElement
     | PPTVideoElement
-    | PPTTeachAidElement;
+    | PPTWebIFrameElement;
 
 /**
  * 元素动画
