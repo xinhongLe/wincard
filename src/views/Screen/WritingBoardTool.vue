@@ -1,13 +1,11 @@
 <template>
     <div class="writing-board-tool">
-        <teleport to="body">
-            <WritingBoard
-                ref="writingBoardRef"
-                :color="writingBoardColor"
-                :blackboard="blackboard"
-                :model="writingBoardModel"
-            />
-        </teleport>
+        <WritingBoard
+            ref="writingBoardRef"
+            :color="writingBoardColor"
+            :blackboard="blackboard"
+            :model="writingBoardModel"
+        />
 
         <div class="tools">
             <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
