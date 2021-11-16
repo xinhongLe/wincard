@@ -31,6 +31,7 @@ import Toolbar from "./Toolbar/index.vue";
 import Remark from "./Remark/index.vue";
 import Listen from "./Listen/index.vue";
 import Follow from "./Follow/index.vue";
+import Teach from "./Teach/index.vue";
 import { computed, defineComponent, ref } from "vue";
 
 import useGlobalHotkey from "@/hooks/useGlobalHotkey";
@@ -57,7 +58,8 @@ export default defineComponent({
             const pageTypeMap = {
                 [PAGE_TYPE.ELEMENT]: CanvasBoard,
                 [PAGE_TYPE.LISTEN]: Listen,
-                [PAGE_TYPE.FOLLOW]: Follow
+                [PAGE_TYPE.FOLLOW]: Follow,
+                [PAGE_TYPE.TEACH]: Teach
             };
             return pageTypeMap[currentSlide.value.type] || null;
         });

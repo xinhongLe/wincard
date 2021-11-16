@@ -35,6 +35,10 @@ interface IGetWord {
     pageID: string;
 }
 
+interface IGetTeach {
+    state: number;
+}
+
 export function getOssToken() {
     return request({
         baseURL: AI_XUE_SHI_API,
@@ -101,6 +105,16 @@ export function getPageWordList(data: IGetWord) {
     return request({
         baseURL: AI_XUE_SHI_API,
         url: "/API/WCP/Listen/GetPageWords",
+        method: "post",
+        data
+    });
+}
+
+// 获取教具列表
+export function getTeachList(data: IGetTeach) {
+    return request({
+        baseURL: AI_XUE_SHI_API,
+        url: "/API/W1/TeachingMiniTool/ToolManage/GetToolList",
         method: "post",
         data
     });

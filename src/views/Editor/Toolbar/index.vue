@@ -34,6 +34,7 @@ import ElementEventPanel from "./ElementEventPanel.vue";
 import SlideStepPanel from "./SlideStepPanel.vue";
 import SlideListenPanel from "./SlideListenPanel.vue";
 import SlideFollowPanel from "./SlideFollowPanel.vue";
+import SlideTeachPanel from "./SlideTeachPanel.vue";
 import { PAGE_TYPE } from "@/configs/page";
 
 export default defineComponent({
@@ -71,7 +72,8 @@ export default defineComponent({
                 // { label: "动画", value: ToolbarStates.EL_ANIMATION },
                 ...currentSlide.value.type === PAGE_TYPE.ELEMENT ? [{ label: "步骤", value: ToolbarStates.SLIDE_STEP }] : [],
                 ...currentSlide.value.type === PAGE_TYPE.LISTEN ? [{ label: "听写", value: ToolbarStates.SLIDE_LISTEN }] : [],
-                ...currentSlide.value.type === PAGE_TYPE.FOLLOW ? [{ label: "跟读", value: ToolbarStates.SLIDE_FOLLOW }] : []
+                ...currentSlide.value.type === PAGE_TYPE.FOLLOW ? [{ label: "跟读", value: ToolbarStates.SLIDE_FOLLOW }] : [],
+                ...currentSlide.value.type === PAGE_TYPE.TEACH ? [{ label: "教具", value: ToolbarStates.SLIDE_TEACH }] : []
             ];
         });
         const multiSelectTabs = [
@@ -114,7 +116,8 @@ export default defineComponent({
                 [ToolbarStates.EL_EVENT]: ElementEventPanel,
                 [ToolbarStates.SLIDE_STEP]: SlideStepPanel,
                 [ToolbarStates.SLIDE_LISTEN]: SlideListenPanel,
-                [ToolbarStates.SLIDE_FOLLOW]: SlideFollowPanel
+                [ToolbarStates.SLIDE_FOLLOW]: SlideFollowPanel,
+                [ToolbarStates.SLIDE_TEACH]: SlideTeachPanel
             };
             return panelMap[toolbarState.value] || null;
         });

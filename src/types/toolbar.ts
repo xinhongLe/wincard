@@ -5,7 +5,12 @@ export type ToolbarState =
     | "elPosition"
     | "slideDesign"
     | "slideAnimation"
-    | "multiPosition";
+    | "multiPosition"
+    | "elEvent"
+    | "slideStep"
+    | "slideListen"
+    | "slideFollow"
+    | "slideTeach";
 
 export const ToolbarStates = {
     SYMBOL: "symbol",
@@ -18,5 +23,6 @@ export const ToolbarStates = {
     MULTI_POSITION: "multiPosition",
     SLIDE_STEP: "slideStep",
     SLIDE_LISTEN: "slideListen",
-    SLIDE_FOLLOW: "slideFollow"
+    SLIDE_FOLLOW: "slideFollow",
+    SLIDE_TEACH: "slideTeach"
 };

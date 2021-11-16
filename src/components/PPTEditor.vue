@@ -1,12 +1,15 @@
 <template>
-    <Editor v-if="!screening" />
+    <Editor
+        @onSave="onSave"
+        @addCard="addCard"
+    />
     <Screen
         style="
         position: fixed;
         inset: 0;
         z-index: 1000;"
         @openCard="openCard"
-        v-else
+        v-if="screening"
     />
 </template>
 
@@ -23,13 +26,14 @@ import { message } from "ant-design-vue";
 
 export default defineComponent({
     name: "PPTEditor",
+    emits: ["onSave", "addCard"],
     components: { Editor, Screen },
     props: {
         slide: {
             type: Object as PropType<Slide>
         }
     },
-    setup(props) {
+    setup(props, { emit }) {
         const store = useStore();
         const screening = computed(() => store.state.screening);
         // const oldSlides = computed(() => store.state.oldSlides);
@@ -79,8 +83,18 @@ export default defineComponent({
             message.warning("编辑模式下预览不支持弹卡！");
         };
 
+        const onSave = (slide: Slide) => {
+            emit("onSave", slide);
+        };
+
+        const addCard = (callback: (win: IWin) => void) => {
+            emit("addCard", callback);
+        };
+
         return {
             screening,
+            onSave,
+            addCard,
             openCard
         };
     }

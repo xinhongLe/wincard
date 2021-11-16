@@ -56,6 +56,21 @@ export interface Follow {
 }
 
 /**
+ * 教具页
+ *
+ * id: 教具id
+ *
+ * src: 教具链接
+ *
+ * name: 教具名
+ */
+export interface Teach {
+    id: string;
+    name: string;
+    src: string;
+}
+
+/**
  * 元素阴影
  *
  * h: 水平偏移量
@@ -136,7 +151,7 @@ export interface PPTRelation {
 export interface PPTCard {
     id: string;
     name: string;
-    slides: PPTRelation[]
+    slides: PPTRelation[];
 }
 
 /**
@@ -144,7 +159,7 @@ export interface PPTCard {
  */
 export interface IWin {
     id: string;
-    cards: PPTCard[]
+    cards: PPTCard[];
 }
 
 /**
@@ -735,7 +750,7 @@ export interface SlideBackground {
  *
  * id: 页面ID
  *
- * type: 页面类型 element 普通素材页 listen 听写页 follow 跟读页
+ * type: 页面类型 element 普通素材页 listen 听写页 follow 跟读页 teach 教具页
  *
  * listenWords: 听写页单词列表
  *
@@ -755,11 +770,12 @@ export interface SlideBackground {
  */
 export interface Slide {
     id: string;
-    type: "element" | "listen" | "follow",
+    type: "element" | "listen" | "follow" | "teach",
     viewportRatio?: number;
     elements: PPTElement[];
     listenWords?: ListenWord[];
     follow?: Follow;
+    teach?: Teach;
     remark?: string;
     background?: SlideBackground;
     animations?: PPTAnimation[];
