@@ -1,86 +1,44 @@
 <template>
-    <div
-        class="canvas"
-        ref="canvasRef"
-        @mousewheel="($event) => handleMousewheelCanvas($event)"
-    >
-        <div
-            class="viewport-wrapper"
-            :style="{
-                width: viewportStyles.width * canvasScale + 'px',
-                height: viewportStyles.height * canvasScale + 'px',
-                left: viewportStyles.left + 'px',
-                top: viewportStyles.top + 'px'
-            }"
-        >
-            <div
-                class="viewport"
-                ref="viewportRef"
-                :style="{ transform: `scale(${canvasScale})` }"
-            >
-                <video
-                    :style="{ width: viewportStyles.width + 'px', maxHeight: viewportStyles.height + 'px' }"
-                    class="me-video"
-                    ref="videoRef"
-                    :src="videoUrl"
-                ></video>
-            </div>
-        </div>
-    </div>
+    <ScaleCanvas>
+        <video
+            class="me-video"
+            ref="videoRef"
+            :src="videoUrl"
+        ></video>
+    </ScaleCanvas>
 </template>
 
 <script lang="ts">
-import { throttle } from "lodash";
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 import { useStore } from "@/store";
+import ScaleCanvas from "../Scale.vue";
 
-import useScaleCanvas from "@/hooks/useScaleCanvas";
-import useViewportSize from "../Canvas/hooks/useViewportSize";
 import useOssVideo from "./useOssVideo";
 import { Follow } from "@/types/slides";
 
+interface IViewportStyles {
+    width: number;
+    height: number;
+    left: number;
+    top: number;
+}
+
 export default defineComponent({
     name: "editor-canvas",
-    components: {},
+    components: { ScaleCanvas },
+    props: {
+        viewportStyles: {
+            type: Object as PropType<IViewportStyles>
+        }
+    },
     setup() {
         const store = useStore();
-        const ctrlKeyState = computed(() => store.state.ctrlKeyState);
-
-        // 初始化 canvas 显示
-        const canvasRef = ref<HTMLElement>();
-        const canvasScale = computed(() => store.state.canvasScale);
-
-        // 滚动鼠标
-        const { scaleCanvas } = useScaleCanvas();
-        const throttleScaleCanvas = throttle(scaleCanvas, 100, {
-            leading: true,
-            trailing: false
-        });
 
         const follow = computed<Follow>(() => store.getters.currentSlide.follow);
-
-        const handleMousewheelCanvas = (e: WheelEvent) => {
-            e.preventDefault();
-
-            // 按住Ctrl键时：缩放画布
-            if (ctrlKeyState.value) {
-                if (e.deltaY > 0) {
-                    throttleScaleCanvas("-");
-                } else if (e.deltaY < 0) {
-                    throttleScaleCanvas("+");
-                }
-            }
-        };
-
-        const { viewportStyles } = useViewportSize(canvasRef);
 
         const { videoUrl } = useOssVideo(follow);
 
         return {
-            canvasRef,
-            canvasScale,
-            viewportStyles,
-            handleMousewheelCanvas,
             videoUrl
         };
     }
@@ -88,29 +46,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.canvas {
-    height: 100%;
-    user-select: none;
-    overflow: hidden;
-    background-color: $lightGray;
-    position: relative;
-}
-
-.viewport-wrapper {
-    position: absolute;
-    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-}
-
-.viewport {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: 0 0;
-}
-
 .me-video {
     display: block;
+    width: 100%;
+    max-height: 100%;
     margin: 0 auto;
 }
 </style>

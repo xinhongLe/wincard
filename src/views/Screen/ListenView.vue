@@ -140,7 +140,7 @@ export default defineComponent({
         background-position: center;
     }
     .listen-word-list {
-        width: 1000px;
+        width: 100%;
         box-sizing: border-box;
         padding: 20px 0 20px 20px;
         display: flex;
@@ -149,7 +149,7 @@ export default defineComponent({
             background-image: url(~@/assets/images/bg_card.png);
             background-size: 100% 100%;
             height: 80px;
-            width: 176px;
+            width: calc((100% - 120px) / 5);
             margin-bottom: 20px;
             font-size: 22px;
             font-weight: 600;
