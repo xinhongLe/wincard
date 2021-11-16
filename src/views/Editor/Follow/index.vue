@@ -16,19 +16,12 @@ import ScaleCanvas from "../Scale.vue";
 import useOssVideo from "./useOssVideo";
 import { Follow } from "@/types/slides";
 
-interface IViewportStyles {
-    width: number;
-    height: number;
-    left: number;
-    top: number;
-}
-
 export default defineComponent({
     name: "editor-canvas",
     components: { ScaleCanvas },
     props: {
         viewportStyles: {
-            type: Object as PropType<IViewportStyles>
+            type: Object
         }
     },
     setup() {

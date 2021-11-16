@@ -40,6 +40,7 @@ import usePasteEvent from "@/hooks/usePasteEvent";
 import { IWin, Slide } from "@/types/slides";
 import { useStore } from "@/store";
 import { PAGE_TYPE } from "@/configs/page";
+
 export default defineComponent({
     components: {
         EditorHeader,
