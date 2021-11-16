@@ -13,26 +13,39 @@ export default defineComponent({
     name: "APP",
     setup() {
         const onSave = (slide: Slide) => {
-            console.log(slide);
+            console.log(JSON.stringify(slide));
         };
 
-        const slideString = localStorage.exampleSlide;
-        const oldSlide = JSON.parse(JSON.parse(slideString));
-        const newSlide = dealOldData(oldSlide);
-        console.log(oldSlide, newSlide);
+        // const slideIndex = ref(0);
+        // const slideString = localStorage.exampleSlide0;
+        // const oldSlide = JSON.parse(JSON.parse(slideString));
+        // const newSlide = dealOldData(oldSlide);
+        // console.log(oldSlide, newSlide);
         const slide = ref(slides[0]);
 
         setTimeout(() => {
             // slide.value.type = "element";
-            // slide.value = JSON.parse(JSON.stringify(slide.value));
+            // slide.value = JSON.parse(JSON.stringify(newSlide));
         }, 5000);
 
         const pagePrev = () => {
             console.log("上一页");
+            // if (slideIndex.value === 0) return;
+            // slideIndex.value--;
+            // const slideString = localStorage["exampleSlide" + slideIndex.value];
+            // const oldSlide = JSON.parse(JSON.parse(slideString));
+            // const newSlide = dealOldData(oldSlide);
+            // slide.value = newSlide;
         };
 
         const pageNext = () => {
             console.log("下一页");
+            // if (slideIndex.value === 3) return;
+            // slideIndex.value++;
+            // const slideString = localStorage["exampleSlide" + slideIndex.value];
+            // const oldSlide = JSON.parse(JSON.parse(slideString));
+            // const newSlide = dealOldData(oldSlide);
+            // slide.value = newSlide;
         };
 
         const addCard = (callback: (win: IWin) => void) => {

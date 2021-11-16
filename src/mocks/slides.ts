@@ -12,8 +12,8 @@ export const slides: Slide[] = [
                 id: "4cbRxp",
                 left: 0,
                 top: 200,
-                width: 546,
-                height: 362.5,
+                width: 645.5646899307785,
+                height: 520,
                 viewBox: 200,
                 path: "M 0 0 L 0 200 L 200 200 Z",
                 fill: "#5b9bd5",
@@ -27,42 +27,18 @@ export const slides: Slide[] = [
                             id: "sdfs",
                             name: "卡1",
                             slides: [
-                                {
-                                    id: "232",
-                                    name: "页面一",
-                                    type: 11
-                                },
-                                {
-                                    id: "23s2",
-                                    name: "页面一",
-                                    type: 11
-                                },
-                                {
-                                    id: "23d2",
-                                    name: "页面一",
-                                    type: 11
-                                }
+                                { id: "232", name: "页面一", type: 11 },
+                                { id: "23s2", name: "页面一", type: 11 },
+                                { id: "23d2", name: "页面一", type: 11 }
                             ]
                         },
                         {
                             id: "sdfs",
                             name: "卡1",
                             slides: [
-                                {
-                                    id: "23df2",
-                                    name: "页面一",
-                                    type: 11
-                                },
-                                {
-                                    id: "2ddf32",
-                                    name: "页面一",
-                                    type: 11
-                                },
-                                {
-                                    id: "2sdfsd32",
-                                    name: "页面一",
-                                    type: 11
-                                }
+                                { id: "23df2", name: "页面一", type: 11 },
+                                { id: "2ddf32", name: "页面一", type: 11 },
+                                { id: "2sdfsd32", name: "页面一", type: 11 }
                             ]
                         }
                     ]
@@ -74,8 +50,8 @@ export const slides: Slide[] = [
                 id: "ookHrf",
                 left: 0,
                 top: 0,
-                width: 300,
-                height: 320,
+                width: 406.8721901091843,
+                height: 459.75594091201026,
                 viewBox: 200,
                 path: "M 0 0 L 0 200 L 200 200 Z",
                 fill: "#5b9bd5",
@@ -87,13 +63,12 @@ export const slides: Slide[] = [
                 name: "文本1",
                 type: "text",
                 id: "idn7Mx",
-                left: 355,
-                top: 65.25,
+                left: 466.43937772068796,
+                top: 200,
                 width: 585,
-                height: 188,
+                height: 154,
                 lineHeight: 1.2,
-                content:
-                    "<p><strong><span style='font-size:  112px'>PPTIST</span></strong></p>",
+                content: "<p style=\"\"><strong><span style=\"font-size: 112px\">窗卡页编辑</span></strong></p>",
                 rotate: 0,
                 defaultFontName: "Microsoft Yahei",
                 defaultColor: "#333",
@@ -103,12 +78,11 @@ export const slides: Slide[] = [
                 name: "文本2",
                 type: "text",
                 id: "7stmVP",
-                left: 355,
-                top: 253.25,
+                left: 466.43937772068796,
+                top: 388,
                 width: 585,
                 height: 56,
-                content:
-                    "<p><span style='font-size:  24px'>基于 Vue 3.x + TypeScript 的在线演示文稿应用</span></p>",
+                content: "<p style=\"\" class=\"\"><span style=\"font-size: 24px\">基于 Vue 3.x + TypeScript</span></p>",
                 rotate: 0,
                 defaultFontName: "Microsoft Yahei",
                 defaultColor: "#333",
@@ -118,8 +92,8 @@ export const slides: Slide[] = [
                 name: "线条",
                 type: "line",
                 id: "FnpZs4",
-                left: 361,
-                top: 238,
+                left: 472.43937772068796,
+                top: 372.75,
                 start: [0, 0],
                 end: [549, 0],
                 points: ["", ""],
@@ -128,6 +102,7 @@ export const slides: Slide[] = [
                 width: 2
             }
         ],
+        background: { type: "solid", color: "#ffffff" },
         listenWords: [
             {
                 id: "39FED7308B47FE07436EC33844DE78F5",
@@ -165,12 +140,6 @@ export const slides: Slide[] = [
                 pageWordID: "39FFFC654B2B2A9804F1F6914BF1D786"
             }
         ],
-        follow: {
-            src: "ElementFile/435F9C581336C2582C98A7708699585D.mp4"
-        },
-        background: {
-            type: "solid",
-            color: "#ffffff"
-        }
+        follow: { src: "ElementFile/435F9C581336C2582C98A7708699585D.mp4" }
     }
 ];
