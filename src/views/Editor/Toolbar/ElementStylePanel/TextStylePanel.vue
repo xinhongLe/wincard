@@ -21,9 +21,9 @@
                 @change="value => emitRichTextCommand('fontname', value)"
             >
                 <template #suffixIcon><IconFontSize /></template>
-                <a-select-opt-group label="系统字体">
+                <a-select-opt-group label="基础字体">
                     <a-select-option
-                        v-for="font in availableFonts"
+                        v-for="font in baseFonts"
                         :key="font.value"
                         :value="font.value"
                     >
@@ -328,7 +328,7 @@ import { computed, defineComponent, ref, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTTextElement } from "@/types/slides";
 import emitter, { EmitterEvents, RichTextCommand } from "@/utils/emitter";
-import { WEB_FONTS } from "@/configs/font";
+import { BASE_FONTS, WEB_FONTS } from "@/configs/font";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 import ElementOpacity from "../common/ElementOpacity.vue";
@@ -403,6 +403,7 @@ const presetStyles = [
 ];
 
 const webFonts = WEB_FONTS;
+const baseFonts = BASE_FONTS;
 
 export default defineComponent({
     name: "text-style-panel",
@@ -523,6 +524,7 @@ export default defineComponent({
             wordSpace,
             richTextAttrs,
             availableFonts,
+            baseFonts,
             webFonts,
             fontSizeOptions,
             lineHeightOptions,

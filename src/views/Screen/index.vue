@@ -1,7 +1,8 @@
 <template>
-    <div class="pptist-screen">
+    <div class="pptist-screen" :class="disableSelect && 'pptist-disable-select'">
         <div
             class="slide-list"
+            @mousedown="disableSelectEnd"
         >
             <div
                 :class="[
@@ -112,6 +113,8 @@ export default defineComponent({
         const steps = computed(() => currentSlide.value.steps || []);
         const stepIndex = ref(-1);
 
+        const disableSelect = ref(false);
+
         const slideWidth = ref(0);
         const slideHeight = ref(0);
 
@@ -180,8 +183,27 @@ export default defineComponent({
 
         const { runAnimation } = useActionAnimation();
 
+        // 防止点击过快导致文本被选中
+        const disableSelectEnd = throttle(() => {
+            disableSelect.value = false;
+
+            // 清除选中
+            const selection: Selection | null = window.getSelection();
+            selection && selection.removeAllRanges();
+        }, 300);
+
+        const disableSelectStart = () => {
+            // 清除选中
+            // const selection: Selection | null = window.getSelection();
+            // selection && selection.removeAllRanges();
+            disableSelect.value = true;
+            // disableSelectEnd();
+        };
+
         // 向上/向下播放
         const execPrev = () => {
+            disableSelectStart();
+
             // 非素材页直接跳过
             if (currentSlide.value.type !== PAGE_TYPE.ELEMENT) {
                 stepIndex.value = -1;
@@ -205,6 +227,8 @@ export default defineComponent({
             stepIndex.value--;
         };
         const execNext = () => {
+            disableSelectStart();
+
             // 非素材页直接跳过
             if (currentSlide.value.type !== PAGE_TYPE.ELEMENT) {
                 stepIndex.value = -1;
@@ -310,7 +334,9 @@ export default defineComponent({
             slideThumbnailModelVisible,
             writingBoardToolVisible,
             showPageNumber,
-            openCard
+            openCard,
+            disableSelect,
+            disableSelectEnd
         };
     }
 });
@@ -322,6 +348,12 @@ export default defineComponent({
     height: 100%;
     position: relative;
     background-color: #111;
+}
+.pptist-disable-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .slide-list {
     background: #1d1d1d;

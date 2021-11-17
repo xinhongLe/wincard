@@ -193,7 +193,7 @@ const dealText = (oldText: IOldTextElement) => {
     element.height = oldText.Height;
     element.content = oldText.Text;
     element.rotate = oldText.Angle;
-    element.defaultFontName = oldText.FontFamily;
+    element.defaultFontName = oldText.FontFamily.replace(" UI", "");
     element.defaultColor = converColor(oldText.Foreground);
     element.fill = converColor(oldText.Background);
     element.defaultFontSize = oldText.FontSize + "px";
