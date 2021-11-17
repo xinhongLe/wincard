@@ -9,6 +9,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 
 import WinCard from "wincard";
+import "wincard/dist/wincard.css";
 
 createApp(App)
     .use(WinCard)

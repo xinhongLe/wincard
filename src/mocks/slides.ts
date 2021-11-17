@@ -3,7 +3,7 @@ import { Slide } from "@/types/slides";
 export const slides: Slide[] = [
     {
         id: "39FFFBBE2B08D1CFD8FCA24DE655B35B",
-        type: "element",
+        type: "listen",
         viewportRatio: 0.5625,
         elements: [
             {
@@ -140,6 +140,16 @@ export const slides: Slide[] = [
                 pageWordID: "39FFFC654B2B2A9804F1F6914BF1D786"
             }
         ],
-        follow: { src: "ElementFile/435F9C581336C2582C98A7708699585D.mp4" }
+        follow: {
+            src: "ElementFile/83B779265F1E8B86675B73F77B68895D.mp4",
+            pauseList: [
+                {
+                    time: "00:00:07.7815570"
+                },
+                {
+                    time: "00:00:17.7815570"
+                }
+            ]
+        }
     }
 ];

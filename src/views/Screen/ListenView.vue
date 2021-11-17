@@ -145,6 +145,7 @@ export default defineComponent({
         padding: 20px 0 20px 20px;
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-between;
         .listen-word-item {
             background-image: url(~@/assets/images/bg_card.png);
             background-size: 100% 100%;

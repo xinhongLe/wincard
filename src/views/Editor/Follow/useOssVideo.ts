@@ -4,16 +4,16 @@ import { ref, watch, computed, ComputedRef } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssVideoUrl } from "@/utils/video";
 
-export default (follow: ComputedRef<Follow>) => {
+export default (follow: ComputedRef<Follow | undefined>) => {
     const videoUrl = ref("");
     const store = useStore();
     const updateVideo = () => {
         getToken(async (ossToken: OssToken) => {
-            if (follow.value.ossSrc && follow.value.ossExpiration === ossToken.Expiration) {
+            if (follow.value && follow.value.ossSrc && follow.value.ossExpiration === ossToken.Expiration) {
                 // ossSrc 存在 且 ossToken 未过期 则不请求 直接返回
                 videoUrl.value = follow.value.ossSrc;
             } else {
-                if (follow.value.src) {
+                if (follow.value && follow.value.src) {
                     const res = await getOssVideoUrl(follow.value.src);
                     videoUrl.value = res.url;
                     const props = {

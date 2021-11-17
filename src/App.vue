@@ -22,6 +22,7 @@ export default defineComponent({
         // const newSlide = dealOldData(oldSlide);
         // console.log(oldSlide, newSlide);
         const slide = ref(slides[0]);
+        console.log(slide.value);
 
         setTimeout(() => {
             // slide.value.type = "element";

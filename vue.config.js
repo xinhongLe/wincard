@@ -4,7 +4,9 @@ module.exports = {
     publicPath: "./",
     productionSourceMap: false,
     css: {
-        extract: false,
+        extract: {
+            filename: "[name].css"
+        },
         loaderOptions: {
             sass: {
                 prependData: `
@@ -30,7 +32,7 @@ module.exports = {
             .rule("images")
             .use("url-loader")
             .loader("url-loader")
-            .tap(options => Object.assign(options, { limit: 5120 }));
+            .tap(options => Object.assign(options, { limit: 51200 }));
     },
     configureWebpack: {
         externals: process.env.NODE_ENV === "development" ? [] : [

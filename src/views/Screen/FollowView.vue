@@ -76,7 +76,7 @@
 
 <script lang="ts">
 import useOssVideo from "@/views/Editor/Follow/useOssVideo";
-import { Slide, PauseList, Follow } from "@/types/slides";
+import { Slide, Follow } from "@/types/slides";
 import { computed, defineComponent, onMounted, onUnmounted, PropType, ref } from "vue";
 
 export default defineComponent({
@@ -88,7 +88,7 @@ export default defineComponent({
     },
     setup(props) {
         const videoRef = ref<HTMLVideoElement>();
-        const follow = computed<Follow>(() => props.slide.follow || { src: "" });
+        const follow = computed<Follow | undefined>(() => props.slide.follow);
         const { videoUrl } = useOssVideo(follow);
 
         let timeInterval: number | undefined;
@@ -96,7 +96,12 @@ export default defineComponent({
 
         const pauseIndex = ref(0);
         const mode = ref(0);
-        const pauseList = ref<PauseList[]>([]);
+        const pauseList = computed(() => {
+            if (follow.value) {
+                return (follow.value.pauseList || []).concat([{ isEnd: true }]);
+            }
+            return [];
+        });
         const timeCount = ref(0);
         const isPlaying = ref(false);
         const isEnd = ref(false);
@@ -231,7 +236,6 @@ export default defineComponent({
         const init = () => {
             pauseIndex.value = 0;
             mode.value = 1;
-            pauseList.value = pauseList.value.concat([{ isEnd: true }]);
             clearInterval(timeInterval);
             if (videoRef.value) {
                 videoRef.value.addEventListener("timeupdate", watchTimeUpdate);

@@ -208,8 +208,9 @@ export const mutations: MutationTree<State> = {
         state.previewElements = elements as PPTElement[];
     },
 
-    [MutationTypes.UPDATE_FOLLOW](state, follow: Follow) {
-        state.slides[state.slideIndex].follow = follow;
+    [MutationTypes.UPDATE_FOLLOW](state, props: Follow) {
+        const follow = state.slides[state.slideIndex].follow;
+        state.slides[state.slideIndex].follow = { ...follow, ...props };
     },
 
     // listen

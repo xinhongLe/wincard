@@ -1,10 +1,12 @@
 <template>
     <ScaleCanvas>
-        <div
-            class="listen-word-list"
-        >
-            <div class="listen-word-item" v-for="(item, index) in listenWords" :key="index">
-                {{item.name}}
+        <div class="liston-bg">
+            <div
+                class="listen-word-list"
+            >
+                <div class="listen-word-item" v-for="(item, index) in listenWords" :key="index">
+                    {{item.name}}
+                </div>
             </div>
         </div>
     </ScaleCanvas>
@@ -33,13 +35,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.listen-word-list {
+.liston-bg {
     box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
     background-image: url(~@/assets/images/bg_blue.png);
     background-size: 110% 110%;
     background-position: center;
     width: 100%;
     height: 100%;
+    box-sizing: border-box;
+}
+.listen-word-list {
+    width: 100%;
     box-sizing: border-box;
     padding: 20px 0 20px 20px;
     display: flex;
