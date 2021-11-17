@@ -263,7 +263,8 @@ export default defineComponent({
             videoStatus,
             videoEnd,
             playEvent,
-            checkMode
+            checkMode,
+            pausePlay
         };
     }
 });
