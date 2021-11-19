@@ -185,13 +185,17 @@ const dealText = (oldText: IOldTextElement) => {
         defaultColor: "",
         defaultFontSize: ""
     };
+    // 由于旧数据文本在行内是居上显示的，所以这类计算上下的偏移量
+    const realTextHeight = getTextHeight(oldText.FontSize, oldText.FontFamily, oldText.Text);
+    const offsetTop = (oldText.LineHeight - realTextHeight) / 2;
     element.id = oldText.UUID;
     element.name = oldText.Name;
-    element.top = oldText.Top;
-    element.left = oldText.Left;
-    element.width = oldText.Width;
-    element.height = oldText.Height;
-    element.content = oldText.Text;
+    // 处理文本内边距的问题
+    element.top = oldText.Top - 10 - offsetTop;
+    element.left = oldText.Left - 10;
+    element.width = oldText.Width + 20;
+    element.height = oldText.Height + 20;
+    element.content = dealTextContent(oldText.Text);
     element.rotate = oldText.Angle;
     element.defaultFontName = oldText.FontFamily.replace(" UI", "");
     element.defaultColor = converColor(oldText.Foreground);
@@ -202,8 +206,35 @@ const dealText = (oldText: IOldTextElement) => {
     element.outline.color = converColor(oldText.LineBrush);
     element.outline.width = oldText.LineWidth;
     element.outline.style = oldText.LineType === 0 ? "dashed" : "solid";
-    element.lineHeight = oldText.LineHeight / oldText.Height < 1 ? 1 : oldText.LineHeight / oldText.Height;
+    element.lineHeight = oldText.LineHeight;
     return element;
+};
+
+const getTextHeight = (fontSize: number, fontFamily: string, text: string) => {
+    const span: HTMLSpanElement = document.createElement("span");
+    const height = span.offsetHeight;
+    span.style.visibility = "hidden";
+    span.style.fontSize = fontSize + "px";
+    span.style.fontFamily = fontFamily;
+    span.style.display = "inline-block";
+    document.body.appendChild(span);
+    if (typeof span.textContent !== "undefined") {
+        span.textContent = text;
+    } else {
+        span.innerText = text;
+    }
+    const result = parseFloat(window.getComputedStyle(span).height) - height;
+    span.remove();
+    return result;
+};
+
+const dealTextContent = (text: string) => {
+    let str = text.replace(/\r\n/g, "</p><p>");
+    str = str.replace(/\n/g, "</p><p>");
+    str = str.replace(/\r/g, "</p><p>");
+    str = "<p>" + str + "</p>";
+    str = str.replace(/\s/g, "&nbsp;");
+    return str;
 };
 
 interface IOldImageElement {
@@ -233,6 +264,7 @@ const dealImage = (oldImage: IOldImageElement) => {
         type: "image",
         rotate: 0,
         fixedRatio: true,
+        stretch: 1,
         src: ""
     };
     element.id = oldImage.UUID;
@@ -244,7 +276,8 @@ const dealImage = (oldImage: IOldImageElement) => {
     element.rotate = oldImage.Angle;
     element.src = OSS_PATH + "/" + oldImage.OssFileName;
     element.display = oldImage.IsVisibility;
-    element.fixedRatio = oldImage.ImageStretch === 0;
+    element.fixedRatio = true;
+    element.stretch = oldImage.ImageStretch;
     return element;
 };
 

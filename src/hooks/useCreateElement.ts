@@ -84,6 +84,7 @@ export default () => {
                 ossExpiration: expiration,
                 width,
                 height,
+                stretch: 1,
                 left: (VIEWPORT_SIZE - width) / 2,
                 top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
                 fixedRatio: true,

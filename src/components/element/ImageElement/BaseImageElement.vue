@@ -30,10 +30,7 @@
                         :src="imageUrl"
                         :draggable="false"
                         :style="{
-                            top: imgPosition.top,
-                            left: imgPosition.left,
-                            width: imgPosition.width,
-                            height: imgPosition.height,
+                            ...imgPosition,
                             filter: filter
                         }"
                         alt=""
@@ -74,8 +71,9 @@ export default defineComponent({
         const flipV = computed(() => props.elementInfo.flipV);
         const { flipStyle } = useElementFlip(flipH, flipV);
 
+        const stretch = computed(() => props.elementInfo.stretch);
         const clip = computed(() => props.elementInfo.clip);
-        const { clipShape, imgPosition } = useClipImage(clip);
+        const { clipShape, imgPosition } = useClipImage(clip, stretch);
 
         const filters = computed(() => props.elementInfo.filters);
         const { filter } = useFilter(filters);

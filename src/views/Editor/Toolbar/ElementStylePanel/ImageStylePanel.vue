@@ -5,6 +5,15 @@
             :style="{ backgroundImage: `url(${handleElement.ossSrc})` }"
         ></div>
 
+        <a-select
+            style="width: 100%;margin-bottom: 10px;"
+            :value="imageViewModel"
+            @change="imageViewModelChange"
+        >
+            <a-select-option :value="0">缩放</a-select-option>
+            <a-select-option :value="1">拉伸</a-select-option>
+        </a-select>
+
         <a-button-group class="row">
             <a-button style="flex: 5;" @click="clipImage()"
                 ><IconTailoring class="btn-icon" /> 裁剪图片</a-button
@@ -234,6 +243,7 @@ export default defineComponent({
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
 
         const clipPanelVisible = ref(false);
+        const imageViewModel = ref(handleElement.value ? handleElement.value.stretch : 0);
 
         const filterOptions = ref<FilterOption[]>(
             JSON.parse(JSON.stringify(defaultFilters))
@@ -243,7 +253,7 @@ export default defineComponent({
             handleElement,
             () => {
                 if (!handleElement.value || handleElement.value.type !== "image") return;
-
+                imageViewModel.value = handleElement.value.stretch;
                 const filters = handleElement.value.filters;
                 if (filters) {
                     filterOptions.value = defaultFilters.map(item => {
@@ -277,6 +287,17 @@ export default defineComponent({
             store.commit(MutationTypes.UPDATE_ELEMENT, {
                 id: handleElement.value.id,
                 props
+            });
+            addHistorySnapshot();
+        };
+
+        // 图片显示模式设置
+        const imageViewModelChange = (value: number) => {
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props: {
+                    stretch: value
+                }
             });
             addHistorySnapshot();
         };
@@ -450,7 +471,9 @@ export default defineComponent({
             presetImageClip,
             replaceImage,
             resetImage,
-            setBackgroundImage
+            setBackgroundImage,
+            imageViewModel,
+            imageViewModelChange
         };
     }
 });

@@ -293,7 +293,7 @@
                     v-for="item in lineHeightOptions"
                     :key="item"
                     :value="item"
-                    >{{ item }}倍</a-select-option
+                    >{{ item }}px</a-select-option
                 >
             </a-select>
         </div>
@@ -463,16 +463,31 @@ export default defineComponent({
             "120px"
         ];
         const lineHeightOptions = [
-            0.9,
-            1.0,
-            1.15,
-            1.2,
-            1.4,
-            1.5,
-            1.8,
-            2.0,
-            2.5,
-            3.0
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48,
+            50,
+            52,
+            54,
+            56,
+            58,
+            60,
+            62,
+            64,
+            66,
+            68,
+            70,
+            72
         ];
         const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10];
 

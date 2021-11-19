@@ -17,7 +17,7 @@
                     backgroundColor: elementInfo.fill,
                     opacity: elementInfo.opacity,
                     textShadow: shadowStyle,
-                    lineHeight: elementInfo.lineHeight,
+                    lineHeight: elementInfo.lineHeight + 'px',
                     letterSpacing: (elementInfo.wordSpace || 0) + 'px',
                     color: elementInfo.defaultColor,
                     fontFamily: elementInfo.defaultFontName,

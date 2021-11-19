@@ -2,7 +2,7 @@ import { computed, Ref } from "vue";
 import { CLIPPATHS, ClipPathTypes } from "@/configs/imageClip";
 import { ImageElementClip } from "@/types/slides";
 
-export default (clip: Ref<ImageElementClip | undefined>) => {
+export default (clip: Ref<ImageElementClip | undefined>, stretch?: Ref<number>) => {
     const clipShape = computed(() => {
         if (!clip.value) return CLIPPATHS.rect;
         const shape = clip.value.shape || ClipPathTypes.RECT;
@@ -12,6 +12,15 @@ export default (clip: Ref<ImageElementClip | undefined>) => {
 
     const imgPosition = computed(() => {
         if (!clip.value) {
+            if (stretch && stretch.value === 0) {
+                return {
+                    top: "0",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    maxWidth: "100%",
+                    maxHeight: "100%"
+                };
+            }
             return {
                 top: "0",
                 left: "0",

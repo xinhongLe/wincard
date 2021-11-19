@@ -312,6 +312,8 @@ export interface ImageElementClip {
  *
  * rotate: 旋转角度
  *
+ * streach: 图片显示形式 0 缩放 1 拉伸
+ *
  * outline?: 边框
  *
  * filters?: 图片滤镜
@@ -331,6 +333,7 @@ export interface PPTImageElement extends PPTBaseElement {
     ossSrc?: string;
     ossExpiration?: string;
     rotate: number;
+    stretch: number;
     outline?: PPTElementOutline;
     filters?: ImageElementFilters;
     clip?: ImageElementClip;
