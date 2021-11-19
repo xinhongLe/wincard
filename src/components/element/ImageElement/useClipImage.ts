@@ -14,9 +14,9 @@ export default (clip: Ref<ImageElementClip | undefined>, stretch?: Ref<number>) 
         if (!clip.value) {
             if (stretch && stretch.value === 0) {
                 return {
-                    top: "0",
+                    top: "50%",
                     left: "50%",
-                    transform: "translateX(-50%)",
+                    transform: "translate(-50%, -50%)",
                     maxWidth: "100%",
                     maxHeight: "100%"
                 };

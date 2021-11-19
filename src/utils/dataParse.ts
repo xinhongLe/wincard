@@ -217,6 +217,7 @@ const getTextHeight = (fontSize: number, fontFamily: string, text: string) => {
     span.style.fontSize = fontSize + "px";
     span.style.fontFamily = fontFamily;
     span.style.display = "inline-block";
+    span.style.whiteSpace = "nowrap";
     document.body.appendChild(span);
     if (typeof span.textContent !== "undefined") {
         span.textContent = text;
@@ -421,13 +422,8 @@ const dealLine = (oldLine: IOldLineElement) => {
     element.style = oldLine.LineType === 0 ? "dashed" : "solid";
     element.color = converColor(oldLine.LineBrush);
     element.display = oldLine.IsVisibility;
-    if (oldLine.Angle <= 90 || (oldLine.Angle > 180 && oldLine.Angle <= 270)) {
-        element.start = [oldLine.Width / 2 * (1 - Math.cos(oldLine.Angle * Math.PI / 180)), oldLine.Width / 2 * Math.sin(oldLine.Angle * Math.PI / 180)];
-        element.end = [oldLine.Width / 2 * (1 + Math.cos(oldLine.Angle * Math.PI / 180)), -oldLine.Width / 2 * Math.sin(oldLine.Angle * Math.PI / 180)];
-    } else {
-        element.start = [oldLine.Width / 2 * (1 - Math.cos(oldLine.Angle * Math.PI / 180)), -oldLine.Width / 2 * Math.cos(oldLine.Angle * Math.PI / 180)];
-        element.end = [oldLine.Width / 2 * (1 + Math.cos(oldLine.Angle * Math.PI / 180)), oldLine.Width / 2 * Math.cos(oldLine.Angle * Math.PI / 180)];
-    }
+    element.start = [oldLine.Width / 2 * (1 - Math.cos(oldLine.Angle * Math.PI / 180)), oldLine.Width / 2 * Math.sin(oldLine.Angle * Math.PI / 180)];
+    element.end = [oldLine.Width / 2 * (1 + Math.cos(oldLine.Angle * Math.PI / 180)), -oldLine.Width / 2 * Math.sin(oldLine.Angle * Math.PI / 180)];
     return element;
 };
 
