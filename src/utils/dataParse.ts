@@ -414,6 +414,8 @@ const dealLine = (oldLine: IOldLineElement) => {
         color: "",
         points: ["", ""]
     };
+    oldLine.Angle = oldLine.Angle % 360;
+    if (oldLine.Angle < 0) oldLine.Angle = 360 + oldLine.Angle;
     element.id = oldLine.UUID;
     element.name = oldLine.Name;
     element.width = oldLine.LineWidth;
@@ -422,8 +424,8 @@ const dealLine = (oldLine: IOldLineElement) => {
     element.style = oldLine.LineType === 0 ? "dashed" : "solid";
     element.color = converColor(oldLine.LineBrush);
     element.display = oldLine.IsVisibility;
-    element.start = [oldLine.Width / 2 * (1 - Math.cos(oldLine.Angle * Math.PI / 180)), oldLine.Width / 2 * Math.sin(oldLine.Angle * Math.PI / 180)];
-    element.end = [oldLine.Width / 2 * (1 + Math.cos(oldLine.Angle * Math.PI / 180)), -oldLine.Width / 2 * Math.sin(oldLine.Angle * Math.PI / 180)];
+    element.start = [oldLine.Width / 2 * (1 - Math.cos(oldLine.Angle * Math.PI / 180)), -oldLine.Width / 2 * Math.sin(oldLine.Angle * Math.PI / 180)];
+    element.end = [oldLine.Width / 2 * (1 + Math.cos(oldLine.Angle * Math.PI / 180)), oldLine.Width / 2 * Math.sin(oldLine.Angle * Math.PI / 180)];
     return element;
 };
 
