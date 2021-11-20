@@ -80,7 +80,8 @@ import {
     onMounted,
     onUnmounted,
     provide,
-    ref
+    ref,
+    watch
 } from "vue";
 import { throttle } from "lodash";
 import { useStore } from "@/store";
@@ -200,6 +201,10 @@ export default defineComponent({
             // disableSelectEnd();
         };
 
+        watch(slides, () => {
+            stepIndex.value = -1;
+        });
+
         // 向上/向下播放
         const execPrev = () => {
             disableSelectStart();
@@ -236,7 +241,7 @@ export default defineComponent({
             }
 
             if (stepIndex.value === steps.value.length - 1) {
-                stepIndex.value = -1;
+                // stepIndex.value = -1;
                 return emit("pageNext");
             }
 
