@@ -1,5 +1,5 @@
 <template>
-    <div class="pptist-screen" :class="disableSelect && 'pptist-disable-select'">
+    <div class="pptist-screen" :class="{'pptist-disable-select': disableSelect, 'fixed': !inline}">
         <div
             class="slide-list"
             @mousedown="disableSelectEnd"
@@ -42,7 +42,7 @@
             @close="writingBoardToolVisible = false"
         />
 
-        <div class="tools">
+        <div class="tools" v-if="!inline">
             <IconLeftTwo
                 class="tool-btn"
                 theme="two-tone"
@@ -104,6 +104,12 @@ export default defineComponent({
     components: {
         ScreenSlide,
         WritingBoardTool
+    },
+    props: {
+        inline: {
+            type: Boolean,
+            default: false
+        }
     },
     setup(props, { emit }) {
         const store = useStore();
@@ -352,7 +358,13 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     position: relative;
-    background-color: #111;
+    &.fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10000;
+        background-color: #111;
+    }
 }
 .pptist-disable-select {
     -webkit-user-select: none;

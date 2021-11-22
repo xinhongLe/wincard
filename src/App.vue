@@ -1,6 +1,6 @@
 <template>
-    <PPTEditor :slide="slide" @onSave="onSave" @addCard="addCard" />
-    <!-- <ScreenView :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @openCard="openCard" /> -->
+    <!-- <PPTEditor :slide="slide" @onSave="onSave" @addCard="addCard" /> -->
+    <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @openCard="openCard" :inline="true" />
 </template>
 
 <script lang="ts">
@@ -16,16 +16,22 @@ export default defineComponent({
             console.log(JSON.stringify(slide));
         };
 
+        const screenRef = ref();
+        // screenRef.value.execPrev(); 上一步
+        // screenRef.value.execNext(); 下一步
+
         // const slideIndex = ref(0);
-        // const slideString = localStorage.exampleSlide0;
-        // const oldSlide = JSON.parse(JSON.parse(slideString));
-        // const newSlide = dealOldData(oldSlide);
-        // console.log(oldSlide, newSlide);
-        const slide = ref(slides[0]);
+        const slideString = localStorage.exampleSlide0;
+        const oldSlide = JSON.parse(JSON.parse(slideString));
+        const newSlide = dealOldData(oldSlide);
+        console.log(oldSlide, newSlide);
+        const slide = ref(newSlide);
         console.log(slide.value);
 
         setTimeout(() => {
-            // slide.value.type = "element";
+            // const slideString = localStorage.exampleSlide1;
+            // const oldSlide = JSON.parse(JSON.parse(slideString));
+            // const newSlide = dealOldData(oldSlide);
             // slide.value = JSON.parse(JSON.stringify(newSlide));
         }, 5000);
 
@@ -110,7 +116,8 @@ export default defineComponent({
             slide,
             pagePrev,
             pageNext,
-            openCard
+            openCard,
+            screenRef
         };
     }
 });

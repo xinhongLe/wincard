@@ -3,7 +3,7 @@ import { Slide } from "@/types/slides";
 export const slides: Slide[] = [
     {
         id: "39FFFBBE2B08D1CFD8FCA24DE655B35B",
-        type: "follow",
+        type: "listen",
         viewportRatio: 0.5625,
         elements: [
             {

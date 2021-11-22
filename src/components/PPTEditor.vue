@@ -4,10 +4,6 @@
         @addCard="addCard"
     />
     <Screen
-        style="
-        position: fixed;
-        inset: 0;
-        z-index: 1000;"
         @openCard="openCard"
         v-if="screening"
     />

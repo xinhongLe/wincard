@@ -1,5 +1,7 @@
 <template>
     <Screen
+        ref="screenRef"
+        :inline="inline"
         @pagePrev="pagePrev()"
         @pageNext="pageNext()"
         @openCard="openCard"
@@ -7,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, watch } from "vue";
+import { computed, defineComponent, PropType, ref, watch } from "vue";
 import Screen from "@/views/Screen/index.vue";
 import { IWin, Slide } from "@/types/slides";
 import { MutationTypes, useStore } from "@/store";
@@ -16,6 +18,10 @@ export default defineComponent({
     props: {
         slide: {
             type: Object as PropType<Slide>
+        },
+        inline: {
+            type: Boolean,
+            default: false
         }
     },
     components: {
@@ -29,6 +35,16 @@ export default defineComponent({
         watch(slide, () => {
             store.commit(MutationTypes.SET_SLIDES, [props.slide]);
         });
+
+        const screenRef = ref();
+
+        const execPrev = () => {
+            screenRef.value.execPrev();
+        };
+
+        const execNext = () => {
+            screenRef.value.execNext();
+        };
 
         const pagePrev = () => {
             emit("pagePrev");
@@ -45,7 +61,10 @@ export default defineComponent({
         return {
             pagePrev,
             pageNext,
-            openCard
+            openCard,
+            screenRef,
+            execPrev,
+            execNext
         };
     }
 });
