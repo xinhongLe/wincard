@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 
-const AI_XUE_SHI_API = "http://apitest.aixueshi.top:5002";
+const AI_XUE_SHI_API = "https://api.aixueshi.top:5003";
 
 interface IPager {
     PageNumber: number;

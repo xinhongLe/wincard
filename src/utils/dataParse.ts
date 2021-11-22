@@ -212,7 +212,6 @@ const dealText = (oldText: IOldTextElement) => {
     element.outline.width = oldText.LineWidth;
     element.outline.style = oldText.LineType === 0 ? "dashed" : "solid";
     element.lineHeight = oldText.LineHeight;
-    console.log(element);
     return element;
 };
 
