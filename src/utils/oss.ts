@@ -75,7 +75,7 @@ export const getToken = async (callback: any) => {
                 (new Date().getTime() + 3000000).toString()
             );
             localStorage.setItem(
-                "ossToken",
+                "wincard_ossToken",
                 JSON.stringify(res.result.ossToken)
             );
             callback(res.result.ossToken);
