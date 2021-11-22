@@ -36,11 +36,11 @@ export const dealOldData = (oldSlide: IOldSlide) => {
 
     slide.background = getSlideData(oldSlide.PageSetting);
 
-    slide.steps = getSlideStepData(oldSlide.Steps);
+    slide.steps = getSlideStepData(oldSlide.Steps || []);
 
-    const sortOldElenents = sortElementsByZIndex(oldSlide.Elements);
+    const sortOldElenents = sortElementsByZIndex(oldSlide.Elements || []);
 
-    slide.elements = getElementsData(sortOldElenents, oldSlide.Events);
+    slide.elements = getElementsData(sortOldElenents, oldSlide.Events || []);
     return slide;
 };
 
@@ -185,6 +185,8 @@ const dealText = (oldText: IOldTextElement) => {
         defaultColor: "",
         defaultFontSize: ""
     };
+    // LineHeight 不存在的情况
+    oldText.LineHeight = oldText.LineHeight || 0;
     oldText.LineHeight = oldText.LineHeight < oldText.FontSize ? oldText.FontSize : oldText.LineHeight;
     // 由于旧数据文本在行内是居上显示的，所以这类计算上下的偏移量
     const realTextHeight = getTextHeight(oldText.FontSize, oldText.FontFamily, oldText.Text);
@@ -210,6 +212,7 @@ const dealText = (oldText: IOldTextElement) => {
     element.outline.width = oldText.LineWidth;
     element.outline.style = oldText.LineType === 0 ? "dashed" : "solid";
     element.lineHeight = oldText.LineHeight;
+    console.log(element);
     return element;
 };
 
