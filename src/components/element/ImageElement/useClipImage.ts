@@ -18,7 +18,10 @@ export default (clip: Ref<ImageElementClip | undefined>, stretch?: Ref<number>) 
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                     maxWidth: "100%",
-                    maxHeight: "100%"
+                    maxHeight: "100%",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain"
                 };
             }
             return {
