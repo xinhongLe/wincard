@@ -22,7 +22,8 @@ import Component from "@/plugins/component";
 import Directive from "@/plugins/directive";
 
 export default {
-    install(app: App) {
+    install(app: App, url: string) {
+        (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API = url;
         app.use(Icon);
         app.use(Component);
         app.use(Directive);

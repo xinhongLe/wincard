@@ -56,7 +56,7 @@ export const uploadFile = (file: File): Promise<string> => {
 // 为了防止多次请求ossToken getOssToken 这里对请求加上锁 进行排队处理
 let callbackStash: any = null;
 export const getToken = async (callback: any) => {
-    const time = Number(localStorage.getItem("ossTokenExpireTime") || 0);
+    const time = Number(localStorage.getItem("wincard_ossTokenExpireTime") || 0);
     const currentTime = new Date().getTime();
     if (callbackStash) {
         setTimeout(() => {
@@ -71,7 +71,7 @@ export const getToken = async (callback: any) => {
         const res: any = await getOssToken();
         if (res.resultCode === 200) {
             localStorage.setItem(
-                "ossTokenExpireTime",
+                "wincard_ossTokenExpireTime",
                 (new Date().getTime() + 3000000).toString()
             );
             localStorage.setItem(
@@ -80,11 +80,11 @@ export const getToken = async (callback: any) => {
             );
             callback(res.result.ossToken);
         } else {
-            callback(JSON.parse(localStorage.getItem("ossToken") || "{}"));
+            callback(JSON.parse(localStorage.getItem("wincard_ossToken") || "{}"));
         }
         callbackStash = null;
     } else {
-        callback(JSON.parse(localStorage.getItem("ossToken") || "{}"));
+        callback(JSON.parse(localStorage.getItem("wincard_ossToken") || "{}"));
     }
 };
 
