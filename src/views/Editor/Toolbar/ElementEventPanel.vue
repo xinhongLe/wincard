@@ -228,7 +228,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
+import { computed, defineComponent, reactive, ref, watch, watchEffect } from "vue";
 import { IWin, PPTCard, PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import { MutationTypes, useStore } from "@/store";
 import { INANIMATIONS, OUTANIMATIONS } from "@/configs/animation";
@@ -387,7 +387,10 @@ export default defineComponent({
         };
 
         const activeCard = ref(0);
-        const cardList = ref<PPTCard[]>([]);
+        const cardList = ref<PPTCard[]>(handleElement.value.win?.cards || []);
+        watch(handleElement.value, () => {
+            cardList.value = handleElement.value.win?.cards || [];
+        });
 
         const addCard = () => {
             emit("addCard", (win: IWin) => {
