@@ -5,8 +5,7 @@
             top: elementInfo.top + 'px',
             left: elementInfo.left + 'px',
             width: elementInfo.width + 'px',
-            height: elementInfo.height + 'px',
-            transform: `rotate(${elementInfo.rotate}deg)`
+            height: elementInfo.height + 'px'
         }"
     >
         <div
