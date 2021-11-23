@@ -326,8 +326,8 @@ export default defineComponent({
 
         provide("slideScale", scale);
 
-        const openCard = (win: IWin) => {
-            emit("openCard", win);
+        const openCard = (wins: IWin[]) => {
+            emit("openCard", wins);
         };
 
         return {

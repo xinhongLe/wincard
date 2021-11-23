@@ -58,8 +58,8 @@ export default defineComponent({
             return pageTypeMap[slideType.value] || null;
         });
 
-        const openCard = (win: IWin) => {
-            emit("openCard", win);
+        const openCard = (wins: IWin[]) => {
+            emit("openCard", wins);
         };
 
         return {

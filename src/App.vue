@@ -25,7 +25,7 @@ export default defineComponent({
         const oldSlide = JSON.parse(JSON.parse(slideString));
         const newSlide = dealOldData(oldSlide);
         console.log(oldSlide, newSlide);
-        const slide = ref(newSlide);
+        const slide = ref(slides[0]);
         console.log(slide.value);
 
         setTimeout(() => {
@@ -55,14 +55,14 @@ export default defineComponent({
             // slide.value = newSlide;
         };
 
-        const addCard = (callback: (win: IWin) => void) => {
+        const addCard = (callback: (wins: IWin[]) => void) => {
             console.log("addCard");
-            callback && callback({
+            callback && callback([{
                 id: "xxx",
                 cards: [
                     {
                         id: "sdfs",
-                        name: "卡1",
+                        name: "卡2",
                         slides: [
                             {
                                 id: "232",
@@ -103,11 +103,11 @@ export default defineComponent({
                         ]
                     }
                 ]
-            });
+            }]);
         };
 
-        const openCard = (win: IWin) => {
-            console.log(win);
+        const openCard = (wins: IWin[]) => {
+            console.log(wins);
         };
 
         return {

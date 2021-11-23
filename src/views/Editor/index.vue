@@ -72,7 +72,7 @@ export default defineComponent({
             emit("onSave", slide);
         };
 
-        const addCard = (callback: (win: IWin) => void) => {
+        const addCard = (callback: (wins: IWin[]) => void) => {
             emit("addCard", callback);
         };
 

@@ -20,7 +20,7 @@ export const slides: Slide[] = [
                 fixedRatio: false,
                 opacity: 0.7,
                 rotate: 0,
-                win: {
+                wins: [{
                     id: "xxx",
                     cards: [
                         {
@@ -42,7 +42,7 @@ export const slides: Slide[] = [
                             ]
                         }
                     ]
-                }
+                }]
             },
             {
                 name: "形状2",

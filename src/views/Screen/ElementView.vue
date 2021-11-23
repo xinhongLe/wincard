@@ -55,8 +55,8 @@ export default defineComponent({
             if (element.link) window.open(element.link);
 
             // 弹卡事件
-            if (element.win) {
-                emit("openCard", element.win);
+            if (element.wins) {
+                emit("openCard", element.wins);
             }
 
             if (!element.actions || element.actions.length === 0) return;

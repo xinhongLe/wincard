@@ -122,7 +122,7 @@ export default defineComponent({
             return panelMap[toolbarState.value] || null;
         });
 
-        const addCard = (callback: (win: IWin) => void) => {
+        const addCard = (callback: (wins: IWin[]) => void) => {
             emit("addCard", callback);
         };
 

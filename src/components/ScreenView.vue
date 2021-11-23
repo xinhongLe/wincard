@@ -54,8 +54,8 @@ export default defineComponent({
             emit("pageNext");
         };
 
-        const openCard = (win: IWin) => {
-            emit("openCard", win);
+        const openCard = (wins: IWin[]) => {
+            emit("openCard", wins);
         };
 
         return {

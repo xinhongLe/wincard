@@ -387,18 +387,25 @@ export default defineComponent({
         };
 
         const activeCard = ref(0);
-        const cardList = ref<PPTCard[]>(handleElement.value.win?.cards || []);
+        const getCards = (wins: IWin[]) => {
+            let cards: PPTCard[] = [];
+            wins.map(win => {
+                cards = cards.concat(win.cards);
+            });
+            return cards;
+        };
+        const cardList = ref<PPTCard[]>(getCards(handleElement.value.wins || []));
         watch(handleElement.value, () => {
-            cardList.value = handleElement.value.win?.cards || [];
+            cardList.value = getCards(handleElement.value.wins || []);
         });
 
         const addCard = () => {
-            emit("addCard", (win: IWin) => {
-                cardList.value = win.cards;
+            emit("addCard", (wins: IWin[]) => {
+                cardList.value = getCards(wins);
                 store.commit(MutationTypes.UPDATE_ELEMENT, {
                     id: handleElement.value.id,
                     props: {
-                        win
+                        wins
                     }
                 });
             });

@@ -199,7 +199,7 @@ interface PPTBaseElement {
     link?: string;
     display?: boolean;
     actions?: PPTElementAction[],
-    win?: IWin
+    wins?: IWin[]
 }
 
 /**
