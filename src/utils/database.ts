@@ -28,3 +28,31 @@ export const destorySnapshotDB = () => {
     snapshotDB.delete();
     snapshotDB = new SnapshotDatabase();
 };
+
+export interface WinCardResourceData {
+    id: string;
+    resource: string;
+}
+
+class WinCardResourceDatabase extends Dexie {
+    public db: Dexie.Table<WinCardResourceData, number>;
+
+    public constructor() {
+        super("WinCardResourceDatabase");
+        this.version(1).stores({
+            wnCardResource: "id,resource"
+        });
+        this.db = this.table("wnCardResource");
+    }
+}
+
+let windCardResourceDB = new WinCardResourceDatabase();
+
+export const getResourceDB = () => {
+    return windCardResourceDB;
+};
+
+export const destoryResourceDB = () => {
+    windCardResourceDB.delete();
+    windCardResourceDB = new WinCardResourceDatabase();
+};

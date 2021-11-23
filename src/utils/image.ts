@@ -61,6 +61,28 @@ export const uploadImage = (file: File) => {
  * 处理获取oss img 访问链接
  * @param key oss访问key
  */
-export const getOssImageUrl = async (key: string) => {
-    return await downloadFile(key);
+export const getOssImageUrl = (key: string) => {
+    return downloadFile(key);
+};
+
+/**
+ * 将线上图片转成base64
+ * @param url 图片访问地址
+ */
+export const imageUrlToBase64 = (url: string): Promise<string> => {
+    return new Promise(resolve => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("get", url, true);
+        xhr.responseType = "blob";
+        xhr.onload = function() {
+            if (this.status === 200) {
+                // 得到一个blob对象
+                const blob = this.response;
+                getImageDataURL(blob).then(base64 => {
+                    resolve(base64);
+                });
+            }
+        };
+        xhr.send();
+    });
 };

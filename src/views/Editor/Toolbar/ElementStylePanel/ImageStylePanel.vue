@@ -6,7 +6,9 @@
         ></div>
 
         <a-select
-            style="width: 100%;margin-bottom: 10px;"
+            style="
+                width: 100%;
+                margin-bottom: 10px;"
             :value="imageViewModel"
             @change="imageViewModelChange"
         >
