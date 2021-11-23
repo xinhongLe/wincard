@@ -43,6 +43,7 @@
                 </a-select-opt-group>
             </a-select>
             <a-select
+                show-search
                 style="flex: 2;"
                 :value="richTextAttrs.fontsize"
                 @change="value => emitRichTextCommand('fontsize', value)"
@@ -284,6 +285,7 @@
         <div class="row">
             <div style="flex: 2;">行间距：</div>
             <a-select
+                show-search
                 style="flex: 3;"
                 :value="lineHeight"
                 @change="value => updateLineHeight(value)"
@@ -436,59 +438,8 @@ export default defineComponent({
         );
 
         const availableFonts = computed(() => store.state.availableFonts);
-        const fontSizeOptions = [
-            "12px",
-            "14px",
-            "16px",
-            "18px",
-            "20px",
-            "22px",
-            "24px",
-            "28px",
-            "32px",
-            "36px",
-            "40px",
-            "44px",
-            "48px",
-            "54px",
-            "60px",
-            "66px",
-            "72px",
-            "76px",
-            "80px",
-            "88px",
-            "96px",
-            "104px",
-            "112px",
-            "120px"
-        ];
-        const lineHeightOptions = [
-            24,
-            26,
-            28,
-            30,
-            32,
-            34,
-            36,
-            38,
-            40,
-            42,
-            44,
-            46,
-            48,
-            50,
-            52,
-            54,
-            56,
-            58,
-            60,
-            62,
-            64,
-            66,
-            68,
-            70,
-            72
-        ];
+        const fontSizeOptions = Array.from({ length: 60 }, (v, k) => k * 2 + 12 + "px");
+        const lineHeightOptions = Array.from({ length: 123 }, (v, k) => k + 24);
         const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10];
 
         // 发射富文本设置命令

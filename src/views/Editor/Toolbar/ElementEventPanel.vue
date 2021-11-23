@@ -527,6 +527,6 @@ export default defineComponent({
 </style>
 <style>
 .el-event-box .ant-collapse-content-box {
-    padding: 0;
+    padding: 0 !important;
 }
 </style>
