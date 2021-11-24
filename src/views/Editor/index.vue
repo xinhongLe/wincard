@@ -101,7 +101,6 @@ export default defineComponent({
     .layout-content {
         height: calc(100% - 40px);
         display: flex;
-        overflow: hidden;
     }
 
     .layout-content-left {
@@ -123,8 +122,8 @@ export default defineComponent({
     .layout-fixed-content-left {
         position: absolute;
         width: 235px;
-        top: 80px;
-        height: calc(100% - 120px);
+        top: 0;
+        height: 100%;
         z-index: 10;
         overflow: hidden;
     }

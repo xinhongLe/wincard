@@ -10,7 +10,7 @@
                 元素列表
             </div>
             <div class="elements-list-box">
-                <a-list bordered :data-source="elementList">
+                <a-list :data-source="elementList">
                     <template #renderItem="{ item }">
                         <a-list-item>
                             <div class="element-name" :class="handleElementId === item.id && 'active'" @click="handleSelectElement($event, item)">
