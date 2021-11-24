@@ -71,20 +71,21 @@ export default defineComponent({
 
         const store = useStore();
         const theme = computed(() => store.state.theme);
-        const currentSlide = computed<Slide>(() => store.getters.currentSlide);
+        // const currentSlide = computed<Slide>(() => store.getters.currentSlide);
 
         // 判断元素是否需要等待执行入场动画：等待执行的元素需要先隐藏
-        const needWaitAnimation = computed(() => {
-            const animations = currentSlide.value.animations || [];
-            const elementIndexInAnimation = animations.findIndex(
-                animation => animation.elId === props.elementInfo.id
-            );
-            if (
-                elementIndexInAnimation !== -1 &&
-                elementIndexInAnimation >= props.animationIndex
-            ) return true;
-            return false;
-        });
+        // const needWaitAnimation = computed(() => {
+        //     const animations = currentSlide.value.animations || [];
+        //     const elementIndexInAnimation = animations.findIndex(
+        //         animation => animation.elId === props.elementInfo.id
+        //     );
+        //     if (
+        //         elementIndexInAnimation !== -1 &&
+        //         elementIndexInAnimation >= props.animationIndex
+        //     ) return true;
+        //     return false;
+        // });
+        const needWaitAnimation = false;
 
         // 打开元素绑定的超链接
         // const openLink = () => {

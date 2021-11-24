@@ -1,6 +1,7 @@
 <template>
     <Screen
         ref="screenRef"
+        :slide="slide"
         :inline="inline"
         @pagePrev="pagePrev()"
         @pageNext="pageNext()"
@@ -29,12 +30,12 @@ export default defineComponent({
     },
     emits: ["pagePrev", "pageNext", "openCard"],
     setup(props, { emit }) {
-        const store = useStore();
-        const slide = computed(() => props.slide);
-        store.commit(MutationTypes.SET_SLIDES, [props.slide]);
-        watch(slide, () => {
-            store.commit(MutationTypes.SET_SLIDES, [props.slide]);
-        });
+        // const store = useStore();
+        // const slide = computed(() => props.slide);
+        // store.commit(MutationTypes.SET_SLIDES, [props.slide]);
+        // watch(slide, () => {
+        //     store.commit(MutationTypes.SET_SLIDES, [props.slide]);
+        // });
 
         const screenRef = ref();
 

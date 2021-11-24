@@ -3,14 +3,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
-import { useStore } from "@/store";
+import { computed, defineComponent, PropType } from "vue";
+import { Slide, Teach } from "@/types/slides";
 
 export default defineComponent({
-    setup() {
-        const store = useStore();
-        const currentSlide = computed(() => store.getters.currentSlide);
-        const teach = computed(() => currentSlide.value.teach);
+    props: {
+        slide: {
+            type: Object as PropType<Slide>,
+            required: true
+        }
+    },
+    setup(props) {
+        const teach = computed<Teach | undefined>(() => props.slide.teach);
         return {
             teach
         };

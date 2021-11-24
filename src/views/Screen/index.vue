@@ -7,19 +7,8 @@
             <div
                 :class="[
                     'slide-item',
-                    `turning-mode-${slide.turningMode || 'slideY'}`,
-                    {
-                        current: index === slideIndex,
-                        before: index < slideIndex,
-                        after: index > slideIndex,
-                        hide:
-                            (index === slideIndex - 1 ||
-                                index === slideIndex + 1) &&
-                            slide.turningMode !== currentSlide.turningMode
-                    }
+                    `turning-mode-${slide.turningMode || 'slideY'}`
                 ]"
-                v-for="(slide, index) in slides"
-                :key="slide.id"
             >
                 <div
                     class="slide-content"
@@ -62,14 +51,6 @@
                 @click="writingBoardToolVisible = true"
             />
         </div>
-
-        <div
-            class="page-number"
-            @click="slideThumbnailModelVisible = true"
-            v-if="showPageNumber"
-        >
-            {{ slideIndex + 1 }} / {{ slides.length }}
-        </div>
     </div>
 </template>
 
@@ -79,6 +60,7 @@ import {
     defineComponent,
     onMounted,
     onUnmounted,
+    PropType,
     provide,
     ref,
     watch
@@ -109,14 +91,16 @@ export default defineComponent({
         inline: {
             type: Boolean,
             default: false
+        },
+        slide: {
+            type: Object as PropType<Slide>,
+            required: true
         }
     },
     setup(props, { emit }) {
         const store = useStore();
-        const slides = computed(() => store.state.slides);
-        const slideIndex = computed(() => store.state.slideIndex);
         const viewportRatio = computed(() => store.state.viewportRatio);
-        const currentSlide = computed<Slide>(() => store.getters.currentSlide);
+        const currentSlide = computed<Slide>(() => props.slide);
         const steps = computed(() => currentSlide.value.steps || []);
         const stepIndex = ref(-1);
 
@@ -128,8 +112,6 @@ export default defineComponent({
         const scale = computed(() => slideWidth.value / VIEWPORT_SIZE);
 
         const showPageNumber = ref(false);
-
-        const slideThumbnailModelVisible = ref(true);
 
         const writingBoardToolVisible = ref(false);
 
@@ -207,7 +189,7 @@ export default defineComponent({
             // disableSelectEnd();
         };
 
-        watch(slides, () => {
+        watch(currentSlide, () => {
             stepIndex.value = -1;
         });
 
@@ -331,8 +313,6 @@ export default defineComponent({
         };
 
         return {
-            slides,
-            slideIndex,
             currentSlide,
             slideWidth,
             slideHeight,
@@ -342,7 +322,6 @@ export default defineComponent({
             touchEndListener,
             execPrev,
             execNext,
-            slideThumbnailModelVisible,
             writingBoardToolVisible,
             showPageNumber,
             openCard,

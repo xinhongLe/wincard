@@ -4,6 +4,7 @@
         @addCard="addCard"
     />
     <Screen
+        :slide="currentSlide"
         @openCard="openCard"
         v-if="screening"
     />
@@ -33,6 +34,7 @@ export default defineComponent({
         const store = useStore();
         const screening = computed(() => store.state.screening);
         // const oldSlides = computed(() => store.state.oldSlides);
+        const currentSlide = computed(() => store.getters.currentSlide);
 
         const canvasScale = computed(() => store.state.canvasScale);
         provide("slideScale", canvasScale);
@@ -92,6 +94,7 @@ export default defineComponent({
         };
 
         return {
+            currentSlide,
             screening,
             onSave,
             addCard,
