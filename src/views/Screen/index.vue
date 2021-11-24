@@ -101,6 +101,7 @@ export default defineComponent({
         const store = useStore();
         const viewportRatio = computed(() => store.state.viewportRatio);
         const currentSlide = computed<Slide>(() => props.slide);
+
         const steps = computed(() => currentSlide.value.steps || []);
         const stepIndex = ref(-1);
 
@@ -111,9 +112,11 @@ export default defineComponent({
 
         const scale = computed(() => slideWidth.value / VIEWPORT_SIZE);
 
-        const showPageNumber = ref(false);
-
         const writingBoardToolVisible = ref(false);
+
+        watch(currentSlide, () => {
+            stepIndex.value = -1;
+        });
 
         // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
         const setSlideContentSize = () => {
@@ -323,7 +326,6 @@ export default defineComponent({
             execPrev,
             execNext,
             writingBoardToolVisible,
-            showPageNumber,
             openCard,
             disableSelect,
             disableSelectEnd

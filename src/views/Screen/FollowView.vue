@@ -89,7 +89,7 @@ export default defineComponent({
     setup(props) {
         const videoRef = ref<HTMLVideoElement>();
         const follow = computed<Follow | undefined>(() => props.slide.follow);
-        const { videoUrl } = useOssVideo(follow);
+        const { videoUrl } = useOssVideo(follow, true);
 
         let timeInterval: number | undefined;
         let timeCountInterval: number | undefined;

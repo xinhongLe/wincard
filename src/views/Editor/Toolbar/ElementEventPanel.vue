@@ -289,7 +289,7 @@ export default defineComponent({
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
         const elementList = ref<PPTElement[]>([]);
         const setLocalElementList = () => {
-            elementList.value = currentSlide.value
+            elementList.value = currentSlide.value && currentSlide.value.elements
                 ? JSON.parse(JSON.stringify(currentSlide.value.elements))
                 : [];
         };

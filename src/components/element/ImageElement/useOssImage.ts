@@ -5,7 +5,7 @@ import { ref, watch, ComputedRef, computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getResourceDB } from "@/utils/database";
 
-export default (imageElement: ComputedRef<PPTImageElement>) => {
+export default (imageElement: ComputedRef<PPTImageElement>, isScreening?: boolean) => {
     const imageUrl = ref("");
     const store = useStore();
     const resourceDB = getResourceDB();
@@ -27,7 +27,8 @@ export default (imageElement: ComputedRef<PPTImageElement>) => {
                             ossSrc: res.url,
                             ossExpiration: ossToken.Expiration
                         };
-                        store.commit(MutationTypes.UPDATE_ELEMENT, { id: imageElement.value.id, props });
+
+                        !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: imageElement.value.id, props });
 
                         imageUrlToBase64(res.url).then(base64 => {
                             imageUrl.value = base64;

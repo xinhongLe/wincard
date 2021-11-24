@@ -4,7 +4,7 @@ import { ref, watch, computed, ComputedRef } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssVideoUrl } from "@/utils/video";
 
-export default (follow: ComputedRef<Follow | undefined>) => {
+export default (follow: ComputedRef<Follow | undefined>, isScreening?: boolean) => {
     const videoUrl = ref("");
     const store = useStore();
     const updateVideo = () => {
@@ -21,7 +21,7 @@ export default (follow: ComputedRef<Follow | undefined>) => {
                         ossSrc: res.url,
                         ossExpiration: ossToken.Expiration
                     };
-                    store.commit(MutationTypes.UPDATE_FOLLOW, props);
+                    !isScreening && store.commit(MutationTypes.UPDATE_FOLLOW, props);
                 }
             }
         });

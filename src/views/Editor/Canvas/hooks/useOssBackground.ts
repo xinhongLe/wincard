@@ -4,7 +4,7 @@ import { getToken, OssToken } from "@/utils/oss";
 import { watch, ComputedRef, computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
 
-export default (background: ComputedRef<SlideBackground | undefined>) => {
+export default (background: ComputedRef<SlideBackground | undefined>, callback?: (url: string) => void) => {
     const store = useStore();
 
     const updateImage = () => {
@@ -24,6 +24,9 @@ export default (background: ComputedRef<SlideBackground | undefined>) => {
                         ossExpiration: ossToken.Expiration
                     };
 
+                    if (callback) {
+                        return callback(res.url);
+                    }
                     store.commit(MutationTypes.UPDATE_SLIDE, {
                         background: { ...background.value, ...props }
                     });

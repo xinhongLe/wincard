@@ -1,7 +1,7 @@
 <template>
     <Screen
         ref="screenRef"
-        :slide="slide"
+        :slide="currentSlide"
         :inline="inline"
         @pagePrev="pagePrev()"
         @pageNext="pageNext()"
@@ -14,11 +14,13 @@ import { computed, defineComponent, PropType, ref, watch } from "vue";
 import Screen from "@/views/Screen/index.vue";
 import { IWin, Slide } from "@/types/slides";
 import { MutationTypes, useStore } from "@/store";
+import useOssBackground from "@/views/Editor/Canvas/hooks/useOssBackground";
 
 export default defineComponent({
     props: {
         slide: {
-            type: Object as PropType<Slide>
+            type: Object as PropType<Slide>,
+            required: true
         },
         inline: {
             type: Boolean,
@@ -31,7 +33,22 @@ export default defineComponent({
     emits: ["pagePrev", "pageNext", "openCard"],
     setup(props, { emit }) {
         // const store = useStore();
-        // const slide = computed(() => props.slide);
+        const slide = computed(() => props.slide);
+        const background = computed(() => slide.value.background);
+        const currentSlide = ref(slide.value);
+
+        const updateBackground = () => {
+            useOssBackground(background, url => {
+                if (currentSlide.value.background) currentSlide.value.background.ossSrc = url;
+            });
+        };
+
+        updateBackground();
+        watch(slide, () => {
+            currentSlide.value = slide.value;
+            updateBackground();
+        });
+
         // store.commit(MutationTypes.SET_SLIDES, [props.slide]);
         // watch(slide, () => {
         //     store.commit(MutationTypes.SET_SLIDES, [props.slide]);
@@ -60,6 +77,7 @@ export default defineComponent({
         };
 
         return {
+            currentSlide,
             pagePrev,
             pageNext,
             openCard,

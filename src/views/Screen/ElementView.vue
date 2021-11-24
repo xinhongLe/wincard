@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, defineComponent, watch } from "vue";
+import { computed, PropType, defineComponent, watch, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTElement, Slide } from "@/types/slides";
 import useSlideBackgroundStyle from "@/hooks/useSlideBackgroundStyle";
@@ -38,13 +38,14 @@ export default defineComponent({
     setup(props, { emit }) {
         const store = useStore();
 
+        const currentSlide = computed(() => props.slide);
         const background = computed(() => props.slide.background);
         const { backgroundStyle } = useSlideBackgroundStyle(background);
 
         const elements = computed(() => store.state.previewElements);
         store.commit(MutationTypes.UPDATE_PREVIEW_ELEMENTS, JSON.parse(JSON.stringify(props.slide.elements)));
 
-        watch(props.slide, () => {
+        watch(currentSlide, () => {
             store.commit(MutationTypes.UPDATE_PREVIEW_ELEMENTS, JSON.parse(JSON.stringify(props.slide.elements)));
         });
 

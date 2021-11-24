@@ -78,7 +78,7 @@ export default defineComponent({
         const { filter } = useFilter(filters);
 
         const imageElement = computed(() => props.elementInfo);
-        const { imageUrl } = useOssImage(imageElement);
+        const { imageUrl } = useOssImage(imageElement, true);
 
         return {
             imgPosition,
