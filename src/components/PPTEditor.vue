@@ -79,6 +79,10 @@ export default defineComponent({
             message.warning("编辑模式下预览不支持弹卡！");
         };
 
+        const getCurrentSlide = () => {
+            return slide;
+        };
+
         const onSave = (slide: Slide) => {
             emit("onSave", slide);
         };
@@ -91,7 +95,8 @@ export default defineComponent({
             screening,
             onSave,
             addCard,
-            openCard
+            openCard,
+            getCurrentSlide
         };
     }
 });
