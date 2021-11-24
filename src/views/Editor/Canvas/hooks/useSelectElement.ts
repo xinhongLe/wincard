@@ -5,7 +5,7 @@ import { PPTElement } from "@/types/slides";
 
 export default (
     elementList: Ref<PPTElement[]>,
-    moveElement: (e: MouseEvent, element: PPTElement) => void
+    moveElement?: (e: MouseEvent, element: PPTElement) => void
 ) => {
     const store = useStore();
     const activeElementIdList = computed(() => store.state.activeElementIdList);
@@ -102,7 +102,7 @@ export default (
             };
         }
 
-        if (startMove) moveElement(e, element);
+        if (startMove && moveElement) moveElement(e, element);
     };
 
     // 选中页面内的全部元素

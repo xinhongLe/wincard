@@ -18,6 +18,7 @@ export const enum MutationTypes {
     SET_CLIPING_IMAGE_ELEMENT_ID = "setClipingImageElementId",
     SET_SELECTED_TABLE_CELLS = "setSelectedTableCells",
     SET_EDITING_SHAPE_ELEMENT_ID = "setEditingShapeElementId",
+    SET_MENU_OPEN_STATUS = "setMenuOpenStatus",
 
     // slides
     SET_THEME = "setTheme",

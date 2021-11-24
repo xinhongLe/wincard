@@ -96,7 +96,8 @@ import {
     Check,
     AudioFile,
     Delete,
-    Page
+    Page,
+    Right
 } from "@icon-park/vue-next";
 import {
     DEFAULT_ICON_CONFIGS,
@@ -185,6 +186,7 @@ export default {
         app.component("IconDown", Down);
         app.component("IconLeftTwo", LeftTwo);
         app.component("IconRightTwo", RightTwo);
+        app.component("IconRight", Right);
         app.component("IconPlus", Plus);
         app.component("IconMinus", Minus);
         app.component("IconClose", Close);

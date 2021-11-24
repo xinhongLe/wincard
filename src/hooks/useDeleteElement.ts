@@ -34,6 +34,16 @@ export default () => {
         addHistorySnapshot();
     };
 
+    const deleteTargetElement = (id: string) => {
+        let newElementList: PPTElement[] = [];
+        newElementList = currentSlide.value.elements.filter(
+            el => el.id !== id
+        );
+
+        store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList });
+        addHistorySnapshot();
+    };
+
     // 删除内面内全部元素(无论是否选中)
     const deleteAllElements = () => {
         if (!currentSlide.value.elements.length) return;
@@ -44,6 +54,7 @@ export default () => {
 
     return {
         deleteElement,
-        deleteAllElements
+        deleteAllElements,
+        deleteTargetElement
     };
 };

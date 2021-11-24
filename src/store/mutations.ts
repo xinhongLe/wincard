@@ -106,6 +106,10 @@ export const mutations: MutationTree<State> = {
         state.editingShapeElementId = ellId;
     },
 
+    [MutationTypes.SET_MENU_OPEN_STATUS](state) {
+        state.menuOpen = !state.menuOpen;
+    },
+
     // slides
 
     [MutationTypes.SET_THEME](state, themeProps: Partial<SlideTheme>) {

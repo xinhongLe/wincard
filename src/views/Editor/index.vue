@@ -4,6 +4,7 @@
 
         <div class="layout-content">
             <!-- <thumbnails class="layout-content-left" /> -->
+            <elements-menu class="layout-fixed-content-left" />
             <div class="layout-content-center">
                 <canvas-tool class="center-top" />
                 <component
@@ -27,6 +28,7 @@ import EditorHeader from "./EditorHeader/index.vue";
 import CanvasBoard from "./Canvas/index.vue";
 import CanvasTool from "./CanvasTool/index.vue";
 // import Thumbnails from "./Thumbnails/index.vue";
+import ElementsMenu from "./ElementsMenu/index.vue";
 import Toolbar from "./Toolbar/index.vue";
 import Remark from "./Remark/index.vue";
 import Listen from "./Listen/index.vue";
@@ -45,6 +47,7 @@ export default defineComponent({
     components: {
         EditorHeader,
         CanvasTool,
+        ElementsMenu,
         // Thumbnails,
         Toolbar,
         Remark
@@ -98,6 +101,7 @@ export default defineComponent({
     .layout-content {
         height: calc(100% - 40px);
         display: flex;
+        overflow: hidden;
     }
 
     .layout-content-left {
@@ -115,6 +119,14 @@ export default defineComponent({
     .layout-content-right {
         width: 260px;
         height: 100%;
+    }
+    .layout-fixed-content-left {
+        position: absolute;
+        width: 235px;
+        top: 80px;
+        height: calc(100% - 120px);
+        z-index: 10;
+        overflow: hidden;
     }
 }
 </style>
