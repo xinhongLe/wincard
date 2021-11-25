@@ -32,8 +32,40 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
         moveEnd();
     };
 
+    // 移动画布
+    const moveScreen = (
+        e: MouseEvent
+    ) => {
+        if (scale.value === 1 && offsetX.value === 0 && offsetY.value === 0) return;
+        let isMouseDown = true;
+        const startPageX = e.pageX;
+        const startPageY = e.pageY;
+
+        // 初始移动距离
+        const moveScreenX = offsetX.value;
+        const moveScreenY = offsetY.value;
+
+        // 开始移动
+        document.onmousemove = e => {
+            if (!isMouseDown) return;
+
+            const currentPageX = e.pageX;
+            const currentPageY = e.pageY;
+
+            offsetX.value = currentPageX - startPageX + moveScreenX;
+            offsetY.value = currentPageY - startPageY + moveScreenY;
+        };
+
+        document.onmouseup = () => {
+            isMouseDown = false;
+            document.onmousemove = null;
+            document.onmouseup = null;
+        };
+    };
+
     return {
         handleMousewheelScreen,
-        handleMouseMove
+        handleMouseMove,
+        moveScreen
     };
 };

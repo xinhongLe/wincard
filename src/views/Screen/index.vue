@@ -28,6 +28,7 @@
                         }"
                         @mousewheel="$event => handleMousewheelScreen($event)"
                         @mousemove="handleMouseMove"
+                        @mousedown="$event => moveScreen($event)"
                     >
                         <ScreenSlide
                             :runAnimation="runAnimation"
@@ -63,6 +64,12 @@
                 theme="two-tone"
                 :fill="['#111', '#fff']"
                 @click="writingBoardToolVisible = true"
+            />
+            <IconBack
+                class="tool-btn"
+                theme="two-tone"
+                :fill="['#111', '#fff']"
+                @click="resetPosition()"
             />
         </div>
     </div>
@@ -338,7 +345,12 @@ export default defineComponent({
         const viewScale = ref(1);
         const offsetX = ref(0);
         const offsetY = ref(0);
-        const { handleMousewheelScreen, handleMouseMove } = useScaleScreen(viewScale, offsetX, offsetY, scale);
+        const { handleMousewheelScreen, handleMouseMove, moveScreen } = useScaleScreen(viewScale, offsetX, offsetY, scale);
+        const resetPosition = () => {
+            viewScale.value = 1;
+            offsetX.value = 0;
+            offsetY.value = 0;
+        };
 
         return {
             screenRef,
@@ -360,7 +372,9 @@ export default defineComponent({
             offsetX,
             offsetY,
             handleMouseMove,
-            handleMousewheelScreen
+            moveScreen,
+            handleMousewheelScreen,
+            resetPosition
         };
     }
 });
