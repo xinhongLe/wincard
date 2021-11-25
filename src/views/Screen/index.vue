@@ -133,6 +133,7 @@ export default defineComponent({
         watch(slide, () => {
             stepIndex.value = -1;
             currentSlide.value = slide.value;
+            setSlideContentSize();
         });
 
         const screenRef = ref();
@@ -457,7 +458,7 @@ export default defineComponent({
 .tools {
     position: fixed;
     bottom: 8px;
-    left: 8px;
+    right: 8px;
     font-size: 25px;
     color: #666;
     z-index: 10;
