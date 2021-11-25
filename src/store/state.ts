@@ -36,7 +36,6 @@ export interface State {
     thumbnailsFocus: boolean;
     selectedTableCells: string[];
     editingShapeElementId: string;
-    previewElements: PPTElement[];
     listenSystemList: ListenWord[];
     listenPage: number;
     listenTotal: number;
@@ -75,7 +74,6 @@ export const state: State = {
     thumbnailsFocus: false, // 左侧导航缩略图区域聚焦
     selectedTableCells: [], // 选中的表格单元格
     editingShapeElementId: "", // 当前正处在编辑文字状态的形状ID
-    previewElements: [], // 预览暂存预览元素
     listenSystemList: [], // 存字词库数据
     listenPage: 1, // 字词库分页
     listenTotal: 0, // 字词库总数

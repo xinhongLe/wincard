@@ -10,6 +10,7 @@
         <component
             :is="currentPageComponent"
             @openCard="openCard"
+            :runAnimation="runAnimation"
             :slide="slide"
         ></component>
     </div>
@@ -18,7 +19,7 @@
 <script lang="ts">
 import { computed, PropType, defineComponent } from "vue";
 import { useStore } from "@/store";
-import { IWin, Slide } from "@/types/slides";
+import { IWin, PPTElementAction, Slide } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { PAGE_TYPE } from "@/configs/page";
 
@@ -41,6 +42,10 @@ export default defineComponent({
         animationIndex: {
             type: Number,
             default: -1
+        },
+        runAnimation: {
+            type: Function as PropType<(action: PPTElementAction) => void>,
+            required: true
         }
     },
     setup(props, { emit }) {
@@ -58,8 +63,8 @@ export default defineComponent({
             return pageTypeMap[slideType.value] || null;
         });
 
-        const openCard = (wins: IWin[]) => {
-            emit("openCard", wins);
+        const openCard = (win: IWin) => {
+            emit("openCard", win);
         };
 
         return {

@@ -1,5 +1,5 @@
 <template>
-    <div class="pptist-screen" :class="{'pptist-disable-select': disableSelect, 'fixed': !inline}">
+    <div class="pptist-screen" ref="screenRef" :class="{'pptist-disable-select': disableSelect, 'fixed': !inline}">
         <div
             class="slide-list"
             @mousedown="disableSelectEnd"
@@ -14,14 +14,28 @@
                     class="slide-content"
                     :style="{
                         width: slideWidth + 'px',
-                        height: slideHeight + 'px'
+                        height: slideHeight + 'px',
+                        marginLeft: offsetX + 'px',
+                        marginTop: offsetY + 'px',
                     }"
                 >
-                    <ScreenSlide
-                        :slide="slide"
-                        :scale="scale"
-                        @openCard="openCard"
-                    />
+                    <div
+                        class="scale-content"
+                        :style="{
+                            width: slideWidth + 'px',
+                            height: slideHeight + 'px',
+                            transform: `scale(${viewScale})`
+                        }"
+                        @mousewheel="$event => handleMousewheelScreen($event)"
+                        @mousemove="handleMouseMove"
+                    >
+                        <ScreenSlide
+                            :runAnimation="runAnimation"
+                            :slide="slide"
+                            :scale="scale"
+                            @openCard="openCard"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,6 +92,7 @@ import useScreening from "@/hooks/useScreening";
 import ScreenSlide from "./ScreenSlide.vue";
 import WritingBoardTool from "./WritingBoardTool.vue";
 import useActionAnimation from "@/hooks/useActionAnimation";
+import useScaleScreen from "@/hooks/useScaleScreen";
 
 import { PAGE_TYPE } from "@/configs/page";
 
@@ -100,7 +115,8 @@ export default defineComponent({
     setup(props, { emit }) {
         const store = useStore();
         const viewportRatio = computed(() => store.state.viewportRatio);
-        const currentSlide = computed<Slide>(() => props.slide);
+        const slide = computed<Slide>(() => props.slide);
+        const currentSlide = ref(slide.value);
 
         const steps = computed(() => currentSlide.value.steps || []);
         const stepIndex = ref(-1);
@@ -114,14 +130,17 @@ export default defineComponent({
 
         const writingBoardToolVisible = ref(false);
 
-        watch(currentSlide, () => {
+        watch(slide, () => {
             stepIndex.value = -1;
+            currentSlide.value = slide.value;
         });
+
+        const screenRef = ref();
 
         // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
         const setSlideContentSize = () => {
-            const winWidth = document.body.clientWidth;
-            const winHeight = document.body.clientHeight;
+            const winWidth = props.inline ? screenRef.value.clientWidth : document.body.clientWidth;
+            const winHeight = props.inline ? screenRef.value.clientHeight : document.body.clientHeight;
             let width, height;
 
             if (winHeight / winWidth === viewportRatio.value) {
@@ -173,7 +192,7 @@ export default defineComponent({
         //     { leading: true, trailing: false }
         // );
 
-        const { runAnimation } = useActionAnimation();
+        const { runAnimation } = useActionAnimation(currentSlide);
 
         // 防止点击过快导致文本被选中
         const disableSelectEnd = throttle(() => {
@@ -315,7 +334,13 @@ export default defineComponent({
             emit("openCard", wins);
         };
 
+        const viewScale = ref(1);
+        const offsetX = ref(0);
+        const offsetY = ref(0);
+        const { handleMousewheelScreen, handleMouseMove } = useScaleScreen(viewScale, offsetX, offsetY, scale);
+
         return {
+            screenRef,
             currentSlide,
             slideWidth,
             slideHeight,
@@ -328,7 +353,13 @@ export default defineComponent({
             writingBoardToolVisible,
             openCard,
             disableSelect,
-            disableSelectEnd
+            disableSelectEnd,
+            runAnimation,
+            viewScale,
+            offsetX,
+            offsetY,
+            handleMouseMove,
+            handleMousewheelScreen
         };
     }
 });
@@ -413,7 +444,6 @@ export default defineComponent({
     }
 }
 .slide-content {
-    background-color: #fff;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -421,6 +451,7 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
+    transform-origin: center center;
 }
 
 .tools {
@@ -452,5 +483,9 @@ export default defineComponent({
     border-radius: $borderRadius;
     z-index: 10;
     cursor: pointer;
+}
+.scale-content {
+    transform-origin: left top;
+    background-color: #fff;
 }
 </style>

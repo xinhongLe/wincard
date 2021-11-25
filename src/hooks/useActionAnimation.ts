@@ -1,14 +1,19 @@
 import { MutationTypes, useStore } from "@/store";
-import { computed } from "vue";
-import { PPTElementAction } from "@/types/slides";
+import { computed, Ref } from "vue";
+import { PPTElementAction, Slide } from "@/types/slides";
 
-export default () => {
-    const store = useStore();
-    const elements = computed(() => store.state.previewElements);
+export default (slide: Ref<Slide>) => {
+    const setDisplay = (display: boolean, id: string) => {
+        const elements = slide.value.elements.map(el => {
+            return id === el.id ? { ...el, ...{ display } } : el;
+        });
+        slide.value.elements = elements;
+    };
+
     // 执行元素的动画
     const runAnimation = (action: PPTElementAction) => {
         const prefix = "animate__";
-        const element = elements.value.find(el => { return el.id === action.target; });
+        const element = slide.value.elements.find(el => { return el.id === action.target; });
         if (!element) return;
         const display = typeof element?.display === "undefined" || element.display;
         const animationType = action.type === "show" ? "show" : (action.type === "toggle" ? (display ? "hide" : "show") : "hide");
@@ -20,24 +25,14 @@ export default () => {
             if (elRef) {
                 // 如果是执行显示动画，需要先将display设置为true
                 if (animationType === "show") {
-                    store.commit(MutationTypes.UPDATE_PREVIEW_ELEMENT, {
-                        id: element.id,
-                        props: {
-                            display: true
-                        }
-                    });
+                    setDisplay(true, element.id);
                 }
 
                 const animationName = `${prefix}${animation}`;
                 elRef.classList.add(`${prefix}animated`, animationName);
 
                 const handleAnimationEnd = () => {
-                    store.commit(MutationTypes.UPDATE_PREVIEW_ELEMENT, {
-                        id: element.id,
-                        props: {
-                            display: animationType === "show"
-                        }
-                    });
+                    setDisplay(animationType === "show", element.id);
 
                     elRef.classList.remove(`${prefix}animated`, animationName);
                 };

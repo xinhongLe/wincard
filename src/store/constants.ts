@@ -33,8 +33,6 @@ export const enum MutationTypes {
     UPDATE_SELECTED_SLIDES_INDEX = "updateSelectedSlidesIndex",
     ADD_SLIDE = "addSlide",
     DELETE_SLIDE = "deleteSlide",
-    UPDATE_PREVIEW_ELEMENTS = "updatePreviewElements",
-    UPDATE_PREVIEW_ELEMENT = "updatePreviewElement",
     UPDATE_FOLLOW = "updateFollow",
 
     // listen

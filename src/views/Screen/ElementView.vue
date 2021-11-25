@@ -16,10 +16,8 @@
 
 <script lang="ts">
 import { computed, PropType, defineComponent, watch, ref } from "vue";
-import { MutationTypes, useStore } from "@/store";
-import { PPTElement, Slide } from "@/types/slides";
+import { PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import useSlideBackgroundStyle from "@/hooks/useSlideBackgroundStyle";
-import useActionAnimation from "@/hooks/useActionAnimation";
 import ScreenElement from "./ScreenElement.vue";
 
 export default defineComponent({
@@ -33,23 +31,18 @@ export default defineComponent({
         animationIndex: {
             type: Number,
             default: -1
+        },
+        runAnimation: {
+            type: Function as PropType<(action: PPTElementAction) => void>,
+            required: true
         }
     },
     setup(props, { emit }) {
-        const store = useStore();
-
         const currentSlide = computed(() => props.slide);
         const background = computed(() => props.slide.background);
         const { backgroundStyle } = useSlideBackgroundStyle(background);
 
-        const elements = computed(() => store.state.previewElements);
-        store.commit(MutationTypes.UPDATE_PREVIEW_ELEMENTS, JSON.parse(JSON.stringify(props.slide.elements)));
-
-        watch(currentSlide, () => {
-            store.commit(MutationTypes.UPDATE_PREVIEW_ELEMENTS, JSON.parse(JSON.stringify(props.slide.elements)));
-        });
-
-        const { runAnimation } = useActionAnimation();
+        const elements = computed(() => currentSlide.value.elements);
 
         // 处理元素点击事件
         const handleAction = (element: PPTElement) => {
@@ -63,7 +56,7 @@ export default defineComponent({
             if (!element.actions || element.actions.length === 0) return;
 
             element.actions.map(a => {
-                runAnimation(a);
+                props.runAnimation(a);
             });
         };
 
