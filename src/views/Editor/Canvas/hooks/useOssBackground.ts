@@ -11,7 +11,6 @@ export default (background: ComputedRef<SlideBackground | undefined>, callback?:
     const updateImage = async () => {
         // 目前切换图片编辑 会重复拉取图片 后面考虑要不要缓存成base64进行存储
         const result = await resourceDB.db.where({ id: background.value?.image }).toArray();
-        console.log(result);
         if (result.length > 0) {
             if (callback) return callback(result[0].resource);
             const props = {

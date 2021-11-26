@@ -40,24 +40,24 @@ export const HOTKEY_DOC = [
         ]
     },
     {
-        type: "幻灯片放映",
+        type: "预览",
         children: [
-            { label: "开始放映幻灯片", value: "Ctrl + F" },
+            { label: "开始预览当前页", value: "Ctrl + F" },
             { label: "切换上一页", value: "↑ / ←" },
             { label: "切换下一页", value: "↓ / → / Enter / Space" },
-            { label: "退出放映", value: "ESC" }
+            { label: "退出预览", value: "ESC" }
         ]
     },
     {
-        type: "幻灯片编辑",
+        type: "编辑",
         children: [
-            { label: "新建幻灯片", value: "Enter" },
+            // { label: "新建幻灯片", value: "Enter" },
             { label: "缩放画布", value: "Ctrl + 鼠标滚动" },
             { label: "放大画布", value: "Ctrl + =" },
             { label: "缩小画布", value: "Ctrl + -" },
-            { label: "缩放画布到合适大小", value: "Ctrl + 0" },
-            { label: "编辑上一页", value: "↑ / ← / 鼠标上滚" },
-            { label: "编辑下一页", value: "↓ / → / 鼠标下滚" }
+            { label: "缩放画布到合适大小", value: "Ctrl + 0" }
+            // { label: "编辑上一页", value: "↑ / ← / 鼠标上滚" },
+            // { label: "编辑下一页", value: "↓ / → / 鼠标下滚" }
         ]
     },
     {
