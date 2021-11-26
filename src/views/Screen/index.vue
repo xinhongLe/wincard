@@ -29,6 +29,7 @@
                         @mousewheel="$event => handleMousewheelScreen($event)"
                         @mousemove="handleMouseMove"
                         @mousedown="$event => moveScreen($event)"
+                        v-contextmenu="contextmenus"
                     >
                         <ScreenSlide
                             :runAnimation="runAnimation"
@@ -102,6 +103,7 @@ import useActionAnimation from "@/hooks/useActionAnimation";
 import useScaleScreen from "@/hooks/useScaleScreen";
 
 import { PAGE_TYPE } from "@/configs/page";
+import { ContextmenuItem } from "@/types/contextmenu";
 
 export default defineComponent({
     name: "screen",
@@ -352,6 +354,33 @@ export default defineComponent({
             offsetY.value = 0;
         };
 
+        const contextmenus = (): ContextmenuItem[] => {
+            return [
+                {
+                    text: "上一步",
+                    subText: "←",
+                    handler: execPrev
+                },
+                {
+                    text: "下一步",
+                    subText: "→",
+                    handler: execNext
+                },
+                {
+                    text: "画板",
+                    subText: "",
+                    handler: () => {
+                        writingBoardToolVisible.value = true;
+                    }
+                },
+                {
+                    text: "复位",
+                    subText: "",
+                    handler: resetPosition
+                }
+            ];
+        };
+
         return {
             screenRef,
             currentSlide,
@@ -374,7 +403,8 @@ export default defineComponent({
             handleMouseMove,
             moveScreen,
             handleMousewheelScreen,
-            resetPosition
+            resetPosition,
+            contextmenus
         };
     }
 });

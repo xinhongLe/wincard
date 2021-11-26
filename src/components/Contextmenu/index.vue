@@ -99,11 +99,11 @@ export default defineComponent({
     top: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 9998;
+    z-index: 99998;
 }
 .contextmenu {
     position: fixed;
-    z-index: 9999;
+    z-index: 99999;
     user-select: none;
 }
 </style>
