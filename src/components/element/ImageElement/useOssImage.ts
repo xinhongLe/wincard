@@ -1,12 +1,14 @@
 import { PPTImageElement } from "@/types/slides";
-import { getImageDataURL, getOssImageUrl, imageUrlToBase64 } from "@/utils/image";
+import { getOssImageUrl, imageUrlToBase64 } from "@/utils/image";
 import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, ComputedRef, computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getResourceDB } from "@/utils/database";
 
+declare function require(img: string): string;
 export default (imageElement: ComputedRef<PPTImageElement>, isScreening?: boolean) => {
-    const imageUrl = ref("");
+    const image = require("@/assets/images/default.png");
+    const imageUrl = ref(image);
     const store = useStore();
     const resourceDB = getResourceDB();
     const updateImage = async () => {

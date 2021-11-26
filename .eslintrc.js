@@ -28,6 +28,7 @@ module.exports = {
         "dot-notation": [0, { allowKeywords: false, allowPattern: "" }],
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "no-unmodified-loop-condition": "off",
-        "standard/no-callback-literal": "off"
+        "standard/no-callback-literal": "off",
+        "@typescript-eslint/no-var-requires": "off"
     }
 };

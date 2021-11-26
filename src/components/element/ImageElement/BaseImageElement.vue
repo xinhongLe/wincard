@@ -26,6 +26,7 @@
                     :style="{ clipPath: clipShape.style }"
                 >
                     <img
+                        v-if="imageUrl"
                         :src="imageUrl"
                         :draggable="false"
                         :style="{
