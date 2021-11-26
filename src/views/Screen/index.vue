@@ -32,7 +32,7 @@
                     >
                         <ScreenSlide
                             :runAnimation="runAnimation"
-                            :slide="slide"
+                            :slide="currentSlide"
                             :scale="scale"
                             @openCard="openCard"
                         />
@@ -122,7 +122,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const store = useStore();
         const viewportRatio = computed(() => store.state.viewportRatio);
-        const slide = computed<Slide>(() => props.slide);
+        const slide = computed<Slide>(() => JSON.parse(JSON.stringify(props.slide)));
         const currentSlide = ref(slide.value);
 
         const steps = computed(() => currentSlide.value.steps || []);
