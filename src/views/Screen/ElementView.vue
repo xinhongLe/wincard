@@ -49,7 +49,7 @@ export default defineComponent({
             if (element.link) window.open(element.link);
 
             // 弹卡事件
-            if (element.wins) {
+            if (element.wins && element.wins.length > 0) {
                 emit("openCard", element.wins);
             }
 
