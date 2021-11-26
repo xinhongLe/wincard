@@ -33,6 +33,7 @@
                             ...imgPosition,
                             filter: filter
                         }"
+                        @error="imageUrl = errorImage"
                         alt=""
                     />
                 </div>
@@ -79,7 +80,7 @@ export default defineComponent({
         const { filter } = useFilter(filters);
 
         const imageElement = computed(() => props.elementInfo);
-        const { imageUrl } = useOssImage(imageElement, true);
+        const { imageUrl, errorImage } = useOssImage(imageElement, true);
 
         return {
             imgPosition,
@@ -87,7 +88,8 @@ export default defineComponent({
             flipStyle,
             shadowStyle,
             clipShape,
-            imageUrl
+            imageUrl,
+            errorImage
         };
     }
 });

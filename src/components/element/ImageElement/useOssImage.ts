@@ -52,7 +52,10 @@ export default (imageElement: ComputedRef<PPTImageElement>, isScreening?: boolea
 
     updateImage();
 
+    const errorImage = ref(image);
+
     return {
-        imageUrl
+        imageUrl,
+        errorImage
     };
 };

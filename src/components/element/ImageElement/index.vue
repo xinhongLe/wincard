@@ -49,6 +49,7 @@
                             filter: filter
                         }"
                         @dragstart.prevent
+                        @error="imageUrl = errorImage"
                         alt=""
                     />
                 </div>
@@ -159,7 +160,7 @@ export default defineComponent({
         };
 
         const imageElement = computed(() => props.elementInfo);
-        const { imageUrl } = useOssImage(imageElement);
+        const { imageUrl, errorImage } = useOssImage(imageElement);
 
         return {
             isCliping,
@@ -171,7 +172,8 @@ export default defineComponent({
             imgPosition,
             filter,
             flipStyle,
-            imageUrl
+            imageUrl,
+            errorImage
         };
     }
 });

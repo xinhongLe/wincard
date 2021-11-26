@@ -40,9 +40,9 @@ class WinCardResourceDatabase extends Dexie {
     public constructor() {
         super("WinCardResourceDatabase");
         this.version(1).stores({
-            wnCardResource: "id,resource"
+            winCardResource: "id,resource"
         });
-        this.db = this.table("wnCardResource");
+        this.db = this.table("winCardResource");
     }
 }
 
