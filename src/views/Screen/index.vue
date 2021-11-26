@@ -47,6 +47,10 @@
             @close="writingBoardToolVisible = false"
         />
 
+        <div class="mark-view" v-if="remarkVisible">
+            {{currentSlide.remark}}
+        </div>
+
         <div class="tools" v-if="!inline">
             <IconLeftTwo
                 class="tool-btn"
@@ -65,6 +69,12 @@
                 theme="two-tone"
                 :fill="['#111', '#fff']"
                 @click="writingBoardToolVisible = true"
+            />
+            <IconBookmark
+                class="tool-btn"
+                theme="two-tone"
+                :fill="['#111', '#fff']"
+                @click="remarkVisible = !remarkVisible"
             />
             <IconBack
                 class="tool-btn"
@@ -354,6 +364,8 @@ export default defineComponent({
             offsetY.value = 0;
         };
 
+        const remarkVisible = ref(false);
+
         const contextmenus = (): ContextmenuItem[] => {
             return [
                 {
@@ -371,6 +383,13 @@ export default defineComponent({
                     subText: "",
                     handler: () => {
                         writingBoardToolVisible.value = true;
+                    }
+                },
+                {
+                    text: remarkVisible.value ? "关闭备注" : "打开备注",
+                    subText: "",
+                    handler: () => {
+                        remarkVisible.value = !remarkVisible.value;
                     }
                 },
                 {
@@ -404,7 +423,8 @@ export default defineComponent({
             moveScreen,
             handleMousewheelScreen,
             resetPosition,
-            contextmenus
+            contextmenus,
+            remarkVisible
         };
     }
 });
@@ -532,5 +552,18 @@ export default defineComponent({
 .scale-content {
     transform-origin: left top;
     background-color: #fff;
+}
+.mark-view {
+    position: absolute;
+    right: 0;
+    z-index: 8;
+    background: #fff;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    padding: 20px;
+    line-height: 24px;
+    color: #666;
+    box-shadow: 0 0 15px 0 rgb(0 0 0 / 10%);
 }
 </style>

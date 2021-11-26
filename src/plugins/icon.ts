@@ -97,7 +97,8 @@ import {
     AudioFile,
     Delete,
     Page,
-    Right
+    Right,
+    Bookmark
 } from "@icon-park/vue-next";
 import {
     DEFAULT_ICON_CONFIGS,
@@ -220,6 +221,7 @@ export default {
         app.component("IconClear", Clear);
         app.component("IconFolderClose", FolderClose);
         app.component("IconDelete", Delete);
+        app.component("IconBookmark", Bookmark);
 
         // 视频播放器
         app.component("IconPause", Pause);
