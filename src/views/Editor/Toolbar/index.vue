@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="content">
-            <component :is="currentPanelComponent" @addCard="addCard"></component>
+            <component :is="currentPanelComponent" @addCard="addCard" @selectVideo="selectVideo"></component>
         </div>
     </div>
 </template>
@@ -126,12 +126,17 @@ export default defineComponent({
             emit("addCard", callback);
         };
 
+        const selectVideo = () => {
+            emit("selectVideo");
+        };
+
         return {
             toolbarState,
             currentTabs,
             setToolbarState,
             currentPanelComponent,
-            addCard
+            addCard,
+            selectVideo
         };
     }
 });

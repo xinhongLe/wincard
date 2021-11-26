@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
+import { computed, defineComponent } from "vue";
 import { useStore } from "@/store";
 import ScaleCanvas from "../Scale.vue";
 

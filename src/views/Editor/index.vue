@@ -18,7 +18,7 @@
                     :style="{ height: `${remarkHeight}px` }"
                 />
             </div>
-            <toolbar class="layout-content-right" @addCard="addCard" />
+            <toolbar class="layout-content-right" @addCard="addCard" @selectVideo="selectVideo" />
         </div>
     </div>
 </template>
@@ -79,12 +79,17 @@ export default defineComponent({
             emit("addCard", callback);
         };
 
+        const selectVideo = () => {
+            emit("selectVideo");
+        };
+
         return {
             currentPageComponent,
             remarkHeight,
             currentSlide,
             onSave,
-            addCard
+            addCard,
+            selectVideo
         };
     }
 });

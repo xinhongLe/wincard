@@ -2,6 +2,7 @@
     <Editor
         @onSave="onSave"
         @addCard="addCard"
+        @selectVideo="selectVideo"
     />
     <Screen
         :slide="currentSlide"
@@ -23,7 +24,7 @@ import { message } from "ant-design-vue";
 
 export default defineComponent({
     name: "PPTEditor",
-    emits: ["onSave", "addCard"],
+    emits: ["onSave", "addCard", "selectVideo"],
     components: { Editor, Screen },
     props: {
         slide: {
@@ -93,13 +94,18 @@ export default defineComponent({
             emit("addCard", callback);
         };
 
+        const selectVideo = () => {
+            emit("selectVideo");
+        };
+
         return {
             currentSlide,
             screening,
             onSave,
             addCard,
             openCard,
-            getCurrentSlide
+            getCurrentSlide,
+            selectVideo
         };
     }
 });

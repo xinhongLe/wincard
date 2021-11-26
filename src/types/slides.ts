@@ -40,6 +40,8 @@ export interface PauseList {
 /**
  * 跟读页
  *
+ * id: 跟读页id
+ *
  * src: 跟读视频 fileName 请求 oss 使用
  *
  * ossSrc: 跟读视频 oss 访问地址
@@ -49,6 +51,7 @@ export interface PauseList {
  * pauseList: 断点数据
  */
 export interface Follow {
+    id: string;
     src: string;
     ossSrc?: string;
     ossExpiration?: string;
