@@ -145,12 +145,12 @@ export default defineComponent({
         padding: 20px 0 20px 20px;
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        // justify-content: space-between;
         .listen-word-item {
             background-image: url(~@/assets/images/bg_card.png);
             background-size: 100% 100%;
             height: 80px;
-            width: calc((100% - 120px) / 5);
+            width: calc((100% - 100px) / 5);
             margin-bottom: 20px;
             font-size: 22px;
             font-weight: 600;
