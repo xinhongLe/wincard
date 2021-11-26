@@ -11,8 +11,15 @@ export default (background: ComputedRef<SlideBackground | undefined>, callback?:
     const updateImage = async () => {
         // 目前切换图片编辑 会重复拉取图片 后面考虑要不要缓存成base64进行存储
         const result = await resourceDB.db.where({ id: background.value?.image }).toArray();
+        console.log(result);
         if (result.length > 0) {
-            callback && callback(result[0].resource);
+            if (callback) return callback(result[0].resource);
+            const props = {
+                ossSrc: result[0].resource
+            };
+            store.commit(MutationTypes.UPDATE_SLIDE, {
+                background: { ...background.value, ...props }
+            });
         } else {
             getToken((ossToken: OssToken) => {
                 if (
@@ -24,7 +31,6 @@ export default (background: ComputedRef<SlideBackground | undefined>, callback?:
                 } else if (background.value && background.value.image) {
                     getOssImageUrl(background.value.image).then(res => {
                         // 更新 SlideBackground
-
                         imageUrlToBase64(res.url).then(base64 => {
                             background.value?.image && resourceDB.db.add({ id: background.value?.image, resource: base64 });
                             if (callback) {
