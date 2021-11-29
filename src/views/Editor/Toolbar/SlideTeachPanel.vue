@@ -58,7 +58,7 @@ export default defineComponent({
                     return {
                         id: item.ID,
                         name: item.Name,
-                        src: item.Url
+                        src: item.Url.indexOf("http") > -1 ? item.Url : "https://" + item.Url
                     };
                 });
             }
