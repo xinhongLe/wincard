@@ -13,6 +13,10 @@ export const getters: GetterTree<State, State> = {
         return (state.slides[state.slideIndex] && state.slides[state.slideIndex].type === PAGE_TYPE.ELEMENT) || false;
     },
 
+    isListen(state) {
+        return (state.slides[state.slideIndex] && state.slides[state.slideIndex].type === PAGE_TYPE.LISTEN) || false;
+    },
+
     currentSlideAnimations(state) {
         const currentSlide = state.slides[state.slideIndex];
         if (!currentSlide) return null;
