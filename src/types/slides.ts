@@ -14,7 +14,8 @@ export const enum ElementTypes {
     LATEX = "latex",
     AUDIO = "audio",
     VIDEO = "video",
-    IFRAME = "iframe"
+    IFRAME = "iframe",
+    FLASH = "flash"
 }
 
 /**
@@ -691,6 +692,30 @@ export interface PPTWebIFrameElement extends PPTBaseElement {
     src: string;
 }
 
+/**
+ * Flash元素
+ *
+ * type: 元素类型（flash）
+ *
+ * src: flash文件地址
+ *
+ * ossSrc: flash oss 访问地址
+ *
+ * ossExpiration: flash oss 访问地址过期时间
+ *
+ * icon: flash图标地址
+ *
+ * ossIcon: flash图标 oss 访问地址
+ */
+export interface PPTFlashElement extends PPTBaseElement {
+    type: "flash";
+    src: string;
+    ossSrc?: string;
+    ossExpiration?: string;
+    icon?: string;
+    ossIcon?: string;
+}
+
 export type PPTElement =
     | PPTTextElement
     | PPTImageElement
@@ -701,7 +726,8 @@ export type PPTElement =
     | PPTLatexElement
     | PPTAudioElement
     | PPTVideoElement
-    | PPTWebIFrameElement;
+    | PPTWebIFrameElement
+    | PPTFlashElement;
 
 /**
  * 元素动画

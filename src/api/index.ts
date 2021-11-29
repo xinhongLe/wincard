@@ -41,7 +41,7 @@ interface IGetTeach {
 
 export function getOssToken() {
     return request({
-        baseURL: (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
+        baseURL: "https://api.aixueshi.top:5003" || (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
         url: "/Api/V3/Auxiliary/GetOssToken",
         method: "post",
         data: {}

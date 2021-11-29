@@ -79,7 +79,7 @@
                 </span>
             </div>
 
-            <div class="icons icons-right">
+            <!-- <div class="icons icons-right">
                 <div class="speed">
                     <div class="icon speed-icon">
                         <span
@@ -109,7 +109,7 @@
                         <span class="icon-content"><IconCycleOne /></span>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div
                 class="bar-wrap"

@@ -11,7 +11,7 @@ export interface OssToken {
     Expiration: string;
 }
 
-interface downloadResponse {
+export interface downloadResponse {
     url: string;
     expiration: string;
 }
@@ -119,7 +119,8 @@ export const downloadFile = (key: string): Promise<downloadResponse> => {
                 accessKeyId: accessKeyId,
                 accessKeySecret: accessKeySecret,
                 stsToken: securityToken,
-                bucket: "axsfile"
+                bucket: "axsfile",
+                secure: true
             });
             const url = client.signatureUrl(key);
             resolve({ url, expiration: ossToken.Expiration });

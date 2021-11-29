@@ -1,4 +1,4 @@
-import { downloadFile, uploadFile } from "./oss";
+import { downloadFile, downloadResponse, uploadFile } from "./oss";
 
 /**
  * 上传视频到oss获取fileName
@@ -12,7 +12,7 @@ export const uploadVideo = (file: File) => {
  * 处理获取oss video 访问链接
  * @param key oss访问key
  */
-export const getOssVideoUrl = async (key: string) => {
+export const getOssVideoUrl = async (key: string): Promise<downloadResponse> => {
     return await downloadFile(key);
 };
 
@@ -20,6 +20,6 @@ export const getOssVideoUrl = async (key: string) => {
  * 处理获取oss video 封面图 访问链接
  * @param key oss访问key
  */
-export const getOssPosterUrl = async (key: string) => {
+export const getOssPosterUrl = async (key: string): Promise<downloadResponse> => {
     return await downloadFile(key);
 };

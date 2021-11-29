@@ -31,6 +31,7 @@ import LatexStylePanel from "./LatexStylePanel.vue";
 import VideoStylePanel from "./VideoStylePanel.vue";
 import AudioStylePanel from "./AudioStylePanel.vue";
 import IFrameStylePanel from "./IFrameStylePanel.vue";
+import FlashStylePanel from "./FlashStylePanel.vue";
 
 export default defineComponent({
     name: "element-style-panel",
@@ -53,7 +54,8 @@ export default defineComponent({
                 [ElementTypes.LATEX]: LatexStylePanel,
                 [ElementTypes.AUDIO]: AudioStylePanel,
                 [ElementTypes.VIDEO]: VideoStylePanel,
-                [ElementTypes.IFRAME]: IFrameStylePanel
+                [ElementTypes.IFRAME]: IFrameStylePanel,
+                [ElementTypes.FLASH]: FlashStylePanel
             };
             return panelMap[handleElement.value.type] || null;
         });

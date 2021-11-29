@@ -3,7 +3,7 @@ import { Slide } from "@/types/slides";
 export const slides: Slide[] = [
     {
         id: "39FFFBBE2B08D1CFD8FCA24DE655B35B",
-        type: "listen",
+        type: "element",
         viewportRatio: 0.5625,
         elements: [
             {
@@ -100,6 +100,16 @@ export const slides: Slide[] = [
                 color: "#5b9bd5",
                 style: "solid",
                 width: 2
+            },
+            {
+                name: "Flash-KtmEq3",
+                type: "flash",
+                id: "KtmEq3",
+                width: 100,
+                height: 100,
+                left: 0,
+                top: 0,
+                src: "ElementFile/bb5b612322e0a2bf01448e4a6f83d191.swf"
             }
         ],
         background: { type: "solid", color: "#ffffff" },
@@ -127,7 +137,7 @@ export const slides: Slide[] = [
             }
         ],
         follow: {
-            fileId: "xxxxx",
+            id: "xxxxx",
             src: "ElementFile/83B779265F1E8B86675B73F77B68895D.mp4",
             pauseList: [
                 {
