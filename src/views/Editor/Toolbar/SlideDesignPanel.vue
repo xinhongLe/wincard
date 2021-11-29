@@ -152,6 +152,12 @@
             </a-select>
         </div>
 
+        <div class="row">
+            <div style="flex: 2;">间隔时长：</div>
+            <div class="row" style="flex: 3; margin-bottom: 0">
+                <a-input-number style="flex: 4; margin-right: 5px;" :value="intervalDuration" :min="1" @change="value => updateIntervalDuration(value)" />秒
+            </div>
+        </div>
         <a-divider />
 
         <!-- <div class="title">全局主题</div>
@@ -292,8 +298,8 @@ export default defineComponent({
         const theme = computed(() => store.state.theme);
         const availableFonts = computed(() => store.state.availableFonts);
         const viewportRatio = computed(() => store.state.viewportRatio);
+        const intervalDuration = computed(() => store.state.intervalDuration)
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
-
         const background = computed(() => {
             if (!currentSlide.value || !currentSlide.value.background) {
                 return {
@@ -447,6 +453,10 @@ export default defineComponent({
             store.commit(MutationTypes.SET_SLIDES, newSlides);
         };
 
+        const updateIntervalDuration = (value: number) => {
+            store.commit(MutationTypes.SET_INTERVAL_DURATION, value);
+        };
+
         const isBasePPT = computed(() => store.getters.isBasePPT);
 
         return {
@@ -463,7 +473,9 @@ export default defineComponent({
             updateTheme,
             applyThemeAllSlide,
             viewportRatio,
+            intervalDuration,
             updateViewportRatio,
+            updateIntervalDuration,
             showPresetThemes,
             togglePresetThemesVisible
         };

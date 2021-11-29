@@ -120,6 +120,10 @@ export const mutations: MutationTree<State> = {
         state.viewportRatio = viewportRatio;
     },
 
+    [MutationTypes.SET_INTERVAL_DURATION](state, intervalDuration: number) {
+        state.intervalDuration = intervalDuration;
+    },
+
     [MutationTypes.SET_VIEWPORT_MOVE_X](state, x: number) {
         state.canvasMoveX = x;
     },

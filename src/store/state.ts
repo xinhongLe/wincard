@@ -16,6 +16,7 @@ export interface State {
     canvasScale: number;
     creatingElement: CreatingElement | null;
     viewportRatio: number;
+    intervalDuration: number,
     slides: Slide[];
     slideIndex: number;
     selectedSlidesIndex: number[];
@@ -56,6 +57,7 @@ export const state: State = {
     canvasPercentage: 90, // 画布可视区域百分比
     canvasScale: 1, // 画布缩放比例（基于宽度1000px）
     viewportRatio: 0.5625, // 可是区域比例，默认16:9
+    intervalDuration: 2,
     snapshotCursor: -1, // 历史快照指针
     snapshotLength: 0, // 历史快照长度
     creatingElement: null, // 正在插入的元素信息，需要绘制插入的元素（文字、形状、线条）

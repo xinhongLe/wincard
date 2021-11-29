@@ -50,6 +50,7 @@
 import useListen from "@/hooks/useListen";
 import { Slide } from "@/types/slides";
 import { computed, defineComponent, onUnmounted, PropType, ref } from "vue";
+import { useStore } from "@/store";
 
 export default defineComponent({
     props: {
@@ -90,14 +91,14 @@ export default defineComponent({
         };
 
         let playTimer: number;
-        const delayTime = 4000;
-
+        const store = useStore();
+        const delayTime = computed(() => store.state.intervalDuration);
         const playAudioTimer = () => {
             if (isStop.value) return;
             const word = wordList.value[current.value];
-            playAudio(word, () => {
+            playAudio(word, (hasError) => {
                 time.value--;
-                if (time.value === 0) {
+                if (hasError || time.value === 0) {
                     time.value = count.value;
                     current.value++;
                 }
@@ -107,7 +108,7 @@ export default defineComponent({
                 } else {
                     playTimer = setTimeout(() => {
                         playAudioTimer();
-                    }, delayTime);
+                    }, delayTime.value * 1000);
                 }
             });
         };
