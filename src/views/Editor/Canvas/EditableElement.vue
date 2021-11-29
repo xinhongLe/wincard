@@ -42,6 +42,7 @@ import LatexElement from "@/components/element/LatexElement/index.vue";
 import AudioElement from "@/components/element/AudioElement/index.vue";
 import VideoElement from "@/components/element/VideoElement/index.vue";
 import WebIFrameElement from "@/components/element/IFrameElement/index.vue";
+import FlashElement from "@/components/element/FlashElement/index.vue";
 
 export default defineComponent({
     name: "editable-element",
@@ -81,7 +82,8 @@ export default defineComponent({
                 [ElementTypes.LATEX]: LatexElement,
                 [ElementTypes.AUDIO]: AudioElement,
                 [ElementTypes.VIDEO]: VideoElement,
-                [ElementTypes.IFRAME]: WebIFrameElement
+                [ElementTypes.IFRAME]: WebIFrameElement,
+                [ElementTypes.FLASH]: FlashElement
             };
             return elementTypeMap[props.elementInfo.type] || null;
         });

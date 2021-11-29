@@ -160,6 +160,17 @@
                     />
                 </a-tooltip>
             </a-popover>
+            <FileInput accept="application/x-shockwave-flash" @change="files => insertFlashElement(files)">
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="插入Flash"
+                >
+                    <IconVideoFile
+                        class="handler-item"
+                    />
+                </a-tooltip>
+            </FileInput>
         </div>
 
         <div class="right-handler">
@@ -208,6 +219,8 @@
 import { defineComponent, computed, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { uploadImage } from "@/utils/image";
+import { uploadAudio } from "@/utils/audio";
+import { uploadFlash } from "@/utils/flash";
 import { ShapePoolItem } from "@/configs/shapes";
 import { LinePoolItem } from "@/configs/lines";
 import useScaleCanvas from "@/hooks/useScaleCanvas";
@@ -221,7 +234,6 @@ import TableGenerator from "./TableGenerator.vue";
 import VideoInput from "./VideoInput.vue";
 import LaTeXEditor from "@/components/LaTeXEditor/index.vue";
 import WebIFrame from "./WebIFrame.vue";
-import { uploadAudio } from "@/utils/audio";
 
 export default defineComponent({
     name: "canvas-tool",
@@ -254,7 +266,8 @@ export default defineComponent({
             createTableElement,
             createLatexElement,
             createAudioElement,
-            createWebIFrameElement
+            createWebIFrameElement,
+            createFlashElement
         } = useCreateElement();
 
         const insertImageElement = (files: File[]) => {
@@ -270,6 +283,14 @@ export default defineComponent({
             if (!audioFile) return;
             uploadAudio(audioFile).then(key => {
                 createAudioElement(key);
+            });
+        };
+
+        const insertFlashElement = (files: File[]) => {
+            const flashFile = files[0];
+            if (!flashFile) return;
+            uploadFlash(flashFile).then(key => {
+                createFlashElement(key);
             });
         };
 
@@ -327,6 +348,7 @@ export default defineComponent({
             insertAudioElement,
             insertImageElement,
             insertWebIFrameElement,
+            insertFlashElement,
             shapePoolVisible,
             linePoolVisible,
             chartPoolVisible,

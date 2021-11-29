@@ -21,10 +21,10 @@ export default defineComponent({
         // screenRef.value.execNext(); 下一步
 
         // const slideIndex = ref(0);
-        const slideString = localStorage.exampleSlide0;
-        const oldSlide = JSON.parse(JSON.parse(slideString));
-        const newSlide = dealOldData(oldSlide);
-        console.log(oldSlide, newSlide);
+        // const slideString = localStorage.exampleSlide0;
+        // const oldSlide = JSON.parse(JSON.parse(slideString));
+        // const newSlide = dealOldData(oldSlide);
+        // console.log(oldSlide, newSlide);
         const slide = ref(slides[0]);
         console.log(slide.value);
 

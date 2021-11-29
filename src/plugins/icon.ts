@@ -98,7 +98,8 @@ import {
     Delete,
     Page,
     Right,
-    Bookmark
+    Bookmark,
+    VideoFile
 } from "@icon-park/vue-next";
 import {
     DEFAULT_ICON_CONFIGS,
@@ -231,6 +232,7 @@ export default {
         app.component("IconCycleOne", CycleOne);
         app.component("IconVideoOne", VideoOne);
         app.component("IconBigVideo", Video);
+        app.component("IconVideoFile", VideoFile);
 
         // 音频
         app.component("IconAudioFile", AudioFile);

@@ -131,7 +131,8 @@ export default defineComponent({
                 [ElementTypes.LATEX]: CommonElementOperate,
                 [ElementTypes.AUDIO]: ImageElementOperate,
                 [ElementTypes.VIDEO]: [CommonElementOperate, ImageElementOperate],
-                [ElementTypes.IFRAME]: CommonElementOperate
+                [ElementTypes.IFRAME]: CommonElementOperate,
+                [ElementTypes.FLASH]: ImageElementOperate
             };
             if (props.elementInfo.type === ElementTypes.VIDEO) return elementTypeMap[props.elementInfo.type][props.elementInfo.showType] || null;
             return elementTypeMap[props.elementInfo.type] || null;

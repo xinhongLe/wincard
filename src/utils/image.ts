@@ -1,4 +1,4 @@
-import { downloadFile, uploadFile } from "./oss";
+import { downloadFile, downloadResponse, uploadFile } from "./oss";
 
 interface ImageSize {
     width: number;
@@ -61,8 +61,8 @@ export const uploadImage = (file: File) => {
  * 处理获取oss img 访问链接
  * @param key oss访问key
  */
-export const getOssImageUrl = (key: string) => {
-    return downloadFile(key);
+export const getOssImageUrl = async (key: string): Promise<downloadResponse> => {
+    return await downloadFile(key);
 };
 
 /**

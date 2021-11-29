@@ -23,6 +23,7 @@
             <img class="icon-image" v-else src="@/assets/images/video.png" alt="" @click="openVideo">
             <a-modal
                 title="视频"
+                v-if="visible"
                 v-model:visible="visible"
                 :footer="null"
                 width="50%"

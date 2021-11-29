@@ -22,8 +22,9 @@ import Component from "@/plugins/component";
 import Directive from "@/plugins/directive";
 
 export default {
-    install(app: App, url: string) {
+    install(app: App, url: string, flashWeb: string) {
         (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API = url;
+        (window as any).VUE_APP_WINCARD_AI_XUE_SHI_FLASH_WEB = flashWeb;
         app.use(Icon);
         app.use(Component);
         app.use(Directive);

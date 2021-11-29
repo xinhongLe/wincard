@@ -363,6 +363,24 @@ export default () => {
         });
     };
 
+    /**
+     * 创建flash元素
+     * @param src flash文件地址
+     */
+    const createFlashElement = (src: string) => {
+        const id = createRandomCode();
+        createElement({
+            name: "Flash-" + id,
+            type: "flash",
+            id,
+            width: 100,
+            height: 100,
+            left: (VIEWPORT_SIZE - 100) / 2,
+            top: (VIEWPORT_SIZE * viewportRatio.value - 100) / 2,
+            src
+        });
+    };
+
     return {
         createImageElement,
         createChartElement,
@@ -373,6 +391,7 @@ export default () => {
         createLatexElement,
         createVideoElement,
         createAudioElement,
-        createWebIFrameElement
+        createWebIFrameElement,
+        createFlashElement
     };
 };

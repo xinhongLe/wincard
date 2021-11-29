@@ -1,6 +1,6 @@
 <template>
     <div
-        class="editable-element-aduio"
+        class="editable-element-flash"
         :class="{ lock: elementInfo.lock }"
         :style="{
             top: elementInfo.top + 'px',
@@ -13,13 +13,17 @@
             class="rotate-wrapper"
             :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
         >
-            <div
-                class="element-content"
+            <div class="element-content"
                 v-contextmenu="contextmenus"
                 @mousedown="($event) => handleSelectElement($event)"
             >
-                <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="">
-                <img class="icon-image" v-else src="@/assets/images/audio.png" alt="">
+                <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="" />
+                <img
+                    class="icon-image"
+                    v-else
+                    src="@/assets/images/flash.png"
+                    alt=""
+                />
             </div>
         </div>
     </div>
@@ -27,24 +31,22 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
-import { useStore } from "@/store";
-import { PPTAudioElement } from "@/types/slides";
+import { PPTFlashElement } from "@/types/slides";
 import { ContextmenuItem } from "@/types/contextmenu";
-import useAudio from "./useAudio";
-import useOssAudio from "./useOssAudio";
+import useOssFlash from "./useOssFlash";
 
 export default defineComponent({
-    name: "editable-element-aduio",
+    name: "editable-element-flash",
     props: {
         elementInfo: {
-            type: Object as PropType<PPTAudioElement>,
+            type: Object as PropType<PPTFlashElement>,
             required: true
         },
         selectElement: {
             type: Function as PropType<
                 (
                     e: MouseEvent,
-                    element: PPTAudioElement,
+                    element: PPTFlashElement,
                     canMove?: boolean
                 ) => void
             >,
@@ -55,9 +57,6 @@ export default defineComponent({
         }
     },
     setup(props) {
-        const store = useStore();
-        const scale = computed(() => store.state.canvasScale);
-
         const handleSelectElement = (e: MouseEvent, canMove = true) => {
             if (props.elementInfo.lock) return;
             e.stopPropagation();
@@ -65,26 +64,19 @@ export default defineComponent({
             props.selectElement(e, props.elementInfo, canMove);
         };
 
-        const { playAudio } = useAudio();
-        const handleAudioEvent = () => {
-            playAudio(props.elementInfo.src);
-        };
-
-        const audioElenent = computed(() => props.elementInfo);
-        const { iconUrl } = useOssAudio(audioElenent);
+        const flashElement = computed(() => props.elementInfo);
+        const { iconUrl } = useOssFlash(flashElement);
 
         return {
-            scale,
             iconUrl,
-            handleSelectElement,
-            handleAudioEvent
+            handleSelectElement
         };
     }
 });
 </script>
 
 <style lang="scss" scoped>
-.editable-element-aduio {
+.editable-element-flash {
     position: absolute;
 
     &.lock .handler-border {
