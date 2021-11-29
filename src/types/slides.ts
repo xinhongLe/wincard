@@ -51,11 +51,12 @@ export interface PauseList {
  * pauseList: 断点数据
  */
 export interface Follow {
-    id: string;
+    id?: string;
     src: string;
     ossSrc?: string;
     ossExpiration?: string;
-    pauseList?: PauseList[]
+    pauseList?: PauseList[];
+    fileId: string;
 }
 
 /**
