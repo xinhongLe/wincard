@@ -147,6 +147,7 @@ export const slides: Slide[] = [
                     time: "00:00:17.7815570"
                 }
             ]
-        }
+        },
+        intervalDuration: 2
     }
 ];

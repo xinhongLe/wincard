@@ -799,6 +799,8 @@ export interface SlideBackground {
  * turningMode?: 翻页方式
  *
  * steps: 操作步骤
+ *
+ * intervalDuration 音频播放间隔时长
  */
 export interface Slide {
     id: string;
@@ -812,7 +814,8 @@ export interface Slide {
     background?: SlideBackground;
     animations?: PPTAnimation[];
     turningMode?: "no" | "fade" | "slideX" | "slideY";
-    steps?: PPTElementAction[][]
+    steps?: PPTElementAction[][],
+    intervalDuration?: number,
 }
 
 /**
