@@ -56,7 +56,7 @@ export interface Follow {
     src: string;
     ossSrc?: string;
     ossExpiration?: string;
-    pauseList?: PauseList[]
+    pauseList?: PauseList[];
 }
 
 /**

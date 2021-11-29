@@ -153,8 +153,9 @@
                         :step="100"
                         :value="formState.duration"
                         @change="(value) => updateElementAnimationDuration(value)"
-                        style="width: 100%;"
+                        style="width: calc(100% - 40px); margin-right: 5px;"
                     />
+                    毫秒
                 </a-form-item>
             </a-form>
         </a-modal>
