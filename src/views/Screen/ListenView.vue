@@ -66,7 +66,7 @@ export default defineComponent({
         const time = ref(2);
         const isStop = ref(true);
 
-        const { playAudio } = useListen();
+        const { playAudio, pauseAudio } = useListen();
 
         const control = () => {
             clearTimeout(playTimer);
@@ -114,6 +114,7 @@ export default defineComponent({
         };
 
         onUnmounted(() => {
+            pauseAudio();
             isStop.value = true;
             clearTimeout(playTimer);
         });

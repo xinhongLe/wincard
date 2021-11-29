@@ -1,6 +1,6 @@
 <template>
     <div
-        class="screen-element-video"
+        class="base-element-video"
         :style="{
             top: elementInfo.top + 'px',
             left: elementInfo.left + 'px',
@@ -83,7 +83,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.screen-element-video {
+.base-element-video {
     position: absolute;
 }
 

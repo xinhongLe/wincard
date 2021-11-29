@@ -97,6 +97,7 @@
                 <a-form-item label="退出动画:">
                     <a-popover
                         trigger="click"
+                        :overlayStyle="{'z-index': '2'}"
                         v-model:visible="outAnimationPoolVisible"
                     >
                         <template #content>

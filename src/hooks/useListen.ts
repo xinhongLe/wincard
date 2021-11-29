@@ -29,6 +29,7 @@ interface IForm {
 }
 
 export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) => {
+    let audio: HTMLAudioElement;
     const store = useStore();
     const listenSystemList = computed(() => store.state.listenSystemList);
     const currentSlide = computed(() => store.getters.currentSlide);
@@ -147,7 +148,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
 
     const playAudio = debounce(async (word: ListenWord, callback?: (hasError?: boolean) => void) => {
         const res = await getOssAudioUrl(word.file);
-        const audio = new Audio();
+        audio = new Audio();
         audio.src = res.url;
         audio.oncanplay = () => {
             audio.play();
@@ -162,6 +163,10 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
             callback && callback(true);
         };
     }, 300);
+
+    const pauseAudio = () => {
+        audio.pause();
+    };
 
     const deleteAudio = (i: number) => {
         const list = listenPageList.value;
@@ -181,6 +186,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
         saveSystemWord,
         deleteSystemWord,
         playAudio,
-        deleteAudio
+        deleteAudio,
+        pauseAudio
     };
 };

@@ -69,6 +69,6 @@
     z-index: 10000;
 }
 
-.ant-modal-wrap {
-    z-index: 10000;
+.ant-modal-wrap, .ant-select-dropdown, .ant-popover {
+    z-index: 10000 !important;
 }
