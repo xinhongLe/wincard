@@ -59,12 +59,24 @@
             </a-tooltip>
         </a-button-group>
         <a-button-group class="row" v-if="displayItemCount > 2">
-            <a-button style="flex: 1;" @click="uniformHorizontalDisplay()"
-                >水平均匀分布</a-button
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="水平均匀分布"
             >
-            <a-button style="flex: 1;" @click="uniformVerticalDisplay()"
-                >垂直均匀分布</a-button
+                <a-button style="flex: 1;" @click="uniformHorizontalDisplay()">
+                    <IconDistributeHorizontally />
+                </a-button>
+            </a-tooltip>
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="垂直均匀分布"
             >
+                <a-button style="flex: 1;" @click="uniformVerticalDisplay()">
+                    <IconDistributeVertically />
+                </a-button>
+            </a-tooltip>
         </a-button-group>
 
         <a-divider />

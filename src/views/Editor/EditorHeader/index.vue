@@ -59,16 +59,12 @@
         </div>
 
         <div class="right">
-            <a-tooltip :mouseLeaveDelay="0" title="预览">
-                <div class="a-menu-item" @click="enterScreening()">
-                    <IconPpt size="18" fill="#666" style="margin-top: 2px;" />
-                </div>
-            </a-tooltip>
-            <a-tooltip :mouseLeaveDelay="0" title="保存">
-                <div class="a-menu-item" @click="save()">
-                    <IconSave size="18" fill="#666" style="margin-top: 2px;" />
-                </div>
-            </a-tooltip>
+            <div class="a-menu-item" @click="enterScreening()">
+                <IconPpt fill="#666"/> <span class="text">预览</span>
+            </div>
+            <div class="a-menu-item" @click="save()">
+                <IconSave fill="#666" /> <span class="text">保存</span>
+            </div>
         </div>
 
         <a-drawer
@@ -175,7 +171,7 @@ export default defineComponent({
     }
 }
 
-.left .a-menu-item:hover {
+.a-menu-item:hover {
     background-color: $lightGray;
 }
 </style>

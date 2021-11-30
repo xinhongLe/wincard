@@ -99,7 +99,9 @@ import {
     Page,
     Right,
     Bookmark,
-    VideoFile
+    VideoFile,
+    DistributeHorizontally,
+    DistributeVertically
 } from "@icon-park/vue-next";
 import {
     DEFAULT_ICON_CONFIGS,
@@ -139,6 +141,8 @@ export default {
         app.component("IconAlignBottom", AlignBottom);
         app.component("IconAlignVertically", AlignVertically);
         app.component("IconAlignHorizontally", AlignHorizontally);
+        app.component("IconDistributeHorizontally", DistributeHorizontally);
+        app.component("IconDistributeVertically", DistributeVertically);
 
         // 层级
         app.component("IconBringToFront", BringToFront);
