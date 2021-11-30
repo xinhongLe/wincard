@@ -129,8 +129,9 @@ export default defineComponent({
         width: 235px;
         top: 0;
         height: 100%;
-        z-index: 10;
+        z-index: 1000;
         overflow: hidden;
+        pointer-events: none;
     }
 }
 </style>

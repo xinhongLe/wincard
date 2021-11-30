@@ -91,6 +91,7 @@ export default defineComponent({
     transform: translateY(-50%);
     width: 35px;
     overflow: hidden;
+    pointer-events: all;
 }
 
 .right-btn {
@@ -123,6 +124,7 @@ export default defineComponent({
     box-shadow: 0 0 15px 0 rgb(0 0 0 / 10%);
     display: flex;
     flex-direction: column;
+    pointer-events: all;
 }
 
 .elements-list-title {

@@ -8,7 +8,7 @@ import { getResourceDB } from "@/utils/database";
 declare function require(img: string): string;
 export default (imageElement: ComputedRef<PPTImageElement>, isScreening?: boolean) => {
     const image = require("@/assets/images/default.png");
-    const imageUrl = ref(image);
+    const imageUrl = ref("");
     const store = useStore();
     const resourceDB = getResourceDB();
     const updateImage = async () => {
