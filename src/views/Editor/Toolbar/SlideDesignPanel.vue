@@ -154,8 +154,18 @@
 
         <div class="row" v-if="isListen">
             <div style="flex: 2;">间隔时长：</div>
-            <div class="row" style="flex: 3; margin-bottom: 0">
-                <a-input-number style="flex: 4; margin-right: 5px;" :value="intervalDuration" :min="1" @change="value => updateIntervalDuration(value)" />秒
+            <div class="row"
+                style="flex: 3;
+                margin-bottom: 0;"
+            >
+                <a-input-number
+                    style="flex: 4;
+                    margin-right: 5px;"
+                    :value="intervalDuration"
+                    :min="1"
+                    @change="value => updateIntervalDuration(value)"
+                />
+                秒
             </div>
         </div>
         <a-divider />
