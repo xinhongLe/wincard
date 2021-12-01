@@ -91,7 +91,7 @@ export default defineComponent({
         const { orderElement } = useOrderElement();
         const { alignElementToCanvas } = useAlignElementToCanvas();
         const { combineElements, uncombineElements } = useCombineElement();
-        const { deleteElement } = useDeleteElement();
+        const { deleteElement } = useDeleteElement(0);
         const { lockElement, unlockElement } = useLockElement();
         const { showElement, hideElement } = useDisplayElement();
         const {

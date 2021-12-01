@@ -14,6 +14,7 @@ import {
 import { ShapePoolItem } from "@/configs/shapes";
 import { LinePoolItem } from "@/configs/lines";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
+import { logInput, LOG_EVENT } from "@/utils/log";
 
 interface CommonElementPosition {
     top: number;
@@ -54,6 +55,8 @@ export default () => {
         }, 0);
 
         addHistorySnapshot();
+
+        logInput(`新增元素 ${element.name}`, LOG_EVENT.ADD_ELEMENT, JSON.stringify(element));
     };
 
     /**

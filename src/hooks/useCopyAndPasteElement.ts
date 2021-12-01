@@ -15,7 +15,7 @@ export default () => {
     );
 
     const { pasteTextClipboardData } = usePasteTextClipboardData();
-    const { deleteElement } = useDeleteElement();
+    const { deleteElement } = useDeleteElement(2);
 
     // 将选中元素数据加密后复制到剪贴板
     const copyElement = () => {

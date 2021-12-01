@@ -32,7 +32,6 @@ export default (follow: ComputedRef<Follow | undefined>, isScreening?: boolean) 
     });
 
     watch([key], () => {
-        console.log("xxxxxxxx update");
         updateVideo();
     });
 

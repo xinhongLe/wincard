@@ -57,7 +57,7 @@ export default defineComponent({
             selectElement(e, element, false);
         };
 
-        const { deleteTargetElement } = useDeleteElement();
+        const { deleteTargetElement } = useDeleteElement(1);
 
         return {
             isOpen,

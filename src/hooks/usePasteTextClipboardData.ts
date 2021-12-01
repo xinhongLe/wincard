@@ -7,6 +7,7 @@ import { createElementIdMap } from "@/utils/element";
 import { parseText2Paragraphs } from "@/utils/textParser";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import useCreateElement from "@/hooks/useCreateElement";
+import { logInput, LOG_EVENT } from "@/utils/log";
 
 interface PasteTextClipboardDataOptions {
     onlySlide?: boolean;
@@ -50,6 +51,8 @@ export default () => {
             Object.values(elIdMap)
         );
         addHistorySnapshot();
+
+        logInput(`粘贴元素 ${elements.map(item => item.name).join("、")}`, LOG_EVENT.ADD_ELEMENT, JSON.stringify(elements));
     };
 
     /**

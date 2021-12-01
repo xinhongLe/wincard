@@ -2,8 +2,13 @@ import { computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTElement, Slide } from "@/types/slides";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
+import { logInput, LOG_EVENT } from "@/utils/log";
 
-export default () => {
+/**
+ * @param from
+ * 0 右击删除 1 元素列表删除 2 剪切 3 快捷键删除
+ */
+export default (from: number) => {
     const store = useStore();
     const activeElementIdList = computed(() => store.state.activeElementIdList);
     const activeGroupElementId = computed(
@@ -19,15 +24,26 @@ export default () => {
         if (!activeElementIdList.value.length) return;
 
         let newElementList: PPTElement[] = [];
+        let deleteElementList: PPTElement[] = [];
         if (activeGroupElementId.value) {
             newElementList = currentSlide.value.elements.filter(
                 el => el.id !== activeGroupElementId.value
+            );
+
+            deleteElementList = currentSlide.value.elements.filter(
+                el => el.id === activeGroupElementId.value
             );
         } else {
             newElementList = currentSlide.value.elements.filter(
                 el => !activeElementIdList.value.includes(el.id)
             );
+
+            deleteElementList = currentSlide.value.elements.filter(
+                el => activeElementIdList.value.includes(el.id)
+            );
         }
+
+        logInput(`${from === 2 ? "剪切" : "删除"}元素 ${deleteElementList.map(item => item.name).join("、")}`, [LOG_EVENT.DELETE_ELEMENT, LOG_EVENT.DELETE_ELEMENT_FROM_LIST, LOG_EVENT.CUT_ELEMENT, LOG_EVENT.DELETE_ELEMENT_HOT_KEY][from]);
 
         store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, []);
         store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList });

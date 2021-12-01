@@ -203,7 +203,7 @@ export default defineComponent({
         const { rotateElement } = useRotateElement(elementList, viewportRef);
 
         const { selectAllElement } = useSelectAllElement();
-        const { deleteAllElements } = useDeleteElement();
+        const { deleteAllElements } = useDeleteElement(0);
         const { pasteElement } = useCopyAndPasteElement();
         // const { enterScreening } = useScreening();
         const { updateSlideIndex } = useSlideHandler();

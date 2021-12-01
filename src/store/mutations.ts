@@ -111,7 +111,6 @@ export const mutations: MutationTree<State> = {
     },
 
     // slides
-
     [MutationTypes.SET_THEME](state, themeProps: Partial<SlideTheme>) {
         state.theme = { ...state.theme, ...themeProps };
     },

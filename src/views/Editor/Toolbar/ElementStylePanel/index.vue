@@ -32,6 +32,7 @@ import VideoStylePanel from "./VideoStylePanel.vue";
 import AudioStylePanel from "./AudioStylePanel.vue";
 import IFrameStylePanel from "./IFrameStylePanel.vue";
 import FlashStylePanel from "./FlashStylePanel.vue";
+import { logInput, LOG_EVENT } from "@/utils/log";
 
 export default defineComponent({
     name: "element-style-panel",
@@ -75,6 +76,7 @@ export default defineComponent({
                     name: formState.name
                 }
             });
+            logInput(`更改元素名 ${handleElement.value.name} 为 ${formState.name}`, LOG_EVENT.UPDATE_ELEMENT);
         }, 300);
 
         return {

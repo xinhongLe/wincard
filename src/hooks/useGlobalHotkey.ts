@@ -43,7 +43,7 @@ export default () => {
     } = useSlideHandler();
 
     const { combineElements, uncombineElements } = useCombineElement();
-    const { deleteElement } = useDeleteElement();
+    const { deleteElement } = useDeleteElement(3);
     const { lockElement } = useLockElement();
     const {
         copyElement,
