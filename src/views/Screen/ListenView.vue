@@ -7,7 +7,7 @@
                     v-for="(item, index) in wordList"
                     :key="index"
                 >
-                    {{ item.name }}
+                    {{ current > -1 ? index + 1 : item.name }}
                     <div class="listening" v-if="current === index">
                         <img
                             src="@/assets/images/icon_volume_notice_small.png"
