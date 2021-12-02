@@ -73,13 +73,11 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
     const touchCount = ref(0);
 
     const touchStartListener = (e: TouchEvent) => {
-        e.preventDefault();
         touchInfo.value = e.changedTouches;
         touchTime.value = new Date().getTime();
     };
 
     const touchEndListener = (e: TouchEvent) => {
-        e.preventDefault();
         if (!touchInfo.value) return;
         const y = Math.abs(
             touchInfo.value[0].pageY - e.changedTouches[0].pageY
@@ -140,7 +138,6 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
     let center: { x: number, y: number };
 
     const touchMoveListener = throttle((e: TouchEvent) => {
-        e.preventDefault();
         if (touchInfo.value && touchInfo.value.length === 2 && e.changedTouches.length === 2) {
             // 双指缩放
             const zoom = getDistance({ x: e.changedTouches[0].pageX, y: e.changedTouches[0].pageY }, { x: e.changedTouches[1].pageX, y: e.changedTouches[1].pageY }) / getDistance({ x: touchInfo.value[0].pageX, y: touchInfo.value[0].pageY }, { x: touchInfo.value[1].pageX, y: touchInfo.value[1].pageY });
