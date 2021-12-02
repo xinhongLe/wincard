@@ -3,6 +3,8 @@
         <div
             class="slide-list"
             @mousedown="disableSelectEnd"
+            @touchstart="$event => touchStartListener($event)"
+            @touchend="$event => touchEndListener($event)"
         >
             <div
                 :class="[
@@ -12,6 +14,7 @@
             >
                 <div
                     class="slide-content"
+                    ref="contentRef"
                     :style="{
                         width: slideWidth + 'px',
                         height: slideHeight + 'px',
@@ -29,6 +32,7 @@
                         @mousewheel="$event => handleMousewheelScreen($event)"
                         @mousemove="handleMouseMove"
                         @mousedown="$event => moveScreen($event)"
+                        @touchmove="$event => touchMoveListener($event)"
                         v-contextmenu="contextmenus"
                     >
                         <ScreenSlide
@@ -156,6 +160,7 @@ export default defineComponent({
         });
 
         const screenRef = ref();
+        const contentRef = ref();
 
         // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
         const setSlideContentSize = () => {
@@ -237,6 +242,7 @@ export default defineComponent({
 
         // 向上/向下播放
         const execPrev = () => {
+            console.log("上一步");
             disableSelectStart();
 
             // 非素材页直接跳过
@@ -262,6 +268,7 @@ export default defineComponent({
             stepIndex.value--;
         };
         const execNext = () => {
+            console.log("下一步");
             disableSelectStart();
 
             // 非素材页直接跳过
@@ -304,31 +311,6 @@ export default defineComponent({
             { leading: true, trailing: false }
         );
 
-        // 触摸屏上下滑动翻页
-        const touchInfo = ref<{ x: number; y: number } | null>(null);
-
-        const touchStartListener = (e: TouchEvent) => {
-            touchInfo.value = {
-                x: e.changedTouches[0].pageX,
-                y: e.changedTouches[0].pageY
-            };
-        };
-        const touchEndListener = (e: TouchEvent) => {
-            if (!touchInfo.value) return;
-
-            const offsetX = Math.abs(
-                touchInfo.value.x - e.changedTouches[0].pageX
-            );
-            const offsetY = e.changedTouches[0].pageY - touchInfo.value.y;
-
-            if (Math.abs(offsetY) > offsetX && Math.abs(offsetY) > 50) {
-                touchInfo.value = null;
-
-                if (offsetY > 0) execPrev();
-                else execNext();
-            }
-        };
-
         // 快捷键翻页
         const keydownListener = (e: KeyboardEvent) => {
             const key = e.key.toUpperCase();
@@ -357,12 +339,12 @@ export default defineComponent({
         const viewScale = ref(1);
         const offsetX = ref(0);
         const offsetY = ref(0);
-        const { handleMousewheelScreen, handleMouseMove, moveScreen } = useScaleScreen(viewScale, offsetX, offsetY, scale);
         const resetPosition = () => {
             viewScale.value = 1;
             offsetX.value = 0;
             offsetY.value = 0;
         };
+        const { handleMousewheelScreen, handleMouseMove, moveScreen, touchStartListener, touchEndListener, touchMoveListener } = useScaleScreen(viewScale, offsetX, offsetY, execPrev, execNext, resetPosition, contentRef);
 
         const remarkVisible = ref(false);
 
@@ -402,6 +384,7 @@ export default defineComponent({
 
         return {
             screenRef,
+            contentRef,
             currentSlide,
             slideWidth,
             slideHeight,
@@ -409,6 +392,7 @@ export default defineComponent({
             mousewheelListener,
             touchStartListener,
             touchEndListener,
+            touchMoveListener,
             execPrev,
             execNext,
             writingBoardToolVisible,
