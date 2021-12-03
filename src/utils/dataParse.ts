@@ -1,5 +1,5 @@
 import { OSS_PATH } from "@/configs/filePath";
-import { PPTAudioElement, PPTElement, PPTElementAction, PPTImageElement, PPTLineElement, PPTShapeElement, PPTTextElement, PPTVideoElement, Slide, SlideBackground } from "@/types/slides";
+import { ElementTypes, PPTAudioElement, PPTElement, PPTElementAction, PPTImageElement, PPTLineElement, PPTShapeElement, PPTTextElement, PPTVideoElement, Slide, SlideBackground } from "@/types/slides";
 import { createRandomCode } from "./common";
 
 interface IOldSlide {
@@ -527,4 +527,47 @@ const dealVideo = (oldVideo: IOldVideo) => {
 // 颜色处理转化
 const converColor = (color: string) => {
     return "#" + color.substr(3, 8) + color.substr(1, 2);
+};
+
+export const dealSaveData = (slide: Slide) => {
+    const nSlide = JSON.parse(JSON.stringify(slide));
+
+    // 处理背景图
+    if (nSlide.background) {
+        delete nSlide.background.ossExpiration;
+        delete nSlide.background.ossSrc;
+    }
+
+    // 处理跟读
+    if (nSlide.follow) {
+        delete nSlide.follow.ossExpiration;
+        delete nSlide.follow.ossSrc;
+    }
+
+    // 处理素材页
+    if (nSlide.elements) {
+        nSlide.elements.forEach((item: PPTElement) => {
+            if (item.type === ElementTypes.IMAGE) {
+                delete item.ossExpiration;
+                delete item.ossSrc;
+            }
+            if (item.type === ElementTypes.AUDIO) {
+                delete item.ossExpiration;
+                delete item.ossIcon;
+                delete item.ossSrc;
+            }
+            if (item.type === ElementTypes.VIDEO) {
+                delete item.ossExpiration;
+                delete item.ossIcon;
+                delete item.ossPoster;
+                delete item.ossSrc;
+            }
+            if (item.type === ElementTypes.FLASH) {
+                delete item.ossExpiration;
+                delete item.ossIcon;
+                delete item.ossSrc;
+            }
+        });
+    }
+    return nSlide;
 };

@@ -1,5 +1,5 @@
 <template>
-    <PPTEditor :slide="slide" @onSave="onSave" @addCard="addCard" />
+    <PPTEditor ref="editor" :slide="slide" @onSave="onSave" @addCard="addCard" />
     <!-- <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @openCard="openCard" /> -->
 </template>
 
@@ -12,7 +12,9 @@ import { dealOldData } from "@/utils/dataParse";
 export default defineComponent({
     name: "APP",
     setup() {
+        const editor = ref();
         const onSave = (slide: Slide) => {
+            console.log("数据是否变化", editor.value.getDataIsChange());
             console.log(JSON.stringify(slide));
         };
 
@@ -111,6 +113,7 @@ export default defineComponent({
         };
 
         return {
+            editor,
             onSave,
             addCard,
             slide,

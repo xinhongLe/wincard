@@ -21,6 +21,7 @@ import { ActionTypes, MutationTypes, useStore } from "@/store";
 import useSlideHandler from "@/hooks/useSlideHandler";
 import { IWin, Slide } from "@/types/slides";
 import { message } from "ant-design-vue";
+import { dealSaveData } from "@/utils/dataParse";
 
 export default defineComponent({
     name: "PPTEditor",
@@ -36,6 +37,7 @@ export default defineComponent({
         const screening = computed(() => store.state.screening);
         // const oldSlides = computed(() => store.state.oldSlides);
         const currentSlide = computed(() => store.getters.currentSlide);
+        const canUndo = computed(() => store.getters.canUndo);
 
         const canvasScale = computed(() => store.state.canvasScale);
         provide("slideScale", canvasScale);
@@ -86,8 +88,12 @@ export default defineComponent({
             return slide;
         };
 
+        const getDataIsChange = () => {
+            return canUndo.value && JSON.stringify(props.slide) !== JSON.stringify(dealSaveData(currentSlide.value));
+        };
+
         const onSave = (slide: Slide) => {
-            emit("onSave", slide);
+            emit("onSave", dealSaveData(slide));
         };
 
         const addCard = (callback: (wins: IWin[]) => void) => {
@@ -105,6 +111,7 @@ export default defineComponent({
             addCard,
             openCard,
             getCurrentSlide,
+            getDataIsChange,
             selectVideo
         };
     }
