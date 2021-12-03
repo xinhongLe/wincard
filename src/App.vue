@@ -1,6 +1,6 @@
 <template>
     <PPTEditor :slide="slide" @onSave="onSave" @addCard="addCard" />
-    <!-- <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @openCard="openCard" :inline="true" /> -->
+    <!-- <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @openCard="openCard" /> -->
 </template>
 
 <script lang="ts">

@@ -71,35 +71,46 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
     const touchInfo = ref<TouchList | null>(null);
     const touchTime = ref<number | null>(null);
     const touchCount = ref(0);
+    const isTouchScale = ref(false);
 
     const touchStartListener = (e: TouchEvent) => {
-        touchInfo.value = e.changedTouches;
+        touchInfo.value = e.touches;
         touchTime.value = new Date().getTime();
+        if (e.touches.length === 2) {
+            center = getTouchesCenter(e.touches);
+        }
     };
 
     const touchEndListener = (e: TouchEvent) => {
         if (!touchInfo.value) return;
-        const y = Math.abs(
-            touchInfo.value[0].pageY - e.changedTouches[0].pageY
-        );
-        const x = e.changedTouches[0].pageX - touchInfo.value[0].pageX;
-        const time = new Date().getTime() - (touchTime.value || 0);
-        touchTime.value = null;
-        touchInfo.value = null;
+        if (isTouchScale.value) {
+            touchTime.value = null;
+            touchInfo.value = null;
+            isTouchScale.value = false;
+        } else {
+            const y = Math.abs(
+                touchInfo.value[0].pageY - e.changedTouches[0].pageY
+            );
+            const x = e.changedTouches[0].pageX - touchInfo.value[0].pageX;
+            const time = new Date().getTime() - (touchTime.value || 0);
 
-        // 快速点击三下复位
-        if (time < 100 && time > 0) touchCount.value++;
-        if (touchCount.value === 3) {
-            touchCount.value = 0;
-            resetPosition();
-        }
-        clearTouchCount();
+            touchTime.value = null;
+            touchInfo.value = null;
 
-        if (scale.value > 1 || offsetX.value !== 0 || offsetY.value !== 0) return;
-        // 垂直方向变动小于10 且 左右移动大于50 且 时间间隔在 .5秒 内
-        if (y < 30 && Math.abs(x) > 50 && time < 500) {
-            if (x > 0) execPrev();
-            else execNext();
+            // 快速点击三下复位
+            if (time < 100 && time > 0) touchCount.value++;
+            if (touchCount.value === 3) {
+                touchCount.value = 0;
+                resetPosition();
+            }
+            clearTouchCount();
+
+            if (scale.value > 1 || offsetX.value !== 0 || offsetY.value !== 0) return;
+            // 垂直方向变动小于10 且 左右移动大于50 且 时间间隔在 .5秒 内
+            if (y < 30 && Math.abs(x) > 50 && time < 500) {
+                if (x > 0) execPrev();
+                else execNext();
+            }
         }
     };
 
@@ -138,10 +149,12 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
     let center: { x: number, y: number };
 
     const touchMoveListener = throttle((e: TouchEvent) => {
-        if (touchInfo.value && touchInfo.value.length === 2 && e.changedTouches.length === 2) {
+        e.preventDefault();
+        if (touchInfo.value?.length === 2 && e.touches.length === 2) {
+            isTouchScale.value = true;
             // 双指缩放
-            const zoom = getDistance({ x: e.changedTouches[0].pageX, y: e.changedTouches[0].pageY }, { x: e.changedTouches[1].pageX, y: e.changedTouches[1].pageY }) / getDistance({ x: touchInfo.value[0].pageX, y: touchInfo.value[0].pageY }, { x: touchInfo.value[1].pageX, y: touchInfo.value[1].pageY });
-            touchInfo.value = e.changedTouches;
+            const zoom = getDistance({ x: e.touches[0].pageX, y: e.touches[0].pageY }, { x: e.touches[1].pageX, y: e.touches[1].pageY }) / getDistance({ x: touchInfo.value[0].pageX, y: touchInfo.value[0].pageY }, { x: touchInfo.value[1].pageX, y: touchInfo.value[1].pageY });
+            touchInfo.value = e.touches;
             const offset = getPointOffset(center);
             if (zoom - 1 < 0) {
                 if (scale.value === 1) return;
@@ -155,17 +168,14 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
                 offsetX.value = -offset.offsetX * unit + offsetX.value;
                 offsetY.value = -offset.offsetY * unit + offsetY.value;
             }
-        } else if (e.changedTouches.length === 2) {
-            touchInfo.value = e.changedTouches;
-            center = getTouchesCenter(e.changedTouches);
-        } else if (touchInfo.value?.length === 1 && e.changedTouches.length === 1) {
+        } else if (touchInfo.value?.length === 1 && e.touches.length === 1) {
             if (scale.value === 1 && offsetX.value === 0 && offsetY.value === 0) return;
             // 移动
             const moveScreenX = offsetX.value;
             const moveScreenY = offsetY.value;
-            offsetX.value = e.changedTouches[0].pageX - touchInfo.value[0].pageX + moveScreenX;
-            offsetY.value = e.changedTouches[0].pageY - touchInfo.value[0].pageY + moveScreenY;
-            touchInfo.value = e.changedTouches;
+            offsetX.value = e.touches[0].pageX - touchInfo.value[0].pageX + moveScreenX;
+            offsetY.value = e.touches[0].pageY - touchInfo.value[0].pageY + moveScreenY;
+            touchInfo.value = e.touches;
         }
     }, 10);
 

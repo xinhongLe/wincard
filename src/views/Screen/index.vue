@@ -5,6 +5,7 @@
             @mousedown="disableSelectEnd"
             @touchstart="$event => touchStartListener($event)"
             @touchend="$event => touchEndListener($event)"
+            @touchmove="$event => touchMoveListener($event)"
         >
             <div
                 :class="[
@@ -32,7 +33,6 @@
                         @mousewheel="$event => handleMousewheelScreen($event)"
                         @mousemove="handleMouseMove"
                         @mousedown="$event => moveScreen($event)"
-                        @touchmove="$event => touchMoveListener($event)"
                         v-contextmenu="contextmenus"
                     >
                         <ScreenSlide
