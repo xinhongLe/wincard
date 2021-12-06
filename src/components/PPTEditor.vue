@@ -88,6 +88,10 @@ export default defineComponent({
             return slide;
         };
 
+        const closeScreen = () => {
+            store.commit(MutationTypes.SET_SCREENING, false);
+        };
+
         const getDataIsChange = () => {
             return canUndo.value && JSON.stringify(props.slide) !== JSON.stringify(dealSaveData(currentSlide.value));
         };
@@ -112,7 +116,8 @@ export default defineComponent({
             openCard,
             getCurrentSlide,
             getDataIsChange,
-            selectVideo
+            selectVideo,
+            closeScreen
         };
     }
 });

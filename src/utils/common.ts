@@ -23,3 +23,14 @@ export const createRandomCode = (len = 6) => {
 export const fillDigit = (digit: number, len: number) => {
     return padStart("" + digit, len, "0");
 };
+
+/**
+ * 等待
+ */
+export const sleep = (time: number) => {
+    return new Promise<number>(resolve => {
+        setTimeout(() => {
+            resolve(1);
+        }, time);
+    });
+};

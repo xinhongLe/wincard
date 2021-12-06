@@ -1,4 +1,5 @@
 import { MutationTypes, useStore } from "@/store";
+import { sleep } from "@/utils/common";
 import {
     enterFullscreen,
     exitFullscreen,
@@ -9,7 +10,11 @@ export default () => {
     const store = useStore();
 
     // 进入放映状态（从当前页开始）
-    const enterScreening = () => {
+    const enterScreening = async () => {
+        if ((window as any).electron && !(window as any).electron.isFullScreen() && !(window as any).electron.isMac()) {
+            (window as any).electron.setFullScreen();
+            await sleep(300);
+        }
         enterFullscreen();
         store.commit(MutationTypes.SET_SCREENING, true);
     };
