@@ -161,6 +161,10 @@ export default defineComponent({
             stepIndex.value = -1;
             currentSlide.value = slide.value;
             setSlideContentSize();
+
+            onMounted(() => {
+                init();
+            });
         });
 
         const screenRef = ref();
@@ -387,7 +391,7 @@ export default defineComponent({
             ];
         };
 
-        onMounted(() => {
+        const init = () => {
             if (!props.isInit && currentSlide.value.type === PAGE_TYPE.ELEMENT && steps.value.length > 0) {
                 // 不是初始化页面，是从上一个页面返回，这是需要将步骤置为最后一步
                 stepIndex.value = steps.value.length - 1;
@@ -397,6 +401,10 @@ export default defineComponent({
                     });
                 });
             }
+        };
+
+        onMounted(() => {
+            init();
         });
 
         return {
