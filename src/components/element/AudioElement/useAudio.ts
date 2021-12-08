@@ -22,7 +22,15 @@ export default () => {
         }
     }, 300);
 
+    const stopAudio = () => {
+        if (audio) {
+            if (!audio.paused) audio.pause();
+            audio.remove();
+        }
+    };
+
     return {
-        playAudio
+        playAudio,
+        stopAudio
     };
 };

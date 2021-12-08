@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, Ref, ref } from "vue";
+import { computed, defineComponent, inject, onUnmounted, PropType, Ref, ref } from "vue";
 import { PPTAudioElement } from "@/types/slides";
 import useAudio from "./useAudio";
 import useOssAudio from "./useOssAudio";
@@ -37,13 +37,17 @@ export default defineComponent({
     setup(props) {
         const scale: Ref<number> = inject("slideScale") || ref(1);
 
-        const { playAudio } = useAudio();
+        const { playAudio, stopAudio } = useAudio();
         const handleAudioEvent = () => {
             playAudio(props.elementInfo.src);
         };
 
         const audioElenent = computed(() => props.elementInfo);
         const { iconUrl } = useOssAudio(audioElenent);
+
+        onUnmounted(() => {
+            stopAudio();
+        });
 
         return {
             scale,
