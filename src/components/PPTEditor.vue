@@ -5,6 +5,7 @@
         @selectVideo="selectVideo"
     />
     <Screen
+        ref="screenRef"
         :slide="currentSlide"
         @openCard="openCard"
         v-if="screening"
@@ -14,7 +15,7 @@
 <script lang="ts">
 import Editor from "@/views/Editor/index.vue";
 import Screen from "@/views/Screen/index.vue";
-import { computed, defineComponent, onMounted, PropType, provide, watch } from "vue";
+import { computed, defineComponent, onMounted, PropType, provide, ref, watch } from "vue";
 // import { Modal } from "ant-design-vue";
 import { ActionTypes, MutationTypes, useStore } from "@/store";
 
@@ -80,6 +81,15 @@ export default defineComponent({
             // }
         });
 
+        const screenRef = ref();
+        const execPrev = () => {
+            screenRef.value.execPrev();
+        };
+
+        const execNext = () => {
+            screenRef.value.execNext();
+        };
+
         const openCard = () => {
             message.warning("编辑模式下预览不支持弹卡！");
         };
@@ -94,6 +104,10 @@ export default defineComponent({
 
         const getDataIsChange = () => {
             return canUndo.value && JSON.stringify(props.slide) !== JSON.stringify(dealSaveData(currentSlide.value));
+        };
+
+        const getIsScreening = () => {
+            return screening.value;
         };
 
         const onSave = (slide: Slide) => {
@@ -116,8 +130,11 @@ export default defineComponent({
             openCard,
             getCurrentSlide,
             getDataIsChange,
+            getIsScreening,
             selectVideo,
-            closeScreen
+            closeScreen,
+            execPrev,
+            execNext
         };
     }
 });

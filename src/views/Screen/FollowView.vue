@@ -117,13 +117,13 @@ export default defineComponent({
 
         const pauseVideo = () => {
             isPlaying.value = false;
-            if (videoRef.value) videoRef.value.pause();
+            if (videoRef.value && videoRef.value.pause) videoRef.value.pause();
         };
 
         const play = () => {
             isPlaying.value = true;
             isEnd.value = false;
-            if (videoRef.value) videoRef.value.play();
+            if (videoRef.value && videoRef.value.play) videoRef.value.play();
         };
 
         const pausePlay = (i: number) => {

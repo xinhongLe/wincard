@@ -165,7 +165,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
     }, 300);
 
     const pauseAudio = () => {
-        audio.pause();
+        audio && audio.pause();
     };
 
     const deleteAudio = (i: number) => {

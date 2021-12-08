@@ -14,6 +14,8 @@ export const enum KEYS {
     DIGIT_0 = "0",
     DELETE = "DELETE",
     UP = "ARROWUP",
+    PAGEUP = "PAGEUP",
+    PAGEDOWN = "PAGEDOWN",
     DOWN = "ARROWDOWN",
     LEFT = "ARROWLEFT",
     RIGHT = "ARROWRIGHT",

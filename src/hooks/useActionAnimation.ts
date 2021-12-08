@@ -1,5 +1,4 @@
-import { MutationTypes, useStore } from "@/store";
-import { computed, Ref } from "vue";
+import { Ref } from "vue";
 import { PPTElementAction, Slide } from "@/types/slides";
 
 export default (slide: Ref<Slide>) => {
@@ -11,13 +10,13 @@ export default (slide: Ref<Slide>) => {
     };
 
     // 执行元素的动画
-    const runAnimation = (action: PPTElementAction) => {
+    const runAnimation = (action: PPTElementAction, noAnimation?: boolean) => {
         const prefix = "animate__";
         const element = slide.value.elements.find(el => { return el.id === action.target; });
         if (!element) return;
         const display = typeof element?.display === "undefined" || element.display;
         const animationType = action.type === "show" ? "show" : (action.type === "toggle" ? (display ? "hide" : "show") : "hide");
-        const animation = animationType === "show" ? action.inAni : action.outAni;
+        const animation = noAnimation ? "" : animationType === "show" ? action.inAni : action.outAni;
 
         const elRef = document.querySelector(`#screen-element-${action.target} [class^=base-element-]`) || document.querySelector(`#screen-element-${action.target} [class^=editable-element-]`);
 
@@ -45,7 +44,7 @@ export default (slide: Ref<Slide>) => {
                     handleAnimationEnd();
                 }
             }
-        }, action.duration || 0);
+        }, noAnimation ? 0 : action.duration || 0);
     };
 
     return {

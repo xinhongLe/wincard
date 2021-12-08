@@ -3,6 +3,7 @@
         ref="screenRef"
         :slide="currentSlide"
         :inline="inline"
+        :isInit="isInit"
         @pagePrev="pagePrev()"
         @pageNext="pageNext()"
         @openCard="openCard"
@@ -25,6 +26,10 @@ export default defineComponent({
         inline: {
             type: Boolean,
             default: false
+        },
+        isInit: {
+            type: Boolean,
+            default: true
         }
     },
     components: {

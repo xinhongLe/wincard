@@ -20,6 +20,7 @@ export const slides: Slide[] = [
                 fixedRatio: false,
                 opacity: 0.7,
                 rotate: 0,
+                display: true,
                 wins: [{
                     id: "xxx",
                     cards: [
@@ -57,7 +58,8 @@ export const slides: Slide[] = [
                 fill: "#5b9bd5",
                 fixedRatio: false,
                 flipV: true,
-                rotate: 0
+                rotate: 0,
+                display: true
             },
             {
                 name: "文本1",
@@ -111,6 +113,25 @@ export const slides: Slide[] = [
                 top: 0,
                 src: "ElementFile/bb5b612322e0a2bf01448e4a6f83d191.swf"
             }
+        ],
+        steps: [
+            [
+                {
+                    target: "4cbRxp",
+                    inAni: "",
+                    outAni: "",
+                    type: "hide",
+                    duration: 0
+                }],
+            [
+                {
+                    target: "ookHrf",
+                    inAni: "",
+                    outAni: "",
+                    type: "hide",
+                    duration: 0
+                }
+            ]
         ],
         background: { type: "solid", color: "#ffffff" },
         listenWords: [

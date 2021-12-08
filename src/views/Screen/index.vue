@@ -133,6 +133,10 @@ export default defineComponent({
         slide: {
             type: Object as PropType<Slide>,
             required: true
+        },
+        isInit: {
+            type: Boolean,
+            default: true
         }
     },
     setup(props, { emit }) {
@@ -314,12 +318,13 @@ export default defineComponent({
         // 快捷键翻页
         const keydownListener = (e: KeyboardEvent) => {
             const key = e.key.toUpperCase();
-            if (key === KEYS.UP || key === KEYS.LEFT) execPrev();
+            if (key === KEYS.UP || key === KEYS.PAGEUP || key === KEYS.LEFT) execPrev();
             else if (
                 key === KEYS.DOWN ||
                 key === KEYS.RIGHT ||
                 key === KEYS.SPACE ||
-                key === KEYS.ENTER
+                key === KEYS.ENTER ||
+                key === KEYS.PAGEDOWN
             ) execNext();
         };
 
@@ -381,6 +386,18 @@ export default defineComponent({
                 }
             ];
         };
+
+        onMounted(() => {
+            if (!props.isInit && currentSlide.value.type === PAGE_TYPE.ELEMENT && steps.value.length > 0) {
+                // 不是初始化页面，是从上一个页面返回，这是需要将步骤置为最后一步
+                stepIndex.value = steps.value.length - 1;
+                steps.value.map(step => {
+                    step.map(a => {
+                        runAnimation(a, true);
+                    });
+                });
+            }
+        });
 
         return {
             screenRef,
