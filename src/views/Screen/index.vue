@@ -198,12 +198,17 @@ export default defineComponent({
             if (!isFullscreen()) exitScreening();
         };
 
+        const resizeObserver = new ResizeObserver(setSlideContentSize);
+
         onMounted(() => {
             setSlideContentSize();
-            window.addEventListener("resize", windowResizeListener);
+            if (!props.inline) window.addEventListener("resize", windowResizeListener);
+            if (props.inline && screenRef.value) resizeObserver.observe(screenRef.value);
         });
+
         onUnmounted(() => {
-            window.removeEventListener("resize", windowResizeListener);
+            if (!props.inline) window.removeEventListener("resize", windowResizeListener);
+            if (props.inline && screenRef.value) resizeObserver.unobserve(screenRef.value);
         });
 
         // 关闭自动播放
