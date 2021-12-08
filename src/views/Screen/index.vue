@@ -93,7 +93,7 @@
 <script lang="ts">
 import {
     computed,
-    defineComponent,
+    defineComponent, nextTick,
     onMounted,
     onUnmounted,
     PropType,
@@ -161,8 +161,7 @@ export default defineComponent({
             stepIndex.value = -1;
             currentSlide.value = slide.value;
             setSlideContentSize();
-
-            onMounted(() => {
+            nextTick(() => {
                 init();
             });
         });
@@ -403,7 +402,7 @@ export default defineComponent({
             }
         };
 
-        onMounted(() => {
+        nextTick(() => {
             init();
         });
 
