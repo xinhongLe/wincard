@@ -33,6 +33,12 @@ module.exports = {
             .use("url-loader")
             .loader("url-loader")
             .tap(options => Object.assign(options, { limit: 51200 }));
+        if (process.env.NODE_ENV === 'production') {
+            // 移除 prefetch 插件
+            config.plugins.delete("prefetch");
+            // 移除 preload 插件
+            config.plugins.delete("preload");
+        }
     },
     configureWebpack: {
         externals: process.env.NODE_ENV === "development" ? [] : [

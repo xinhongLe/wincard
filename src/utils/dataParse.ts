@@ -239,7 +239,7 @@ const dealTextContent = (text: string) => {
     str = str.replace(/\n/g, "</p><p>");
     str = str.replace(/\r/g, "</p><p>");
     str = "<p>" + str + "</p>";
-    str = str.replace(/\s/g, "&nbsp;");
+    // str = str.replace(/\s/g, "&nbsp;");
     str = str.replace(/<p><\/p>/g, "<p>&nbsp;</p>");
     return str;
 };

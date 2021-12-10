@@ -192,6 +192,10 @@ export default defineComponent({
         scale: {
             type: Number,
             default: 1
+        },
+        isScreening: {
+            type: Boolean,
+            default: false
         }
     },
     setup(props) {
@@ -426,7 +430,7 @@ export default defineComponent({
         };
 
         const videoElement = computed(() => props.videoElement);
-        const { videoUrl, posterUrl } = useOssVideo(videoElement);
+        const { videoUrl, posterUrl } = useOssVideo(videoElement, props.isScreening);
 
         useMSE(props.src, videoRef);
 

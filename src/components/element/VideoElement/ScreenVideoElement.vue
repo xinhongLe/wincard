@@ -16,6 +16,7 @@
                 :src="elementInfo.src"
                 :poster="elementInfo.poster"
                 :scale="scale"
+                :isScreening="true"
             />
         </div>
         <div class="element-content" v-if="elementInfo.showType == 1">
@@ -37,6 +38,7 @@
                     :poster="elementInfo.poster"
                     :scale="scale"
                     v-if="elementInfo.showType == 1"
+                    :isScreening="true"
                 />
             </a-modal>
         </div>
@@ -70,7 +72,7 @@ export default defineComponent({
         };
 
         const videoElement = computed(() => props.elementInfo);
-        const { iconUrl } = useOssVideo(videoElement);
+        const { iconUrl } = useOssVideo(videoElement, true);
 
         return {
             scale,
