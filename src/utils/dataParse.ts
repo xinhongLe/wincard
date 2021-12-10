@@ -194,10 +194,10 @@ const dealText = (oldText: IOldTextElement) => {
     element.id = oldText.UUID;
     element.name = oldText.Name;
     // 显示发现 wpf 数据的文本都偏上一点 数据不是很准，待验证
-    const offsetTopLittle = realTextHeight / 7;
+    const offsetTopLittle = realTextHeight / 12;
     // 处理文本内边距的问题
     element.top = oldText.Top - 10 - offsetTop + offsetTopLittle;
-    element.left = oldText.Left - 10;
+    element.left = oldText.Left - 10 + 5;
     element.width = oldText.Width + 20;
     element.height = oldText.Height + 20;
     element.content = dealTextContent(oldText.Text);
