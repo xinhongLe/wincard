@@ -79,7 +79,7 @@ const getElementActionsById = (events: IEvent[], id: string) => {
     });
     const actions: PPTElementAction[] = (event?.Actions || []).map(item => {
         return {
-            type: item.ActionType === 1 ? "show" : item.ActionType === 2 ? "hide" : "toggle",
+            type: item.ActionType === 1 ? "show" : item.ActionType === 2 ? "hide" : item.ActionType === 3 ? "toggle" : "none",
             target: item.TargetID
         };
     });
@@ -93,7 +93,7 @@ const getSlideStepData = (oldSteps: string[]) => {
         const oldStep = JSON.parse(item);
         const actions: PPTElementAction[] = oldStep.Actions.map((action: IOldAction) => {
             return {
-                type: ["", "show", "hide", "toggle"][action.ActionType],
+                type: ["none", "show", "hide", "toggle"][action.ActionType],
                 target: action.TargetID
             };
         });

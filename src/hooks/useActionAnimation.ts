@@ -16,7 +16,7 @@ export default (slide: Ref<Slide>) => {
         if (!element) return;
         const display = typeof element?.display === "undefined" || element.display;
         const animationType = action.type === "show" ? "show" : (action.type === "toggle" ? (display ? "hide" : "show") : "hide");
-        const animation = noAnimation ? "" : animationType === "show" ? action.inAni : action.outAni;
+        const animation = (noAnimation || action.type === "none") ? "" : animationType === "show" ? action.inAni : action.outAni;
 
         const elRef = document.querySelector(`#screen-element-${action.target} [class^=base-element-]`) || document.querySelector(`#screen-element-${action.target} [class^=editable-element-]`);
 
