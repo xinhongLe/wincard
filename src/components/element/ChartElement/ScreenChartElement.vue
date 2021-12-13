@@ -1,6 +1,6 @@
 <template>
     <div
-        class="screen-element-chart"
+        class="base-element-chart"
         :style="{
             top: elementInfo.top + 'px',
             left: elementInfo.left + 'px',
@@ -57,7 +57,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.screen-element-chart {
+.base-element-chart {
     position: absolute;
 }
 
