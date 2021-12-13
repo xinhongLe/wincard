@@ -4,7 +4,7 @@ import { ref, watch, ComputedRef, computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssPosterUrl, getOssVideoUrl } from "@/utils/video";
 
-export default (videoElement: ComputedRef<PPTVideoElement>) => {
+export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolean) => {
     const videoUrl = ref("");
     const posterUrl = ref("");
     const iconUrl = ref("");
@@ -24,7 +24,7 @@ export default (videoElement: ComputedRef<PPTVideoElement>) => {
                     ossSrc: res.url,
                     ossExpiration: ossToken.Expiration
                 };
-                store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+                !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
             }
 
             if (videoElement.value.ossPoster && videoElement.value.ossExpiration === ossToken.Expiration) {
@@ -39,7 +39,7 @@ export default (videoElement: ComputedRef<PPTVideoElement>) => {
                         ossPoster: res.url,
                         ossExpiration: ossToken.Expiration
                     };
-                    store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+                    !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
                 }
             }
 
@@ -55,7 +55,7 @@ export default (videoElement: ComputedRef<PPTVideoElement>) => {
                         ossIcon: res.url,
                         ossExpiration: ossToken.Expiration
                     };
-                    store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+                    !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
                 } else {
                     iconUrl.value = "";
                 }

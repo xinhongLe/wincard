@@ -121,7 +121,7 @@ export interface PPTElementOutline {
  * duration?: 执行延迟时间
  */
 export interface PPTElementAction {
-    type: "show" | "hide" | "toggle";
+    type: "none" | "show" | "hide" | "toggle";
     target: string;
     inAni?: string;
     outAni?: string;

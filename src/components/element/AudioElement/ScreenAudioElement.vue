@@ -43,7 +43,7 @@ export default defineComponent({
         };
 
         const audioElenent = computed(() => props.elementInfo);
-        const { iconUrl } = useOssAudio(audioElenent);
+        const { iconUrl } = useOssAudio(audioElenent, true);
 
         onUnmounted(() => {
             stopAudio();

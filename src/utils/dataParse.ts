@@ -79,7 +79,7 @@ const getElementActionsById = (events: IEvent[], id: string) => {
     });
     const actions: PPTElementAction[] = (event?.Actions || []).map(item => {
         return {
-            type: item.ActionType === 1 ? "show" : item.ActionType === 2 ? "hide" : "toggle",
+            type: item.ActionType === 1 ? "show" : item.ActionType === 2 ? "hide" : item.ActionType === 3 ? "toggle" : "none",
             target: item.TargetID
         };
     });
@@ -93,7 +93,7 @@ const getSlideStepData = (oldSteps: string[]) => {
         const oldStep = JSON.parse(item);
         const actions: PPTElementAction[] = oldStep.Actions.map((action: IOldAction) => {
             return {
-                type: ["", "show", "hide", "toggle"][action.ActionType],
+                type: ["none", "show", "hide", "toggle"][action.ActionType],
                 target: action.TargetID
             };
         });
@@ -194,10 +194,10 @@ const dealText = (oldText: IOldTextElement) => {
     element.id = oldText.UUID;
     element.name = oldText.Name;
     // 显示发现 wpf 数据的文本都偏上一点 数据不是很准，待验证
-    const offsetTopLittle = realTextHeight / 7;
+    const offsetTopLittle = realTextHeight / 12;
     // 处理文本内边距的问题
     element.top = oldText.Top - 10 - offsetTop + offsetTopLittle;
-    element.left = oldText.Left - 10;
+    element.left = oldText.Left - 10 + 5;
     element.width = oldText.Width + 20;
     element.height = oldText.Height + 20;
     element.content = dealTextContent(oldText.Text);
@@ -239,7 +239,7 @@ const dealTextContent = (text: string) => {
     str = str.replace(/\n/g, "</p><p>");
     str = str.replace(/\r/g, "</p><p>");
     str = "<p>" + str + "</p>";
-    str = str.replace(/\s/g, "&nbsp;");
+    // str = str.replace(/\s/g, "&nbsp;");
     str = str.replace(/<p><\/p>/g, "<p>&nbsp;</p>");
     return str;
 };

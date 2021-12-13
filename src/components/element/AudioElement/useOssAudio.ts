@@ -5,7 +5,7 @@ import { MutationTypes, useStore } from "@/store";
 import { getOssAudioUrl } from "@/utils/audio";
 import { getOssImageUrl } from "@/utils/image";
 
-export default (audioElement: ComputedRef<PPTAudioElement>) => {
+export default (audioElement: ComputedRef<PPTAudioElement>, isScreening?: boolean) => {
     const audioUrl = ref("");
     const iconUrl = ref("");
     const store = useStore();
@@ -24,7 +24,7 @@ export default (audioElement: ComputedRef<PPTAudioElement>) => {
                     ossSrc: res.url,
                     ossExpiration: ossToken.Expiration
                 };
-                store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
+                !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
             }
 
             if (audioElement.value.ossIcon && audioElement.value.ossExpiration === ossToken.Expiration) {
@@ -39,7 +39,7 @@ export default (audioElement: ComputedRef<PPTAudioElement>) => {
                         ossIcon: res.url,
                         ossExpiration: ossToken.Expiration
                     };
-                    store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
+                    isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
                 } else {
                     iconUrl.value = "";
                 }

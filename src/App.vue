@@ -13,10 +13,6 @@ export default defineComponent({
     name: "APP",
     setup() {
         const editor = ref();
-        const onSave = (slide: Slide) => {
-            console.log("数据是否变化", editor.value.getDataIsChange());
-            console.log(JSON.stringify(slide));
-        };
 
         const screenRef = ref();
         // screenRef.value.execPrev(); 上一步
@@ -28,7 +24,17 @@ export default defineComponent({
         // const newSlide = dealOldData(oldSlide);
         // console.log(oldSlide, newSlide);
         const slide = ref(slides[0]);
-        console.log(slide.value);
+
+        // setInterval(() => {
+        //     console.log("====数据是否变化", editor.value.getDataIsChange());
+        // }, 5000);
+
+        const onSave = (slideData: Slide) => {
+            console.log("数据是否变化", editor.value.getDataIsChange());
+            console.log(JSON.stringify(slideData));
+            localStorage.exampleSlide0 = JSON.stringify(JSON.stringify(slideData));
+            slide.value = slideData;
+        };
 
         setTimeout(() => {
             // const slideString = localStorage.exampleSlide1;

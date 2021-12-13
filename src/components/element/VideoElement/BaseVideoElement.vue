@@ -33,7 +33,7 @@ export default defineComponent({
     },
     setup(props) {
         const videoElement = computed(() => props.elementInfo);
-        const { iconUrl } = useOssVideo(videoElement);
+        const { iconUrl } = useOssVideo(videoElement, true);
 
         return {
             iconUrl

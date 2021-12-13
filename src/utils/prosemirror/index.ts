@@ -15,7 +15,7 @@ export const createDocument = (content: string) => {
     const parser = new window.DOMParser();
     const element = parser.parseFromString(htmlString, "text/html").body
         .firstElementChild;
-    return DOMParser.fromSchema(schema).parse(element as Element);
+    return DOMParser.fromSchema(schema).parse(element as Element, { preserveWhitespace: true });
 };
 
 export const initProsemirrorEditor = (
