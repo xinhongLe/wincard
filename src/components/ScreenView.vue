@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref, watch } from "vue";
+import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from "vue";
 import Screen from "@/views/Screen/index.vue";
 import { IWin, Slide } from "@/types/slides";
 import { MutationTypes, useStore } from "@/store";
@@ -30,6 +30,10 @@ export default defineComponent({
         isInit: {
             type: Boolean,
             default: true
+        },
+        useScale: {
+            type: Boolean,
+            default: false
         }
     },
     components: {
@@ -37,7 +41,8 @@ export default defineComponent({
     },
     emits: ["pagePrev", "pageNext", "openCard"],
     setup(props, { emit }) {
-        // const store = useStore();
+        const store = useStore();
+        const ctrlKeyActive = computed(() => store.state.ctrlKeyState);
         const slide = computed(() => props.slide);
         const background = computed(() => slide.value.background);
         const currentSlide = ref(slide.value);
@@ -52,6 +57,26 @@ export default defineComponent({
         watch(slide, () => {
             currentSlide.value = slide.value;
             updateBackground();
+        });
+
+        const keyupListener = () => {
+            if (ctrlKeyActive.value && props.useScale) store.commit(MutationTypes.SET_CTRL_KEY_STATE, false);
+        };
+
+        const keydownListener = (e: KeyboardEvent) => {
+            const { ctrlKey } = e;
+            if (ctrlKey && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true);
+        };
+
+        onMounted(() => {
+            document.addEventListener("keydown", keydownListener);
+            document.addEventListener("keyup", keyupListener);
+            window.addEventListener("blur", keyupListener);
+        });
+        onUnmounted(() => {
+            document.removeEventListener("keydown", keydownListener);
+            document.removeEventListener("keyup", keyupListener);
+            window.removeEventListener("blur", keyupListener);
         });
 
         // store.commit(MutationTypes.SET_SLIDES, [props.slide]);
