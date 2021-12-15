@@ -13,6 +13,7 @@
                 class="me-pause-item"
                 @click="pausePlay(index)"
                 :class="pauseIndex === index && 'active'"
+                :style="{width: item.width}"
                 v-for="(item, index) in pauseList"
                 :key="index"
             ></div>
@@ -90,6 +91,7 @@ export default defineComponent({
         const videoRef = ref<HTMLVideoElement>();
         const follow = computed<Follow | undefined>(() => props.slide.follow);
         const { videoUrl } = useOssVideo(follow, true);
+        const totalTime = ref(0);
 
         let timeInterval: number | undefined;
         let timeCountInterval: number | undefined;
@@ -97,8 +99,17 @@ export default defineComponent({
         const pauseIndex = ref(0);
         const mode = ref(0);
         const pauseList = computed(() => {
-            if (follow.value) {
-                return (follow.value.pauseList || []).concat([{ isEnd: true }]);
+            if (follow.value && totalTime.value > 0) {
+                let total = totalTime.value * 1000;
+                return (follow.value.pauseList || []).map(item => {
+                    const currentTime = timeNum(item.time) * 1000;
+                    total = total - currentTime;
+                    return {
+                        time: item.time,
+                        width: currentTime / totalTime.value / 10 + "%",
+                        isEnd: false
+                    };
+                }).concat([{ time: "", width: total / totalTime.value / 10 + "%", isEnd: true }]);
             }
             return [];
         });
@@ -239,6 +250,9 @@ export default defineComponent({
             clearInterval(timeInterval);
             if (videoRef.value) {
                 videoRef.value.addEventListener("timeupdate", watchTimeUpdate);
+                videoRef.value.oncanplay = () => {
+                    totalTime.value = videoRef.value?.duration || 0;
+                };
             }
         };
 
@@ -287,11 +301,12 @@ export default defineComponent({
 
     .me-pause-box {
         height: 25px;
+        overflow: hidden;
         display: flex;
     }
 
     .me-pause-item {
-        flex: 1;
+        // flex: 1;
         background-color: #ccd0db;
         margin-right: 2px;
         cursor: pointer;
