@@ -30,6 +30,7 @@
             v-if="elementInfo.showType == 0"
         >
             <VideoPlayer
+                ref="videoRef"
                 :videoElement="elementInfo"
                 :width="elementInfo.width"
                 :height="elementInfo.height"
@@ -73,6 +74,7 @@ import { ContextmenuItem } from "@/types/contextmenu";
 
 import VideoPlayer from "./VideoPlayer/index.vue";
 import useOssVideo from "./VideoPlayer/useOssVideo";
+import { isFullscreen } from "@/utils/fullscreen";
 
 export default defineComponent({
     name: "editable-element-video",
@@ -102,6 +104,7 @@ export default defineComponent({
         const store = useStore();
         const scale = computed(() => store.state.canvasScale);
         const visible = ref(false);
+        const videoRef = ref();
 
         const handleSelectElement = (e: MouseEvent, canMove = true) => {
             if (props.elementInfo.lock) return;
@@ -117,12 +120,18 @@ export default defineComponent({
         const videoElement = computed(() => props.elementInfo);
         const { iconUrl } = useOssVideo(videoElement);
 
+        // 预览全屏停止播放
+        window.addEventListener("resize", () => {
+            if (isFullscreen() && videoRef.value) videoRef.value.pause();
+        });
+
         return {
             scale,
             iconUrl,
             handleSelectElement,
             visible,
-            openVideo
+            openVideo,
+            videoRef
         };
     }
 });

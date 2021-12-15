@@ -6,6 +6,7 @@
                     class="listen-word-item"
                     v-for="(item, index) in wordList"
                     :key="index"
+                    @click="selectWord(index)"
                 >
                     {{ current > -1 ? index + 1 : item.name }}
                     <div class="listening" v-if="current === index">
@@ -87,6 +88,7 @@ export default defineComponent({
             } else {
                 // 暂停播放
                 isStop.value = true;
+                pauseAudio();
             }
         };
 
@@ -113,6 +115,17 @@ export default defineComponent({
             });
         };
 
+        const selectWord = (i: number) => {
+            if (current.value === -1 || current.value === wordList.value.length) {
+                current.value = i;
+            } else {
+                pauseAudio();
+                isStop.value = true;
+                current.value = i;
+            }
+            control();
+        };
+
         onUnmounted(() => {
             pauseAudio();
             isStop.value = true;
@@ -124,7 +137,8 @@ export default defineComponent({
             current,
             count,
             isStop,
-            control
+            control,
+            selectWord
         };
     }
 });
@@ -165,6 +179,7 @@ export default defineComponent({
             line-height: 52px;
             position: relative;
             margin-right: 20px;
+            cursor: pointer;
         }
     }
     .listening {

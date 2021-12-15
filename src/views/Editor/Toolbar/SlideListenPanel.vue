@@ -101,6 +101,7 @@ import useListen from "@/hooks/useListen";
 
 import Draggable from "vuedraggable";
 import { ListenWord } from "@/types/slides";
+import { isFullscreen } from "@/utils/fullscreen";
 
 interface IPage {
     current: number;
@@ -147,6 +148,11 @@ export default defineComponent({
             pauseAudio,
             deleteAudio
         } = useListen(addListenVisible, addWordVisible);
+
+        // 预览全屏停止播放
+        window.addEventListener("resize", () => {
+            if (isFullscreen()) pauseAudio();
+        });
 
         const handleSizeChange = (page: IPage) => {
             sizeChange(page);
