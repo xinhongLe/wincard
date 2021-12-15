@@ -8,7 +8,7 @@
                     :key="index"
                     @click="selectWord(index)"
                 >
-                    {{ current > -1 ? index + 1 : item.name }}
+                    {{ showWord ? item.name : index + 1 }}
                     <div class="listening" v-if="current === index">
                         <img
                             src="@/assets/images/icon_volume_notice_small.png"
@@ -16,6 +16,7 @@
                         />
                         正在播报...
                     </div>
+                    <img class="over-mark" v-if="current === wordList.length && index + 1 === wordList.length" src="@/assets/images/icon_over.png" alt="">
                 </div>
             </div>
         </div>
@@ -40,6 +41,10 @@
                                 ? "继续"
                                 : "暂停"
                         }}
+                    </div>
+
+                    <div class="control-btn btn-change" @click="showWord = !showWord">
+                        {{ showWord ? "隐藏" : "显示" }}
                     </div>
                 </div>
             </div>
@@ -66,11 +71,13 @@ export default defineComponent({
         const count = ref(2);
         const time = ref(2);
         const isStop = ref(true);
+        const showWord = ref(true);
 
         const { playAudio, pauseAudio } = useListen();
 
         const control = () => {
             clearTimeout(playTimer);
+            showWord.value = false;
             if (isStop.value) {
                 isStop.value = false;
                 if (current.value === -1) {
@@ -138,7 +145,8 @@ export default defineComponent({
             count,
             isStop,
             control,
-            selectWord
+            selectWord,
+            showWord
         };
     }
 });
@@ -207,6 +215,7 @@ export default defineComponent({
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
+        display: flex;
         .control-btn {
             background-image: url(~@/assets/images/btn_blue.png);
             background-size: 100% 100%;
@@ -228,6 +237,17 @@ export default defineComponent({
                 background-image: url(~@/assets/images/btn_restart.png);
             }
         }
+        .btn-change {
+            width: 80px;
+            margin-left: 30px;
+        }
     }
+}
+
+.over-mark {
+    position: absolute;
+    width: 20px;
+    top: 25px;
+    transform: translateX(10px);
 }
 </style>
