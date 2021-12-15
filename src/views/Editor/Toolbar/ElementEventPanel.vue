@@ -162,7 +162,11 @@
                 </a-form-item>
             </a-form>
         </a-modal>
-        <a-button type="primary" block @click="addCard">编辑弹卡</a-button>
+        <a-button-group class="button-group">
+            <a-button type="primary" block @click="addCard">编辑弹卡</a-button>
+            <div style="width: 10px;"></div>
+            <a-button type="primary" block @click="deleteCard">删除弹卡</a-button>
+        </a-button-group>
 
         <a-divider />
 
@@ -403,6 +407,16 @@ export default defineComponent({
             cardList.value = getCards(handleElement.value.wins || []);
         });
 
+        const deleteCard = () => {
+            cardList.value = [];
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props: {
+                    wins: []
+                }
+            });
+        };
+
         const addCard = () => {
             emit("addCard", (wins: IWin[]) => {
                 cardList.value = getCards(wins);
@@ -436,7 +450,8 @@ export default defineComponent({
             updateElementAnimationDuration,
             addCard,
             activeCard,
-            cardList
+            cardList,
+            deleteCard
         };
     }
 });
@@ -527,6 +542,10 @@ export default defineComponent({
     &:last-child {
         border-bottom: 0;
     }
+}
+
+.button-group {
+    display: flex;
 }
 </style>
 <style>
