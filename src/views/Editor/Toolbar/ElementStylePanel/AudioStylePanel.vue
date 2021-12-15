@@ -53,7 +53,7 @@ export default defineComponent({
             const imageFile = files[0];
             if (!imageFile) return;
             uploadImage(imageFile).then(key => {
-                updateAduio({ icon: key });
+                updateAduio({ icon: key, ossIcon: "" });
             });
         };
 

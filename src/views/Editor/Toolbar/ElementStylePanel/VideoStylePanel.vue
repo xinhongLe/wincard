@@ -73,7 +73,7 @@ export default defineComponent({
             const imageFile = files[0];
             if (!imageFile) return;
             uploadImage(imageFile).then(key => {
-                updateVideo({ poster: key });
+                updateVideo({ poster: key, ossPoster: "" });
             });
         };
 
@@ -82,7 +82,7 @@ export default defineComponent({
             const imageFile = files[0];
             if (!imageFile) return;
             uploadImage(imageFile).then(key => {
-                updateVideo({ icon: key });
+                updateVideo({ icon: key, ossIcon: "" });
             });
         };
 

@@ -53,7 +53,7 @@ export default defineComponent({
             const imageFile = files[0];
             if (!imageFile) return;
             uploadImage(imageFile).then(key => {
-                updateFlash({ icon: key });
+                updateFlash({ icon: key, ossIcon: "" });
             });
         };
 
