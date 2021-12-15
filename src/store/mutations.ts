@@ -252,10 +252,6 @@ export const mutations: MutationTree<State> = {
         state.altKeyState = isActive;
     },
 
-    [MutationTypes.SET_KEY_DISABLED](state, disabled: boolean) {
-        state.altKeyState = disabled;
-    },
-
     // screen
 
     [MutationTypes.SET_SCREENING](state, screening) {

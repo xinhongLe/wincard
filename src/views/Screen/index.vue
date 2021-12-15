@@ -137,6 +137,10 @@ export default defineComponent({
         isInit: {
             type: Boolean,
             default: true
+        },
+        keyDisabled: {
+            type: Boolean,
+            default: false
         }
     },
     setup(props, { emit }) {
@@ -144,7 +148,6 @@ export default defineComponent({
         const viewportRatio = computed(() => store.state.viewportRatio);
         const slide = computed<Slide>(() => JSON.parse(JSON.stringify(props.slide)));
         const currentSlide = ref(slide.value);
-        const keyDisabled = computed(() => store.state.keyDisabled);
 
         const steps = computed(() => currentSlide.value.steps || []);
         const stepIndex = ref(-1);
@@ -255,7 +258,7 @@ export default defineComponent({
 
         // 向上/向下播放
         const execPrev = () => {
-            if (!keyDisabled.value) return;
+            if (props.keyDisabled) return;
             console.log("上一步");
             disableSelectStart();
 
@@ -282,7 +285,7 @@ export default defineComponent({
             stepIndex.value--;
         };
         const execNext = () => {
-            if (!keyDisabled.value) return;
+            if (props.keyDisabled) return;
             console.log("下一步");
             disableSelectStart();
 

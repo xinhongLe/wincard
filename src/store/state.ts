@@ -43,7 +43,6 @@ export interface State {
     canvasMoveX: number;
     canvasMoveY: number;
     menuOpen: boolean;
-    keyDisabled: boolean;
 }
 
 export const state: State = {
@@ -82,6 +81,5 @@ export const state: State = {
     listenTotal: 0, // 字词库总数
     canvasMoveX: 0, // 画布横向移动距离
     canvasMoveY: 0, // 画布纵向移动距离
-    menuOpen: false, // 元素列表菜单是否展开
-    keyDisabled: false
+    menuOpen: false // 元素列表菜单是否展开
 };

@@ -7,6 +7,7 @@
         @pagePrev="pagePrev()"
         @pageNext="pageNext()"
         @openCard="openCard"
+        :keyDisabled="keyDisabled"
     />
 </template>
 
@@ -56,12 +57,6 @@ export default defineComponent({
                 if (currentSlide.value.background) currentSlide.value.background.ossSrc = url;
             });
         };
-
-        const isKeyDisabled = computed(() => props.keyDisabled);
-        store.commit(MutationTypes.SET_KEY_DISABLED, isKeyDisabled.value);
-        watch(isKeyDisabled, () => {
-            store.commit(MutationTypes.SET_KEY_DISABLED, isKeyDisabled.value);
-        });
 
         updateBackground();
         watch(slide, () => {
