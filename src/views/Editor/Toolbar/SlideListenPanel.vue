@@ -95,7 +95,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onUnmounted, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import useListen from "@/hooks/useListen";
 
@@ -144,6 +144,7 @@ export default defineComponent({
             deleteSystemWord,
             listenPageList,
             playAudio,
+            pauseAudio,
             deleteAudio
         } = useListen(addListenVisible, addWordVisible);
 
@@ -201,6 +202,10 @@ export default defineComponent({
             selectedWords.value = [];
             selectedKeys.value = [];
         };
+
+        onUnmounted(() => {
+            pauseAudio();
+        });
 
         return {
             playAudio,
