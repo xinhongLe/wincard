@@ -14,7 +14,7 @@
                     <template #renderItem="{ item }">
                         <a-list-item>
                             <div class="element-name" :class="handleElementId === item.id && 'active'" @click="handleSelectElement($event, item)">
-                                {{ item.name }}
+                                {{ item.name || item.id }}
                             </div>
                             <IconDelete class="element-delete" @click="deleteTargetElement(item.id)" />
                         </a-list-item>
