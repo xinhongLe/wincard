@@ -51,6 +51,7 @@ export const enum MutationTypes {
     SET_CTRL_KEY_STATE = "setCtrlKeyState",
     SET_SHIFT_KEY_STATE = "setShiftKeyState",
     SET_ALT_KEY_STATE = "setAltKeyState",
+    SET_KEY_DISABLED = "setKeyDisabled",
 
     // screen
     SET_SCREENING = "setScreening"
