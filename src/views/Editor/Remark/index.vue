@@ -3,7 +3,7 @@
         <div class="resize-handler" @mousedown="$event => resize($event)"></div>
         <textarea
             :value="remark"
-            placeholder="点击输入演讲者备注"
+            placeholder="点击输入教学建议"
             @input="$event => handleInput($event)"
         ></textarea>
     </div>
