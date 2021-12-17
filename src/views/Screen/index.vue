@@ -10,7 +10,8 @@
             <div
                 :class="[
                     'slide-item',
-                    `turning-mode-${slide.turningMode || 'slideY'}`
+                    `turning-mode-${slide.turningMode || 'slideY'}`,
+                    remarkVisible ? 'adjust-width' : ''
                 ]"
             >
                 <div
@@ -175,8 +176,11 @@ export default defineComponent({
 
         // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
         const setSlideContentSize = () => {
-            const winWidth = props.inline ? screenRef.value.clientWidth : document.body.clientWidth;
+            let winWidth = props.inline ? screenRef.value.clientWidth : document.body.clientWidth;
             const winHeight = props.inline ? screenRef.value.clientHeight : document.body.clientHeight;
+            if (remarkVisible.value) {
+                winWidth = winWidth - 250;
+            }
             let width, height;
 
             if (winHeight / winWidth === viewportRatio.value) {
@@ -367,6 +371,10 @@ export default defineComponent({
 
         const remarkVisible = ref(false);
 
+        watch(remarkVisible, () => {
+            setSlideContentSize();
+        });
+
         const contextmenus = (): ContextmenuItem[] => {
             return [
                 {
@@ -480,6 +488,10 @@ export default defineComponent({
     left: 0;
     width: 100%;
     height: 100%;
+
+    &.adjust-width {
+        width: calc(100% - 250px);
+    }
 
     &.current {
         z-index: 2;
