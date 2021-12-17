@@ -16,9 +16,11 @@ export default () => {
                 audio = null;
             };
         } else {
-            audio.pause();
-            audio.remove();
-            audio = null;
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
         }
     }, 300);
 
