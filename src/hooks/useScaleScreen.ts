@@ -9,20 +9,21 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
     const ctrlKeyState = computed(() => store.state.ctrlKeyState);
 
     const handleMousewheelScreen = (e: WheelEvent) => {
-        e.preventDefault();
-        if (isMove || !ctrlKeyState.value) return;
-        const offset = getPointOffset({ x: e.pageX, y: e.pageY });
-        if (e.deltaY > 0) {
-            if (scale.value === 1) return;
-            // 缩小
-            scale.value -= unit;
-            offsetX.value = offset.offsetX * unit + offsetX.value;
-            offsetY.value = offset.offsetY * unit + offsetY.value;
-        } else {
-            // 放大
-            scale.value += unit;
-            offsetX.value = -offset.offsetX * unit + offsetX.value;
-            offsetY.value = -offset.offsetY * unit + offsetY.value;
+        if (!isMove && ctrlKeyState.value) {
+            e.preventDefault();
+            const offset = getPointOffset({ x: e.pageX, y: e.pageY });
+            if (e.deltaY > 0) {
+                if (scale.value === 1) return;
+                // 缩小
+                scale.value -= unit;
+                offsetX.value = offset.offsetX * unit + offsetX.value;
+                offsetY.value = offset.offsetY * unit + offsetY.value;
+            } else {
+                // 放大
+                scale.value += unit;
+                offsetX.value = -offset.offsetX * unit + offsetX.value;
+                offsetY.value = -offset.offsetY * unit + offsetY.value;
+            }
         }
     };
 

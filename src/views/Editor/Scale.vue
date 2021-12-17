@@ -53,10 +53,9 @@ export default defineComponent({
         });
 
         const handleMousewheelCanvas = (e: WheelEvent) => {
-            e.preventDefault();
-
             // 按住Ctrl键时：缩放画布
             if (ctrlKeyState.value) {
+                e.preventDefault();
                 if (e.deltaY > 0) {
                     throttleScaleCanvas("-");
                 } else if (e.deltaY < 0) {

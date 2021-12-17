@@ -162,14 +162,16 @@ export default defineComponent({
         background-image: url(~@/assets/images/bg_blue.png);
         background-size: 110% 110%;
         background-position: center;
+        min-width: 0;
+        height: calc(100% - 52px);
+        overflow-y: auto;
     }
     .listen-word-list {
         width: 100%;
         box-sizing: border-box;
         padding: 20px 0 20px 20px;
         display: flex;
-        flex-wrap: wrap;
-        // justify-content: space-between;
+        flex-wrap: wrap;        // justify-content: space-between;
         .listen-word-item {
             background-image: url(~@/assets/images/bg_card.png);
             background-size: 100% 100%;
