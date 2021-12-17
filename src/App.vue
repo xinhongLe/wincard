@@ -1,6 +1,6 @@
 <template>
     <PPTEditor ref="editor" :slide="slide" @onSave="onSave" @addCard="addCard" />
-<!--     <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @openCard="openCard" :isInit="false" />-->
+    <!-- <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" :useScale="true" @openCard="openCard" :keyDisabled="true" :isInit="false" /> -->
 </template>
 
 <script lang="ts">
@@ -23,7 +23,7 @@ export default defineComponent({
         // const oldSlide = JSON.parse(JSON.parse(slideString));
         // const newSlide = dealOldData(oldSlide);
         // console.log(oldSlide, newSlide);
-        const slide = ref(slides[0]);
+        const slide = ref<Slide>(slides[0]);
 
         // setInterval(() => {
         //     console.log("====数据是否变化", editor.value.getDataIsChange());
@@ -33,7 +33,14 @@ export default defineComponent({
             console.log("数据是否变化", editor.value.getDataIsChange());
             console.log(JSON.stringify(slideData));
             localStorage.exampleSlide0 = JSON.stringify(JSON.stringify(slideData));
-            slide.value = slideData;
+            slide.value = {
+                id: "xxx",
+                type: "element",
+                elements: []
+            };
+            setTimeout(() => {
+                slide.value = slideData;
+            }, 10);
         };
 
         setTimeout(() => {

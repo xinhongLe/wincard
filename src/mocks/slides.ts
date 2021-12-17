@@ -112,6 +112,19 @@ export const slides: Slide[] = [
                 left: 0,
                 top: 0,
                 src: "ElementFile/bb5b612322e0a2bf01448e4a6f83d191.swf"
+            },
+            {
+                name: "视频-dNM6zU",
+                type: "video",
+                id: "dNM6zU",
+                width: 100,
+                height: 100,
+                rotate: 0,
+                left: 245.34468775344686,
+                top: 253.94160583941607,
+                src: "ElementFile/3cf571d4cf2a4c4b2df823a27852a7d5.mp4",
+                showType: 1,
+                icon: "ElementFile/d4a9c79c7c8e83afa478f2c26cd50492.png"
             }
         ],
         steps: [
@@ -159,13 +172,10 @@ export const slides: Slide[] = [
         ],
         follow: {
             id: "xxxxx",
-            src: "ElementFile/83B779265F1E8B86675B73F77B68895D.mp4",
+            src: "ElementFile/88ABF979CF0F49911D0A9EBD184C4395.mp4",
             pauseList: [
                 {
-                    time: "00:00:07.7815570"
-                },
-                {
-                    time: "00:00:17.7815570"
+                    time: "00:00:05.7362830"
                 }
             ]
         },
