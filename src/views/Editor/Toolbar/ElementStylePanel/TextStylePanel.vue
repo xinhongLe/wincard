@@ -83,7 +83,7 @@
                     </a-button>
                 </a-tooltip>
             </a-popover>
-            <!-- <a-popover trigger="click">
+            <a-popover trigger="click">
                 <template #content>
                     <ColorPicker
                         :modelValue="richTextAttrs.backcolor"
@@ -107,7 +107,7 @@
                         ></div>
                     </a-button>
                 </a-tooltip>
-            </a-popover> -->
+            </a-popover>
             <a-popover trigger="click">
                 <template #content>
                     <ColorPicker

@@ -81,8 +81,10 @@ const backcolor: MarkSpec = {
     group: "inline",
     parseDOM: [
         {
-            tag: "span[style*=background-color]",
-            getAttrs: backcolor => (backcolor ? { backcolor } : {})
+            style: "background-color",
+            getAttrs: backcolor => {
+                return (backcolor ? { backcolor } : {});
+            }
         }
     ],
     toDOM: mark => {
@@ -144,7 +146,7 @@ export default {
     strikethrough,
     underline,
     forecolor,
-    backcolor,
     fontsize,
-    fontname
+    fontname,
+    backcolor
 };
