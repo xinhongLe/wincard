@@ -20,6 +20,12 @@
                 >重置图标</a-button
             >
         </div>
+
+        <div class="reset-audio">
+            <FileInput accept="audio/*" @change="files => resetAudio(files)">
+                <a-button block>更换音频</a-button>
+            </FileInput>
+        </div>
     </div>
 </template>
 
@@ -29,6 +35,7 @@ import { MutationTypes, useStore } from "@/store";
 import { PPTAudioElement } from "@/types/slides";
 import { uploadImage } from "@/utils/image";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
+import { uploadAudio } from "@/utils/audio";
 
 export default defineComponent({
     name: "aduio-style-panel",
@@ -54,6 +61,15 @@ export default defineComponent({
             if (!imageFile) return;
             uploadImage(imageFile).then(key => {
                 updateAduio({ icon: key, ossIcon: "" });
+            });
+        };
+
+        // 更换音频
+        const resetAudio = (files: File[]) => {
+            const audioFile = files[0];
+            if (!audioFile) return;
+            uploadAudio(audioFile).then(key => {
+                updateAduio({ src: key });
             });
         };
 

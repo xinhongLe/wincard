@@ -40,6 +40,12 @@
                 >重置图标</a-button
             >
         </div>
+
+        <div class="reset-video">
+            <FileInput accept="video/*" @change="files => resetVideo(files)">
+                <a-button block>更换视频</a-button>
+            </FileInput>
+        </div>
     </div>
 </template>
 
@@ -49,6 +55,7 @@ import { MutationTypes, useStore } from "@/store";
 import { PPTVideoElement } from "@/types/slides";
 import { uploadImage } from "@/utils/image";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
+import { uploadVideo } from "@/utils/video";
 
 export default defineComponent({
     name: "video-style-panel",
@@ -86,11 +93,22 @@ export default defineComponent({
             });
         };
 
+        // 更换视频
+        const resetVideo = (files: File[]) => {
+            const videoFile = files[0];
+            if (!videoFile) return;
+            console.log(videoFile);
+            uploadVideo(videoFile).then(key => {
+                updateVideo({ src: key });
+            });
+        };
+
         return {
             handleElement,
             updateVideo,
             setVideoPoster,
-            setVideoIcon
+            setVideoIcon,
+            resetVideo
         };
     }
 });

@@ -27,7 +27,8 @@
                 v-if="visible"
                 v-model:visible="visible"
                 :footer="null"
-                width="50%"
+                width="90%"
+                dialogClass="reset-video-modal"
             >
                 <VideoPlayer
                     :noTransform="true"
@@ -106,5 +107,12 @@ export default defineComponent({
     position: absolute;
     cursor: pointer;
     -webkit-user-drag: none;
+}
+</style>
+
+<style>
+.reset-video-modal {
+    top: 50%;
+    transform: translateY(-50%);
 }
 </style>
