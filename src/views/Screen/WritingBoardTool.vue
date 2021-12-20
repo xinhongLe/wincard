@@ -5,9 +5,15 @@
             :color="writingBoardColor"
             :blackboard="blackboard"
             :model="writingBoardModel"
+            :scale="scale"
+            :enable="enable"
+            :offsetX="offsetX"
+            :offsetY="offsetY"
+            :slideWidth="slideWidth"
+            :slideHeight="slideHeight"
         />
 
-        <div class="tools">
+        <div class="tools" v-if="enable">
             <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
                 <div
                     class="btn"
@@ -86,6 +92,32 @@ const writingBoardColors = [
 export default defineComponent({
     name: "writing-board-tool",
     emits: ["close"],
+    props: {
+        scale: {
+            type: Number,
+            default: 1
+        },
+        enable: {
+            type: Boolean,
+            default: false
+        },
+        offsetX: {
+            type: Number,
+            default: 0
+        },
+        offsetY: {
+            type: Number,
+            default: 0
+        },
+        slideWidth: {
+            type: Number,
+            default: 1
+        },
+        slideHeight: {
+            type: Number,
+            default: 1
+        }
+    },
     components: {
         WritingBoard
     },

@@ -48,7 +48,12 @@
         </div>
 
         <WritingBoardTool
-            v-if="writingBoardToolVisible"
+            :scale="viewScale"
+            :offsetX="offsetX"
+            :offsetY="offsetY"
+            :slideWidth="slideWidth"
+            :slideHeight="slideHeight"
+            :enable="writingBoardToolVisible"
             @close="writingBoardToolVisible = false"
         />
 
@@ -142,6 +147,10 @@ export default defineComponent({
         keyDisabled: {
             type: Boolean,
             default: false
+        },
+        writeBoardVisible: {
+            type: Boolean,
+            default: false
         }
     },
     setup(props, { emit }) {
@@ -160,7 +169,12 @@ export default defineComponent({
 
         const scale = computed(() => slideWidth.value / VIEWPORT_SIZE);
 
-        const writingBoardToolVisible = ref(false);
+        const writeBoardVisible = computed(() => props.writeBoardVisible);
+        const writingBoardToolVisible = ref(writeBoardVisible.value);
+
+        watch(writeBoardVisible, () => {
+            writingBoardToolVisible.value = writeBoardVisible.value;
+        });
 
         watch(slide, () => {
             stepIndex.value = -1;

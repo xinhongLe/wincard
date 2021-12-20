@@ -1,31 +1,49 @@
 <template>
-    <div class="writing-board" ref="writingBoardRef">
+    <div
+        class="writing-board"
+        :class="enable ? '' : 'no-point-event'"
+        ref="writingBoardRef"
+    >
         <div class="blackboard" v-if="blackboard"></div>
 
-        <canvas
-            class="canvas"
-            ref="canvasRef"
-            @mousedown="$event => handleMousedown($event)"
-            @mousemove="$event => handleMousemove($event)"
-            @mouseup="handleMouseup()"
-            @touchstart="$event => handleMousedown($event)"
-            @touchmove="$event => handleMousemove($event)"
-            @touchend="
-                handleMouseup();
-                mouseInCanvas = false;
-            "
-            @mouseleave="
-                handleMouseup();
-                mouseInCanvas = false;
-            "
-            @mouseenter="mouseInCanvas = true"
-        ></canvas>
+        <div
+            class="canvas-box"
+            ref="contentRef"
+            :style="{
+                width: canvasWidth + 'px',
+                height: canvasHeight + 'px',
+                marginLeft: offsetX - (canvasWidth - slideWidth) / 2 * (scale - 1) + 'px',
+                marginTop: offsetY - (canvasHeight - slideHeight) / 2 * (scale - 1) + 'px',
+            }"
+        >
+            <canvas
+                class="canvas"
+                ref="canvasRef"
+                @mousedown="$event => handleMousedown($event)"
+                @mousemove="$event => handleMousemove($event)"
+                @mouseup="handleMouseup()"
+                @touchstart="$event => handleMousedown($event)"
+                @touchmove="$event => handleMousemove($event)"
+                @touchend="
+                    handleMouseup();
+                    mouseInCanvas = false;
+                "
+                @mouseleave="
+                    handleMouseup();
+                    mouseInCanvas = false;
+                "
+                @mouseenter="mouseInCanvas = true"
+                :style="{
+                    transform: `scale(${scale})`
+                }"
+            ></canvas>
+        </div>
 
         <div
             class="pen"
             :style="{
-                left: mouse.x - penSize / 2 + 'px',
-                top: mouse.y - 36 + penSize / 2 + 'px',
+                left: mouse.x * scale + (offsetX - (canvasWidth - slideWidth) / 2 * (scale - 1)) - penSize / 2 + 'px',
+                top: mouse.y * scale + (offsetY - (canvasHeight - slideHeight) / 2 * (scale - 1)) - 36 + penSize / 2 + 'px',
                 color: color
             }"
             v-if="mouseInCanvas && model === 'pen'"
@@ -47,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, reactive, ref } from "vue";
+import { computed, defineComponent, onMounted, PropType, reactive, ref, watch } from "vue";
 
 const penSize = 6;
 const rubberSize = 80;
@@ -66,6 +84,30 @@ export default defineComponent({
         blackboard: {
             type: Boolean,
             default: false
+        },
+        scale: {
+            type: Number,
+            default: 1
+        },
+        enable: {
+            type: Boolean,
+            default: false
+        },
+        offsetX: {
+            type: Number,
+            default: 0
+        },
+        offsetY: {
+            type: Number,
+            default: 0
+        },
+        slideWidth: {
+            type: Number,
+            default: 1
+        },
+        slideHeight: {
+            type: Number,
+            default: 1
         }
     },
     setup(props) {
@@ -96,6 +138,9 @@ export default defineComponent({
         // 鼠标是否处在画布范围内：处在范围内才会显示画笔或橡皮
         const mouseInCanvas = ref(false);
 
+        const canvasWidth = ref(0);
+        const canvasHeight = ref(0);
+
         // 初始化画布
         const initCanvas = () => {
             if (!canvasRef.value || !writingBoardRef.value) return;
@@ -106,6 +151,9 @@ export default defineComponent({
             canvasRef.value.width = writingBoardRef.value.clientWidth;
             canvasRef.value.height = writingBoardRef.value.clientHeight;
 
+            canvasWidth.value = canvasRef.value.width;
+            canvasHeight.value = canvasRef.value.height;
+
             canvasRef.value.style.width =
                 writingBoardRef.value.clientWidth + "px";
             canvasRef.value.style.height =
@@ -114,7 +162,11 @@ export default defineComponent({
             ctx.lineCap = "round";
             ctx.lineJoin = "round";
         };
-        onMounted(initCanvas);
+        onMounted(() => {
+            setTimeout(() => {
+                initCanvas();
+            }, 600);
+        });
 
         // 绘制画笔墨迹方法
         const draw = (posX: number, posY: number, lineWidth: number) => {
@@ -226,13 +278,29 @@ export default defineComponent({
             lastTime = new Date().getTime();
         };
 
+        const contentRef = ref();
+
+        // 获取目标dom左上角距离视窗左边和上边的距离
+        const getDomOffset = () => {
+            const width = contentRef.value.clientWidth;
+            const height = contentRef.value.clientHeight;
+            const offsetX = contentRef.value.offsetLeft - width / 2;
+            const offsetY = contentRef.value.offsetTop - height / 2;
+            return { offsetX, offsetY };
+        };
+
+        // 获取中心点距离可视窗左边和上边距离
+        const getPointOffset = (point: { x: number, y: number }) => {
+            const { offsetX, offsetY } = getDomOffset();
+            return { offsetX: (point.x - offsetX) / props.scale, offsetY: (point.y - offsetY) / props.scale };
+        };
+
         // 处理鼠标（触摸）事件
         // 准备开始绘制/擦除墨迹（落笔）
         const handleMousedown = (e: MouseEvent | TouchEvent) => {
-            const x =
-                e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX;
-            const y =
-                e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY;
+            const offset = getPointOffset({ x: e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX, y: e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY });
+            const x = e instanceof MouseEvent ? e.offsetX : offset.offsetX;
+            const y = e instanceof MouseEvent ? e.offsetY : offset.offsetY;
 
             isMouseDown = true;
             lastPos = { x, y };
@@ -246,10 +314,9 @@ export default defineComponent({
 
         // 开始绘制/擦除墨迹（移动）
         const handleMousemove = (e: MouseEvent | TouchEvent) => {
-            const x =
-                e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX;
-            const y =
-                e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY;
+            const offset = getPointOffset({ x: e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX, y: e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY });
+            const x = e instanceof MouseEvent ? e.offsetX : offset.offsetX;
+            const y = e instanceof MouseEvent ? e.offsetY : offset.offsetY;
 
             updateMousePosition(x, y);
 
@@ -278,7 +345,10 @@ export default defineComponent({
             handleMousedown,
             handleMousemove,
             handleMouseup,
-            clearCanvas
+            clearCanvas,
+            canvasWidth,
+            canvasHeight,
+            contentRef
         };
     }
 });
@@ -292,15 +362,24 @@ export default defineComponent({
     left: 0;
     right: 0;
     z-index: 8;
-    cursor: none;
+}
+.no-point-event {
+    pointer-events: none;
 }
 .blackboard {
     width: 100%;
     height: 100%;
     background-color: #0f392b;
 }
+.canvas-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: none;
+}
 .canvas {
-    @include absolute-0();
+    transform-origin: top left;
 }
 .eraser,
 .pen {
