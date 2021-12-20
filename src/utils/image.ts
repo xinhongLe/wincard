@@ -41,11 +41,11 @@ export const getImageSize = (src: string): Promise<ImageSize> => {
  */
 export const getImageDataURL = (file: File): Promise<string> => {
     return new Promise(resolve => {
-        const reader = new FileReader();
-        reader.addEventListener("load", () => {
-            resolve(reader.result as string);
+        const render = new FileReader();
+        render.addEventListener("load", () => {
+            resolve(render.result as string);
         });
-        reader.readAsDataURL(file);
+        render.readAsDataURL(file);
     });
 };
 

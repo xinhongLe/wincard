@@ -34,7 +34,7 @@
                 :videoElement="elementInfo"
                 :width="elementInfo.width"
                 :height="elementInfo.height"
-                :src="elementInfo.src"
+                :src="videoUrl"
                 :poster="elementInfo.poster"
                 :scale="scale"
             />
@@ -57,7 +57,7 @@
                 :videoElement="elementInfo"
                 :width="elementInfo.width"
                 :height="elementInfo.height"
-                :src="elementInfo.src"
+                :src="videoUrl"
                 :poster="elementInfo.poster"
                 :scale="scale"
                 v-if="elementInfo.showType == 1"
@@ -118,7 +118,7 @@ export default defineComponent({
         };
 
         const videoElement = computed(() => props.elementInfo);
-        const { iconUrl } = useOssVideo(videoElement);
+        const { iconUrl, videoUrl } = useOssVideo(videoElement);
 
         // 预览全屏停止播放
         window.addEventListener("resize", () => {
@@ -128,6 +128,7 @@ export default defineComponent({
         return {
             scale,
             iconUrl,
+            videoUrl,
             handleSelectElement,
             visible,
             openVideo,

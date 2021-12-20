@@ -4,10 +4,10 @@ import { debounce } from "lodash";
 export default () => {
     let audio: HTMLAudioElement | null = null;
     const playAudio = debounce(async (key: string) => {
-        const res = await getOssAudioUrl(key);
+        // const res = await getOssAudioUrl(key);
         if (!audio) {
             audio = new Audio();
-            audio.src = res.url;
+            audio.src = key;
             audio.oncanplay = () => {
                 audio && audio.play();
             };

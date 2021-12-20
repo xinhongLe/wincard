@@ -39,11 +39,11 @@ export default defineComponent({
 
         const { playAudio, stopAudio } = useAudio();
         const handleAudioEvent = () => {
-            playAudio(props.elementInfo.src);
+            playAudio(audioUrl.value);
         };
 
         const audioElenent = computed(() => props.elementInfo);
-        const { iconUrl } = useOssAudio(audioElenent, true);
+        const { iconUrl, audioUrl } = useOssAudio(audioElenent, true);
 
         onUnmounted(() => {
             stopAudio();

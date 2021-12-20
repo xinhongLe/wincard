@@ -67,11 +67,11 @@ export default defineComponent({
 
         const { playAudio } = useAudio();
         const handleAudioEvent = () => {
-            playAudio(props.elementInfo.src);
+            playAudio(audioUrl.value);
         };
 
         const audioElenent = computed(() => props.elementInfo);
-        const { iconUrl } = useOssAudio(audioElenent);
+        const { iconUrl, audioUrl } = useOssAudio(audioElenent);
 
         return {
             scale,

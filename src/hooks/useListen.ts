@@ -2,10 +2,11 @@ import { computed, reactive, ref, Ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { addSystemWord, editSystemWord, getSystemWordList } from "@/api";
 import { ListenWord } from "@/types/slides";
-import { getOssAudioUrl, uploadAudio } from "@/utils/audio";
+import { audioUrlToBase64, getOssAudioUrl, uploadAudio } from "@/utils/audio";
 import { message } from "ant-design-vue";
 import { debounce } from "lodash";
 import { OSS_PATH } from "@/configs/filePath";
+import { getResourceDB } from "@/utils/database";
 
 interface IPage {
     current: number;
@@ -44,6 +45,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
         IsFirstPage: true,
         IsLastPage: false
     });
+    const resourceDB = getResourceDB();
     const keyword = ref("");
 
     const formState = reactive<IForm>({
@@ -147,9 +149,17 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
     };
 
     const playAudio = debounce(async (word: ListenWord, callback?: (hasError?: boolean) => void) => {
-        const res = await getOssAudioUrl(word.file);
+        const result = await resourceDB.db.where({ id: word.file }).toArray();
         audio = new Audio();
-        audio.src = res.url;
+        if (result.length > 0) {
+            audio.src = result[0].resource;
+        } else {
+            const res = await getOssAudioUrl(word.file);
+            const base64 = await audioUrlToBase64(res.url);
+            audio.src = base64;
+            resourceDB.db.add({ id: word.file, resource: base64 });
+        }
+
         audio.oncanplay = () => {
             audio.play();
         };
