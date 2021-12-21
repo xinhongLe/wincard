@@ -32,10 +32,10 @@ export default (imageElement: ComputedRef<PPTImageElement>, isScreening?: boolea
 
                         !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: imageElement.value.id, props });
 
-                        imageUrlToBase64(res.url).then(base64 => {
-                            imageUrl.value = base64;
-                            resourceDB.db.add({ id: imageElement.value.src, resource: base64 });
-                        });
+                        // imageUrlToBase64(res.url).then(base64 => {
+                        //     imageUrl.value = base64;
+                        //     resourceDB.db.add({ id: imageElement.value.src, resource: base64 });
+                        // });
                     });
                 }
             });

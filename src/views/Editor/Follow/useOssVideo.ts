@@ -22,17 +22,17 @@ export default (follow: ComputedRef<Follow | undefined>, isScreening?: boolean) 
                 } else {
                     if (follow.value && follow.value.src) {
                         const res = await getOssVideoUrl(follow.value.src);
-                        // videoUrl.value = res.url;
+                        videoUrl.value = res.url;
                         const props = {
                             src: follow.value.src,
                             ossSrc: res.url,
                             ossExpiration: ossToken.Expiration
                         };
                         !isScreening && store.commit(MutationTypes.UPDATE_FOLLOW, props);
-                        videoUrlToBase64(res.url).then(base64 => {
-                            videoUrl.value = base64;
-                            (follow.value && follow.value.src) && resourceDB.db.add({ id: follow.value.src, resource: base64 });
-                        });
+                        // videoUrlToBase64(res.url).then(base64 => {
+                        //     videoUrl.value = base64;
+                        //     (follow.value && follow.value.src) && resourceDB.db.add({ id: follow.value.src, resource: base64 });
+                        // });
                     }
                 }
             }

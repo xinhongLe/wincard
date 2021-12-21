@@ -33,17 +33,17 @@ export default (audioElement: ComputedRef<PPTAudioElement>, isScreening?: boolea
                     audioUrl.value = audioElement.value.ossSrc;
                 } else {
                     const res = await getOssAudioUrl(audioElement.value.src);
-                    // audioUrl.value = res.url;
+                    audioUrl.value = res.url;
                     // 更新 PPTVideoElement
                     const props = {
                         ossSrc: res.url,
                         ossExpiration: ossToken.Expiration
                     };
                     !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
-                    audioUrlToBase64(res.url).then(base64 => {
-                        audioUrl.value = base64;
-                        audioElement.value.icon && resourceDB.db.add({ id: audioElement.value.src, resource: base64 });
-                    });
+                    // audioUrlToBase64(res.url).then(base64 => {
+                    //     audioUrl.value = base64;
+                    //     audioElement.value.icon && resourceDB.db.add({ id: audioElement.value.src, resource: base64 });
+                    // });
                 }
             }
 
@@ -54,7 +54,7 @@ export default (audioElement: ComputedRef<PPTAudioElement>, isScreening?: boolea
                 } else {
                     if (audioElement.value.icon) {
                         const res = await getOssImageUrl(audioElement.value.icon);
-                        // iconUrl.value = res.url;
+                        iconUrl.value = res.url;
                         // 更新 PPTVideoElement
                         const props = {
                             ossIcon: res.url,
@@ -62,10 +62,10 @@ export default (audioElement: ComputedRef<PPTAudioElement>, isScreening?: boolea
                         };
                         !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
 
-                        imageUrlToBase64(res.url).then(base64 => {
-                            iconUrl.value = base64;
-                            audioElement.value.icon && resourceDB.db.add({ id: audioElement.value.icon, resource: base64 });
-                        });
+                        // imageUrlToBase64(res.url).then(base64 => {
+                        //     iconUrl.value = base64;
+                        //     audioElement.value.icon && resourceDB.db.add({ id: audioElement.value.icon, resource: base64 });
+                        // });
                     } else {
                         iconUrl.value = "";
                     }

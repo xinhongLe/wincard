@@ -30,19 +30,29 @@ export default (background: ComputedRef<SlideBackground | undefined>, callback?:
                 } else if (background.value && background.value.image) {
                     getOssImageUrl(background.value.image).then(res => {
                         // 更新 SlideBackground
-                        imageUrlToBase64(res.url).then(base64 => {
-                            background.value?.image && resourceDB.db.add({ id: background.value?.image, resource: base64 });
-                            if (callback) {
-                                return callback(base64);
-                            }
-                            const props = {
-                                ossSrc: base64,
-                                ossExpiration: ossToken.Expiration
-                            };
-                            store.commit(MutationTypes.UPDATE_SLIDE, {
-                                background: { ...background.value, ...props }
-                            });
+                        if (callback) {
+                            return callback(res.url);
+                        }
+                        const props = {
+                            ossSrc: res.url,
+                            ossExpiration: ossToken.Expiration
+                        };
+                        store.commit(MutationTypes.UPDATE_SLIDE, {
+                            background: { ...background.value, ...props }
                         });
+                        // imageUrlToBase64(res.url).then(base64 => {
+                        //     background.value?.image && resourceDB.db.add({ id: background.value?.image, resource: base64 });
+                        //     if (callback) {
+                        //         return callback(base64);
+                        //     }
+                        //     const props = {
+                        //         ossSrc: base64,
+                        //         ossExpiration: ossToken.Expiration
+                        //     };
+                        //     store.commit(MutationTypes.UPDATE_SLIDE, {
+                        //         background: { ...background.value, ...props }
+                        //     });
+                        // });
                     });
                 }
             });

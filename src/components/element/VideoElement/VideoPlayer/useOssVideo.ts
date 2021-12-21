@@ -42,17 +42,17 @@ export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolea
                     videoUrl.value = videoElement.value.ossSrc;
                 } else {
                     const res = await getOssVideoUrl(videoElement.value.src);
-                    // videoUrl.value = res.url;
+                    videoUrl.value = res.url;
                     // 更新 PPTVideoElement
                     const props = {
                         ossSrc: res.url,
                         ossExpiration: ossToken.Expiration
                     };
                     !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
-                    videoUrlToBase64(res.url).then(base64 => {
-                        videoUrl.value = base64;
-                        videoElement.value.src && resourceDB.db.add({ id: videoElement.value.src, resource: base64 });
-                    });
+                    // videoUrlToBase64(res.url).then(base64 => {
+                    //     videoUrl.value = base64;
+                    //     videoElement.value.src && resourceDB.db.add({ id: videoElement.value.src, resource: base64 });
+                    // });
                 }
             }
 
@@ -63,7 +63,7 @@ export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolea
                 } else {
                     if (videoElement.value.poster) {
                         const res = await getOssPosterUrl(videoElement.value.poster);
-                        // posterUrl.value = res.url;
+                        posterUrl.value = res.url;
                         // 更新 PPTVideoElement
                         const props = {
                             ossPoster: res.url,
@@ -71,10 +71,10 @@ export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolea
                         };
                         !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
 
-                        imageUrlToBase64(res.url).then(base64 => {
-                            posterUrl.value = base64;
-                            videoElement.value.poster && resourceDB.db.add({ id: videoElement.value.poster, resource: base64 });
-                        });
+                        // imageUrlToBase64(res.url).then(base64 => {
+                        //     posterUrl.value = base64;
+                        //     videoElement.value.poster && resourceDB.db.add({ id: videoElement.value.poster, resource: base64 });
+                        // });
                     }
                 }
             }
@@ -86,17 +86,17 @@ export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolea
                 } else {
                     if (videoElement.value.icon) {
                         const res = await getOssPosterUrl(videoElement.value.icon);
-                        // iconUrl.value = res.url;
+                        iconUrl.value = res.url;
                         // 更新 PPTVideoElement
                         const props = {
                             ossIcon: res.url,
                             ossExpiration: ossToken.Expiration
                         };
                         !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
-                        imageUrlToBase64(res.url).then(base64 => {
-                            iconUrl.value = base64;
-                            videoElement.value.icon && resourceDB.db.add({ id: videoElement.value.icon, resource: base64 });
-                        });
+                        // imageUrlToBase64(res.url).then(base64 => {
+                        //     iconUrl.value = base64;
+                        //     videoElement.value.icon && resourceDB.db.add({ id: videoElement.value.icon, resource: base64 });
+                        // });
                     } else {
                         iconUrl.value = "";
                     }
