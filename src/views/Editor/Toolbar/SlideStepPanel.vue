@@ -422,7 +422,7 @@ export default defineComponent({
             editIndex.value = actionIndex;
             steps.value[stepIndex.value].splice(editIndex.value, 1);
 
-            store.commit(MutationTypes.UPDATE_ELEMENT, {
+            store.commit(MutationTypes.UPDATE_SLIDE, {
                 steps: steps.value
             });
 
@@ -553,6 +553,9 @@ export default defineComponent({
     }
     .text {
         flex: 6;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .handler {
         flex: 3;

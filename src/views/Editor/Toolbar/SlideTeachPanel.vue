@@ -54,7 +54,9 @@ export default defineComponent({
 
         getTeachList({ state: 2 }).then((res: any) => {
             if (res.success) {
-                teachList.value = res.result.map((item: any) => {
+                teachList.value = res.result.filter((item: any) => {
+                    return !!item.Url;
+                }).map((item: any) => {
                     return {
                         id: item.ID,
                         name: item.Name,

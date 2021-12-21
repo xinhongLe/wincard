@@ -112,7 +112,11 @@ export default defineComponent({
 
 <style>
 .reset-video-modal {
-    top: 50%;
+    top: 50% !important;
     transform: translateY(-50%);
+}
+
+.reset-video-modal video {
+    max-height: 80vh;
 }
 </style>

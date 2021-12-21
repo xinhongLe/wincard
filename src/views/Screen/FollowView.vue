@@ -12,7 +12,7 @@
             <div
                 class="me-pause-item"
                 @click="pausePlay(index)"
-                :class="pauseIndex === index && 'active'"
+                :class="pauseIndex >= index && 'active'"
                 :style="{width: item.width}"
                 v-for="(item, index) in pauseList"
                 :key="index"

@@ -43,6 +43,7 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 .listen-word-list {
     width: 100%;
@@ -51,8 +52,6 @@ export default defineComponent({
     display: flex;
     // justify-content: space-between;
     flex-wrap: wrap;
-    height: 100%;
-    overflow-y: auto;
     .listen-word-item {
         background-image: url(~@/assets/images/bg_card.png);
         background-size: 100% 100%;

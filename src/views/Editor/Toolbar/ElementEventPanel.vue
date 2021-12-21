@@ -520,6 +520,9 @@ export default defineComponent({
     }
     .text {
         flex: 6;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .handler {
         flex: 2;

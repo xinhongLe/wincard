@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { PPTElement, Slide } from "@/types/slides";
+import { PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import { logInput, LOG_EVENT } from "@/utils/log";
 
@@ -43,20 +43,38 @@ export default (from: number) => {
             );
         }
 
+        // 当删除时，要移除步骤中存在的对应的元素
+        let steps: PPTElementAction[][] = [];
+        if (currentSlide.value.steps) {
+            steps = currentSlide.value.steps.map((step: PPTElementAction[]) => {
+                return step.filter(s => (deleteElementList.findIndex(el => el.id !== s.target) > -1));
+            });
+        }
+
         logInput(`${from === 2 ? "剪切" : "删除"}元素 ${deleteElementList.map(item => item.name).join("、")}`, [LOG_EVENT.DELETE_ELEMENT, LOG_EVENT.DELETE_ELEMENT_FROM_LIST, LOG_EVENT.CUT_ELEMENT, LOG_EVENT.DELETE_ELEMENT_HOT_KEY][from]);
 
         store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, []);
-        store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList });
+        store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList, steps });
         addHistorySnapshot();
     };
 
     const deleteTargetElement = (id: string) => {
         let newElementList: PPTElement[] = [];
+
         newElementList = currentSlide.value.elements.filter(
             el => el.id !== id
         );
 
-        store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList });
+        // 当删除时，要移除步骤中存在的对应的元素
+        let steps: PPTElementAction[][] = [];
+        if (currentSlide.value.steps) {
+            steps = currentSlide.value.steps.map((step: PPTElementAction[]) => {
+                return step.filter(s => id !== s.target);
+            });
+        }
+
+        store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, []);
+        store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList, steps });
         addHistorySnapshot();
     };
 
