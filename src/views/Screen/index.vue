@@ -54,7 +54,7 @@
             :slideWidth="slideWidth"
             :slideHeight="slideHeight"
             :enable="writingBoardToolVisible"
-            @close="writingBoardToolVisible = false"
+            @close="closeWriteBoard()"
         />
 
         <div class="mark-view" v-if="remarkVisible">
@@ -439,6 +439,11 @@ export default defineComponent({
             init();
         });
 
+        const closeWriteBoard = () => {
+            writingBoardToolVisible.value = false;
+            emit("closeWriteBoard");
+        };
+
         return {
             screenRef,
             contentRef,
@@ -465,7 +470,8 @@ export default defineComponent({
             handleMousewheelScreen,
             resetPosition,
             contextmenus,
-            remarkVisible
+            remarkVisible,
+            closeWriteBoard
         };
     }
 });
