@@ -383,7 +383,7 @@ const dealRect = (oldRect: IOldRectElement) => {
     element.outline.width = oldRect.LineWidth;
     element.outline.style = oldRect.LineType === 0 ? "dashed" : "solid";
     element.display = oldRect.IsVisibility;
-    element.fill = oldRect.Background;
+    element.fill = converColor(oldRect.Background);
     return element;
 };
 
