@@ -72,7 +72,8 @@ module.exports = {
             "vuedraggable",
             "ali-oss",
             "spark-md5",
-            "axios"
+            "axios",
+            "is-electron"
         ],
         plugins: [
             new StyleLintPlugin({

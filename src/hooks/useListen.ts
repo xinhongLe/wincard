@@ -6,7 +6,7 @@ import { audioUrlToBase64, getOssAudioUrl, uploadAudio } from "@/utils/audio";
 import { message } from "ant-design-vue";
 import { debounce } from "lodash";
 import { OSS_PATH } from "@/configs/filePath";
-import { getResourceDB } from "@/utils/database";
+// import { getResourceDB } from "@/utils/database";
 
 interface IPage {
     current: number;
@@ -45,7 +45,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
         IsFirstPage: true,
         IsLastPage: false
     });
-    const resourceDB = getResourceDB();
+    // const resourceDB = getResourceDB();
     const keyword = ref("");
 
     const formState = reactive<IForm>({
@@ -149,15 +149,20 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
     };
 
     const playAudio = debounce(async (word: ListenWord, callback?: (hasError?: boolean) => void) => {
-        const result = await resourceDB.db.where({ id: word.file }).toArray();
+        // const result = await resourceDB.db.where({ id: word.file }).toArray();
+        let audioRes: string | null = null;
+        if ((window as any).electron) {
+            const audioName = (word.file || "").replace(/(.*\/)*([^.]+)/i, "$2");
+            audioRes = await (window as any).electron.getCacheFile(audioName);
+        }
         audio = new Audio();
-        if (result.length > 0) {
-            audio.src = result[0].resource;
+        if (audioRes) {
+            audio.src = audioRes;
         } else {
             const res = await getOssAudioUrl(word.file);
-            const base64 = await audioUrlToBase64(res.url);
-            audio.src = base64;
-            resourceDB.db.add({ id: word.file, resource: base64 });
+            // const base64 = await audioUrlToBase64(res.url);
+            audio.src = res.url;
+            // resourceDB.db.add({ id: word.file, resource: base64 });
         }
 
         audio.oncanplay = () => {

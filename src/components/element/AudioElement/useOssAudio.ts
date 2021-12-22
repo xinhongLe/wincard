@@ -4,30 +4,45 @@ import { ref, watch, ComputedRef, computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssAudioUrl, audioUrlToBase64 } from "@/utils/audio";
 import { getOssImageUrl, imageUrlToBase64 } from "@/utils/image";
-import { getResourceDB } from "@/utils/database";
+// import { getResourceDB } from "@/utils/database";
 
 export default (audioElement: ComputedRef<PPTAudioElement>, isScreening?: boolean) => {
     const audioUrl = ref("");
     const iconUrl = ref("");
     const store = useStore();
-    const resourceDB = getResourceDB();
+    // const resourceDB = getResourceDB();
     const updateAudio = async () => {
         // 目前切换图片编辑 会重复拉取图片 后面考虑要不要缓存成base64进行存储
-        const iconResult = await resourceDB.db.where({ id: audioElement.value.icon || "" }).toArray();
-        if (iconResult.length > 0) {
-            iconUrl.value = iconResult[0].resource;
-            const props = {
-                ossIcon: iconUrl.value
-            };
-            !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
+        // const iconResult = await resourceDB.db.where({ id: audioElement.value.icon || "" }).toArray();
+        // if (iconResult.length > 0) {
+        //     iconUrl.value = iconResult[0].resource;
+        //     const props = {
+        //         ossIcon: iconUrl.value
+        //     };
+        //     !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
+        // }
+        // const audioResult = await resourceDB.db.where({ id: audioElement.value.src || "" }).toArray();
+        // if (audioResult.length > 0) {
+        //     audioUrl.value = audioResult[0].resource;
+        // }
+        // if (iconResult.length > 0 && audioResult.length > 0) return;
+        let icon: string | null = null;
+        let audio: string | null = null;
+        if ((window as any).electron) {
+            const iconName = (audioElement.value.icon || "").replace(/(.*\/)*([^.]+)/i, "$2");
+            icon = await (window as any).electron.getCacheFile(iconName);
+            if (icon) {
+                iconUrl.value = icon;
+                const props = { ossIcon: icon };
+                !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
+            }
+            const audioName = (audioElement.value.icon || "").replace(/(.*\/)*([^.]+)/i, "$2");
+            audio = await (window as any).electron.getCacheFile(audioName);
+            if (audio) audioUrl.value = audio;
+            if (icon && audio) return;
         }
-        const audioResult = await resourceDB.db.where({ id: audioElement.value.src || "" }).toArray();
-        if (audioResult.length > 0) {
-            audioUrl.value = audioResult[0].resource;
-        }
-        if (iconResult.length > 0 && audioResult.length > 0) return;
         getToken(async (ossToken: OssToken) => {
-            if (audioResult.length === 0) {
+            if (!audio) {
                 if (audioElement.value.ossSrc && audioElement.value.ossExpiration === ossToken.Expiration) {
                     // ossSrc 存在 且 ossToken 未过期 则不请求 直接返回
                     audioUrl.value = audioElement.value.ossSrc;
@@ -47,7 +62,7 @@ export default (audioElement: ComputedRef<PPTAudioElement>, isScreening?: boolea
                 }
             }
 
-            if (iconResult.length === 0) {
+            if (!icon) {
                 if (audioElement.value.ossIcon && audioElement.value.ossExpiration === ossToken.Expiration) {
                     // ossIcon 存在 且 ossToken 未过期 则不请求 直接返回
                     iconUrl.value = audioElement.value.ossIcon;

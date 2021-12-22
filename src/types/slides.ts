@@ -155,6 +155,7 @@ export interface PPTRelation {
 export interface PPTCard {
     id: string;
     name: string;
+    type?: number;
     slides: PPTRelation[];
 }
 

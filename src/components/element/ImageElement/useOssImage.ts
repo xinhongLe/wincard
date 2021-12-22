@@ -3,19 +3,28 @@ import { getOssImageUrl, imageUrlToBase64 } from "@/utils/image";
 import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, ComputedRef, computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { getResourceDB } from "@/utils/database";
+// import { getResourceDB } from "@/utils/database";
 
 declare function require(img: string): string;
 export default (imageElement: ComputedRef<PPTImageElement>, isScreening?: boolean) => {
     const image = require("@/assets/images/default.png");
     const imageUrl = ref("");
     const store = useStore();
-    const resourceDB = getResourceDB();
+    // const resourceDB = getResourceDB();
     const updateImage = async () => {
         // 切换图片编辑 会重复拉取图片 图片缓存成base64进行存储
-        const result = await resourceDB.db.where({ id: imageElement.value.src }).toArray();
-        if (result.length > 0) {
-            imageUrl.value = result[0].resource;
+        // const result = await resourceDB.db.where({ id: imageElement.value.src }).toArray();
+        let imageRes: string | null = null;
+        if ((window as any).electron) {
+            const imageSrc = (imageElement.value.src || "").replace(/(.*\/)*([^.]+)/i, "$2");
+            imageRes = await (window as any).electron.getCacheFile(imageSrc);
+        }
+        if (imageRes) {
+            imageUrl.value = imageRes;
+            const props = {
+                ossSrc: imageRes
+            };
+            !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: imageElement.value.id, props });
         } else {
             getToken((ossToken: OssToken) => {
                 if (imageElement.value.ossSrc && imageElement.value.ossExpiration === ossToken.Expiration) {
@@ -23,7 +32,7 @@ export default (imageElement: ComputedRef<PPTImageElement>, isScreening?: boolea
                     imageUrl.value = imageElement.value.ossSrc;
                 } else {
                     getOssImageUrl(imageElement.value.src).then(res => {
-                        // imageUrl.value = res.url;
+                        imageUrl.value = res.url;
                         // 更新 PPTImageElement
                         const props = {
                             ossSrc: res.url,

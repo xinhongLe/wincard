@@ -3,40 +3,69 @@ import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, ComputedRef, computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssPosterUrl, getOssVideoUrl, videoUrlToBase64 } from "@/utils/video";
-import { getResourceDB } from "@/utils/database";
-import { imageUrlToBase64 } from "@/utils/image";
+// import { getResourceDB } from "@/utils/database";
+// import { imageUrlToBase64 } from "@/utils/image";
 
 export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolean) => {
     const videoUrl = ref("");
     const posterUrl = ref("");
     const iconUrl = ref("");
     const store = useStore();
-    const resourceDB = getResourceDB();
+    // const resourceDB = getResourceDB();
     const updateVideo = async () => {
         // 目前切换图片编辑 会重复拉取图片 后面考虑要不要缓存成base64进行存储
-        const iconResult = await resourceDB.db.where({ id: videoElement.value.icon || "" }).toArray();
-        if (iconResult.length > 0) {
-            iconUrl.value = iconResult[0].resource;
-            const props = {
-                ossIcon: iconUrl.value
-            };
-            !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+        // const iconResult = await resourceDB.db.where({ id: videoElement.value.icon || "" }).toArray();
+        // if (iconResult.length > 0) {
+        //     iconUrl.value = iconResult[0].resource;
+        //     const props = {
+        //         ossIcon: iconUrl.value
+        //     };
+        //     !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+        // }
+        // const posterResult = await resourceDB.db.where({ id: videoElement.value.poster || "" }).toArray();
+        // if (posterResult.length > 0) {
+        //     posterUrl.value = posterResult[0].resource;
+        //     const props = {
+        //         ossPoster: posterUrl.value
+        //     };
+        //     !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+        // }
+        // const videoResult = await resourceDB.db.where({ id: videoElement.value.src || "" }).toArray();
+        // if (videoResult.length > 0) {
+        //     videoUrl.value = videoResult[0].resource;
+        // }
+        // if (iconResult.length > 0 && videoResult.length > 0 && posterResult.length > 0) return;
+        let icon: string | null = null;
+        let video: string | null = null;
+        let poster: string | null = null;
+        if ((window as any).electron) {
+            const iconName = (videoElement.value.icon || "").replace(/(.*\/)*([^.]+)/i, "$2");
+            icon = await (window as any).electron.getCacheFile(iconName);
+            if (icon) iconUrl.value = icon;
+            const posterName = (videoElement.value.poster || "").replace(/(.*\/)*([^.]+)/i, "$2");
+            poster = await (window as any).electron.getCacheFile(posterName);
+            if (poster) posterUrl.value = poster;
+            const videoName = (videoElement.value.src || "").replace(/(.*\/)*([^.]+)/i, "$2");
+            video = await (window as any).electron.getCacheFile(videoName);
+            if (video) videoUrl.value = video;
+            if (icon) {
+                iconUrl.value = icon;
+                const props = {
+                    ossIcon: icon
+                };
+                !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+            }
+            if (poster) {
+                posterUrl.value = poster;
+                const props = {
+                    ossPoster: poster
+                };
+                !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+            }
+            if (icon && poster && video) return;
         }
-        const posterResult = await resourceDB.db.where({ id: videoElement.value.poster || "" }).toArray();
-        if (posterResult.length > 0) {
-            posterUrl.value = posterResult[0].resource;
-            const props = {
-                ossPoster: posterUrl.value
-            };
-            !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
-        }
-        const videoResult = await resourceDB.db.where({ id: videoElement.value.src || "" }).toArray();
-        if (videoResult.length > 0) {
-            videoUrl.value = videoResult[0].resource;
-        }
-        if (iconResult.length > 0 && videoResult.length > 0 && posterResult.length > 0) return;
         getToken(async (ossToken: OssToken) => {
-            if (videoResult.length === 0) {
+            if (!video) {
                 if (videoElement.value.ossSrc && videoElement.value.ossExpiration === ossToken.Expiration) {
                     // ossSrc 存在 且 ossToken 未过期 则不请求 直接返回
                     videoUrl.value = videoElement.value.ossSrc;
@@ -56,7 +85,7 @@ export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolea
                 }
             }
 
-            if (posterResult.length === 0) {
+            if (!poster) {
                 if (videoElement.value.ossPoster && videoElement.value.ossExpiration === ossToken.Expiration) {
                     // ossPoster 存在 且 ossToken 未过期 则不请求 直接返回
                     posterUrl.value = videoElement.value.ossPoster;
@@ -79,7 +108,7 @@ export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolea
                 }
             }
 
-            if (iconResult.length === 0) {
+            if (!icon) {
                 if (videoElement.value.ossIcon && videoElement.value.ossExpiration === ossToken.Expiration) {
                     // ossPoster 存在 且 ossToken 未过期 则不请求 直接返回
                     iconUrl.value = videoElement.value.ossIcon;

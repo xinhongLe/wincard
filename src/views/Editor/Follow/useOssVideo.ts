@@ -3,18 +3,23 @@ import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, computed, ComputedRef } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssVideoUrl, videoUrlToBase64 } from "@/utils/video";
-import { getResourceDB } from "@/utils/database";
+// import { getResourceDB } from "@/utils/database";
 
 export default (follow: ComputedRef<Follow | undefined>, isScreening?: boolean) => {
     const videoUrl = ref("");
     const store = useStore();
-    const updateVideo = () => {
-        const resourceDB = getResourceDB();
+    const updateVideo = async () => {
+        // const resourceDB = getResourceDB();
+        let video: string | null = null;
+        if ((window as any).electron) {
+            const videoName = (follow.value ? follow.value.src : "").replace(/(.*\/)*([^.]+)/i, "$2");
+            video = await (window as any).electron.getCacheFile(videoName);
+        }
 
         getToken(async (ossToken: OssToken) => {
-            const result = await resourceDB.db.where({ id: follow.value ? follow.value.src : "" }).toArray();
-            if (result.length > 0) {
-                videoUrl.value = result[0].resource;
+            // const result = await resourceDB.db.where({ id: follow.value ? follow.value.src : "" }).toArray();
+            if (video) {
+                videoUrl.value = video;
             } else {
                 if (follow.value && follow.value.ossSrc && follow.value.ossExpiration === ossToken.Expiration) {
                     // ossSrc 存在 且 ossToken 未过期 则不请求 直接返回

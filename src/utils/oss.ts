@@ -44,7 +44,7 @@ export const uploadFile = (file: File): Promise<string> => {
                         resolve(objectKey);
                     })
                     .catch(err => {
-                        console.error(err);
+                        if ((window as any).electron && (window as any).electron.log) (window as any).electron.log.error(err);
                         message.error("上传失败！");
                         reject(new Error("上传出错了"));
                     });
