@@ -68,7 +68,7 @@
         </div>
 
         <WritingBoardTool
-            v-if="writingBoardToolVisible"
+            :style="{visibility: writingBoardToolVisible ? 'visible' : 'hidden'}"
             :scale="viewScale"
             :offsetX="offsetX"
             :offsetY="offsetY"
