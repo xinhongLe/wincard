@@ -1,6 +1,6 @@
 import { Follow } from "@/types/slides";
 import { getToken, OssToken } from "@/utils/oss";
-import { ref, watch, computed, ComputedRef } from "vue";
+import { ref, watch, computed, ComputedRef, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssVideoUrl, videoUrlToBase64 } from "@/utils/video";
 // import { getResourceDB } from "@/utils/database";
@@ -8,13 +8,11 @@ import { getOssVideoUrl, videoUrlToBase64 } from "@/utils/video";
 export default (follow: ComputedRef<Follow | undefined>, isScreening?: boolean) => {
     const videoUrl = ref("");
     const store = useStore();
+    const instance = getCurrentInstance();
     const updateVideo = async () => {
         // const resourceDB = getResourceDB();
         let video: string | null = null;
-        if ((window as any).electron) {
-            const videoName = (follow.value ? follow.value.src : "").replace(/(.*\/)*([^.]+)/i, "$2");
-            video = await (window as any).electron.getCacheFile(videoName);
-        }
+        video = await instance?.appContext.config.globalProperties.$getLocalFileUrl(follow.value ? follow.value.src : "");
 
         getToken(async (ossToken: OssToken) => {
             // const result = await resourceDB.db.where({ id: follow.value ? follow.value.src : "" }).toArray();

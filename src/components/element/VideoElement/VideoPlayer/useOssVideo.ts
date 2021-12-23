@@ -1,6 +1,6 @@
 import { PPTVideoElement } from "@/types/slides";
 import { getToken, OssToken } from "@/utils/oss";
-import { ref, watch, ComputedRef, computed } from "vue";
+import { ref, watch, ComputedRef, computed, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssPosterUrl, getOssVideoUrl, videoUrlToBase64 } from "@/utils/video";
 // import { getResourceDB } from "@/utils/database";
@@ -11,7 +11,9 @@ export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolea
     const posterUrl = ref("");
     const iconUrl = ref("");
     const store = useStore();
+    const instance = getCurrentInstance();
     // const resourceDB = getResourceDB();
+
     const updateVideo = async () => {
         // 目前切换图片编辑 会重复拉取图片 后面考虑要不要缓存成base64进行存储
         // const iconResult = await resourceDB.db.where({ id: videoElement.value.icon || "" }).toArray();
@@ -38,32 +40,27 @@ export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolea
         let icon: string | null = null;
         let video: string | null = null;
         let poster: string | null = null;
-        if ((window as any).electron) {
-            const iconName = (videoElement.value.icon || "").replace(/(.*\/)*([^.]+)/i, "$2");
-            icon = await (window as any).electron.getCacheFile(iconName);
-            if (icon) iconUrl.value = icon;
-            const posterName = (videoElement.value.poster || "").replace(/(.*\/)*([^.]+)/i, "$2");
-            poster = await (window as any).electron.getCacheFile(posterName);
-            if (poster) posterUrl.value = poster;
-            const videoName = (videoElement.value.src || "").replace(/(.*\/)*([^.]+)/i, "$2");
-            video = await (window as any).electron.getCacheFile(videoName);
-            if (video) videoUrl.value = video;
-            if (icon) {
-                iconUrl.value = icon;
-                const props = {
-                    ossIcon: icon
-                };
-                !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
-            }
-            if (poster) {
-                posterUrl.value = poster;
-                const props = {
-                    ossPoster: poster
-                };
-                !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
-            }
-            if (icon && poster && video) return;
+        icon = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.icon || "");
+        if (icon) iconUrl.value = icon;
+        poster = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.poster || "");
+        if (poster) posterUrl.value = poster;
+        video = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.src || "");
+        if (video) videoUrl.value = video;
+        if (icon) {
+            iconUrl.value = icon;
+            const props = {
+                ossIcon: icon
+            };
+            !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
         }
+        if (poster) {
+            posterUrl.value = poster;
+            const props = {
+                ossPoster: poster
+            };
+            !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+        }
+        if (icon && poster && video) return;
         getToken(async (ossToken: OssToken) => {
             if (!video) {
                 if (videoElement.value.ossSrc && videoElement.value.ossExpiration === ossToken.Expiration) {

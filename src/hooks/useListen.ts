@@ -1,4 +1,4 @@
-import { computed, reactive, ref, Ref } from "vue";
+import { computed, getCurrentInstance, reactive, ref, Ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { addSystemWord, editSystemWord, getSystemWordList } from "@/api";
 import { ListenWord } from "@/types/slides";
@@ -148,13 +148,12 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
         message.warning("暂不支持该功能");
     };
 
+    const instance = getCurrentInstance();
+
     const playAudio = debounce(async (word: ListenWord, callback?: (hasError?: boolean) => void) => {
         // const result = await resourceDB.db.where({ id: word.file }).toArray();
         let audioRes: string | null = null;
-        if ((window as any).electron) {
-            const audioName = (word.file || "").replace(/(.*\/)*([^.]+)/i, "$2");
-            audioRes = await (window as any).electron.getCacheFile(audioName);
-        }
+        audioRes = await instance?.appContext.config.globalProperties.$getLocalFileUrl(word.file || "");
         audio = new Audio();
         if (audioRes) {
             audio.src = audioRes;

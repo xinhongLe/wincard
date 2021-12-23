@@ -1,6 +1,6 @@
 import { PPTAudioElement } from "@/types/slides";
 import { getToken, OssToken } from "@/utils/oss";
-import { ref, watch, ComputedRef, computed } from "vue";
+import { ref, watch, ComputedRef, computed, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssAudioUrl, audioUrlToBase64 } from "@/utils/audio";
 import { getOssImageUrl, imageUrlToBase64 } from "@/utils/image";
@@ -10,6 +10,8 @@ export default (audioElement: ComputedRef<PPTAudioElement>, isScreening?: boolea
     const audioUrl = ref("");
     const iconUrl = ref("");
     const store = useStore();
+    const instance = getCurrentInstance();
+
     // const resourceDB = getResourceDB();
     const updateAudio = async () => {
         // 目前切换图片编辑 会重复拉取图片 后面考虑要不要缓存成base64进行存储
@@ -28,19 +30,15 @@ export default (audioElement: ComputedRef<PPTAudioElement>, isScreening?: boolea
         // if (iconResult.length > 0 && audioResult.length > 0) return;
         let icon: string | null = null;
         let audio: string | null = null;
-        if ((window as any).electron) {
-            const iconName = (audioElement.value.icon || "").replace(/(.*\/)*([^.]+)/i, "$2");
-            icon = await (window as any).electron.getCacheFile(iconName);
-            if (icon) {
-                iconUrl.value = icon;
-                const props = { ossIcon: icon };
-                !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
-            }
-            const audioName = (audioElement.value.icon || "").replace(/(.*\/)*([^.]+)/i, "$2");
-            audio = await (window as any).electron.getCacheFile(audioName);
-            if (audio) audioUrl.value = audio;
-            if (icon && audio) return;
+        icon = await instance?.appContext.config.globalProperties.$getLocalFileUrl(audioElement.value.icon || "");
+        if (icon) {
+            iconUrl.value = icon;
+            const props = { ossIcon: icon };
+            !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: audioElement.value.id, props });
         }
+        audio = await instance?.appContext.config.globalProperties.$getLocalFileUrl(audioElement.value.src || "");
+        if (audio) audioUrl.value = audio;
+        if (icon && audio) return;
         getToken(async (ossToken: OssToken) => {
             if (!audio) {
                 if (audioElement.value.ossSrc && audioElement.value.ossExpiration === ossToken.Expiration) {
