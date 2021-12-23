@@ -10,6 +10,7 @@ import useDeleteElement from "./useDeleteElement";
 export default () => {
     const store = useStore();
     const activeElementIdList = computed(() => store.state.activeElementIdList);
+    const handleElementId = computed(() => store.state.handleElementId);
     const activeElementList = computed<PPTElement[]>(
         () => store.getters.activeElementList
     );
@@ -54,10 +55,19 @@ export default () => {
         pasteElement();
     };
 
+    // 暂存目标ID
+    const cacheElement = () => {
+        if (handleElementId.value) {
+            console.log(handleElementId.value);
+            store.commit(MutationTypes.CACHE_ELEMENT_ID, handleElementId.value);
+        }
+    };
+
     return {
         copyElement,
         cutElement,
         pasteElement,
-        quickCopyElement
+        quickCopyElement,
+        cacheElement
     };
 };

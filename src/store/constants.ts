@@ -35,6 +35,7 @@ export const enum MutationTypes {
     ADD_SLIDE = "addSlide",
     DELETE_SLIDE = "deleteSlide",
     UPDATE_FOLLOW = "updateFollow",
+    CACHE_ELEMENT_ID = "cacheElementID",
 
     // listen
     UPDATE_LISTEN_SYSTEM_LIST = "updateListeSystemList",

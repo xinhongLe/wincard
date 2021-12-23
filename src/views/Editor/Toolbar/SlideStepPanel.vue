@@ -7,28 +7,33 @@
         <a-modal
             v-model:visible="addActionVisible"
             title="事件"
-            width="300px"
+            width="400px"
             okText="保存"
             cancelText="取消"
             @ok="isEdit ? editAction() : addAction()"
         >
+            <div class="tip"><IconClick />可以先右击元素点击*暂存目标*</div>
             <a-form
                 :model="formState"
-                :label-col="{ span: 7 }"
-                :wrapper-col="{ span: 17 }"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 19 }"
             >
                 <a-form-item label="目标元素:">
-                    <a-select
-                        v-model:value="formState.target"
-                        placeholder="请选择目标元素"
-                    >
-                        <a-select-option
-                            :value="item.id"
-                            v-for="item in elementList"
-                            :key="item.id"
-                            >{{ item.name }}</a-select-option
+                    <div class="form-flex">
+                        <a-select
+                            class="form-select"
+                            v-model:value="formState.target"
+                            placeholder="请选择目标元素"
                         >
-                    </a-select>
+                            <a-select-option
+                                :value="item.id"
+                                v-for="item in elementList"
+                                :key="item.id"
+                                >{{ item.name }}</a-select-option
+                            >
+                        </a-select>
+                        <a-button class="input-btn" value="small" @click="inputTarget()">填充</a-button>
+                    </div>
                 </a-form-item>
 
                 <a-form-item label="触发事件:">
@@ -462,6 +467,11 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
+        const cacheElementID = computed(() => store.state.cacheElementID);
+        const inputTarget = () => {
+            if (cacheElementID.value) formState.target = cacheElementID.value;
+        };
+
         return {
             isEdit,
             steps,
@@ -484,7 +494,8 @@ export default defineComponent({
             openEditAction,
             openAddAction,
             handleDragEnd,
-            updateElementAnimationDuration
+            updateElementAnimationDuration,
+            inputTarget
         };
     }
 });
@@ -578,5 +589,23 @@ export default defineComponent({
     border: 1px dashed #ccc;
     background-color: #fff;
     margin-bottom: 12px;
+}
+
+.form-flex {
+    display: flex;
+    .form-select {
+        flex: 1;
+        min-width: 0;
+    }
+    .input-btn {
+        margin-left: 5px;
+    }
+}
+
+.tip {
+    text-align: center;
+    font-style: italic;
+    padding-top: 12px;
+    margin-bottom: 15px;
 }
 </style>

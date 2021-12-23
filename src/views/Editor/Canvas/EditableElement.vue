@@ -97,7 +97,8 @@ export default defineComponent({
         const {
             copyElement,
             pasteElement,
-            cutElement
+            cutElement,
+            cacheElement
         } = useCopyAndPasteElement();
         const { selectAllElement } = useSelectAllElement();
 
@@ -126,6 +127,13 @@ export default defineComponent({
                     text: "粘贴",
                     subText: "Ctrl + V",
                     handler: pasteElement
+                },
+                { divider: true },
+                {
+                    text: "暂存目标",
+                    disable: props.isMultiSelect && !props.elementInfo.groupId,
+                    subText: "",
+                    handler: cacheElement
                 },
                 { divider: true },
                 {

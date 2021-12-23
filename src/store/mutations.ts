@@ -206,6 +206,10 @@ export const mutations: MutationTree<State> = {
         state.slides[state.slideIndex].follow = { ...follow, ...props };
     },
 
+    [MutationTypes.CACHE_ELEMENT_ID](state, id: string) {
+        state.cacheElementID = id;
+    },
+
     // listen
     [MutationTypes.UPDATE_LISTEN_SYSTEM_LIST](state, list: ListenWord[]) {
         state.listenSystemList = list;
