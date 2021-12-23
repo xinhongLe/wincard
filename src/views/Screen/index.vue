@@ -68,7 +68,7 @@
         </div>
 
         <WritingBoardTool
-            :style="{visibility: writingBoardToolVisible ? 'visible' : 'hidden'}"
+            v-if="writingBoardToolVisible"
             :scale="viewScale"
             :offsetX="offsetX"
             :offsetY="offsetY"
@@ -469,7 +469,7 @@ export default defineComponent({
         };
 
         const offScreen = () => {
-            if (!isElectron()) exitScreening();
+            exitScreening();
             emit("offScreen");
         };
 

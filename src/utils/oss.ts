@@ -17,10 +17,21 @@ export interface downloadResponse {
     expiration: string;
 }
 
-class OssHelper {
-    private _client: OSS | null = null;
-
-    getToken = async () => {
+// 为了防止多次请求ossToken getOssToken 这里对请求加上锁 进行排队处理
+let callbackStash: any = null;
+export const getToken = async (callback: any) => {
+    const time = Number(localStorage.getItem("wincard_ossTokenExpireTime") || 0);
+    const currentTime = new Date().getTime();
+    if (callbackStash) {
+        setTimeout(() => {
+            // 延迟 100毫秒 处理
+            getToken(callback);
+        }, 100);
+        return;
+    }
+    if (currentTime > time) {
+        // 没有token或者token过期 需要请求token
+        callbackStash = callback;
         const res: any = await getOssToken();
         if (res.resultCode === 200) {
             localStorage.setItem(
@@ -31,10 +42,18 @@ class OssHelper {
                 "wincard_ossToken",
                 JSON.stringify(res.result.ossToken)
             );
-            this.expiryTime = res.result.ossToken.Expiration;
-            return res.result.ossToken;
+            callback(res.result.ossToken);
+        } else {
+            callback(JSON.parse(localStorage.getItem("wincard_ossToken") || "{}"));
         }
-    };
+        callbackStash = null;
+    } else {
+        callback(JSON.parse(localStorage.getItem("wincard_ossToken") || "{}"));
+    }
+};
+
+class OssHelper {
+    private _client: OSS | null = null;
 
     private region = "oss-cn-shanghai";
     private bucket = "axsfile";
@@ -46,26 +65,27 @@ class OssHelper {
     }
 
     async autoUpdateToken() {
-        const ossToken: OssToken = await this.getToken();
-        this._client = new OSS({
-            accessKeyId: ossToken.AccessKeyId,
-            accessKeySecret: ossToken.AccessKeySecret,
-            stsToken: ossToken.SecurityToken,
-            bucket: this.bucket,
-            region: this.region,
-            refreshSTSToken: async () => {
-                const ossToken: OssToken = await this.getToken();
-                return {
-                    accessKeyId: ossToken.AccessKeyId,
-                    accessKeySecret: ossToken.AccessKeySecret,
-                    stsToken: ossToken.SecurityToken
-                };
-            },
-            refreshSTSTokenInterval: this._tokenExpirtyInterval
+        getToken((ossToken: OssToken) => {
+            this.expiryTime = ossToken.Expiration;
+            this._client = new OSS({
+                accessKeyId: ossToken.AccessKeyId,
+                accessKeySecret: ossToken.AccessKeySecret,
+                stsToken: ossToken.SecurityToken,
+                bucket: this.bucket,
+                region: this.region,
+                refreshSTSToken: async () => {
+                    return {
+                        accessKeyId: ossToken.AccessKeyId,
+                        accessKeySecret: ossToken.AccessKeySecret,
+                        stsToken: ossToken.SecurityToken
+                    };
+                },
+                refreshSTSTokenInterval: this._tokenExpirtyInterval
+            });
+            setTimeout(() => {
+                this.autoUpdateToken();
+            }, this._tokenExpirtyInterval);
         });
-        setTimeout(() => {
-            this.autoUpdateToken();
-        }, this._tokenExpirtyInterval);
     }
 
     get client() {
@@ -118,41 +138,6 @@ export const uploadFile = (file: File): Promise<string> => {
             }
         });
     });
-};
-
-// 为了防止多次请求ossToken getOssToken 这里对请求加上锁 进行排队处理
-let callbackStash: any = null;
-export const getToken = async (callback: any) => {
-    const time = Number(localStorage.getItem("wincard_ossTokenExpireTime") || 0);
-    const currentTime = new Date().getTime();
-    if (callbackStash) {
-        setTimeout(() => {
-            // 延迟 100毫秒 处理
-            getToken(callback);
-        }, 100);
-        return;
-    }
-    if (currentTime > time) {
-        // 没有token或者token过期 需要请求token
-        callbackStash = callback;
-        const res: any = await getOssToken();
-        if (res.resultCode === 200) {
-            localStorage.setItem(
-                "wincard_ossTokenExpireTime",
-                (new Date().getTime() + 3000000).toString()
-            );
-            localStorage.setItem(
-                "wincard_ossToken",
-                JSON.stringify(res.result.ossToken)
-            );
-            callback(res.result.ossToken);
-        } else {
-            callback(JSON.parse(localStorage.getItem("wincard_ossToken") || "{}"));
-        }
-        callbackStash = null;
-    } else {
-        callback(JSON.parse(localStorage.getItem("wincard_ossToken") || "{}"));
-    }
 };
 
 const fileMd5 = (file: File): Promise<string> => {
