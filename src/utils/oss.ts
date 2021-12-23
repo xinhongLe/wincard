@@ -16,6 +16,72 @@ export interface downloadResponse {
     expiration: string;
 }
 
+class OssHelper {
+    private _client: OSS | null = null;
+
+    getToken = async () => {
+        const res: any = await getOssToken();
+        if (res.resultCode === 200) {
+            localStorage.setItem(
+                "wincard_ossTokenExpireTime",
+                (new Date().getTime() + 3000000).toString()
+            );
+            localStorage.setItem(
+                "wincard_ossToken",
+                JSON.stringify(res.result.ossToken)
+            );
+            this.expiryTime = res.result.ossToken.Expiration;
+            return res.result.ossToken;
+        }
+    };
+
+    private region = "oss-cn-shanghai";
+    private bucket = "axsfile";
+    private _expiryTime = "0";
+    private _tokenExpirtyInterval = 1000 * 60 * 30;
+
+    constructor() {
+        this.autoUpdateToken();
+    }
+
+    async autoUpdateToken() {
+        const ossToken: OssToken = await this.getToken();
+        this._client = new OSS({
+            accessKeyId: ossToken.AccessKeyId,
+            accessKeySecret: ossToken.AccessKeySecret,
+            stsToken: ossToken.SecurityToken,
+            bucket: this.bucket,
+            region: this.region,
+            refreshSTSToken: async () => {
+                const ossToken: OssToken = await this.getToken();
+                return {
+                    accessKeyId: ossToken.AccessKeyId,
+                    accessKeySecret: ossToken.AccessKeySecret,
+                    stsToken: ossToken.SecurityToken
+                };
+            },
+            refreshSTSTokenInterval: this._tokenExpirtyInterval
+        });
+        setTimeout(() => {
+            this.autoUpdateToken();
+        }, this._tokenExpirtyInterval);
+    }
+
+    get client() {
+        return this._client;
+    }
+
+    set expiryTime(value) {
+        this._expiryTime = value;
+    }
+
+    get expiryTime() {
+        return this._expiryTime;
+    }
+}
+
+export const ossHelper = new OssHelper();
+
 export const uploadFile = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
         fileMd5(file).then((md5: string) => {
@@ -24,21 +90,8 @@ export const uploadFile = (file: File): Promise<string> => {
             ];
             const name: string = md5;
             const objectKey = OSS_PATH + "/" + name + "." + fileExtention;
-            getToken((ossToken: OssToken) => {
-                const region = "oss-cn-shanghai";
-                const accessKeyId = ossToken && ossToken.AccessKeyId;
-                const accessKeySecret = ossToken && ossToken.AccessKeySecret;
-                const securityToken = ossToken && ossToken.SecurityToken;
-                const bucket = "axsfile";
-                const client = new OSS({
-                    region: region,
-                    accessKeyId: accessKeyId,
-                    accessKeySecret: accessKeySecret,
-                    stsToken: securityToken,
-                    bucket: bucket
-                });
-
-                client
+            if (ossHelper.client) {
+                ossHelper.client
                     .put(objectKey, file)
                     .then(() => {
                         resolve(objectKey);
@@ -48,7 +101,23 @@ export const uploadFile = (file: File): Promise<string> => {
                         message.error("上传失败！");
                         reject(new Error("上传出错了"));
                     });
-            });
+            } else {
+                const timer = setInterval(() => {
+                    if (ossHelper.client) {
+                        clearInterval(timer);
+                        ossHelper.client
+                            .put(objectKey, file)
+                            .then(() => {
+                                resolve(objectKey);
+                            })
+                            .catch(err => {
+                                if ((window as any).electron && (window as any).electron.log) (window as any).electron.log.error(err);
+                                message.error("上传失败！");
+                                reject(new Error("上传出错了"));
+                            });
+                    }
+                }, 10);
+            }
         });
     });
 };
@@ -109,21 +178,17 @@ const fileMd5 = (file: File): Promise<string> => {
 
 export const downloadFile = (key: string): Promise<downloadResponse> => {
     return new Promise(resolve => {
-        getToken((ossToken: OssToken) => {
-            const region = "oss-cn-shanghai";
-            const accessKeyId = ossToken && ossToken.AccessKeyId;
-            const accessKeySecret = ossToken && ossToken.AccessKeySecret;
-            const securityToken = ossToken && ossToken.SecurityToken;
-            const client = new OSS({
-                region: region,
-                accessKeyId: accessKeyId,
-                accessKeySecret: accessKeySecret,
-                stsToken: securityToken,
-                bucket: "axsfile",
-                secure: true
-            });
-            const url = client.signatureUrl(key);
-            resolve({ url, expiration: ossToken.Expiration });
-        });
+        if (ossHelper.client) {
+            const url = ossHelper.client.signatureUrl(key);
+            resolve({ url, expiration: ossHelper.expiryTime });
+        } else {
+            const timer = setInterval(() => {
+                if (ossHelper.client) {
+                    clearInterval(timer);
+                    const url = ossHelper.client.signatureUrl(key);
+                    resolve({ url, expiration: ossHelper.expiryTime });
+                }
+            }, 10);
+        }
     });
 };
