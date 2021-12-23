@@ -113,7 +113,8 @@ export default defineComponent({
 <style>
 .reset-video-modal {
     top: 50% !important;
-    transform: translateY(-50%);
+    transform: translateY(-50%) !important;
+    animation: none !important;
 }
 
 .reset-video-modal video {
