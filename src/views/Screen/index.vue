@@ -1,5 +1,25 @@
 <template>
     <div class="pptist-screen" ref="screenRef" :class="{'pptist-disable-select': disableSelect, 'fixed': !inline}">
+        <div class="mark-view"
+            v-if="remarkVisible"
+            :style="{
+                transform: `translate(${markOffsetX}px, ${markOffsetY}px)`
+            }"
+            @mousedown="markMouseDown($event)"
+            @mousemove="markMouseMove($event)"
+            @mouseup="markMouseUp()"
+            @mouseleave="markMouseUp()"
+            @touchstart="markMouseDown($event)"
+            @touchmove="markMouseMove($event)"
+            @touchend="markMouseUp()"
+        >
+            <div class="mark-title">
+                教学建议
+            </div>
+            <div class="mark-content">
+                {{currentSlide.remark}}
+            </div>
+        </div>
         <div
             class="slide-list"
             @mousedown="disableSelectEnd"
@@ -48,6 +68,7 @@
         </div>
 
         <WritingBoardTool
+            v-if="writingBoardToolVisible"
             :scale="viewScale"
             :offsetX="offsetX"
             :offsetY="offsetY"
@@ -56,10 +77,6 @@
             :enable="writingBoardToolVisible"
             @close="closeWriteBoard()"
         />
-
-        <div class="mark-view" v-if="remarkVisible">
-            {{currentSlide.remark}}
-        </div>
 
         <div class="tools" v-if="!inline">
             <IconLeftTwo
@@ -92,6 +109,12 @@
                 :fill="['#111', '#fff']"
                 @click="resetPosition()"
             />
+            <IconOffFullScreen
+                class="tool-btn"
+                theme="two-tone"
+                :fill="['#fff', '#111']"
+                @click="offScreen()"
+            />
         </div>
     </div>
 </template>
@@ -112,7 +135,7 @@ import { useStore } from "@/store";
 import { IWin, PPTElementAction, Slide } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { KEYS } from "@/configs/hotkey";
-import { isFullscreen } from "@/utils/fullscreen";
+import { exitFullscreen, isFullscreen } from "@/utils/fullscreen";
 import useScreening from "@/hooks/useScreening";
 
 // import { message } from "ant-design-vue";
@@ -124,6 +147,7 @@ import useScaleScreen from "@/hooks/useScaleScreen";
 
 import { PAGE_TYPE } from "@/configs/page";
 import { ContextmenuItem } from "@/types/contextmenu";
+import { marks } from "prosemirror-schema-basic";
 
 export default defineComponent({
     name: "screen",
@@ -190,11 +214,11 @@ export default defineComponent({
 
         // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
         const setSlideContentSize = () => {
-            let winWidth = props.inline ? screenRef.value.clientWidth : document.body.clientWidth;
+            const winWidth = props.inline ? screenRef.value.clientWidth : document.body.clientWidth;
             const winHeight = props.inline ? screenRef.value.clientHeight : document.body.clientHeight;
-            if (remarkVisible.value) {
-                winWidth = winWidth - 250;
-            }
+            // if (remarkVisible.value) {
+            //     winWidth = winWidth - 250;
+            // }
             let width, height;
 
             if (winHeight / winWidth === viewportRatio.value) {
@@ -444,6 +468,36 @@ export default defineComponent({
             emit("closeWriteBoard");
         };
 
+        const offScreen = () => {
+            exitFullscreen();
+            emit("offScreen");
+        };
+
+        const markOffsetX = ref(0);
+        const markOffsetY = ref(0);
+        let markStart = [0, 0];
+        let markIsMove = false;
+        const markMouseDown = (e: MouseEvent | TouchEvent) => {
+            const x = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
+            const y = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY;
+            markStart = [x, y];
+            markIsMove = true;
+        };
+
+        const markMouseMove = (e: MouseEvent | TouchEvent) => {
+            if (!markIsMove) return;
+            const x = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
+            const y = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY;
+            markOffsetX.value = markOffsetX.value + x - markStart[0];
+            markOffsetY.value = markOffsetY.value + y - markStart[1];
+            markStart = [x, y];
+        };
+
+        const markMouseUp = () => {
+            markStart = [0, 0];
+            markIsMove = false;
+        };
+
         return {
             screenRef,
             contentRef,
@@ -471,7 +525,13 @@ export default defineComponent({
             resetPosition,
             contextmenus,
             remarkVisible,
-            closeWriteBoard
+            closeWriteBoard,
+            offScreen,
+            markOffsetX,
+            markOffsetY,
+            markMouseDown,
+            markMouseMove,
+            markMouseUp
         };
     }
 });
@@ -510,7 +570,8 @@ export default defineComponent({
     height: 100%;
 
     &.adjust-width {
-        width: calc(100% - 250px);
+        // left: 250px;
+        // width: calc(100% - 250px);
     }
 
     &.current {
@@ -606,15 +667,25 @@ export default defineComponent({
 }
 .mark-view {
     position: absolute;
-    right: 0;
     z-index: 8;
     background: #fff;
-    top: 0;
-    bottom: 0;
-    width: 250px;
-    padding: 20px;
+    right: 0;
+    bottom: 60px;
+    width: 300px;
+    min-height: 250px;
+    // padding: 20px;
     line-height: 24px;
     color: #666;
     box-shadow: 0 0 15px 0 rgb(0 0 0 / 10%);
+    cursor: move;
+    user-select: none;
+    .mark-title {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-bottom: 1px solid #ccc;
+    }
+    .mark-content {
+        padding: 10px 20px;
+    }
 }
 </style>

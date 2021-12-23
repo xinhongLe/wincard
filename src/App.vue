@@ -1,6 +1,6 @@
 <template>
     <PPTEditor ref="editor" :slide="slide" @onSave="onSave" @addCard="addCard" />
-    <!-- <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" :useScale="true" @openCard="openCard" :keyDisabled="true" :isInit="false" /> -->
+    <!-- <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @closeWriteBoard="closeWriteBoard" :useScale="true" @openCard="openCard" :keyDisabled="true" :isInit="false" /> -->
 </template>
 
 <script lang="ts">
@@ -125,6 +125,10 @@ export default defineComponent({
             console.log(wins);
         };
 
+        const closeWriteBoard = () => {
+            console.log("===========");
+        };
+
         return {
             editor,
             onSave,
@@ -133,7 +137,8 @@ export default defineComponent({
             pagePrev,
             pageNext,
             openCard,
-            screenRef
+            screenRef,
+            closeWriteBoard
         };
     }
 });

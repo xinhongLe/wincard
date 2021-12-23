@@ -9,6 +9,7 @@
         @openCard="openCard"
         :keyDisabled="keyDisabled"
         @closeWriteBoard="closeWriteBoard"
+        @offScreen="offScreen"
     />
 </template>
 
@@ -45,7 +46,7 @@ export default defineComponent({
     components: {
         Screen
     },
-    emits: ["pagePrev", "pageNext", "openCard", "closeWriteBoard"],
+    emits: ["pagePrev", "pageNext", "openCard", "closeWriteBoard", "offScreen"],
     setup(props, { emit }) {
         const store = useStore();
         const ctrlKeyActive = computed(() => store.state.ctrlKeyState);
@@ -116,6 +117,10 @@ export default defineComponent({
             emit("closeWriteBoard");
         };
 
+        const offScreen = () => {
+            emit("offScreen");
+        };
+
         return {
             currentSlide,
             pagePrev,
@@ -124,7 +129,8 @@ export default defineComponent({
             screenRef,
             execPrev,
             execNext,
-            closeWriteBoard
+            closeWriteBoard,
+            offScreen
         };
     }
 });
