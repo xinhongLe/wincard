@@ -3,6 +3,7 @@ import SparkMD5 from "spark-md5";
 import { getOssToken } from "@/api";
 import { OSS_PATH } from "@/configs/filePath";
 import { message } from "ant-design-vue";
+import isElectron from "is-electron";
 
 export interface OssToken {
     AccessKeyId: string;
@@ -82,10 +83,10 @@ class OssHelper {
 
 export const ossHelper = new OssHelper();
 
-const put = (key: string, file: File, resolve: (key: string) => void, reject: (err: Error) => void) => {
+const put = (key: string, file: any, resolve: (key: string) => void, reject: (err: Error) => void) => {
     if (ossHelper.client) {
         ossHelper.client
-            .put(key, file)
+            .put(key, isElectron() ? file.path : file)
             .then(() => {
                 resolve(key);
             })
