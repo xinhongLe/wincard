@@ -137,7 +137,7 @@ import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { KEYS } from "@/configs/hotkey";
 import { exitFullscreen, isFullscreen } from "@/utils/fullscreen";
 import useScreening from "@/hooks/useScreening";
-
+import isElectron from "is-electron";
 // import { message } from "ant-design-vue";
 
 import ScreenSlide from "./ScreenSlide.vue";
@@ -469,7 +469,7 @@ export default defineComponent({
         };
 
         const offScreen = () => {
-            exitFullscreen();
+            if (!isElectron()) exitScreening();
             emit("offScreen");
         };
 
