@@ -12,7 +12,7 @@
             cancelText="取消"
             @ok="isEdit ? editAction() : addAction()"
         >
-            <div class="tip"><IconClick />可以先右击元素点击*暂存目标*</div>
+            <div class="tip"><IconClick />可以先右击元素点击*暂存目标*后填充</div>
             <a-form
                 :model="formState"
                 :label-col="{ span: 5 }"
