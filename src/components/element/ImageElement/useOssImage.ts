@@ -1,7 +1,7 @@
 import { PPTImageElement } from "@/types/slides";
 import { getOssImageUrl, imageUrlToBase64 } from "@/utils/image";
 import { getToken, OssToken } from "@/utils/oss";
-import { ref, watch, ComputedRef, computed } from "vue";
+import { ref, watch, ComputedRef, computed, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
 // import { getResourceDB } from "@/utils/database";
 
@@ -10,15 +10,13 @@ export default (imageElement: ComputedRef<PPTImageElement>, isScreening?: boolea
     const image = require("@/assets/images/default.png");
     const imageUrl = ref("");
     const store = useStore();
+    const instance = getCurrentInstance();
     // const resourceDB = getResourceDB();
     const updateImage = async () => {
         // 切换图片编辑 会重复拉取图片 图片缓存成base64进行存储
         // const result = await resourceDB.db.where({ id: imageElement.value.src }).toArray();
         let imageRes: string | null = null;
-        if ((window as any).electron) {
-            const imageSrc = (imageElement.value.src || "").replace(/(.*\/)*([^.]+)/i, "$2");
-            imageRes = await (window as any).electron.getCacheFile(imageSrc);
-        }
+        imageRes = await instance?.appContext.config.globalProperties.$getLocalFileUrl(imageElement.value.src || "");
         if (imageRes) {
             imageUrl.value = imageRes;
             const props = {

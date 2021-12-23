@@ -22,7 +22,7 @@ import Component from "@/plugins/component";
 import Directive from "@/plugins/directive";
 
 export default {
-    install(app: App, url: string, flashWeb: string) {
+    install(app: App, url: string, flashWeb: string, getLocalFileUrl?: () => Promise<string>) {
         (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API = url;
         (window as any).VUE_APP_WINCARD_AI_XUE_SHI_FLASH_WEB = flashWeb;
         app.use(Icon);
@@ -32,5 +32,12 @@ export default {
         app.use(store, key);
         app.component("PPTEditor", PPTEditor);
         app.component("ScreenView", ScreenView);
+        const _getLocalFileUrl = () => {
+            return new Promise(resolve => {
+                resolve("");
+            });
+        };
+        app.config.globalProperties.$getLocalFileUrl = getLocalFileUrl || _getLocalFileUrl;
+        console.log(app);
     }
 };

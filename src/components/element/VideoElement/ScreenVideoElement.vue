@@ -28,7 +28,7 @@
                 v-model:visible="visible"
                 :footer="null"
                 width="90%"
-                dialogClass="reset-video-modal"
+                class="reset-video-modal"
             >
                 <VideoPlayer
                     :noTransform="true"
