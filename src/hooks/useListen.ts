@@ -29,8 +29,9 @@ interface IForm {
     fileList: IFileItem[]
 }
 
+let audio: HTMLAudioElement;
+
 export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) => {
-    let audio: HTMLAudioElement;
     const store = useStore();
     const listenSystemList = computed(() => store.state.listenSystemList);
     const currentSlide = computed(() => store.getters.currentSlide);
@@ -154,6 +155,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
         // const result = await resourceDB.db.where({ id: word.file }).toArray();
         let audioRes: string | null = null;
         audioRes = await instance?.appContext.config.globalProperties.$getLocalFileUrl(word.file || "");
+        if (audio && !audio.paused) audio.pause();
         audio = new Audio();
         if (audioRes) {
             audio.src = audioRes;
