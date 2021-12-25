@@ -122,7 +122,7 @@
 <script lang="ts">
 import {
     computed,
-    defineComponent, nextTick,
+    defineComponent, inject, nextTick,
     onMounted,
     onUnmounted,
     PropType,
@@ -147,7 +147,6 @@ import useScaleScreen from "@/hooks/useScaleScreen";
 
 import { PAGE_TYPE } from "@/configs/page";
 import { ContextmenuItem } from "@/types/contextmenu";
-import { marks } from "prosemirror-schema-basic";
 
 export default defineComponent({
     name: "screen",
@@ -195,6 +194,9 @@ export default defineComponent({
 
         const writeBoardVisible = computed(() => props.writeBoardVisible);
         const writingBoardToolVisible = ref(writeBoardVisible.value);
+
+        const elementList = computed(() => currentSlide.value.elements);
+        provide("elements", elementList);
 
         watch(writeBoardVisible, () => {
             writingBoardToolVisible.value = writeBoardVisible.value;

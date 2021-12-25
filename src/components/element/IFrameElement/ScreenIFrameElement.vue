@@ -19,8 +19,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
-import { useStore } from "@/store";
+import { defineComponent, PropType } from "vue";
 import { PPTWebIFrameElement } from "@/types/slides";
 
 export default defineComponent({
@@ -30,14 +29,6 @@ export default defineComponent({
             type: Object as PropType<PPTWebIFrameElement>,
             required: true
         }
-    },
-    setup() {
-        const store = useStore();
-        const scale = computed(() => store.state.canvasScale);
-
-        return {
-            scale
-        };
     }
 });
 </script>

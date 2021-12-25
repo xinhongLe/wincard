@@ -171,6 +171,16 @@
                     />
                 </a-tooltip>
             </FileInput>
+            <!-- <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="打点批注"
+            >
+                <IconBookMark
+                    @click="insertMarkElement()"
+                    class="handler-item"
+                />
+            </a-tooltip> -->
         </div>
 
         <div class="right-handler">
@@ -267,7 +277,8 @@ export default defineComponent({
             createLatexElement,
             createAudioElement,
             createWebIFrameElement,
-            createFlashElement
+            createFlashElement,
+            createMarkElement
         } = useCreateElement();
 
         const insertImageElement = (files: File[]) => {
@@ -334,6 +345,11 @@ export default defineComponent({
             WebIFramesVisible.value = false;
         };
 
+        // 插入批注
+        const insertMarkElement = () => {
+            createMarkElement();
+        };
+
         const isBasePPT = computed(() => store.getters.isBasePPT);
 
         return {
@@ -362,7 +378,8 @@ export default defineComponent({
             createChartElement,
             createTableElement,
             createLatexElement,
-            creatingElement
+            creatingElement,
+            insertMarkElement
         };
     }
 });

@@ -41,6 +41,9 @@ export const actions: ActionTree<State, State> = {
     async [ActionTypes.INIT_SNAPSHOT_DATABASE]({ commit, state }) {
         const snapshotDB = getSnapshotDB();
 
+        // 初始化清空快照数据
+        snapshotDB.snapshots.clear();
+
         const newFirstSnapshot = {
             index: state.slideIndex,
             slides: state.slides

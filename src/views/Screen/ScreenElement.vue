@@ -36,6 +36,7 @@ import ScreenAudioElement from "@/components/element/AudioElement/ScreenAudioEle
 import ScreenVideoElement from "@/components/element/VideoElement/ScreenVideoElement.vue";
 import ScreenIFrameElement from "@/components/element/IFrameElement/ScreenIFrameElement.vue";
 import ScreenFlashElement from "@/components/element/FlashElement/ScreenFlashElement.vue";
+import ScreenMarkElement from "@/components/element/MarkElement/ScreenMarkElement.vue";
 
 export default defineComponent({
     name: "screen-element",
@@ -66,7 +67,8 @@ export default defineComponent({
                 [ElementTypes.AUDIO]: ScreenAudioElement,
                 [ElementTypes.VIDEO]: ScreenVideoElement,
                 [ElementTypes.IFRAME]: ScreenIFrameElement,
-                [ElementTypes.FLASH]: ScreenFlashElement
+                [ElementTypes.FLASH]: ScreenFlashElement,
+                [ElementTypes.MARK]: ScreenMarkElement
             };
             return elementTypeMap[props.elementInfo.type] || null;
         });

@@ -103,19 +103,17 @@ class OssHelper {
 
 export const ossHelper = new OssHelper();
 
-const put = (key: string, file: any, resolve: (key: string) => void, reject: (err: Error) => void) => {
-    if (ossHelper.client) {
-        ossHelper.client
-            .put(key, isElectron() ? file.path : file)
-            .then(() => {
-                resolve(key);
-            })
-            .catch(err => {
-                if ((window as any).electron && (window as any).electron.log) (window as any).electron.log.error(err);
-                message.error("上传失败！");
-                reject(new Error("上传出错了"));
-            });
-    }
+const put = (key: string, file: File, resolve: (key: string) => void, reject: (err: Error) => void) => {
+    ossHelper.client && ossHelper.client
+        .put(key, file)
+        .then(() => {
+            resolve(key);
+        })
+        .catch(err => {
+            if ((window as any).electron && (window as any).electron.log) (window as any).electron.log.error(err);
+            message.error("上传失败！");
+            reject(new Error("上传出错了"));
+        });
 };
 
 export const uploadFile = (file: File): Promise<string> => {

@@ -52,7 +52,7 @@ export default defineComponent({
         const { resetSlides } = useSlideHandler();
         const initSlides = () => {
             resetSlides(props.slide);
-            store.dispatch(ActionTypes.DELETE_SNAPSHOT);
+            // store.dispatch(ActionTypes.RECOVERY_SNAPSHOT);
             store.dispatch(ActionTypes.INIT_SNAPSHOT_DATABASE);
         };
         store.commit(MutationTypes.SET_AVAILABLE_FONTS);

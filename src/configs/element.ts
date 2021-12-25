@@ -8,7 +8,8 @@ export const ELEMENT_TYPE_ZH = {
     audio: "音频",
     video: "视频",
     frame: "网页",
-    flash: "flash"
+    flash: "flash",
+    mark: "批注"
 };
 
 export const MIN_SIZE = {
@@ -20,5 +21,6 @@ export const MIN_SIZE = {
     audio: 50,
     video: 50,
     frame: 300,
-    flash: 50
+    flash: 50,
+    mark: 20
 };

@@ -3,6 +3,7 @@ export type ToolbarState =
     | "elAnimation"
     | "elStyle"
     | "elPosition"
+    | "elMark"
     | "slideDesign"
     | "slideAnimation"
     | "multiPosition"
@@ -18,6 +19,7 @@ export const ToolbarStates = {
     EL_STYLE: "elStyle",
     EL_POSITION: "elPosition",
     EL_EVENT: "elEvent",
+    EL_MARK: "elMark",
     SLIDE_DESIGN: "slideDesign",
     SLIDE_ANIMATION: "slideAnimation",
     MULTI_POSITION: "multiPosition",

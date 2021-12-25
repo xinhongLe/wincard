@@ -55,7 +55,7 @@
 <script lang="ts">
 import useListen from "@/hooks/useListen";
 import { Slide } from "@/types/slides";
-import { computed, defineComponent, onUnmounted, PropType, ref } from "vue";
+import { computed, defineComponent, onDeactivated, onUnmounted, PropType, ref } from "vue";
 import { useStore } from "@/store";
 
 export default defineComponent({
@@ -134,6 +134,13 @@ export default defineComponent({
         };
 
         onUnmounted(() => {
+            pauseAudio();
+            isStop.value = true;
+            clearTimeout(playTimer);
+        });
+
+        // 处理keep-alive的状况
+        onDeactivated(() => {
             pauseAudio();
             isStop.value = true;
             clearTimeout(playTimer);

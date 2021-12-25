@@ -102,7 +102,8 @@ import {
     VideoFile,
     DistributeHorizontally,
     DistributeVertically,
-    OffScreen
+    BookmarkOne,
+    FolderWithdrawal
 } from "@icon-park/vue-next";
 import {
     DEFAULT_ICON_CONFIGS,
@@ -123,6 +124,7 @@ export default {
         app.component("IconInsertTable", InsertTable);
         app.component("IconVideoTwo", VideoTwo);
         app.component("IconFormula", Formula);
+        app.component("IconBookMark", BookmarkOne);
 
         // 锁定与解锁
         app.component("IconLock", Lock);
@@ -130,7 +132,7 @@ export default {
 
         // 全屏
         app.component("IconFullScreen", FullScreen);
-        app.component("IconOffFullScreen", OffScreen);
+        app.component("IconOffFullScreen", FolderWithdrawal);
 
         // 撤销重做
         app.component("IconBack", Back);

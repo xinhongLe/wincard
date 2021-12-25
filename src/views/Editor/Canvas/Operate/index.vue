@@ -57,6 +57,7 @@ import ShapeElementOperate from "./ShapeElementOperate.vue";
 import LineElementOperate from "./LineElementOperate.vue";
 import TableElementOperate from "./TableElementOperate.vue";
 import CommonElementOperate from "./CommonElementOperate.vue";
+import NOElementOperate from "./NOElementOperate.vue";
 import LinkHandler from "./LinkHandler.vue";
 
 export default defineComponent({
@@ -132,7 +133,8 @@ export default defineComponent({
                 [ElementTypes.AUDIO]: ImageElementOperate,
                 [ElementTypes.VIDEO]: [CommonElementOperate, ImageElementOperate],
                 [ElementTypes.IFRAME]: CommonElementOperate,
-                [ElementTypes.FLASH]: ImageElementOperate
+                [ElementTypes.FLASH]: ImageElementOperate,
+                [ElementTypes.MARK]: NOElementOperate
             };
             if (props.elementInfo.type === ElementTypes.VIDEO) return elementTypeMap[props.elementInfo.type][props.elementInfo.showType] || null;
             return elementTypeMap[props.elementInfo.type] || null;

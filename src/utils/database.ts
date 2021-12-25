@@ -18,15 +18,15 @@ class SnapshotDatabase extends Dexie {
     }
 }
 
-let snapshotDB = new SnapshotDatabase();
+const snapshotDB = new SnapshotDatabase();
 
 export const getSnapshotDB = () => {
     return snapshotDB;
 };
 
 export const destorySnapshotDB = () => {
-    snapshotDB.delete();
-    snapshotDB = new SnapshotDatabase();
+    // snapshotDB.delete();
+    // snapshotDB = new SnapshotDatabase();
 };
 
 export interface WinCardResourceData {

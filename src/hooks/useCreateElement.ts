@@ -384,6 +384,22 @@ export default () => {
         });
     };
 
+    /**
+     * 创建 批注
+     */
+    const createMarkElement = () => {
+        const id = createRandomCode();
+        createElement({
+            name: "批注-" + id,
+            type: "mark",
+            id,
+            width: 30,
+            height: 30,
+            left: (VIEWPORT_SIZE - 30) / 2,
+            top: (VIEWPORT_SIZE * viewportRatio.value - 30) / 2
+        });
+    };
+
     return {
         createImageElement,
         createChartElement,
@@ -395,6 +411,7 @@ export default () => {
         createVideoElement,
         createAudioElement,
         createWebIFrameElement,
-        createFlashElement
+        createFlashElement,
+        createMarkElement
     };
 };

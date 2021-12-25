@@ -15,7 +15,8 @@ export const enum ElementTypes {
     AUDIO = "audio",
     VIDEO = "video",
     IFRAME = "iframe",
-    FLASH = "flash"
+    FLASH = "flash",
+    MARK = "mark"
 }
 
 /**
@@ -717,6 +718,18 @@ export interface PPTFlashElement extends PPTBaseElement {
     ossIcon?: string;
 }
 
+/**
+ * Mark 元素
+ *
+ * type: 元素类型 (mark)
+ *
+ * content: 标注类容
+ */
+export interface PPTMarkElement extends PPTBaseElement {
+    type: "mark";
+    content?: string;
+}
+
 export type PPTElement =
     | PPTTextElement
     | PPTImageElement
@@ -728,7 +741,8 @@ export type PPTElement =
     | PPTAudioElement
     | PPTVideoElement
     | PPTWebIFrameElement
-    | PPTFlashElement;
+    | PPTFlashElement
+    | PPTMarkElement;
 
 /**
  * 元素动画

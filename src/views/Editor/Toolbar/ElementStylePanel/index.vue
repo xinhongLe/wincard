@@ -32,6 +32,7 @@ import VideoStylePanel from "./VideoStylePanel.vue";
 import AudioStylePanel from "./AudioStylePanel.vue";
 import IFrameStylePanel from "./IFrameStylePanel.vue";
 import FlashStylePanel from "./FlashStylePanel.vue";
+import MarkStylePanel from "./MarkStylePanel.vue";
 import { logInput, LOG_EVENT } from "@/utils/log";
 
 export default defineComponent({
@@ -56,7 +57,8 @@ export default defineComponent({
                 [ElementTypes.AUDIO]: AudioStylePanel,
                 [ElementTypes.VIDEO]: VideoStylePanel,
                 [ElementTypes.IFRAME]: IFrameStylePanel,
-                [ElementTypes.FLASH]: FlashStylePanel
+                [ElementTypes.FLASH]: FlashStylePanel,
+                [ElementTypes.MARK]: MarkStylePanel
             };
             return panelMap[handleElement.value.type] || null;
         });
