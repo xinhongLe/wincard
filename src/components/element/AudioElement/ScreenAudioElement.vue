@@ -1,6 +1,6 @@
 <template>
     <div
-        class="screen-element-audio"
+        class="editable-element-audio"
         :style="{
             top: elementInfo.top + 'px',
             left: elementInfo.left + 'px',
@@ -59,7 +59,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.screen-element-audio {
+.editable-element-audio {
     position: absolute;
 }
 

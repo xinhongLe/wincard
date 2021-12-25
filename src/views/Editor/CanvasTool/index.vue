@@ -38,7 +38,7 @@
                     <IconPicture class="handler-item" />
                 </a-tooltip>
             </FileInput>
-            <a-popover trigger="click" v-model:visible="shapePoolVisible">
+            <a-popover trigger="click" v-model:visible="shapePoolVisible" placement="bottom">
                 <template #content>
                     <ShapePool @select="shape => drawShape(shape)" />
                 </template>
@@ -53,7 +53,7 @@
                     />
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click" v-model:visible="linePoolVisible">
+            <a-popover trigger="click" v-model:visible="linePoolVisible" placement="bottom">
                 <template #content>
                     <LinePool @select="line => drawLine(line)" />
                 </template>
@@ -68,7 +68,7 @@
                     />
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click" v-model:visible="chartPoolVisible">
+            <a-popover trigger="click" v-model:visible="chartPoolVisible" placement="bottom">
                 <template #content>
                     <ChartPool
                         @select="
@@ -89,7 +89,7 @@
                     />
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click" v-model:visible="tableGeneratorVisible">
+            <a-popover trigger="click" v-model:visible="tableGeneratorVisible" placement="bottom">
                 <template #content>
                     <TableGenerator
                         @close="tableGeneratorVisible = false"
@@ -132,7 +132,7 @@
                     />
                 </a-tooltip>
             </FileInput>
-            <a-popover trigger="click" v-model:visible="videoInputVisible">
+            <a-popover trigger="click" v-model:visible="videoInputVisible" placement="bottom">
                 <template #content>
                     <VideoInput />
                 </template>
@@ -146,7 +146,7 @@
                     />
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click" v-model:visible="WebIFramesVisible">
+            <a-popover trigger="click" v-model:visible="WebIFramesVisible" placement="bottom">
                 <template #content>
                     <WebIFrame @close="WebIFramesVisible = false;" @insert="insertWebIFrameElement" />
                 </template>
