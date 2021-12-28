@@ -374,7 +374,7 @@ export default defineComponent({
             const imageFile = files[0];
             if (!imageFile) return;
             uploadImage(imageFile).then(key => {
-                updateBackground({ image: key });
+                updateBackground({ image: key, ossSrc: "" });
             });
             // getImageDataURL(imageFile).then(dataURL =>
             //     updateBackground({ image: dataURL })
