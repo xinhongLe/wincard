@@ -15,6 +15,7 @@ import { ShapePoolItem } from "@/configs/shapes";
 import { LinePoolItem } from "@/configs/lines";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import { logInput, LOG_EVENT } from "@/utils/log";
+import useElementCount from "./useElementCount";
 
 interface CommonElementPosition {
     top: number;
@@ -38,6 +39,7 @@ export default () => {
     const fontSize = computed(() => store.state.theme.fontSize);
     const viewportRatio = computed(() => store.state.viewportRatio);
     const creatingElement = computed(() => store.state.creatingElement);
+    const { countElementByType } = useElementCount();
 
     const { addHistorySnapshot } = useHistorySnapshot();
 
@@ -79,7 +81,7 @@ export default () => {
             const id = createRandomCode();
 
             createElement({
-                name: "图片-" + id,
+                name: "图片-" + id + `(${countElementByType("image") + 1})`,
                 type: "image",
                 id,
                 src,
@@ -104,7 +106,7 @@ export default () => {
         const id = createRandomCode();
 
         createElement({
-            name: "图表-" + id,
+            name: "图表-" + id + `(${countElementByType("chart") + 1})`,
             type: "chart",
             id,
             chartType,
@@ -158,7 +160,7 @@ export default () => {
         const id = createRandomCode();
 
         createElement({
-            name: "表格-" + id,
+            name: "表格-" + id + `(${countElementByType("table") + 1})`,
             type: "table",
             id,
             width,
@@ -194,7 +196,7 @@ export default () => {
         const { left, top, width, height } = position;
         const id = createRandomCode();
         createElement({
-            name: "文本-" + id,
+            name: "文本-" + id + `(${countElementByType("text") + 1})`,
             type: "text",
             id,
             left,
@@ -221,7 +223,7 @@ export default () => {
         const { left, top, width, height } = position;
         const id = createRandomCode();
         const newElement: PPTShapeElement = {
-            name: "形状-" + id,
+            name: "形状-" + id + `(${countElementByType("shape") + 1})`,
             type: "shape",
             id,
             left,
@@ -250,7 +252,7 @@ export default () => {
         const { left, top, start, end } = position;
         const id = createRandomCode();
         const newElement: PPTLineElement = {
-            name: "线条-" + id,
+            name: "线条-" + id + `(${countElementByType("line") + 1})`,
             type: "line",
             id,
             left,
@@ -291,7 +293,7 @@ export default () => {
     }) => {
         const id = createRandomCode();
         createElement({
-            name: "公式-" + id,
+            name: "公式-" + id + `(${countElementByType("latex") + 1})`,
             type: "latex",
             id,
             width: data.w,
@@ -316,7 +318,7 @@ export default () => {
         const height = showType === 0 ? 300 : 100;
         const id = createRandomCode();
         createElement({
-            name: "视频-" + id,
+            name: "视频-" + id + `(${countElementByType("video") + 1})`,
             type: "video",
             id,
             width,
@@ -336,7 +338,7 @@ export default () => {
     const createAudioElement = (src: string) => {
         const id = createRandomCode();
         createElement({
-            name: "音频-" + id,
+            name: "音频-" + id + `(${countElementByType("audio") + 1})`,
             type: "audio",
             id,
             rotate: 0,
@@ -355,7 +357,7 @@ export default () => {
     const createWebIFrameElement = (src: string) => {
         const id = createRandomCode();
         createElement({
-            name: "网页-" + id,
+            name: "网页-" + id + `(${countElementByType("iframe") + 1})`,
             type: "iframe",
             id,
             width: 400,
@@ -373,7 +375,7 @@ export default () => {
     const createFlashElement = (src: string) => {
         const id = createRandomCode();
         createElement({
-            name: "Flash-" + id,
+            name: "Flash-" + id + `(${countElementByType("flash") + 1})`,
             type: "flash",
             id,
             width: 100,
