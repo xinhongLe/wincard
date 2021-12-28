@@ -176,7 +176,7 @@ export default defineComponent({
     .tools {
         height: 50px;
         position: fixed;
-        bottom: 70px;
+        bottom: 120px;
         left: 5px;
         z-index: 11;
         padding: 12px;
