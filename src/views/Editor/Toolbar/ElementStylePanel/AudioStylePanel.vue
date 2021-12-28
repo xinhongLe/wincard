@@ -69,14 +69,15 @@ export default defineComponent({
             const audioFile = files[0];
             if (!audioFile) return;
             uploadAudio(audioFile).then(key => {
-                updateAduio({ src: key });
+                updateAduio({ src: key, ossSrc: "" });
             });
         };
 
         return {
             handleElement,
             updateAduio,
-            setAduioIcon
+            setAduioIcon,
+            resetAudio
         };
     }
 });
