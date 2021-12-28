@@ -438,8 +438,8 @@ export default defineComponent({
         );
 
         const availableFonts = computed(() => store.state.availableFonts);
-        const fontSizeOptions = Array.from({ length: 60 }, (v, k) => k * 2 + 12 + "px");
-        const lineHeightOptions = Array.from({ length: 123 }, (v, k) => k + 24);
+        const fontSizeOptions = Array.from({ length: 245 }, (v, k) => k + 12 + "px");
+        const lineHeightOptions = Array.from({ length: 232 }, (v, k) => k + 24);
         const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10];
 
         // 发射富文本设置命令
