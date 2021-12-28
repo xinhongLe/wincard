@@ -19,7 +19,8 @@
                     filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
                     transform: flipStyle,
                     color: text.defaultColor,
-                    fontFamily: text.defaultFontName
+                    fontFamily: text.defaultFontName,
+                    borderRadius: (elementInfo.radius || 0) + 'px'
                 }"
             >
                 <SvgWrapper
@@ -141,6 +142,7 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     position: relative;
+    overflow: hidden;
 
     svg {
         transform-origin: 0 0;

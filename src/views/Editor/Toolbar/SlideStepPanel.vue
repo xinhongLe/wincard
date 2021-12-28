@@ -286,7 +286,7 @@ import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
 import { PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import { MutationTypes, useStore } from "@/store";
 import { INANIMATIONS, OUTANIMATIONS } from "@/configs/animation";
-import { message } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 import Draggable from "vuedraggable";
@@ -423,15 +423,23 @@ export default defineComponent({
 
         // 删除事件
         const deleteAction = (i: number, actionIndex: number) => {
-            stepIndex.value = i;
-            editIndex.value = actionIndex;
-            steps.value[stepIndex.value].splice(editIndex.value, 1);
+            Modal.confirm({
+                title: "提示",
+                content: "确定删除该事件吗？",
+                cancelText: "取消",
+                okText: "确认",
+                onOk() {
+                    stepIndex.value = i;
+                    editIndex.value = actionIndex;
+                    steps.value[stepIndex.value].splice(editIndex.value, 1);
 
-            store.commit(MutationTypes.UPDATE_SLIDE, {
-                steps: steps.value
+                    store.commit(MutationTypes.UPDATE_SLIDE, {
+                        steps: steps.value
+                    });
+
+                    addHistorySnapshot();
+                }
             });
-
-            addHistorySnapshot();
         };
 
         // 新增步骤
@@ -445,11 +453,19 @@ export default defineComponent({
 
         // 删除步骤
         const deleteStep = (i: number) => {
-            steps.value.splice(i, 1);
-            store.commit(MutationTypes.UPDATE_SLIDE, {
-                steps: steps.value
+            Modal.confirm({
+                title: "提示",
+                content: "确定删除该步骤吗？",
+                cancelText: "取消",
+                okText: "确认",
+                onOk() {
+                    steps.value.splice(i, 1);
+                    store.commit(MutationTypes.UPDATE_SLIDE, {
+                        steps: steps.value
+                    });
+                    addHistorySnapshot();
+                }
             });
-            addHistorySnapshot();
         };
 
         // 排序
@@ -459,9 +475,12 @@ export default defineComponent({
         }) => {
             const { newIndex, oldIndex } = eventData;
             if (oldIndex === newIndex) return;
+            console.log(oldIndex, newIndex);
             const step: PPTElementAction[] = steps.value[oldIndex];
-            steps.value[oldIndex] = steps.value[newIndex];
-            steps.value[newIndex] = step;
+            steps.value.splice(oldIndex, 1);
+            steps.value.splice(newIndex, 0, step);
+            // steps.value[oldIndex] = steps.value[newIndex];
+            // steps.value[newIndex] = step;
 
             store.commit(MutationTypes.UPDATE_SLIDE, { steps: steps.value });
             addHistorySnapshot();

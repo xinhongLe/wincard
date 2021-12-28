@@ -84,6 +84,8 @@
         >
             <LinkDialog @close="linkDialogVisible = false" />
         </a-modal>
+
+        <AddElementStep />
     </div>
 </template>
 
@@ -119,6 +121,7 @@ import MultiSelectOperate from "./Operate/MultiSelectOperate.vue";
 import Operate from "./Operate/index.vue";
 import ViewportBackground from "./ViewportBackground.vue";
 import LinkDialog from "./LinkDialog.vue";
+import AddElementStep from "./AddElementStep.vue";
 
 import { PPTElement, Slide } from "@/types/slides";
 import { AlignmentLineProps } from "@/types/edit";
@@ -134,7 +137,8 @@ export default defineComponent({
         AlignmentLine,
         MultiSelectOperate,
         Operate,
-        LinkDialog
+        LinkDialog,
+        AddElementStep
     },
     setup() {
         const store = useStore();

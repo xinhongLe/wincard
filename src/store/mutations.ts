@@ -260,5 +260,11 @@ export const mutations: MutationTree<State> = {
 
     [MutationTypes.SET_SCREENING](state, screening) {
         state.screening = screening;
+    },
+
+    // step
+
+    [MutationTypes.SET_STEP_DIALOG](state, visible) {
+        state.addStepVisible = visible;
     }
 };

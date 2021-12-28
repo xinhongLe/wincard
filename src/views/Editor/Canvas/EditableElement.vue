@@ -44,6 +44,7 @@ import VideoElement from "@/components/element/VideoElement/index.vue";
 import WebIFrameElement from "@/components/element/IFrameElement/index.vue";
 import FlashElement from "@/components/element/FlashElement/index.vue";
 import MarkElement from "@/components/element/MarkElement/index.vue";
+import { MutationTypes, useStore } from "@/store";
 
 export default defineComponent({
     name: "editable-element",
@@ -104,6 +105,12 @@ export default defineComponent({
         } = useCopyAndPasteElement();
         const { selectAllElement } = useSelectAllElement();
 
+        const store = useStore();
+        const setElementStep = () => {
+            cacheElement();
+            store.commit(MutationTypes.SET_STEP_DIALOG, true);
+        };
+
         const contextmenus = (): ContextmenuItem[] => {
             if (props.elementInfo.lock) {
                 return [
@@ -136,6 +143,12 @@ export default defineComponent({
                     disable: props.isMultiSelect && !props.elementInfo.groupId,
                     subText: "",
                     handler: cacheElement
+                },
+                {
+                    text: "加入步骤",
+                    disable: props.isMultiSelect && !props.elementInfo.groupId,
+                    subText: "",
+                    handler: setElementStep
                 },
                 { divider: true },
                 {

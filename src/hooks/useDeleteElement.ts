@@ -3,6 +3,7 @@ import { MutationTypes, useStore } from "@/store";
 import { PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import { logInput, LOG_EVENT } from "@/utils/log";
+import { Modal } from "ant-design-vue";
 
 /**
  * @param from
@@ -59,23 +60,31 @@ export default (from: number) => {
     };
 
     const deleteTargetElement = (id: string) => {
-        let newElementList: PPTElement[] = [];
+        Modal.confirm({
+            title: "提示",
+            content: "确定删除该元素吗？",
+            cancelText: "取消",
+            okText: "确认",
+            onOk() {
+                let newElementList: PPTElement[] = [];
 
-        newElementList = currentSlide.value.elements.filter(
-            el => el.id !== id
-        );
+                newElementList = currentSlide.value.elements.filter(
+                    el => el.id !== id
+                );
 
-        // 当删除时，要移除步骤中存在的对应的元素
-        let steps: PPTElementAction[][] = [];
-        if (currentSlide.value.steps) {
-            steps = currentSlide.value.steps.map((step: PPTElementAction[]) => {
-                return step.filter(s => id !== s.target);
-            });
-        }
+                // 当删除时，要移除步骤中存在的对应的元素
+                let steps: PPTElementAction[][] = [];
+                if (currentSlide.value.steps) {
+                    steps = currentSlide.value.steps.map((step: PPTElementAction[]) => {
+                        return step.filter(s => id !== s.target);
+                    });
+                }
 
-        store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, []);
-        store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList, steps });
-        addHistorySnapshot();
+                store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, []);
+                store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList, steps });
+                addHistorySnapshot();
+            }
+        });
     };
 
     // 删除内面内全部元素(无论是否选中)

@@ -26,7 +26,8 @@ const codeBlockRule = (nodeType: NodeType) =>
     textblockTypeInputRule(/^```$/, nodeType);
 
 export const buildInputRules = (schema: Schema) => {
-    const rules = [...smartQuotes, ellipsis, emDash];
+    // const rules = [...smartQuotes, ellipsis, emDash];
+    const rules = [];
     rules.push(blockQuoteRule(schema.nodes.blockquote));
     rules.push(orderedListRule(schema.nodes.ordered_list));
     rules.push(bulletListRule(schema.nodes.bullet_list));

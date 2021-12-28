@@ -54,7 +54,10 @@ export const enum MutationTypes {
     SET_ALT_KEY_STATE = "setAltKeyState",
 
     // screen
-    SET_SCREENING = "setScreening"
+    SET_SCREENING = "setScreening",
+
+    // step
+    SET_STEP_DIALOG = "setStepDialog"
 }
 
 export const enum ActionTypes {

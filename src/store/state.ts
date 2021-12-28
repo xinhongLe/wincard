@@ -44,6 +44,7 @@ export interface State {
     canvasMoveY: number;
     menuOpen: boolean;
     cacheElementID: string;
+    addStepVisible: boolean;
 }
 
 export const state: State = {
@@ -83,5 +84,6 @@ export const state: State = {
     canvasMoveX: 0, // 画布横向移动距离
     canvasMoveY: 0, // 画布纵向移动距离
     menuOpen: false, // 元素列表菜单是否展开
-    cacheElementID: "" // 暂存元素ID
+    cacheElementID: "", // 暂存元素ID;
+    addStepVisible: false // 添加步骤弹窗
 };

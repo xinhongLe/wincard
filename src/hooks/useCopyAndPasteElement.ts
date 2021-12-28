@@ -58,7 +58,6 @@ export default () => {
     // 暂存目标ID
     const cacheElement = () => {
         if (handleElementId.value) {
-            console.log(handleElementId.value);
             store.commit(MutationTypes.CACHE_ELEMENT_ID, handleElementId.value);
         }
     };

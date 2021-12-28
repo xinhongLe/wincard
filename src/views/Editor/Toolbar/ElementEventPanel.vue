@@ -245,7 +245,7 @@ import { computed, defineComponent, reactive, ref, watch, watchEffect } from "vu
 import { IWin, PPTCard, PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import { MutationTypes, useStore } from "@/store";
 import { INANIMATIONS, OUTANIMATIONS } from "@/configs/animation";
-import { message } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 const animationTypes: { [key: string]: string } = {};
@@ -386,17 +386,25 @@ export default defineComponent({
 
         // 删除事件
         const deleteAction = (i: number) => {
-            const _actions: PPTElementAction[] = handleElement.value.actions || [];
-            _actions.splice(i, 1);
+            Modal.confirm({
+                title: "提示",
+                content: "确定删除该事件吗？",
+                cancelText: "取消",
+                okText: "确认",
+                onOk() {
+                    const _actions: PPTElementAction[] = handleElement.value.actions || [];
+                    _actions.splice(i, 1);
 
-            store.commit(MutationTypes.UPDATE_ELEMENT, {
-                id: handleElement.value.id,
-                props: {
-                    actions: _actions
+                    store.commit(MutationTypes.UPDATE_ELEMENT, {
+                        id: handleElement.value.id,
+                        props: {
+                            actions: _actions
+                        }
+                    });
+
+                    addHistorySnapshot();
                 }
             });
-
-            addHistorySnapshot();
         };
 
         const activeCard = ref(0);
