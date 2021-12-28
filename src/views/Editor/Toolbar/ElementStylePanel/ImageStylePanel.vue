@@ -96,11 +96,12 @@
         <ElementShadow />
         <a-divider />
 
-        <FileInput @change="files => replaceImage(files)">
+        <FileInput v-if="!checkElectron" @change="files => replaceImage(files)">
             <a-button class="full-width-btn"
                 ><IconTransform class="btn-icon" /> 替换图片</a-button
             >
         </FileInput>
+        <a-button v-if="checkElectron" class="full-width-btn" @click="electronUpload('image')"><IconTransform class="btn-icon" /> 替换图片</a-button>
         <a-button class="full-width-btn" @click="resetImage()"
             ><IconUndo class="btn-icon" /> 重置样式</a-button
         >
@@ -121,6 +122,8 @@ import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import ElementOutline from "../common/ElementOutline.vue";
 import ElementShadow from "../common/ElementShadow.vue";
 import ElementFlip from "../common/ElementFlip.vue";
+import isElectron from "is-electron";
+import useElectronUpload from "@/hooks/useElectronUpload";
 
 interface FilterOption {
     label: string;
@@ -401,10 +404,10 @@ export default defineComponent({
         };
 
         // 替换图片（保持当前的样式）
-        const replaceImage = (files: File[]) => {
+        const replaceImage = (files: File[], buffer?: ArrayBuffer) => {
             const imageFile = files[0];
             if (!imageFile) return;
-            uploadImage(imageFile).then(key => {
+            uploadImage(imageFile, buffer).then(key => {
                 const props = { src: key, ossSrc: "" };
                 store.commit(MutationTypes.UPDATE_ELEMENT, {
                     id: handleElement.value.id,
@@ -462,6 +465,14 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
+        const checkElectron = ref(isElectron());
+        const { uploadByElectron } = useElectronUpload();
+        const electronUpload = (type: string) => {
+            uploadByElectron(type, (file: File, buffer: ArrayBuffer) => {
+                if (type === "image") replaceImage([file], buffer);
+            });
+        };
+
         return {
             clipPanelVisible,
             shapeClipPathOptions,
@@ -475,7 +486,9 @@ export default defineComponent({
             resetImage,
             setBackgroundImage,
             imageViewModel,
-            imageViewModelChange
+            imageViewModelChange,
+            checkElectron,
+            electronUpload
         };
     }
 });

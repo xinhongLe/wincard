@@ -53,8 +53,8 @@ export const getImageDataURL = (file: File): Promise<string> => {
  * 上传图片到oss获取fileName
  * @param file 图片文件
  */
-export const uploadImage = (file: File) => {
-    return uploadFile(file);
+export const uploadImage = (file: File, buffer?: ArrayBuffer) => {
+    return uploadFile(file, buffer);
 };
 
 /**

@@ -103,20 +103,23 @@ class OssHelper {
 
 export const ossHelper = new OssHelper();
 
-const put = (key: string, file: File, resolve: (key: string) => void, reject: (err: Error) => void) => {
+const put = (key: string, file: File | ArrayBuffer, resolve: (key: string) => void, reject: (err: Error) => void) => {
     ossHelper.client && ossHelper.client
         .put(key, file)
         .then(() => {
             resolve(key);
         })
         .catch(err => {
-            if ((window as any).electron && (window as any).electron.log) (window as any).electron.log.error(err);
+            if ((window as any).electron && (window as any).electron.log) {
+                (window as any).electron.log.error(err);
+                (window as any).electron.log.error(file);
+            }
             message.error("上传失败！");
             reject(new Error("上传出错了"));
         });
 };
 
-export const uploadFile = (file: File): Promise<string> => {
+export const uploadFile = (file: File, buffer?: ArrayBuffer): Promise<string> => {
     return new Promise((resolve, reject) => {
         fileMd5(file).then((md5: string) => {
             const fileExtention = file.name.split(".")[
@@ -125,7 +128,7 @@ export const uploadFile = (file: File): Promise<string> => {
             const name: string = md5;
             const objectKey = OSS_PATH + "/" + name + "." + fileExtention;
             if (ossHelper.client) {
-                put(objectKey, file, resolve, reject);
+                put(objectKey, buffer || file, resolve, reject);
             } else {
                 const timer = setInterval(() => {
                     if (ossHelper.client) {

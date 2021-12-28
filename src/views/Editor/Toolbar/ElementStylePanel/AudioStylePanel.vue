@@ -22,20 +22,23 @@
         </div>
 
         <div class="reset-audio">
-            <FileInput accept="audio/*" @change="files => resetAudio(files)">
+            <FileInput v-if="!checkElectron" accept="audio/*" @change="files => resetAudio(files)">
                 <a-button block>更换音频</a-button>
             </FileInput>
+            <a-button block v-if="checkElectron" @click="electronUpload('audio')">更换音频</a-button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTAudioElement } from "@/types/slides";
 import { uploadImage } from "@/utils/image";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import { uploadAudio } from "@/utils/audio";
+import isElectron from "is-electron";
+import useElectronUpload from "@/hooks/useElectronUpload";
 
 export default defineComponent({
     name: "aduio-style-panel",
@@ -65,11 +68,19 @@ export default defineComponent({
         };
 
         // 更换音频
-        const resetAudio = (files: File[]) => {
+        const resetAudio = (files: File[], buffer?: ArrayBuffer) => {
             const audioFile = files[0];
             if (!audioFile) return;
-            uploadAudio(audioFile).then(key => {
+            uploadAudio(audioFile, buffer).then(key => {
                 updateAduio({ src: key, ossSrc: "" });
+            });
+        };
+
+        const checkElectron = ref(isElectron());
+        const { uploadByElectron } = useElectronUpload();
+        const electronUpload = (type: string) => {
+            uploadByElectron(type, (file: File, buffer: ArrayBuffer) => {
+                if (type === "audio") resetAudio([file], buffer);
             });
         };
 
@@ -77,7 +88,9 @@ export default defineComponent({
             handleElement,
             updateAduio,
             setAduioIcon,
-            resetAudio
+            resetAudio,
+            checkElectron,
+            electronUpload
         };
     }
 });

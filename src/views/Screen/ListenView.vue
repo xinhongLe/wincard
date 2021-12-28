@@ -115,7 +115,7 @@ export default defineComponent({
                     // 播放结束
                     isStop.value = true;
                 } else {
-                    playTimer = setTimeout(() => {
+                    playTimer = window.setTimeout(() => {
                         playAudioTimer();
                     }, delayTime.value * 1000);
                 }

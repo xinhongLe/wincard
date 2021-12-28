@@ -4,8 +4,8 @@ import { downloadFile, downloadResponse, uploadFile } from "./oss";
  * 上传视频到oss获取fileName
  * @param file 视频文件
  */
-export const uploadVideo = (file: File) => {
-    return uploadFile(file);
+export const uploadVideo = (file: File, buffer?: ArrayBuffer) => {
+    return uploadFile(file, buffer);
 };
 
 /**

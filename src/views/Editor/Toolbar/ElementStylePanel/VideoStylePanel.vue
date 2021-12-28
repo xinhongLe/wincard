@@ -2,7 +2,7 @@
     <div class="video-style-panel">
         <div class="title">视频预览封面</div>
         <div class="background-image-wrapper">
-            <FileInput @change="files => setVideoPoster(files)">
+            <FileInput v-if="!checkElectron" @change="files => setVideoPoster(files)">
                 <div class="background-image">
                     <div
                         class="content"
@@ -14,6 +14,16 @@
                     </div>
                 </div>
             </FileInput>
+            <div class="background-image" v-if="checkElectron" @click="electronUpload('image', 0)">
+                <div
+                    class="content"
+                    :style="{
+                        backgroundImage: `url(${handleElement.ossPoster})`
+                    }"
+                >
+                    <IconPlus />
+                </div>
+            </div>
         </div>
         <div class="row">
             <a-button style="flex: 1;" @click="updateVideo({ poster: '', ossPoster: '' })"
@@ -22,7 +32,7 @@
         </div>
         <div class="title" style="margin-top: 20px;" v-if="handleElement.showType === 1">小视频图标</div>
         <div class="background-image-wrapper" v-if="handleElement.showType === 1">
-            <FileInput @change="files => setVideoIcon(files)">
+            <FileInput v-if="!checkElectron" @change="files => setVideoIcon(files)">
                 <div class="background-image">
                     <div
                         class="content"
@@ -34,6 +44,16 @@
                     </div>
                 </div>
             </FileInput>
+            <div class="background-image" v-if="checkElectron" @click="electronUpload('image', 1)">
+                <div
+                    class="content"
+                    :style="{
+                        backgroundImage: `url(${handleElement.ossIcon})`
+                    }"
+                >
+                    <IconPlus />
+                </div>
+            </div>
         </div>
         <div class="row" v-if="handleElement.showType === 1">
             <a-button style="flex: 1;" @click="updateVideo({ icon: '', ossIcon: '' })"
@@ -42,20 +62,23 @@
         </div>
 
         <div class="reset-video">
-            <FileInput accept="video/*" @change="files => resetVideo(files)">
+            <FileInput v-if="!checkElectron" accept="video/*" @change="files => resetVideo(files)">
                 <a-button block>更换视频</a-button>
             </FileInput>
+            <a-button block v-if="checkElectron" @click="electronUpload('video')">更换视频</a-button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTVideoElement } from "@/types/slides";
 import { uploadImage } from "@/utils/image";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import { uploadVideo } from "@/utils/video";
+import isElectron from "is-electron";
+import useElectronUpload from "@/hooks/useElectronUpload";
 
 export default defineComponent({
     name: "video-style-panel",
@@ -76,30 +99,39 @@ export default defineComponent({
         };
 
         // 设置视频预览封面
-        const setVideoPoster = (files: File[]) => {
+        const setVideoPoster = (files: File[], buffer?: ArrayBuffer) => {
             const imageFile = files[0];
             if (!imageFile) return;
-            uploadImage(imageFile).then(key => {
+            uploadImage(imageFile, buffer).then(key => {
                 updateVideo({ poster: key, ossPoster: "" });
             });
         };
 
         // 设置视频图标
-        const setVideoIcon = (files: File[]) => {
+        const setVideoIcon = (files: File[], buffer?: ArrayBuffer) => {
             const imageFile = files[0];
             if (!imageFile) return;
-            uploadImage(imageFile).then(key => {
+            uploadImage(imageFile, buffer).then(key => {
                 updateVideo({ icon: key, ossIcon: "" });
             });
         };
 
         // 更换视频
-        const resetVideo = (files: File[]) => {
+        const resetVideo = (files: File[], buffer?: ArrayBuffer) => {
             const videoFile = files[0];
             if (!videoFile) return;
-            console.log(videoFile);
-            uploadVideo(videoFile).then(key => {
+            uploadVideo(videoFile, buffer).then(key => {
                 updateVideo({ src: key });
+            });
+        };
+
+        const checkElectron = ref(isElectron());
+        const { uploadByElectron } = useElectronUpload();
+        const electronUpload = (type: string, fun: number) => {
+            uploadByElectron(type, (file: File, buffer: ArrayBuffer) => {
+                if (type === "video") resetVideo([file], buffer);
+                if (type === "image" && fun === 0) setVideoPoster([file], buffer);
+                if (type === "image" && fun === 1) setVideoIcon([file], buffer);
             });
         };
 
@@ -108,7 +140,9 @@ export default defineComponent({
             updateVideo,
             setVideoPoster,
             setVideoIcon,
-            resetVideo
+            resetVideo,
+            checkElectron,
+            electronUpload
         };
     }
 });

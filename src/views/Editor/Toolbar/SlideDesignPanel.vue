@@ -54,7 +54,7 @@
             class="background-image-wrapper"
             v-if="background.type === 'image'"
         >
-            <FileInput @change="files => uploadBackgroundImage(files)">
+            <FileInput v-if="!checkElectron" @change="files => uploadBackgroundImage(files)">
                 <div class="background-image">
                     <div
                         class="content"
@@ -64,6 +64,14 @@
                     </div>
                 </div>
             </FileInput>
+            <div v-if="checkElectron" class="background-image" @click="electronUpload('image')">
+                <div
+                    class="content"
+                    :style="{ backgroundImage: `url(${background.ossSrc})` }"
+                >
+                    <IconPlus />
+                </div>
+            </div>
         </div>
 
         <div
@@ -293,6 +301,8 @@ import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 import ColorButton from "./common/ColorButton.vue";
 import { uploadImage } from "@/utils/image";
+import isElectron from "is-electron";
+import useElectronUpload from "@/hooks/useElectronUpload";
 
 const themes = PRESET_THEMES;
 const webFonts = WEB_FONTS;
@@ -370,10 +380,10 @@ export default defineComponent({
         };
 
         // 上传背景图片
-        const uploadBackgroundImage = (files: File[]) => {
+        const uploadBackgroundImage = (files: File[], buffer?: ArrayBuffer) => {
             const imageFile = files[0];
             if (!imageFile) return;
-            uploadImage(imageFile).then(key => {
+            uploadImage(imageFile, buffer).then(key => {
                 updateBackground({ image: key, ossSrc: "" });
             });
             // getImageDataURL(imageFile).then(dataURL =>
@@ -470,6 +480,14 @@ export default defineComponent({
         const isBasePPT = computed(() => store.getters.isBasePPT);
         const isListen = computed(() => store.getters.isListen);
 
+        const checkElectron = ref(isElectron());
+        const { uploadByElectron } = useElectronUpload();
+        const electronUpload = (type: string) => {
+            uploadByElectron(type, (file: File, buffer: ArrayBuffer) => {
+                if (type === "image") uploadBackgroundImage([file], buffer);
+            });
+        };
+
         return {
             isListen,
             isBasePPT,
@@ -489,7 +507,9 @@ export default defineComponent({
             updateViewportRatio,
             updateIntervalDuration,
             showPresetThemes,
-            togglePresetThemesVisible
+            togglePresetThemesVisible,
+            checkElectron,
+            electronUpload
         };
     }
 });

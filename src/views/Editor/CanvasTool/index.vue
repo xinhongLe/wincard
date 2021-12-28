@@ -25,11 +25,23 @@
             >
                 <IconFontSize
                     class="handler-item"
-                    :class="creatingElement && creatingElement.type === 'text' && 'active'"
+                    :class="
+                        creatingElement &&
+                        creatingElement.type === 'text' &&
+                        'active'
+                    "
                     @click="drawText()"
                 />
             </a-tooltip>
-            <FileInput @change="files => insertImageElement(files)">
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="插入图片"
+                v-if="checkElectron"
+            >
+                <IconPicture class="handler-item" @click="electronUpload('image')" />
+            </a-tooltip>
+            <FileInput v-if="!checkElectron" @change="files => insertImageElement(files)">
                 <a-tooltip
                     :mouseLeaveDelay="0"
                     :mouseEnterDelay="0.5"
@@ -38,9 +50,13 @@
                     <IconPicture class="handler-item" />
                 </a-tooltip>
             </FileInput>
-            <a-popover trigger="click" v-model:visible="shapePoolVisible" placement="bottom">
+            <a-popover
+                trigger="click"
+                v-model:visible="shapePoolVisible"
+                placement="bottom"
+            >
                 <template #content>
-                    <ShapePool @select="shape => drawShape(shape)" />
+                    <ShapePool @select="(shape) => drawShape(shape)" />
                 </template>
                 <a-tooltip
                     :mouseLeaveDelay="0"
@@ -49,13 +65,21 @@
                 >
                     <IconGraphicDesign
                         class="handler-item"
-                        :class="creatingElement && creatingElement.type === 'shape' && 'active'"
+                        :class="
+                            creatingElement &&
+                            creatingElement.type === 'shape' &&
+                            'active'
+                        "
                     />
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click" v-model:visible="linePoolVisible" placement="bottom">
+            <a-popover
+                trigger="click"
+                v-model:visible="linePoolVisible"
+                placement="bottom"
+            >
                 <template #content>
-                    <LinePool @select="line => drawLine(line)" />
+                    <LinePool @select="(line) => drawLine(line)" />
                 </template>
                 <a-tooltip
                     :mouseLeaveDelay="0"
@@ -64,15 +88,23 @@
                 >
                     <IconConnection
                         class="handler-item"
-                        :class="creatingElement && creatingElement.type === 'line' && 'active'"
+                        :class="
+                            creatingElement &&
+                            creatingElement.type === 'line' &&
+                            'active'
+                        "
                     />
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click" v-model:visible="chartPoolVisible" placement="bottom">
+            <a-popover
+                trigger="click"
+                v-model:visible="chartPoolVisible"
+                placement="bottom"
+            >
                 <template #content>
                     <ChartPool
                         @select="
-                            chart => {
+                            (chart) => {
                                 createChartElement(chart);
                                 chartPoolVisible = false;
                             }
@@ -84,12 +116,14 @@
                     :mouseEnterDelay="0.5"
                     title="插入图表"
                 >
-                    <IconChartProportion
-                        class="handler-item"
-                    />
+                    <IconChartProportion class="handler-item" />
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click" v-model:visible="tableGeneratorVisible" placement="bottom">
+            <a-popover
+                trigger="click"
+                v-model:visible="tableGeneratorVisible"
+                placement="bottom"
+            >
                 <template #content>
                     <TableGenerator
                         @close="tableGeneratorVisible = false"
@@ -106,9 +140,7 @@
                     :mouseEnterDelay="0.5"
                     title="插入表格"
                 >
-                    <IconInsertTable
-                        class="handler-item"
-                    />
+                    <IconInsertTable class="handler-item" />
                 </a-tooltip>
             </a-popover>
             <a-tooltip
@@ -121,18 +153,32 @@
                     @click="latexEditorVisible = true"
                 />
             </a-tooltip>
-            <FileInput accept="audio/*" @change="files => insertAudioElement(files)">
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="插入音频"
+                v-if="checkElectron"
+            >
+                <IconAudioFile class="handler-item" @click="electronUpload('audio')" />
+            </a-tooltip>
+            <FileInput
+                accept="audio/*"
+                @change="(files) => insertAudioElement(files)"
+                v-if="!checkElectron"
+            >
                 <a-tooltip
                     :mouseLeaveDelay="0"
                     :mouseEnterDelay="0.5"
                     title="插入音频"
                 >
-                    <IconAudioFile
-                        class="handler-item"
-                    />
+                    <IconAudioFile class="handler-item" />
                 </a-tooltip>
             </FileInput>
-            <a-popover trigger="click" v-model:visible="videoInputVisible" placement="bottom">
+            <a-popover
+                trigger="click"
+                v-model:visible="videoInputVisible"
+                placement="bottom"
+            >
                 <template #content>
                     <VideoInput />
                 </template>
@@ -141,34 +187,38 @@
                     :mouseEnterDelay="0.5"
                     title="插入视频"
                 >
-                    <IconVideoTwo
-                        class="handler-item"
-                    />
+                    <IconVideoTwo class="handler-item" />
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click" v-model:visible="WebIFramesVisible" placement="bottom">
+            <a-popover
+                trigger="click"
+                v-model:visible="WebIFramesVisible"
+                placement="bottom"
+            >
                 <template #content>
-                    <WebIFrame @close="WebIFramesVisible = false;" @insert="insertWebIFrameElement" />
+                    <WebIFrame
+                        @close="WebIFramesVisible = false"
+                        @insert="insertWebIFrameElement"
+                    />
                 </template>
                 <a-tooltip
                     :mouseLeaveDelay="0"
                     :mouseEnterDelay="0.5"
                     title="插入网页"
                 >
-                    <IconWeb
-                        class="handler-item"
-                    />
+                    <IconWeb class="handler-item" />
                 </a-tooltip>
             </a-popover>
-            <FileInput accept="application/x-shockwave-flash" @change="files => insertFlashElement(files)">
+            <FileInput
+                accept="application/x-shockwave-flash"
+                @change="(files) => insertFlashElement(files)"
+            >
                 <a-tooltip
                     :mouseLeaveDelay="0"
                     :mouseEnterDelay="0.5"
                     title="插入Flash"
                 >
-                    <IconVideoFile
-                        class="handler-item"
-                    />
+                    <IconVideoFile class="handler-item" />
                 </a-tooltip>
             </FileInput>
             <!-- <a-tooltip
@@ -215,7 +265,7 @@
             <LaTeXEditor
                 @close="latexEditorVisible = false"
                 @update="
-                    data => {
+                    (data) => {
                         createLatexElement(data);
                         latexEditorVisible = false;
                     }
@@ -236,6 +286,7 @@ import { LinePoolItem } from "@/configs/lines";
 import useScaleCanvas from "@/hooks/useScaleCanvas";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import useCreateElement from "@/hooks/useCreateElement";
+import useElectronUpload from "@/hooks/useElectronUpload";
 
 import ShapePool from "./ShapePool.vue";
 import LinePool from "./LinePool.vue";
@@ -244,6 +295,7 @@ import TableGenerator from "./TableGenerator.vue";
 import VideoInput from "./VideoInput.vue";
 import LaTeXEditor from "@/components/LaTeXEditor/index.vue";
 import WebIFrame from "./WebIFrame.vue";
+import isElectron from "is-electron";
 
 export default defineComponent({
     name: "canvas-tool",
@@ -281,26 +333,26 @@ export default defineComponent({
             createMarkElement
         } = useCreateElement();
 
-        const insertImageElement = (files: File[]) => {
+        const insertImageElement = (files: File[], buffer?: ArrayBuffer) => {
             const imageFile = files[0];
             if (!imageFile) return;
-            uploadImage(imageFile).then(key => {
+            uploadImage(imageFile, buffer).then((key) => {
                 createImageElement(key);
             });
         };
 
-        const insertAudioElement = (files: File[]) => {
+        const insertAudioElement = (files: File[], buffer?: ArrayBuffer) => {
             const audioFile = files[0];
             if (!audioFile) return;
-            uploadAudio(audioFile).then(key => {
+            uploadAudio(audioFile, buffer).then((key) => {
                 createAudioElement(key);
             });
         };
 
-        const insertFlashElement = (files: File[]) => {
+        const insertFlashElement = (files: File[], buffer?: ArrayBuffer) => {
             const flashFile = files[0];
             if (!flashFile) return;
-            uploadFlash(flashFile).then(key => {
+            uploadFlash(flashFile).then((key) => {
                 createFlashElement(key);
             });
         };
@@ -352,6 +404,15 @@ export default defineComponent({
 
         const isBasePPT = computed(() => store.getters.isBasePPT);
 
+        const checkElectron = ref(isElectron());
+        const { uploadByElectron } = useElectronUpload();
+        const electronUpload = (type: string) => {
+            uploadByElectron(type, (file: File, buffer: ArrayBuffer) => {
+                if (type === "image") insertImageElement([file], buffer);
+                if (type === "audio") insertAudioElement([file], buffer);
+            });
+        };
+
         return {
             scaleCanvas,
             setCanvasPercentage,
@@ -379,7 +440,9 @@ export default defineComponent({
             createTableElement,
             createLatexElement,
             creatingElement,
-            insertMarkElement
+            insertMarkElement,
+            electronUpload,
+            checkElectron
         };
     }
 });

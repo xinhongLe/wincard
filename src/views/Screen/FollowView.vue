@@ -191,7 +191,7 @@ export default defineComponent({
             if (mode.value !== 0 && stime - ctime < 0.5 && stime - ctime > 0) {
                 // 当当前时间与停止时间间隔小于500ms时启动暂停操作
                 clearInterval(timeInterval);
-                timeInterval = setInterval(() => {
+                timeInterval = window.setInterval(() => {
                     const _ctime: number = getVideoCurrentTime();
                     if (stime - _ctime < 0.02) {
                         // 接近目标值
@@ -229,7 +229,7 @@ export default defineComponent({
                 if (mode.value === 1) {
                     timeCount.value = getWaitTime();
                     clearTimeout(timeCountInterval);
-                    timeCountInterval = setInterval(() => {
+                    timeCountInterval = window.setInterval(() => {
                         if (timeCount.value <= 0) {
                             clearTimeout(timeCountInterval);
                             pausePlay(pauseIndex.value + 1);
