@@ -414,6 +414,8 @@ export interface ShapeText {
  * special?: 特殊形状（标记一些难以解析的形状，例如路径使用了 L Q C A 以外的类型，该类形状在导出后将变为图片的形式）
  *
  * text?: 形状内文本
+ *
+ * radius: 圆角
  */
 export interface PPTShapeElement extends PPTBaseElement {
     type: "shape";
@@ -430,6 +432,7 @@ export interface PPTShapeElement extends PPTBaseElement {
     shadow?: PPTElementShadow;
     special?: boolean;
     text?: ShapeText;
+    radius?: number;
 }
 
 export type LinePoint = "" | "arrow" | "dot";

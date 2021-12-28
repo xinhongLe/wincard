@@ -20,7 +20,8 @@
                     filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
                     transform: flipStyle,
                     color: text.defaultColor,
-                    fontFamily: text.defaultFontName
+                    fontFamily: text.defaultFontName,
+                    borderRadius: (elementInfo.radius || 0) + 'px'
                 }"
                 v-contextmenu="contextmenus"
                 @mousedown="$event => handleSelectElement($event)"
@@ -231,6 +232,7 @@ export default defineComponent({
     height: 100%;
     position: relative;
     cursor: move;
+    overflow: hidden;
 
     svg {
         transform-origin: 0 0;

@@ -80,6 +80,16 @@
 
         <ElementFlip />
         <a-divider />
+        <div class="row">
+            <div style="flex: 3;">圆角：</div>
+            <a-input-number
+                :step="5"
+                :value="radius"
+                @change="value => updateRadius(value)"
+                style="flex: 4;"
+            />
+        </div>
+        <a-divider />
 
         <template v-if="showTextTools">
             <a-input-group class="row">
@@ -327,6 +337,7 @@ export default defineComponent({
         const gradient = ref<ShapeGradient>();
         const fillType = ref("fill");
         const textAlign = ref("middle");
+        const radius = ref(0);
 
         watch(
             handleElement,
@@ -345,6 +356,8 @@ export default defineComponent({
                     : "fill";
 
                 textAlign.value = handleElement.value?.text?.align || "middle";
+
+                radius.value = handleElement.value.radius || 0;
             },
             { deep: true, immediate: true }
         );
@@ -438,7 +451,19 @@ export default defineComponent({
             emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command, value });
         };
 
+        // 设置圆角
+        const updateRadius = (value: number) => {
+            // radius.value = value;
+            const props = { radius: value };
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props
+            });
+            addHistorySnapshot();
+        };
+
         return {
+            radius,
             fill,
             gradient,
             fillType,
@@ -452,7 +477,8 @@ export default defineComponent({
             updateFillType,
             updateFill,
             updateGradient,
-            updateTextAlign
+            updateTextAlign,
+            updateRadius
         };
     }
 });
