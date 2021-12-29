@@ -155,6 +155,12 @@ export default defineComponent({
                         var tr = singleNode ? view.state.tr.replaceSelectionWith(singleNode, true) : view.state.tr.replaceSelection(slice);
                         view.dispatch(tr.scrollIntoView().setMeta("paste", true).setMeta("uiEvent", "paste"));
                         return true;
+                    },
+                    handleTextInput: () => {
+                        /**
+                         * 输入的文本强制刷新Store
+                         */
+                        handleInput();
                     }
                 }
             );
