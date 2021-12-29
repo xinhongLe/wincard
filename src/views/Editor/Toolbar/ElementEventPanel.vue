@@ -204,9 +204,7 @@
                 </template>
                 <div class="text">
                     【{{
-                        elementList.find((el) => {
-                            return item.target === el.id;
-                        }).name
+                        getElementName(item)
                     }}】{{
                         { show: "显示", hide: "隐藏", toggle: "切换" }[
                             item.type
@@ -447,6 +445,12 @@ export default defineComponent({
             if (cacheElementID.value) formState.target = cacheElementID.value;
         };
 
+        const getElementName = (action: PPTElementAction) => {
+            const element = elementList.value.find((el) => {
+                return action.target === el.id;
+            });
+            return element ? element.name : "无";
+        };
         return {
             actions,
             actionList,
@@ -470,7 +474,8 @@ export default defineComponent({
             activeCard,
             cardList,
             deleteCard,
-            inputTarget
+            inputTarget,
+            getElementName
         };
     }
 });

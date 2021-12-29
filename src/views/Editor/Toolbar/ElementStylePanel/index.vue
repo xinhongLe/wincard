@@ -64,7 +64,7 @@ export default defineComponent({
         });
 
         const formState = reactive({
-            name: handleElement.value.name
+            name: handleElement.value ? handleElement.value.name : ""
         });
 
         watch(handleElement, () => {

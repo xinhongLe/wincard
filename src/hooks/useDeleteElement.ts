@@ -48,12 +48,11 @@ export default (from: number) => {
         let steps: PPTElementAction[][] = [];
         if (currentSlide.value.steps) {
             steps = currentSlide.value.steps.map((step: PPTElementAction[]) => {
-                return step.filter(s => (deleteElementList.findIndex(el => el.id !== s.target) > -1));
+                return step.filter(s => (deleteElementList.findIndex(el => el.id === s.target) === -1));
             });
         }
 
         logInput(`${from === 2 ? "剪切" : "删除"}元素 ${deleteElementList.map(item => item.name).join("、")}`, [LOG_EVENT.DELETE_ELEMENT, LOG_EVENT.DELETE_ELEMENT_FROM_LIST, LOG_EVENT.CUT_ELEMENT, LOG_EVENT.DELETE_ELEMENT_HOT_KEY][from]);
-
         store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, []);
         store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList, steps });
         addHistorySnapshot();
@@ -91,7 +90,7 @@ export default (from: number) => {
     const deleteAllElements = () => {
         if (!currentSlide.value.elements.length) return;
         store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, []);
-        store.commit(MutationTypes.UPDATE_SLIDE, { elements: [] });
+        store.commit(MutationTypes.UPDATE_SLIDE, { elements: [], steps: [] });
         addHistorySnapshot();
     };
 

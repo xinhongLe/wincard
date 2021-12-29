@@ -79,42 +79,84 @@
         />
 
         <div class="tools" v-if="!inline">
-            <IconLeftTwo
-                class="tool-btn"
-                theme="two-tone"
-                :fill="['#111', '#fff']"
-                @click="execPrev()"
-            />
-            <IconRightTwo
-                class="tool-btn"
-                theme="two-tone"
-                :fill="['#111', '#fff']"
-                @click="execNext()"
-            />
-            <IconWrite
-                class="tool-btn"
-                theme="two-tone"
-                :fill="['#111', '#fff']"
-                @click="writingBoardToolVisible = true"
-            />
-            <IconBookmark
-                class="tool-btn"
-                theme="two-tone"
-                :fill="['#111', '#fff']"
-                @click="remarkVisible = !remarkVisible"
-            />
-            <IconBack
-                class="tool-btn"
-                theme="two-tone"
-                :fill="['#111', '#fff']"
-                @click="resetPosition()"
-            />
-            <IconOffFullScreen
-                class="tool-btn"
-                theme="two-tone"
-                :fill="['#fff', '#111']"
-                @click="offScreen()"
-            />
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="上一步"
+                :get-popup-container="getPopupContainer"
+            >
+                <IconLeftTwo
+                    class="tool-btn"
+                    theme="two-tone"
+                    :fill="['#111', '#fff']"
+                    @click="execPrev()"
+                />
+            </a-tooltip>
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="下一步"
+                :get-popup-container="getPopupContainer"
+            >
+                <IconRightTwo
+                    class="tool-btn"
+                    theme="two-tone"
+                    :fill="['#111', '#fff']"
+                    @click="execNext()"
+                />
+            </a-tooltip>
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="画板"
+                :get-popup-container="getPopupContainer"
+            >
+                <IconWrite
+                    class="tool-btn"
+                    theme="two-tone"
+                    :fill="['#111', '#fff']"
+                    @click="writingBoardToolVisible = true"
+                />
+            </a-tooltip>
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="教学建议"
+                :get-popup-container="getPopupContainer"
+            >
+                <IconBookmark
+                    class="tool-btn"
+                    theme="two-tone"
+                    :fill="['#111', '#fff']"
+                    @click="remarkVisible = !remarkVisible"
+                />
+            </a-tooltip>
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="复位"
+                :get-popup-container="getPopupContainer"
+            >
+                <IconBack
+                    class="tool-btn"
+                    theme="two-tone"
+                    :fill="['#111', '#fff']"
+                    @click="resetPosition()"
+                />
+            </a-tooltip>
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="退出全屏"
+                :get-popup-container="getPopupContainer"
+            >
+                <IconOffFullScreen
+                    class="tool-btn"
+                    theme="two-tone"
+                    :fill="['#fff', '#111']"
+                    @click="offScreen()"
+                />
+            </a-tooltip>
         </div>
     </div>
 </template>
@@ -500,6 +542,10 @@ export default defineComponent({
             markIsMove = false;
         };
 
+        const getPopupContainer = (trigger: HTMLElement) => {
+            return trigger.parentElement;
+        };
+
         return {
             screenRef,
             contentRef,
@@ -533,7 +579,8 @@ export default defineComponent({
             markOffsetY,
             markMouseDown,
             markMouseMove,
-            markMouseUp
+            markMouseUp,
+            getPopupContainer
         };
     }
 });

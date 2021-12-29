@@ -20,7 +20,8 @@
                     transform: flipStyle,
                     color: text.defaultColor,
                     fontFamily: text.defaultFontName,
-                    borderRadius: (elementInfo.radius || 0) + 'px'
+                    borderRadius: (elementInfo.radius || 0) + 'px',
+                    overflow: (elementInfo.radius || 0) > 0 ? 'hidden' : 'initial'
                 }"
             >
                 <SvgWrapper
@@ -142,7 +143,7 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     position: relative;
-    overflow: hidden;
+    // overflow: hidden;
 
     svg {
         transform-origin: 0 0;

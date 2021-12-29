@@ -142,7 +142,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from "vue";
+import { computed, defineComponent, onUnmounted, PropType, ref } from "vue";
 import useMSE from "./useMSE";
 import useOssVideo from "./useOssVideo";
 import { message } from "ant-design-vue";
@@ -433,6 +433,25 @@ export default defineComponent({
         const { videoUrl, posterUrl } = useOssVideo(videoElement, props.isScreening);
 
         useMSE(props.src, videoRef);
+
+        let timeout: ReturnType<typeof setTimeout>;
+        const autoPlay = () => {
+            if (videoRef.value) {
+                play();
+            } else {
+                timeout = setTimeout(() => {
+                    autoPlay();
+                }, 1000);
+            }
+        };
+
+        onUnmounted(() => {
+            clearTimeout(timeout);
+        });
+
+        if (videoElement.value.showType === 0 && videoElement.value.autoPlay && props.isScreening) {
+            autoPlay();
+        }
 
         return {
             containerRef,

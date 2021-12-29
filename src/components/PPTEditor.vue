@@ -23,6 +23,7 @@ import useSlideHandler from "@/hooks/useSlideHandler";
 import { IWin, Slide } from "@/types/slides";
 import { message } from "ant-design-vue";
 import { dealSaveData } from "@/utils/dataParse";
+import isElectron from "is-electron";
 
 export default defineComponent({
     name: "PPTEditor",
@@ -47,6 +48,10 @@ export default defineComponent({
 
         watch(slide, () => {
             initSlides();
+            if (isElectron()) {
+                // electron中保存会再次渲染失败 加日志看返回数据
+                (window as any).electron.log.info("初始化slide数据：", slide.value);
+            }
         });
 
         const { resetSlides } = useSlideHandler();

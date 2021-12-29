@@ -29,6 +29,7 @@
                 </a-select-opt-group>
             </a-select>
             <a-select
+                show-search
                 style="flex: 2;"
                 :value="textAttrs.fontsize"
                 @change="value => updateTextAttrs({ fontsize: value })"
@@ -296,17 +297,7 @@ export default defineComponent({
         const themeColor = computed(() => store.state.theme.themeColor);
 
         const availableFonts = computed(() => store.state.availableFonts);
-        const fontSizeOptions = [
-            "12px",
-            "14px",
-            "16px",
-            "18px",
-            "20px",
-            "22px",
-            "24px",
-            "28px",
-            "32px"
-        ];
+        const fontSizeOptions = Array.from({ length: 245 }, (v, k) => k + 12 + "px");
 
         const textAttrs = ref({
             bold: false,

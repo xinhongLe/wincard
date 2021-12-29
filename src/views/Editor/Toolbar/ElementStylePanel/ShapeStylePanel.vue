@@ -121,6 +121,7 @@
                     </a-select-opt-group>
                 </a-select>
                 <a-select
+                    show-search
                     style="flex: 2;"
                     :value="richTextAttrs.fontsize"
                     @change="value => emitRichTextCommand('fontsize', value)"

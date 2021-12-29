@@ -8,5 +8,5 @@ const getLocalFileUrl = () => {
         resolve("");
     });
 };
-app.use(PPTEditor, "http://apitest.aixueshi.top:5002", "https://wincard.lyx-edu.com/swf2canvas.html", getLocalFileUrl);
+app.use(PPTEditor, "https://api.aixueshi.top:5003", "https://wincard.lyx-edu.com/swf2canvas.html", getLocalFileUrl);
 app.mount("#app");

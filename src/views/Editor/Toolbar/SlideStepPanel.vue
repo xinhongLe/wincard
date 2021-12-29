@@ -242,9 +242,7 @@
                             </template>
                             <div class="text">
                                 【{{
-                                    elementList.find((el) => {
-                                        return action.target === el.id;
-                                    }).name
+                                    getElementName(action)
                                 }}】{{
                                     { show: "显示", hide: "隐藏", toggle: "切换" }[
                                         action.type
@@ -491,6 +489,12 @@ export default defineComponent({
             if (cacheElementID.value) formState.target = cacheElementID.value;
         };
 
+        const getElementName = (action: PPTElementAction) => {
+            const element = elementList.value.find((el) => {
+                return action.target === el.id;
+            });
+            return element ? element.name : "无";
+        };
         return {
             isEdit,
             steps,
@@ -514,7 +518,8 @@ export default defineComponent({
             openAddAction,
             handleDragEnd,
             updateElementAnimationDuration,
-            inputTarget
+            inputTarget,
+            getElementName
         };
     }
 });

@@ -3,7 +3,14 @@
         <input
             class="input-content"
             :value="val"
-            @input="$event => handleInput($event)"
+            @input="($event) => handleInput($event)"
+        />
+    </div>
+    <div class="editable-input rgba-input">
+        <input
+            class="input-content"
+            :value="rgbVal"
+            @input="($event) => handleRGBAInput($event)"
         />
     </div>
 </template>
@@ -25,25 +32,56 @@ export default defineComponent({
         const val = computed(() => {
             let _hex = "";
             if (props.value.a < 1) {
-                _hex = tinycolor(props.value)
-                    .toHex8String()
-                    .toUpperCase();
+                _hex = tinycolor(props.value).toHex8String().toUpperCase();
             } else {
-                _hex = tinycolor(props.value)
-                    .toHexString()
-                    .toUpperCase();
+                _hex = tinycolor(props.value).toHexString().toUpperCase();
             }
             return _hex.replace("#", "");
         });
 
+        const rgbVal = computed(() => {
+            return tinycolor(props.value).toRgbString();
+        });
+
+        const rgbExp = new RegExp(
+            "^[rR][gG][Bb][(]([\\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?)[\\s]*,){2}[\\s]*(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)[\\s]*[)]{1}$"
+        );
+        const rgbaExp = new RegExp(
+            "^[rR][gG][Bb][Aa][(]([\\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?)[\\s]*,){3}[\\s]*(1|1.0|0|0.[0-9])[\\s]*[)]{1}$"
+        );
+
+        const handleRGBAInput = (e: InputEvent) => {
+            const value = (e.target as HTMLInputElement).value;
+            if (value.indexOf("rgb") > -1) {
+                const rgba = value.replace(/\s*/g, "");
+                const rgbaArr = rgba.match(/[.\d]+/g);
+                if (
+                    rgbaArr &&
+                    ((rgbaArr.length === 3 && rgba.match(rgbExp) !== null) ||
+                        (rgbaArr.length === 4 && rgba.match(rgbaExp) !== null))
+                ) {
+                    emit("colorChange", {
+                        r: Number(rgbaArr[0]),
+                        g: Number(rgbaArr[1]),
+                        b: Number(rgbaArr[2]),
+                        a: rgbaArr[3] ? Number(rgbaArr[3]) : 1
+                    });
+                }
+            }
+        };
+
         const handleInput = (e: InputEvent) => {
             const value = (e.target as HTMLInputElement).value;
-            if (value.length >= 6) emit("colorChange", tinycolor(value).toRgb());
+            if (value.length >= 6) {
+                emit("colorChange", tinycolor(value).toRgb());
+            }
         };
 
         return {
             val,
-            handleInput
+            rgbVal,
+            handleInput,
+            handleRGBAInput
         };
     }
 });
@@ -64,6 +102,11 @@ export default defineComponent({
         top: 50%;
         transform: translateY(-50%);
         color: #999;
+    }
+}
+.rgba-input {
+    &::after {
+        content: "rgba";
     }
 }
 .input-content {

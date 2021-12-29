@@ -665,6 +665,7 @@ export interface PPTVideoElement extends PPTBaseElement {
     ossIcon?: string;
     poster?: string;
     ossPoster?: string;
+    autoPlay?: boolean;
 }
 
 /**
