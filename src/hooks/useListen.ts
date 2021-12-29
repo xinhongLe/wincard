@@ -74,7 +74,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
                 return {
                     name: item.Name,
                     id: item.WordID,
-                    file: OSS_PATH + "/" + item.File.FileName + "." + item.File.Extention,
+                    file: item.File.FilePath + "/" + item.File.FileName + "." + item.File.Extention,
                     extention: item.File.Extention
                 };
             });
@@ -88,7 +88,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
     };
 
     const uploadWord = async (file: File) => {
-        const key = await uploadAudio(file);
+        const key = await uploadAudio(file, undefined, "TeachPageFile");
         formState.file = key;
     };
 

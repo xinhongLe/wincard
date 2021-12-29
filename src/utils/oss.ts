@@ -119,14 +119,14 @@ const put = (key: string, file: File | ArrayBuffer, resolve: (key: string) => vo
         });
 };
 
-export const uploadFile = (file: File, buffer?: ArrayBuffer): Promise<string> => {
+export const uploadFile = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         fileMd5(file).then((md5: string) => {
             const fileExtention = file.name.split(".")[
                 file.name.split(".").length - 1
             ];
             const name: string = md5;
-            const objectKey = OSS_PATH + "/" + name + "." + fileExtention;
+            const objectKey = (UP_OSS_PATH || OSS_PATH) + "/" + name + "." + fileExtention;
             if (ossHelper.client) {
                 put(objectKey, buffer || file, resolve, reject);
             } else {

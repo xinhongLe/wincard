@@ -4,8 +4,8 @@ import { downloadFile, uploadFile } from "./oss";
  * 上传音频到oss获取fileName
  * @param file 视频文件
  */
-export const uploadAudio = (file: File, buffer?: ArrayBuffer) => {
-    return uploadFile(file, buffer);
+export const uploadAudio = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: string) => {
+    return uploadFile(file, buffer, UP_OSS_PATH);
 };
 
 /**
