@@ -13,7 +13,7 @@ import {
 } from "vue";
 import { debounce } from "lodash";
 import { MutationTypes, useStore } from "@/store";
-import { EditorView } from "prosemirror-view";
+import { EditorView, __parseFromClipboard } from "prosemirror-view";
 import { toggleMark, wrapIn, selectAll } from "prosemirror-commands";
 import { initProsemirrorEditor, createDocument } from "@/utils/prosemirror";
 import { getTextAttrs } from "@/utils/prosemirror/utils";
@@ -143,7 +143,19 @@ export default defineComponent({
                         keydown: handleKeydown,
                         click: handleClick
                     },
-                    editable: () => props.editable
+                    editable: () => props.editable,
+                    handlePaste: (view: EditorView, event: ClipboardEvent) => {
+                        /**
+                         * 处理复制粘贴带样式问题，由原先的Ctrl+V, Ctrl+Shift+V 统一成 Ctrl+V
+                         */
+                        if (event.clipboardData === null) return false;
+                        const slice = __parseFromClipboard(view, event.clipboardData.getData("text/plain"), event.clipboardData.getData("text/html"), true, view.state.selection.$from);
+                        if (!slice) return false;
+                        var singleNode = slice.openStart === 0 && slice.openEnd === 0 && slice.content.childCount === 1 ? slice.content.firstChild : null;
+                        var tr = singleNode ? view.state.tr.replaceSelectionWith(singleNode, true) : view.state.tr.replaceSelection(slice);
+                        view.dispatch(tr.scrollIntoView().setMeta("paste", true).setMeta("uiEvent", "paste"));
+                        return true;
+                    }
                 }
             );
             if (props.autoFocus) editorView.focus();
