@@ -12,13 +12,14 @@ export default () => {
         name: "video",
         extensions: ["mp4"]
     }]);
+    const properties = process.platform === "darwin" ? ["openFile", "openDirectory"] : ["openFile"];
 
     const uploadByElectron = (type: string, callback: (file: File, buffer: ArrayBuffer) => void) => {
         (window as any).electron.remote.dialog.showOpenDialog({
             title: "选择上传文件",
             buttonLabel: "确定",
             filters: filterMap.get(type),
-            properties: ["openFile", "openDirectory"]
+            properties: properties
         }).then((file: any) => {
             if (!file.canceled) {
                 const path = file.filePaths[0];

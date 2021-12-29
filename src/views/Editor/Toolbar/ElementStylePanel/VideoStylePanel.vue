@@ -67,11 +67,17 @@
             </FileInput>
             <a-button block v-if="checkElectron" @click="electronUpload('video')">更换视频</a-button>
         </div>
+
+        <a-divider />
+        <div class="row" v-if="handleElement.showType === 0">
+            <div style="flex: 2;">自动播放：</div>
+            <a-switch v-model:checked="autoPlay" @change="autoPlayChange" />
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, ref, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTVideoElement } from "@/types/slides";
 import { uploadImage } from "@/utils/image";
@@ -87,6 +93,21 @@ export default defineComponent({
         const handleElement = computed<PPTVideoElement>(
             () => store.getters.handleElement
         );
+
+        const autoPlay = ref(!!handleElement.value?.autoPlay);
+
+        watch(handleElement, () => {
+            autoPlay.value = !!handleElement.value?.autoPlay;
+        });
+
+        const autoPlayChange = () => {
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props: {
+                    autoPlay: autoPlay.value
+                }
+            });
+        };
 
         const { addHistorySnapshot } = useHistorySnapshot();
 
@@ -142,7 +163,9 @@ export default defineComponent({
             setVideoIcon,
             resetVideo,
             checkElectron,
-            electronUpload
+            electronUpload,
+            autoPlay,
+            autoPlayChange
         };
     }
 });

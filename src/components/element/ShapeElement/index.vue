@@ -21,7 +21,8 @@
                     transform: flipStyle,
                     color: text.defaultColor,
                     fontFamily: text.defaultFontName,
-                    borderRadius: (elementInfo.radius || 0) + 'px'
+                    borderRadius: (elementInfo.radius || 0) + 'px',
+                    overflow: (elementInfo.radius || 0) > 0 ? 'hidden' : 'initial'
                 }"
                 v-contextmenu="contextmenus"
                 @mousedown="$event => handleSelectElement($event)"
@@ -232,7 +233,7 @@ export default defineComponent({
     height: 100%;
     position: relative;
     cursor: move;
-    overflow: hidden;
+    // overflow: hidden;
 
     svg {
         transform-origin: 0 0;
