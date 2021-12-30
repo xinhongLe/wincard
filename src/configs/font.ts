@@ -35,7 +35,7 @@ export const BASE_FONTS = [
     { label: "黑体", value: "SimHei" },
     { label: "楷体", value: "KaiTi" },
     { label: "Arial", value: "Arial" },
-    { label: "新罗马", value: "TimesNewRomanPSBoldMT" }
+    { label: "新罗马", value: "TimesNewRoman" }
     // { label: "新宋体", value: "NSimSun" },
     // { label: "仿宋", value: "FangSong" },
     // { label: "华文楷体", value: "STKaiti" },
