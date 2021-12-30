@@ -189,7 +189,7 @@
             :scroll="true"
             :scrollSensitivity="50"
             @end="handleDragEnd"
-            itemKey="id"
+            itemKey="index"
         >
             <template #item="{ element, index }">
                 <div class="step-box">
@@ -473,7 +473,6 @@ export default defineComponent({
         }) => {
             const { newIndex, oldIndex } = eventData;
             if (oldIndex === newIndex) return;
-            console.log(oldIndex, newIndex);
             const step: PPTElementAction[] = steps.value[oldIndex];
             steps.value.splice(oldIndex, 1);
             steps.value.splice(newIndex, 0, step);

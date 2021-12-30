@@ -8,7 +8,7 @@
             :scroll="true"
             :scrollSensitivity="50"
             @end="handleDragEnd"
-            itemKey="id"
+            itemKey="index"
         >
             <template #item="{ element, index }">
                 <div class="listen-item">
@@ -176,10 +176,13 @@ export default defineComponent({
             const { newIndex, oldIndex } = eventData;
             if (oldIndex === newIndex) return;
             const word: ListenWord = listenPageList.value[oldIndex];
-            listenPageList.value[oldIndex] = listenPageList.value[newIndex];
-            listenPageList.value[newIndex] = word;
+            // listenPageList.value[oldIndex] = listenPageList.value[newIndex];
+            // listenPageList.value[newIndex] = word;
+            listenPageList.value.splice(oldIndex, 1);
+            listenPageList.value.splice(newIndex, 0, word);
 
             store.commit(MutationTypes.UPDATE_LISTEN_PAGE_LIST, listenPageList.value);
+            console.log(listenPageList.value.length);
         };
 
         const selectedKeys = ref<(string | number)[]>([]);
