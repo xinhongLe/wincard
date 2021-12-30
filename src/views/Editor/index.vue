@@ -125,7 +125,7 @@ export default defineComponent({
         height: 100%;
     }
     .layout-fixed-content-left {
-        position: absolute;
+        position: fixed;
         width: 235px;
         top: 0;
         height: 100%;
