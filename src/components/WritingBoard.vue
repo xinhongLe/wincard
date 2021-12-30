@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, PropType, reactive, ref, watch } from "vue";
+import { defineComponent, onMounted, PropType, reactive, ref } from "vue";
 
 const penSize = 6;
 const rubberSize = 80;
@@ -335,6 +335,18 @@ export default defineComponent({
             ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
         };
 
+        // 获取画布
+        const getCanvas = () => {
+            if (!ctx || !canvasRef.value) return;
+            const imageData = ctx.getImageData(0, 0, canvasRef.value.width, canvasRef.value.height);
+            return imageData;
+        };
+        // 设置画布
+        const putCanvas = (data: any) => {
+            if (!ctx || !canvasRef.value) return;
+            ctx.putImageData(data, 0, 0);
+        };
+
         return {
             mouse,
             mouseInCanvas,
@@ -348,7 +360,9 @@ export default defineComponent({
             clearCanvas,
             canvasWidth,
             canvasHeight,
-            contentRef
+            contentRef,
+            getCanvas,
+            putCanvas
         };
     }
 });
