@@ -51,8 +51,13 @@
 //     src: url(../fonts/FangSong.ttf);
 // }
 @font-face {
-    font-family: TimesNewRomanPSBoldMT;
-    src: url(../fonts/TimesNewRomanPSBoldMT.ttf);
+    font-family: TimesNewRoman;
+    src: url(../fonts/TimesNewRoman.TTF);
+}
+@font-face {
+    font-family: TimesNewRoman;
+    src: url(../fonts/TimesNewRomanI.TTF);
+    font-style: italic;
 }
 @font-face {
     font-family: Arial;
