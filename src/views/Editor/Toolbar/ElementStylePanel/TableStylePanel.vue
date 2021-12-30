@@ -9,7 +9,7 @@
                 <template #suffixIcon><IconFontSize /></template>
                 <a-select-opt-group label="系统字体">
                     <a-select-option
-                        v-for="font in availableFonts"
+                        v-for="font in baseFonts"
                         :key="font.value"
                         :value="font.value"
                     >
@@ -18,7 +18,7 @@
                         }}</span>
                     </a-select-option>
                 </a-select-opt-group>
-                <a-select-opt-group label="在线字体">
+                <!-- <a-select-opt-group label="在线字体">
                     <a-select-option
                         v-for="font in webFonts"
                         :key="font.value"
@@ -26,7 +26,7 @@
                     >
                         <span>{{ font.label }}</span>
                     </a-select-option>
-                </a-select-opt-group>
+                </a-select-opt-group> -->
             </a-select>
             <a-select
                 show-search
@@ -272,7 +272,7 @@ import {
     TableTheme
 } from "@/types/slides";
 import { createRandomCode } from "@/utils/common";
-import { WEB_FONTS } from "@/configs/font";
+import { BASE_FONTS, WEB_FONTS } from "@/configs/font";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 import { message } from "ant-design-vue";
@@ -281,6 +281,7 @@ import ElementOutline from "../common/ElementOutline.vue";
 import ColorButton from "../common/ColorButton.vue";
 
 const webFonts = WEB_FONTS;
+const baseFonts = BASE_FONTS;
 
 export default defineComponent({
     name: "table-style-panel",
@@ -534,7 +535,8 @@ export default defineComponent({
             updateTheme,
             setTableRow,
             setTableCol,
-            webFonts
+            webFonts,
+            baseFonts
         };
     }
 });
