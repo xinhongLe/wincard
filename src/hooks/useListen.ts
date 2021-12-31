@@ -97,6 +97,10 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
         return false;
     };
 
+    const uploadChange = (info: IForm) => {
+        formState.fileList = info.fileList.slice(-1);
+    };
+
     const saveSystemWord = async () => {
         if (!formState.file || !formState.name) return message.warning("请将信息填写完整");
         const extention = formState.file.split(".")[1];
@@ -199,6 +203,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
         keyword,
         formState,
         beforeUpload,
+        uploadChange,
         saveSystemWord,
         deleteSystemWord,
         playAudio,

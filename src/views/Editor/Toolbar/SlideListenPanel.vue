@@ -85,6 +85,7 @@
                         accept="audio/*"
                         :multiple="false"
                         :before-upload="beforeUpload"
+                        @change="uploadChange"
                     >
                         <a-button type="primary"> 上传音频 </a-button>
                     </a-upload>
@@ -141,6 +142,7 @@ export default defineComponent({
             keyword,
             formState,
             beforeUpload,
+            uploadChange,
             saveSystemWord,
             deleteSystemWord,
             listenPageList,
@@ -231,6 +233,7 @@ export default defineComponent({
             search,
             formState,
             beforeUpload,
+            uploadChange,
             openEditWord,
             saveSystemWord,
             deleteSystemWord,
