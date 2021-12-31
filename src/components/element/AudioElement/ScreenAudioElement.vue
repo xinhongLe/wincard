@@ -15,9 +15,19 @@
             <div class="element-content">
                 <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="" @click="handleAudioEvent">
                 <img class="icon-image" v-else src="@/assets/images/audio.png" alt="" @click="handleAudioEvent">
-                <div class="progress-bar" v-if="showProgress">
-                    <a-slider v-model:value="playDuration" :max="duration" @afterChange="selectDuration" :tipFormatter="(value) => secondToTime(value)"></a-slider>
-                    <p>{{ secondToTime(playDuration) }}/{{ secondToTime(duration) }}</p>
+                <div class="progress-bar"
+                    v-if="showProgress"
+                    :style="{
+                        width: durationBoxWidth - 16 + 'px',
+                        right: VIEWPORT_SIZE - elementInfo.width - elementInfo.left > durationBoxWidth ? -durationBoxWidth + 'px' : elementInfo.width + 16 + 'px'
+                    }">
+                    <a-slider v-model:value="playDuration" :max="duration" @afterChange="selectDuration"></a-slider>
+                    <div class="duration">
+                        <span>{{ secondToTime(playDuration) }}</span>
+                        <IconPlayOne v-if="!isPlay" class="icon-play" @click="handleAudioEvent" />
+                        <IconPause v-else class="icon-play" @click="handleAudioEvent" />
+                        <span>{{ secondToTime(duration) }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,6 +39,7 @@ import { computed, defineComponent, inject, onUnmounted, PropType, Ref, ref } fr
 import { PPTAudioElement } from "@/types/slides";
 import useAudio from "./useAudio";
 import useOssAudio from "./useOssAudio";
+import { VIEWPORT_SIZE } from "@/configs/canvas";
 
 export default defineComponent({
     name: "screen-element-video",
@@ -40,8 +51,9 @@ export default defineComponent({
     },
     setup(props) {
         const scale: Ref<number> = inject("slideScale") || ref(1);
+        const durationBoxWidth = 200;
 
-        const { playAudio, stopAudio, showProgress, duration, playDuration, selectDuration, secondToTime } = useAudio();
+        const { playAudio, stopAudio, showProgress, duration, playDuration, selectDuration, secondToTime, isPlay } = useAudio();
         const handleAudioEvent = () => {
             playAudio(audioUrl.value);
         };
@@ -61,7 +73,10 @@ export default defineComponent({
             playDuration,
             selectDuration,
             secondToTime,
-            showProgress
+            showProgress,
+            durationBoxWidth,
+            isPlay,
+            VIEWPORT_SIZE
         };
     }
 });
@@ -99,28 +114,51 @@ export default defineComponent({
 }
 
 .progress-bar {
-    width: 242px;
-    height: 100%;
-    background: rgba(231, 239, 255, .5);
+    height: 50px;
+    background: #e7efff;
     border-radius: 8px;
-    margin-left: 16px;
-    padding: 6px 15px 8px;
+    padding: 0px 6px 6px;
     box-sizing: border-box;
     position: absolute;
-    right: -258px;
     top: 0;
     bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-
-    > p {
-        margin-top: 15px;
-        font-size: 16px;
-        font-weight: 500;
-        color: #727B91;
-        line-height: 22px;
-        margin-left: 5px;
+    margin: auto;
+    .duration {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 5px;
+        box-sizing: border-box;
+        > span {
+            font-size: 12px;
+            font-weight: 550;
+            color: #727b91;
+            line-height: 16px;
+            transform: scale(.8);
+            transform-origin: 0% 0%;
+        }
+        .icon-play {
+            font-size: 20px;
+            font-weight: 400;
+            color: #4b71ee;
+            margin-right: 5px;
+            display: flex;
+            align-items: center;
+        }
+    }
+    ::v-deep(.ant-slider-rail) {
+        background-color: #e0e6f6;
+    }
+    ::v-deep(.ant-slider-track), ::v-deep(.ant-slider-handle) {
+        background-color: #4b71ee;
+    }
+    ::v-deep(.ant-slider-handle) {
+        border-color: #fff;
+    }
+    ::v-deep(.ant-slider) {
+        margin-top: 10px;
+        margin-bottom: 4px;
     }
 }
 </style>
