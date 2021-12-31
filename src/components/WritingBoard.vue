@@ -14,6 +14,7 @@
                 height: canvasHeight + 'px',
                 marginLeft: offsetX - (canvasWidth - slideWidth) / 2 * (scale - 1) + 'px',
                 marginTop: offsetY - (canvasHeight - slideHeight) / 2 * (scale - 1) + 'px',
+                cursor: (penTempHide ? 'auto' : 'none')
             }"
         >
             <canvas
@@ -46,7 +47,7 @@
                 top: mouse.y * scale + (offsetY - (canvasHeight - slideHeight) / 2 * (scale - 1)) - 36 + penSize / 2 + 'px',
                 color: color
             }"
-            v-if="mouseInCanvas && model === 'pen'"
+            v-if="mouseInCanvas && !penTempHide && model === 'pen'"
         >
             <IconWrite class="icon" size="36" />
         </div>
@@ -114,6 +115,8 @@ export default defineComponent({
         let ctx: CanvasRenderingContext2D | null = null;
         const writingBoardRef = ref<HTMLElement>();
         const canvasRef = ref<HTMLCanvasElement>();
+        let timer: any = null;
+        const penTempHide = ref(false);
 
         let lastPos = {
             x: 0,
@@ -166,6 +169,7 @@ export default defineComponent({
             setTimeout(() => {
                 initCanvas();
             }, 600);
+            clearInterval(timer);
         });
 
         // 绘制画笔墨迹方法
@@ -298,6 +302,8 @@ export default defineComponent({
         // 处理鼠标（触摸）事件
         // 准备开始绘制/擦除墨迹（落笔）
         const handleMousedown = (e: MouseEvent | TouchEvent) => {
+            clearInterval(timer);
+            penTempHide.value = false;
             const offset = getPointOffset({ x: e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX, y: e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY });
             const x = e instanceof MouseEvent ? e.offsetX : offset.offsetX;
             const y = e instanceof MouseEvent ? e.offsetY : offset.offsetY;
@@ -327,6 +333,9 @@ export default defineComponent({
         const handleMouseup = () => {
             if (!isMouseDown) return;
             isMouseDown = false;
+            timer = setTimeout(() => {
+                penTempHide.value = true;
+            }, 3000);
         };
 
         // 清空画布
@@ -362,7 +371,8 @@ export default defineComponent({
             canvasHeight,
             contentRef,
             getCanvas,
-            putCanvas
+            putCanvas,
+            penTempHide
         };
     }
 });
@@ -390,7 +400,6 @@ export default defineComponent({
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    cursor: none;
 }
 .canvas {
     transform-origin: top left;
