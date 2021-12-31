@@ -1,11 +1,13 @@
-import { getOssAudioUrl } from "@/utils/audio";
+// import { getOssAudioUrl } from "@/utils/audio";
 import { debounce } from "lodash";
 import { ref } from "vue";
 
 export default () => {
     let audio: HTMLAudioElement | null = null;
     let timer: any = null;
+    let isPause = false; // 是否暂停
     const showProgress = ref(false);
+    const isPlay = ref(false); // 播放状态
     const duration = ref(0);
     const playDuration = ref(0);
     const playAudio = debounce(async (key: string) => {
@@ -15,25 +17,32 @@ export default () => {
             audio.src = key;
             audio.oncanplay = () => {
                 showProgress.value = true;
-                audio && (duration.value = Math.floor(audio!.duration));
-                audio && audio.play();
-                timer = setInterval(() => {
-                    playDuration.value < duration.value && (playDuration.value = playDuration.value + 1);
-                }, 1000);
+                //  !isPause 改变进度条时会触发oncanplay
+                if (audio && !isPause) {
+                    isPlay.value = true;
+                    duration.value = Math.floor(audio!.duration);
+                    audio.play();
+                    updateDuration();
+                }
             };
             audio.onended = () => {
-                showProgress.value = false;
-                playDuration.value = 0;
                 clearInterval(timer);
-                duration.value = playDuration.value;
+                showProgress.value = false;
+                isPause = false;
+                playDuration.value = 0;
                 audio && audio.remove();
                 audio = null;
             };
         } else {
             if (audio.paused) {
                 audio.play();
+                isPlay.value = true;
+                isPause = false;
+                updateDuration();
             } else {
                 audio.pause();
+                isPause = true;
+                isPlay.value = false;
                 clearInterval(timer);
             }
         }
@@ -43,6 +52,9 @@ export default () => {
         if (audio) {
             if (!audio.paused) audio.pause();
             audio.remove();
+            clearInterval(timer);
+            isPlay.value = false;
+            isPause = true;
         }
     };
 
@@ -51,8 +63,13 @@ export default () => {
         playDuration.value = value;
         if (audio) {
             audio.currentTime = value;
-            audio.play();
         }
+    };
+
+    const updateDuration = () => {
+        timer = setInterval(() => {
+            playDuration.value < duration.value && (playDuration.value = playDuration.value + 1);
+        }, 1000);
     };
 
     const secondToTime = (second = 0) => {
@@ -71,6 +88,7 @@ export default () => {
         playDuration,
         selectDuration,
         secondToTime,
-        showProgress
+        showProgress,
+        isPlay
     };
 };
