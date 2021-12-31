@@ -40,6 +40,7 @@
                 <div class="form-flex">
                     <a-select
                         class="form-select"
+                        mode="multiple"
                         v-model:value="formState.target"
                         placeholder="请选择目标元素"
                     >
@@ -207,24 +208,36 @@ for (const type of OUTANIMATIONS) {
     }
 }
 
+interface formState {
+    step: string;
+    target: string[];
+    inAni: string;
+    outAni: string;
+    type: string;
+    duration: number;
+}
+
 export default defineComponent({
     setup() {
         const store = useStore();
         const visible = computed(() => store.state.addStepVisible);
         const addActionVisible = ref(visible.value);
         const isEdit = ref(false);
+        const activeElementIdList = computed(
+            () => store.state.activeElementIdList
+        );
         watch(visible, () => {
             if (visible.value) {
                 addActionVisible.value = visible.value;
-                formState.target = elementTarget.value;
+                formState.target = activeElementIdList.value;
             }
         });
 
         const { addHistorySnapshot } = useHistorySnapshot();
 
-        const formState = reactive({
+        const formState = reactive<formState>({
             step: "",
-            target: "",
+            target: [],
             inAni: "",
             outAni: "",
             type: "show",
@@ -285,9 +298,14 @@ export default defineComponent({
         // 新增事件
         const addAction = () => {
             if (formState.step === "") return message.warning("请选择目标步骤");
-            if (!formState.target) return message.warning("请选择事件目标元素");
-
-            steps.value[formState.step].push(JSON.parse(JSON.stringify(formState)));
+            if (formState.target.length === 0) return message.warning("请选择事件目标元素");
+            const result = formState.target.map(elId => {
+                return {
+                    ...formState,
+                    target: elId
+                }
+            });
+            steps.value[formState.step] = steps.value[formState.step].concat(JSON.parse(JSON.stringify(result)));
 
             store.commit(MutationTypes.UPDATE_SLIDE, {
                 steps: steps.value

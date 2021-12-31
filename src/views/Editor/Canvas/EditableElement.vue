@@ -29,6 +29,7 @@ import useAlignElementToCanvas from "@/hooks/useAlignElementToCanvas";
 import useCopyAndPasteElement from "@/hooks/useCopyAndPasteElement";
 import useSelectAllElement from "@/hooks/useSelectAllElement";
 import useDisplayElement from "@/hooks/useDisplayElement";
+import useStepElement from "@/hooks/useStepElement";
 
 import { ElementOrderCommands, ElementAlignCommands } from "@/types/edit";
 
@@ -106,10 +107,8 @@ export default defineComponent({
         const { selectAllElement } = useSelectAllElement();
 
         const store = useStore();
-        const setElementStep = () => {
-            cacheElement();
-            store.commit(MutationTypes.SET_STEP_DIALOG, true);
-        };
+
+        const { setElementStep } = useStepElement();
 
         const contextmenus = (): ContextmenuItem[] => {
             if (props.elementInfo.lock) {
@@ -146,7 +145,6 @@ export default defineComponent({
                 },
                 {
                     text: "加入步骤",
-                    disable: props.isMultiSelect && !props.elementInfo.groupId,
                     subText: "",
                     handler: setElementStep
                 },
