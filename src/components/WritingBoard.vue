@@ -66,10 +66,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, reactive, ref } from "vue";
-
-const penSize = 6;
-const rubberSize = 80;
+import { computed, defineComponent, onMounted, PropType, reactive, ref } from "vue";
 
 export default defineComponent({
     name: "writing-board",
@@ -109,6 +106,14 @@ export default defineComponent({
         slideHeight: {
             type: Number,
             default: 1
+        },
+        setPenSize: {
+            type: Number,
+            default: 4
+        },
+        setEraseSize: {
+            type: Number,
+            default: 10
         }
     },
     setup(props) {
@@ -117,6 +122,8 @@ export default defineComponent({
         const canvasRef = ref<HTMLCanvasElement>();
         let timer: any = null;
         const penTempHide = ref(false);
+        const penSize = computed(() => props.setPenSize);
+        const rubberSize = computed(() => props.setEraseSize);
 
         let lastPos = {
             x: 0,
@@ -194,7 +201,7 @@ export default defineComponent({
             const lastPosX = lastPos.x;
             const lastPosY = lastPos.y;
 
-            const radius = rubberSize / 2;
+            const radius = rubberSize.value / 2;
 
             const sinRadius =
                 radius *
@@ -252,7 +259,7 @@ export default defineComponent({
         const getLineWidth = (s: number, t: number) => {
             const maxV = 10;
             const minV = 0.1;
-            const maxWidth = penSize;
+            const maxWidth = penSize.value;
             const minWidth = 3;
             const v = s / t;
             let lineWidth;

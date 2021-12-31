@@ -303,7 +303,7 @@ export default defineComponent({
                 return {
                     ...formState,
                     target: elId
-                }
+                };
             });
             steps.value[formState.step] = steps.value[formState.step].concat(JSON.parse(JSON.stringify(result)));
 

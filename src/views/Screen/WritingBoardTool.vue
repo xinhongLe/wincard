@@ -3,6 +3,8 @@
         <WritingBoard
             ref="writingBoardRef"
             :color="writingBoardColor"
+            :setPenSize="penSize"
+            :setEraseSize="eraseSize"
             :blackboard="blackboard"
             :model="writingBoardModel"
             :scale="scale"
@@ -13,8 +15,27 @@
             :slideHeight="slideHeight"
         />
 
-        <div class="tools" v-if="enable">
-            <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
+        <div
+            class="tools"
+            v-if="enable"
+            :style="{left: writingBoardPosition.x + 'px', bottom: writingBoardPosition.y + 'px'}"
+            @mousedown="$event => handleMousedown($event)"
+            @mousemove="$event => handleMousemove($event)"
+            @mouseup="handleMouseup()"
+            @touchstart="$event => handleMousedown($event)"
+            @touchmove="$event => handleMousemove($event)"
+            @mouseleave="handleMouseup()"
+        >
+            <a-popover v-model:visible="penCardVisible" title="画笔" trigger="click">
+                <template #content>
+                    <div class="pen-radius-box">
+                        <div class="pen-radius pen-radius-1" @click="setPenSize(4)" :style="{ backgroundColor: penSize === 4 ? writingBoardColor : '#ccc' }"></div>
+                        <div class="pen-radius pen-radius-2" @click="setPenSize(8)" :style="{ backgroundColor: penSize === 8 ? writingBoardColor : '#ccc' }"></div>
+                        <div class="pen-radius pen-radius-3" @click="setPenSize(12)" :style="{ backgroundColor: penSize === 12 ? writingBoardColor : '#ccc' }"></div>
+                        <div class="pen-radius pen-radius-4" @click="setPenSize(16)" :style="{ backgroundColor: penSize === 16 ? writingBoardColor : '#ccc' }"></div>
+                        <div class="pen-radius pen-radius-5" @click="setPenSize(20)" :style="{ backgroundColor: penSize === 20 ? writingBoardColor : '#ccc' }"></div>
+                    </div>
+                </template>
                 <div
                     class="btn"
                     :class="{ active: writingBoardModel === 'pen' }"
@@ -22,8 +43,17 @@
                 >
                     <IconWrite class="icon" />
                 </div>
-            </a-tooltip>
-            <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="橡皮擦">
+            </a-popover>
+            <a-popover v-model:visible="eraserCardVisible" title="橡皮擦" trigger="click">
+                <template #content>
+                    <div class="eraser-radius-box">
+                        <div class="eraser-radius eraser-radius-1" @click="setEraseSize(20)" :style="{ backgroundColor: eraseSize === 20 ? '#000' : '#ccc' }"></div>
+                        <div class="eraser-radius eraser-radius-2" @click="setEraseSize(40)" :style="{ backgroundColor: eraseSize === 40 ? '#000' : '#ccc' }"></div>
+                        <div class="eraser-radius eraser-radius-3" @click="setEraseSize(60)" :style="{ backgroundColor: eraseSize === 60 ? '#000' : '#ccc' }"></div>
+                        <div class="eraser-radius eraser-radius-4" @click="setEraseSize(120)" :style="{ backgroundColor: eraseSize === 120 ? '#000' : '#ccc' }"></div>
+                        <div class="eraser-radius eraser-radius-5" @click="setEraseSize(180)" :style="{ backgroundColor: eraseSize === 180 ? '#000' : '#ccc' }"></div>
+                    </div>
+                </template>
                 <div
                     class="btn"
                     :class="{ active: writingBoardModel === 'eraser' }"
@@ -31,17 +61,18 @@
                 >
                     <IconErase class="icon" />
                 </div>
-            </a-tooltip>
+            </a-popover>
             <a-tooltip
                 :mouseLeaveDelay="0"
                 :mouseEnterDelay="0.3"
                 title="清除墨迹"
+                overlayClassName="tipZIndex"
             >
                 <div class="btn" @click="clearCanvas()">
                     <IconClear class="icon" />
                 </div>
             </a-tooltip>
-            <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="黑板">
+            <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="黑板" overlayClassName="tipZIndex">
                 <div
                     class="btn"
                     :class="{ active: blackboard }"
@@ -64,6 +95,7 @@
                 :mouseLeaveDelay="0"
                 :mouseEnterDelay="0.3"
                 title="关闭画笔"
+                overlayClassName="tipZIndex"
             >
                 <div class="btn" @click="closeWritingBoard()">
                     <IconClose class="icon" />
@@ -189,6 +221,55 @@ export default defineComponent({
             emit("close");
         };
 
+        const penCardVisible = ref(false);
+        const eraserCardVisible = ref(false);
+        const penSize = ref(4);
+        const eraseSize = ref(40);
+        const setPenSize = (size: number) => {
+            penSize.value = size;
+            penCardVisible.value = false;
+        };
+
+        const setEraseSize = (size: number) => {
+            eraserCardVisible.value = false;
+            eraseSize.value = size;
+        };
+
+        let isMouseDown = false;
+        let lastPos = { x: 0, y: 0 };
+        const writingBoardPosition = ref({ x: 5, y: 120 });
+
+        const handleMousedown = (e: MouseEvent | TouchEvent) => {
+            const x = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
+            const y = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY;
+
+            isMouseDown = true;
+            console.log(x, y);
+            lastPos = { x, y };
+        };
+
+        const handleMousemove = (e: MouseEvent | TouchEvent) => {
+            if (isMouseDown) {
+                const x = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
+                const y = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY;
+                const moveX = x - lastPos.x;
+                const moveY = y - lastPos.y;
+                handleMove(moveX, moveY);
+                lastPos = { x, y };
+            }
+        };
+
+        const handleMove = (x: number, y: number) => {
+            const changeX = writingBoardPosition.value.x + x;
+            const changeY = writingBoardPosition.value.y - y;
+            writingBoardPosition.value = { x: changeX, y: changeY };
+        };
+
+        const handleMouseup = () => {
+            if (!isMouseDown) return;
+            isMouseDown = false;
+        };
+
         return {
             writingBoardRef,
             writingBoardColors,
@@ -202,7 +283,17 @@ export default defineComponent({
             closeWritingBoard,
             getDataCanvas,
             putDataCanvas,
-            updateCanvasList
+            updateCanvasList,
+            penCardVisible,
+            eraserCardVisible,
+            penSize,
+            eraseSize,
+            setPenSize,
+            setEraseSize,
+            handleMousedown,
+            handleMousemove,
+            handleMouseup,
+            writingBoardPosition
         };
     }
 });
@@ -223,6 +314,7 @@ export default defineComponent({
         border-radius: $borderRadius;
         display: flex;
         align-items: center;
+        cursor: move;
     }
     .btn {
         padding: 5px 10px;
@@ -260,5 +352,60 @@ export default defineComponent({
             margin-left: 8px;
         }
     }
+}
+</style>
+
+<style lang="scss">
+.tipZIndex {
+    z-index: 10001;
+}
+
+.pen-radius-box, .eraser-radius-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.pen-radius, .eraser-radius {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ccc;
+    cursor: pointer;
+}
+.pen-radius-2 {
+    width: 12px;
+    height: 12px;
+}
+.pen-radius-3 {
+    width: 16px;
+    height: 16px;
+}
+.pen-radius-4 {
+    width: 20px;
+    height: 20px;
+}
+.pen-radius-5 {
+    width: 24px;
+    height: 24px;
+}
+.eraser-radius-1 {
+    width: 8px;
+    height: 8px;
+}
+.eraser-radius-2 {
+    width: 16px;
+    height: 16px;
+}
+.eraser-radius-3 {
+    width: 24px;
+    height: 24px;
+}
+.eraser-radius-4 {
+    width: 32px;
+    height: 32px;
+}
+.eraser-radius-5 {
+    width: 40px;
+    height: 40px;
 }
 </style>
