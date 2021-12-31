@@ -867,3 +867,15 @@ export interface RemoveElementPropData {
     id: string;
     propName: string | string[];
 }
+
+/**
+ * 卡元素
+ *
+ * ID: 卡ID
+ *
+ * Name: 卡名称
+ */
+export interface ICard {
+    ID:string,
+    Name: string | undefined,
+}

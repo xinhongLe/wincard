@@ -74,8 +74,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, PropType, ref } from "vue";
 import WritingBoard from "@/components/WritingBoard.vue";
+import { Slide } from "@/types/slides";
 
 const writingBoardColors = [
     "#000000",
@@ -88,6 +89,10 @@ const writingBoardColors = [
     "#47acc5",
     "#f9974c"
 ];
+interface Icanvas {
+    id: string,
+    data: any
+}
 
 export default defineComponent({
     name: "writing-board-tool",
@@ -116,6 +121,10 @@ export default defineComponent({
         slideHeight: {
             type: Number,
             default: 1
+        },
+        slide: {
+            type: Object as PropType<Slide>,
+            required: true
         }
     },
     components: {
@@ -142,6 +151,33 @@ export default defineComponent({
             writingBoardRef.value.clearCanvas();
         };
 
+        const canvasList = ref<Icanvas[]>([]);
+        const slide = computed(() => {
+            return props.slide;
+        });
+        // 存储画布
+        const getDataCanvas = () => {
+            const imageData = writingBoardRef.value.getCanvas();
+            const index = canvasList.value.findIndex(item => item.id === slide.value.id);
+            if (index === -1) {
+                canvasList.value.push({ id: slide.value.id, data: imageData });
+            } else {
+                canvasList.value[index].data = imageData;
+            }
+            writingBoardRef.value.clearCanvas();
+        };
+        // 设置画布
+        const putDataCanvas = () => {
+            const canvasData = canvasList.value.find(item => item.id === slide.value.id);
+            if (canvasData) {
+                writingBoardRef.value.putCanvas(canvasData.data);
+            }
+        };
+
+        const updateCanvasList = () => {
+            canvasList.value = [];
+        };
+
         // 修改画笔颜色，如果当前不处于画笔状态则先切换到画笔状态
         const changeColor = (color: string) => {
             if (writingBoardModel.value !== "pen") writingBoardModel.value = "pen";
@@ -163,7 +199,10 @@ export default defineComponent({
             changeEraser,
             clearCanvas,
             changeColor,
-            closeWritingBoard
+            closeWritingBoard,
+            getDataCanvas,
+            putDataCanvas,
+            updateCanvasList
         };
     }
 });

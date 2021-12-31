@@ -15,6 +15,10 @@
             <div class="element-content">
                 <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="" @click="handleAudioEvent">
                 <img class="icon-image" v-else src="@/assets/images/audio.png" alt="" @click="handleAudioEvent">
+                <div class="progress-bar" v-if="showProgress">
+                    <a-slider v-model:value="playDuration" :max="duration" @afterChange="selectDuration" :tipFormatter="(value) => secondToTime(value)"></a-slider>
+                    <p>{{ secondToTime(playDuration) }}/{{ secondToTime(duration) }}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -37,7 +41,7 @@ export default defineComponent({
     setup(props) {
         const scale: Ref<number> = inject("slideScale") || ref(1);
 
-        const { playAudio, stopAudio } = useAudio();
+        const { playAudio, stopAudio, showProgress, duration, playDuration, selectDuration, secondToTime } = useAudio();
         const handleAudioEvent = () => {
             playAudio(audioUrl.value);
         };
@@ -52,7 +56,12 @@ export default defineComponent({
         return {
             scale,
             iconUrl,
-            handleAudioEvent
+            handleAudioEvent,
+            duration,
+            playDuration,
+            selectDuration,
+            secondToTime,
+            showProgress
         };
     }
 });
@@ -71,6 +80,7 @@ export default defineComponent({
 .element-content {
     width: 100%;
     height: 100%;
+    position: relative;
 }
 
 .audio-btn {
@@ -86,5 +96,31 @@ export default defineComponent({
     position: absolute;
     cursor: pointer;
     -webkit-user-drag: none;
+}
+
+.progress-bar {
+    width: 242px;
+    height: 100%;
+    background: rgba(231, 239, 255, .5);
+    border-radius: 8px;
+    margin-left: 16px;
+    padding: 6px 15px 8px;
+    box-sizing: border-box;
+    position: absolute;
+    right: -258px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    > p {
+        margin-top: 15px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #727B91;
+        line-height: 22px;
+        margin-left: 5px;
+    }
 }
 </style>

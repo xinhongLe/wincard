@@ -68,14 +68,15 @@
         </div>
 
         <WritingBoardTool
-            v-if="writingBoardToolVisible"
             :scale="viewScale"
             :offsetX="offsetX"
             :offsetY="offsetY"
             :slideWidth="slideWidth"
             :slideHeight="slideHeight"
             :enable="writingBoardToolVisible"
+            :slide="currentSlide"
             @close="closeWriteBoard()"
+            ref="writingBoardToolRef"
         />
 
         <div class="tools" v-if="!inline">
@@ -174,7 +175,7 @@ import {
 } from "vue";
 import { throttle } from "lodash";
 import { useStore } from "@/store";
-import { IWin, PPTElementAction, Slide } from "@/types/slides";
+import { IWin, PPTElementAction, Slide, ICard } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { KEYS } from "@/configs/hotkey";
 import { exitFullscreen, isFullscreen } from "@/utils/fullscreen";
@@ -216,6 +217,10 @@ export default defineComponent({
         writeBoardVisible: {
             type: Boolean,
             default: false
+        },
+        winList: {
+            type: Array as PropType<ICard[]>,
+            default: () => []
         }
     },
     setup(props, { emit }) {
@@ -223,7 +228,6 @@ export default defineComponent({
         const viewportRatio = computed(() => store.state.viewportRatio);
         const slide = computed<Slide>(() => JSON.parse(JSON.stringify(props.slide)));
         const currentSlide = ref(slide.value);
-
         const steps = computed(() => currentSlide.value.steps || []);
         const stepIndex = ref(-1);
 
@@ -236,6 +240,12 @@ export default defineComponent({
 
         const writeBoardVisible = computed(() => props.writeBoardVisible);
         const writingBoardToolVisible = ref(writeBoardVisible.value);
+
+        // 保存canvas笔记
+        const writingBoardToolRef = ref();
+        watch(() => props.winList, () => {
+            writingBoardToolRef.value.updateCanvasList();
+        });
 
         const elementList = computed(() => currentSlide.value.elements);
         provide("elements", elementList);
@@ -250,6 +260,7 @@ export default defineComponent({
             setSlideContentSize();
             nextTick(() => {
                 init();
+                writingBoardToolRef.value.putDataCanvas();
             });
         });
 
@@ -351,13 +362,18 @@ export default defineComponent({
             // 非素材页直接跳过
             if (currentSlide.value.type !== PAGE_TYPE.ELEMENT) {
                 stepIndex.value = -1;
+                writingBoardToolRef.value.getDataCanvas();
                 return emit("pagePrev");
             }
 
-            if (stepIndex.value === -1) return emit("pagePrev");
+            if (stepIndex.value === -1) {
+                writingBoardToolRef.value.getDataCanvas();
+                return emit("pagePrev");
+            }
             const step = steps.value[stepIndex.value];
             if (!step) {
                 stepIndex.value = -1;
+                writingBoardToolRef.value.getDataCanvas();
                 return emit("pagePrev");
             }
             // 向上 step 要逆向执行
@@ -378,11 +394,13 @@ export default defineComponent({
             // 非素材页直接跳过
             if (currentSlide.value.type !== PAGE_TYPE.ELEMENT) {
                 stepIndex.value = -1;
+                writingBoardToolRef.value.getDataCanvas();
                 return emit("pageNext");
             }
 
             if (stepIndex.value === steps.value.length - 1) {
                 // stepIndex.value = -1;
+                writingBoardToolRef.value.getDataCanvas();
                 return emit("pageNext");
             }
 
@@ -391,6 +409,7 @@ export default defineComponent({
             const step = steps.value[stepIndex.value];
             if (!step) {
                 stepIndex.value = -1;
+                writingBoardToolRef.value.getDataCanvas();
                 return emit("pageNext");
             }
             step.map(a => {
@@ -560,6 +579,7 @@ export default defineComponent({
             execPrev,
             execNext,
             writingBoardToolVisible,
+            writingBoardToolRef,
             openCard,
             disableSelect,
             disableSelectEnd,
