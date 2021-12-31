@@ -6,10 +6,10 @@ const unit = 0.05; // 缩放单位
 export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, execPrev: () => void, execNext: () => void, resetPosition: () => void, contentRef: Ref<HTMLElement>) => {
     let isMove = false;
     const store = useStore();
-    const ctrlKeyState = computed(() => store.state.ctrlKeyState);
+    const altKeyState = computed(() => store.state.altKeyState);
 
     const handleMousewheelScreen = (e: WheelEvent) => {
-        if (!isMove && ctrlKeyState.value) {
+        if (!isMove && altKeyState.value) {
             e.preventDefault();
             const offset = getPointOffset({ x: e.pageX, y: e.pageY });
             if (e.deltaY > 0) {

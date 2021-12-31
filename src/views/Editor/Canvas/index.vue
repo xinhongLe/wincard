@@ -152,7 +152,7 @@ export default defineComponent({
             () => store.state.activeElementIdList
         );
         const editorAreaFocus = computed(() => store.state.editorAreaFocus);
-        const ctrlKeyState = computed(() => store.state.ctrlKeyState);
+        const altKeyState = computed(() => store.state.altKeyState);
         const ctrlOrShiftKeyActive = computed<boolean>(
             () => store.getters.ctrlOrShiftKeyActive
         );
@@ -240,7 +240,7 @@ export default defineComponent({
             e.preventDefault();
 
             // 按住Ctrl键时：缩放画布
-            if (ctrlKeyState.value) {
+            if (altKeyState.value) {
                 if (e.deltaY > 0) {
                     throttleScaleCanvas("-");
                 } else if (e.deltaY < 0) {
