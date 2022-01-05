@@ -20,9 +20,7 @@
                     filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
                     transform: flipStyle,
                     color: text.defaultColor,
-                    fontFamily: text.defaultFontName,
-                    borderRadius: (elementInfo.radius || 0) + 'px',
-                    overflow: (elementInfo.radius || 0) > 0 ? 'hidden' : 'initial'
+                    fontFamily: text.defaultFontName
                 }"
                 v-contextmenu="contextmenus"
                 @mousedown="$event => handleSelectElement($event)"
@@ -45,9 +43,9 @@
                         </defs>
                         <g
                             :transform="
-                                `scale(${elementInfo.width /
-                                    elementInfo.viewBox}, ${elementInfo.height /
-                                    elementInfo.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`
+                                `scale(${isScale ? elementInfo.width /
+                                    elementInfo.viewBox : 1}, ${isScale ? elementInfo.height /
+                                    elementInfo.viewBox : 1}) translate(0,0) matrix(1,0,0,1,0,0)`
                             "
                         >
                             <path
@@ -55,7 +53,7 @@
                                 stroke-linecap="butt"
                                 stroke-miterlimit="8"
                                 stroke-linejoin=""
-                                :d="elementInfo.path"
+                                :d="path"
                                 :fill="
                                     elementInfo.gradient
                                         ? `url(#editabel-gradient-${elementInfo.id})`
@@ -202,6 +200,20 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
+        const path = computed(() => {
+            if (props.elementInfo.path === "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z") {
+                const borderRadius = props.elementInfo.radius || 0;
+                const w = props.elementInfo.width;
+                const h = props.elementInfo.height;
+                return `M ${borderRadius} 0 L ${w - borderRadius} 0 Q ${w} 0 ${w} ${borderRadius} L ${w} ${h - borderRadius} Q ${w} ${h} ${w - borderRadius} ${h} L ${borderRadius} ${h} Q 0 ${h} 0 ${h - borderRadius} L 0 ${borderRadius} Q 0 0 ${borderRadius} 0 Z`;
+            }
+            return props.elementInfo.path;
+        });
+
+        const isScale = computed(() => {
+            return props.elementInfo.path !== "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z";
+        });
+
         return {
             shadowStyle,
             outlineWidth,
@@ -212,7 +224,9 @@ export default defineComponent({
             text,
             handleSelectElement,
             updateText,
-            enterEditing
+            enterEditing,
+            path,
+            isScale
         };
     }
 });

@@ -80,16 +80,18 @@
 
         <ElementFlip />
         <a-divider />
-        <div class="row">
+        <div class="row" v-if="hasRadius">
             <div style="flex: 3;">圆角：</div>
             <a-input-number
                 :step="5"
+                :min="0"
+                :max="radiusMax"
                 :value="radius"
                 @change="value => updateRadius(value)"
                 style="flex: 4;"
             />
         </div>
-        <a-divider />
+        <a-divider v-if="hasRadius" />
 
         <template v-if="showTextTools">
             <a-input-group class="row">
@@ -438,6 +440,14 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
+        const hasRadius = computed(() => {
+            return handleElement.value.path === "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z";
+        });
+
+        const radiusMax = computed(() => {
+            return Math.floor(Math.min(handleElement.value.height, handleElement.value.width) / 2);
+        });
+
         return {
             radius,
             fill,
@@ -454,7 +464,9 @@ export default defineComponent({
             updateFill,
             updateGradient,
             updateTextAlign,
-            updateRadius
+            updateRadius,
+            hasRadius,
+            radiusMax
         };
     }
 });
