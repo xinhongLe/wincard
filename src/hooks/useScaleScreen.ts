@@ -1,12 +1,30 @@
-import { Ref, computed, ref } from "vue";
+import { Ref, computed, ref, onMounted, onUnmounted } from "vue";
 import { throttle, debounce } from "lodash";
-import { useStore } from "@/store";
+import { MutationTypes, useStore } from "@/store";
 
 const unit = 0.05; // 缩放单位
 export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, execPrev: () => void, execNext: () => void, resetPosition: () => void, contentRef: Ref<HTMLElement>) => {
     let isMove = false;
     const store = useStore();
     const altKeyState = computed(() => store.state.altKeyState);
+    const keyupListener = () => {
+        if (altKeyState.value) store.commit(MutationTypes.SET_ALT_KEY_STATE, false);
+    };
+
+    const keydownListener = (e: KeyboardEvent) => {
+        if (!altKeyState.value) store.commit(MutationTypes.SET_ALT_KEY_STATE, true);
+    };
+
+    onMounted(() => {
+        document.addEventListener("keydown", keydownListener);
+        document.addEventListener("keyup", keyupListener);
+        window.addEventListener("blur", keyupListener);
+    });
+    onUnmounted(() => {
+        document.removeEventListener("keydown", keydownListener);
+        document.removeEventListener("keyup", keyupListener);
+        window.removeEventListener("blur", keyupListener);
+    });
 
     const handleMousewheelScreen = (e: WheelEvent) => {
         if (!isMove && altKeyState.value) {
