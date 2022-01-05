@@ -363,18 +363,15 @@ export default defineComponent({
             // 非素材页直接跳过
             if (currentSlide.value.type !== PAGE_TYPE.ELEMENT) {
                 stepIndex.value = -1;
-                writingBoardToolRef.value.getDataCanvas();
                 return emit("pagePrev");
             }
 
             if (stepIndex.value === -1) {
-                writingBoardToolRef.value.getDataCanvas();
                 return emit("pagePrev");
             }
             const step = steps.value[stepIndex.value];
             if (!step) {
                 stepIndex.value = -1;
-                writingBoardToolRef.value.getDataCanvas();
                 return emit("pagePrev");
             }
             // 向上 step 要逆向执行
@@ -395,13 +392,11 @@ export default defineComponent({
             // 非素材页直接跳过
             if (currentSlide.value.type !== PAGE_TYPE.ELEMENT) {
                 stepIndex.value = -1;
-                writingBoardToolRef.value.getDataCanvas();
                 return emit("pageNext");
             }
 
             if (stepIndex.value === steps.value.length - 1) {
                 // stepIndex.value = -1;
-                writingBoardToolRef.value.getDataCanvas();
                 return emit("pageNext");
             }
 
@@ -410,7 +405,6 @@ export default defineComponent({
             const step = steps.value[stepIndex.value];
             if (!step) {
                 stepIndex.value = -1;
-                writingBoardToolRef.value.getDataCanvas();
                 return emit("pageNext");
             }
             step.map(a => {

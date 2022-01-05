@@ -187,7 +187,7 @@ export default defineComponent({
         const slide = computed(() => {
             return props.slide;
         });
-        // 存储画布 点击上/下一页和slide改变之前都会存储
+        // 存储画布 slide改变之前存储
         const getDataCanvas = () => {
             const imageData = writingBoardRef.value.getCanvas();
             const index = canvasList.value.findIndex(item => item.id === slide.value.id);
