@@ -9,7 +9,7 @@
                 <canvas-tool class="center-top" />
                 <component
                     class="center-body"
-                    :style="{ height: `calc(100% - ${remarkHeight + 40}px)` }"
+                    :style="{ height: `calc(100% - ${remarkHeight + 60}px)` }"
                     :is="currentPageComponent"
                 ></component>
                 <remark
@@ -117,7 +117,7 @@ export default defineComponent({
         width: calc(100% - 260px);
 
         .center-top {
-            height: 40px;
+            height: 60px;
         }
     }
     .layout-content-right {
