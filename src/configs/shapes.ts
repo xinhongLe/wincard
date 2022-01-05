@@ -24,7 +24,7 @@ export const SHAPE_LIST = [
             },
             {
                 viewBox: 200,
-                path: "M 0 200 L 0 0 L 150 0 L 200 50 L 200 200 L 0 200"
+                path: "M 0 200 L 0 0 L 150 0 L 200 50 L 200 200 L 0 200 Z"
             },
             {
                 viewBox: 200,
@@ -44,6 +44,14 @@ export const SHAPE_LIST = [
                 viewBox: 200,
                 path:
                     "M 0 50 Q 0 0 50 0 L 150 0 Q 200 0 200 50 L 200 200 L 0 200 L 0 50 Z"
+            },
+            {
+                viewBox: 200,
+                path: "M 0 50 Q 0 0 50 0 L 200 0 L 200 150 Q 200 200 150 200 L 0 200 L 0 0 Z"
+            },
+            {
+                viewBox: 200,
+                path: "M 0 50 Q 0 0 50 0 L 0 0 L 150 0 L 200 50 L 200 200 L 0 200 Z"
             }
         ]
     },
@@ -105,8 +113,7 @@ export const SHAPE_LIST = [
             },
             {
                 viewBox: 200,
-                path:
-                    "M 100 0 L 0 60 L 0 140 L 100 200 L 200 140 L 200 60 L 100 0 Z"
+                path: "M 60 0 L 0 100 L 60 200 L 140 200 L 200 100 L 140 0 Z"
             },
             {
                 viewBox: 200,
@@ -180,8 +187,7 @@ export const SHAPE_LIST = [
             },
             {
                 viewBox: 200,
-                path:
-                    "M 0 0 L 200 0 L 200 160 L 100 160 L 60 200 L 60 160 L 0 160 L 0 0 Z"
+                path: "M 0 0 L 200 0 L 200 200 L 100 200 L 60 240 L 60 200 L 0 200 L 0 0 Z"
             },
             {
                 viewBox: 200,
