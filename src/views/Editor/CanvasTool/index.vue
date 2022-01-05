@@ -23,7 +23,19 @@
                 :mouseEnterDelay="0.5"
                 title="插入文字"
             >
-                <IconFontSize
+                <div
+                    class="tools-icon"
+                    :class="
+                        creatingElement &&
+                        creatingElement.type === 'text' &&
+                        'active'
+                    "
+                    @click="drawText()"
+                >
+                    <img src="@/assets/images/icon_wb.png" alt="">
+                    文本
+                </div>
+                <!-- <IconFontSize
                     class="handler-item"
                     :class="
                         creatingElement &&
@@ -31,7 +43,7 @@
                         'active'
                     "
                     @click="drawText()"
-                />
+                /> -->
             </a-tooltip>
             <a-tooltip
                 :mouseLeaveDelay="0"
@@ -39,7 +51,14 @@
                 title="插入图片"
                 v-if="checkElectron"
             >
-                <IconPicture class="handler-item" @click="electronUpload('image')" />
+                <div
+                    class="tools-icon"
+                    @click="electronUpload('image')"
+                >
+                    <img src="@/assets/images/icon_tp.png" alt="">
+                    图片
+                </div>
+                <!-- <IconPicture class="handler-item" @click="electronUpload('image')" /> -->
             </a-tooltip>
             <FileInput v-if="!checkElectron" @change="files => insertImageElement(files)">
                 <a-tooltip
@@ -47,7 +66,14 @@
                     :mouseEnterDelay="0.5"
                     title="插入图片"
                 >
-                    <IconPicture class="handler-item" />
+                    <div
+                        class="tools-icon"
+                        @click="electronUpload('image')"
+                    >
+                        <img src="@/assets/images/icon_tp.png" alt="">
+                        图片
+                    </div>
+                    <!-- <IconPicture class="handler-item" /> -->
                 </a-tooltip>
             </FileInput>
             <a-popover
@@ -63,14 +89,25 @@
                     :mouseEnterDelay="0.5"
                     title="插入形状"
                 >
-                    <IconGraphicDesign
+                    <div
+                        class="tools-icon"
+                        :class="
+                            creatingElement &&
+                            creatingElement.type === 'shape' &&
+                            'active'
+                        "
+                    >
+                        <img src="@/assets/images/icon_xz.png" alt="">
+                        形状
+                    </div>
+                    <!-- <IconGraphicDesign
                         class="handler-item"
                         :class="
                             creatingElement &&
                             creatingElement.type === 'shape' &&
                             'active'
                         "
-                    />
+                    /> -->
                 </a-tooltip>
             </a-popover>
             <a-popover
@@ -86,14 +123,25 @@
                     :mouseEnterDelay="0.5"
                     title="插入线条"
                 >
-                    <IconConnection
+                    <div
+                        class="tools-icon"
+                        :class="
+                            creatingElement &&
+                            creatingElement.type === 'line' &&
+                            'active'
+                        "
+                    >
+                        <img src="@/assets/images/icon_xt.png" alt="">
+                        线条
+                    </div>
+                    <!-- <IconConnection
                         class="handler-item"
                         :class="
                             creatingElement &&
                             creatingElement.type === 'line' &&
                             'active'
                         "
-                    />
+                    /> -->
                 </a-tooltip>
             </a-popover>
             <a-popover
@@ -116,7 +164,13 @@
                     :mouseEnterDelay="0.5"
                     title="插入图表"
                 >
-                    <IconChartProportion class="handler-item" />
+                    <div
+                        class="tools-icon"
+                    >
+                        <img src="@/assets/images/icon_tb.png" alt="">
+                        图表
+                    </div>
+                    <!-- <IconChartProportion class="handler-item" /> -->
                 </a-tooltip>
             </a-popover>
             <a-popover
@@ -140,7 +194,13 @@
                     :mouseEnterDelay="0.5"
                     title="插入表格"
                 >
-                    <IconInsertTable class="handler-item" />
+                    <div
+                        class="tools-icon"
+                    >
+                        <img src="@/assets/images/icon_bg.png" alt="">
+                        表格
+                    </div>
+                    <!-- <IconInsertTable class="handler-item" /> -->
                 </a-tooltip>
             </a-popover>
             <a-tooltip
@@ -148,10 +208,17 @@
                 :mouseEnterDelay="0.5"
                 title="插入公式"
             >
-                <IconFormula
+                <div
+                    class="tools-icon"
+                    @click="latexEditorVisible = true"
+                >
+                    <img src="@/assets/images/icon_gs.png" alt="">
+                    公式
+                </div>
+                <!-- <IconFormula
                     class="handler-item"
                     @click="latexEditorVisible = true"
-                />
+                /> -->
             </a-tooltip>
             <a-tooltip
                 :mouseLeaveDelay="0"
@@ -159,7 +226,14 @@
                 title="插入音频"
                 v-if="checkElectron"
             >
-                <IconAudioFile class="handler-item" @click="electronUpload('audio')" />
+                <div
+                    class="tools-icon"
+                    @click="electronUpload('audio')"
+                >
+                    <img src="@/assets/images/icon_yp.png" alt="">
+                    音频
+                </div>
+                <!-- <IconAudioFile class="handler-item" @click="electronUpload('audio')" /> -->
             </a-tooltip>
             <FileInput
                 accept="audio/*"
@@ -171,7 +245,13 @@
                     :mouseEnterDelay="0.5"
                     title="插入音频"
                 >
-                    <IconAudioFile class="handler-item" />
+                    <div
+                        class="tools-icon"
+                    >
+                        <img src="@/assets/images/icon_yp.png" alt="">
+                        音频
+                    </div>
+                    <!-- <IconAudioFile class="handler-item" /> -->
                 </a-tooltip>
             </FileInput>
             <a-popover
@@ -187,7 +267,13 @@
                     :mouseEnterDelay="0.5"
                     title="插入视频"
                 >
-                    <IconVideoTwo class="handler-item" />
+                    <div
+                        class="tools-icon"
+                    >
+                        <img src="@/assets/images/icon_sp.png" alt="">
+                        视频
+                    </div>
+                    <!-- <IconVideoTwo class="handler-item" /> -->
                 </a-tooltip>
             </a-popover>
             <a-popover
@@ -206,7 +292,13 @@
                     :mouseEnterDelay="0.5"
                     title="插入网页"
                 >
-                    <IconWeb class="handler-item" />
+                    <div
+                        class="tools-icon"
+                    >
+                        <img src="@/assets/images/icon_wy.png" alt="">
+                        网页
+                    </div>
+                    <!-- <IconWeb class="handler-item" /> -->
                 </a-tooltip>
             </a-popover>
             <FileInput
@@ -218,7 +310,13 @@
                     :mouseEnterDelay="0.5"
                     title="插入Flash"
                 >
-                    <IconVideoFile class="handler-item" />
+                    <div
+                        class="tools-icon"
+                    >
+                        <img src="@/assets/images/icon_flash.png" alt="">
+                        Flash
+                    </div>
+                    <!-- <IconVideoFile class="handler-item" /> -->
                 </a-tooltip>
             </FileInput>
             <!-- <a-tooltip
@@ -498,6 +596,26 @@ export default defineComponent({
 
     .viewport-size {
         font-size: 13px;
+    }
+}
+
+.tools-icon {
+    img {
+        display: block;
+        width: 24px;
+        margin: 0 auto 4px;
+    }
+    font-size: 13px;
+    transform: scale(0.8);
+    color: #5D5D5D;
+    cursor: pointer;
+    padding: 5px 15px;
+    border-radius: 3px;
+    &.disable {
+        opacity: 0.5;
+    }
+    &.active {
+        background: #eee;
     }
 }
 </style>
