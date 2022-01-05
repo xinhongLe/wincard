@@ -28,46 +28,48 @@
                 @mousedown="$event => handleSelectElement($event)"
                 @dblclick="enterEditing()"
             >
-                <SvgWrapper
-                    overflow="visible"
-                    :width="elementInfo.width"
-                    :height="elementInfo.height"
-                >
-                    <defs v-if="elementInfo.gradient">
-                        <GradientDefs
-                            :id="`editabel-gradient-${elementInfo.id}`"
-                            :type="elementInfo.gradient.type"
-                            :color1="elementInfo.gradient.color[0]"
-                            :color2="elementInfo.gradient.color[1]"
-                            :rotate="elementInfo.gradient.rotate"
-                        />
-                    </defs>
-                    <g
-                        :transform="
-                            `scale(${elementInfo.width /
-                                elementInfo.viewBox}, ${elementInfo.height /
-                                elementInfo.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`
-                        "
+                <div style="font-size: 0;">
+                    <SvgWrapper
+                        overflow="visible"
+                        :width="elementInfo.width"
+                        :height="elementInfo.height"
                     >
-                        <path
-                            vector-effect="non-scaling-stroke"
-                            stroke-linecap="butt"
-                            stroke-miterlimit="8"
-                            stroke-linejoin=""
-                            :d="elementInfo.path"
-                            :fill="
-                                elementInfo.gradient
-                                    ? `url(#editabel-gradient-${elementInfo.id})`
-                                    : elementInfo.fill
+                        <defs v-if="elementInfo.gradient">
+                            <GradientDefs
+                                :id="`editabel-gradient-${elementInfo.id}`"
+                                :type="elementInfo.gradient.type"
+                                :color1="elementInfo.gradient.color[0]"
+                                :color2="elementInfo.gradient.color[1]"
+                                :rotate="elementInfo.gradient.rotate"
+                            />
+                        </defs>
+                        <g
+                            :transform="
+                                `scale(${elementInfo.width /
+                                    elementInfo.viewBox}, ${elementInfo.height /
+                                    elementInfo.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`
                             "
-                            :stroke="outlineColor"
-                            :stroke-width="outlineWidth"
-                            :stroke-dasharray="
-                                outlineStyle === 'dashed' ? '10 6' : '0 0'
-                            "
-                        ></path>
-                    </g>
-                </SvgWrapper>
+                        >
+                            <path
+                                vector-effect="non-scaling-stroke"
+                                stroke-linecap="butt"
+                                stroke-miterlimit="8"
+                                stroke-linejoin=""
+                                :d="elementInfo.path"
+                                :fill="
+                                    elementInfo.gradient
+                                        ? `url(#editabel-gradient-${elementInfo.id})`
+                                        : elementInfo.fill
+                                "
+                                :stroke="outlineColor"
+                                :stroke-width="outlineWidth"
+                                :stroke-dasharray="
+                                    outlineStyle === 'dashed' ? '10 6' : '0 0'
+                                "
+                            ></path>
+                        </g>
+                    </SvgWrapper>
+                </div>
 
                 <div class="shape-text" :class="text.align">
                     <ProsemirrorEditor
