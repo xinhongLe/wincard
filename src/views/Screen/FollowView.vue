@@ -99,17 +99,19 @@ export default defineComponent({
         const pauseIndex = ref(0);
         const mode = ref(0);
         const pauseList = computed(() => {
+            let prevTime = 0;
             if (follow.value && totalTime.value > 0) {
-                let total = totalTime.value * 1000;
+                const total = totalTime.value * 1000;
                 return (follow.value.pauseList || []).map(item => {
                     const currentTime = timeNum(item.time) * 1000;
-                    total = total - currentTime;
+                    const timeSpan = currentTime - prevTime;
+                    prevTime = currentTime;
                     return {
                         time: item.time,
-                        width: currentTime / totalTime.value / 10 + "%",
+                        width: timeSpan / total * 100 + "%",
                         isEnd: false
                     };
-                }).concat([{ time: "", width: total / totalTime.value / 10 + "%", isEnd: true }]);
+                }).concat([{ time: "", width: (total - prevTime) / total * 100 + "%", isEnd: true }]);
             }
             return [];
         });
