@@ -187,7 +187,7 @@ export default defineComponent({
         const slide = computed(() => {
             return props.slide;
         });
-        // 存储画布 只有点击上/下一页才会存
+        // 存储画布 点击上/下一页和slide改变之前都会存储
         const getDataCanvas = () => {
             const imageData = writingBoardRef.value.getCanvas();
             const index = canvasList.value.findIndex(item => item.id === slide.value.id);
@@ -197,7 +197,7 @@ export default defineComponent({
                 canvasList.value[index].data = imageData;
             }
         };
-        // 设置画布  slide改变时就会取
+        // 设置画布  slide改变后就会取
         const putDataCanvas = () => {
             clearCanvas(); // 先清除一下发布
             const canvasData = canvasList.value.find(item => item.id === slide.value.id);
