@@ -611,6 +611,7 @@ export default defineComponent({
     cursor: pointer;
     padding: 5px 15px;
     border-radius: 3px;
+    white-space: nowrap;
     &.disable {
         opacity: 0.5;
     }
