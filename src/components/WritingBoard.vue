@@ -171,7 +171,7 @@ export default defineComponent({
         const initCanvas = () => {
             if (!canvasRef.value || !writingBoardRef.value) return;
 
-            ctx = canvasRef.value.getContext("2d");
+            if (!ctx) ctx = canvasRef.value.getContext("2d");
             if (!ctx) return;
 
             canvasRef.value.width = writingBoardRef.value.clientWidth;
@@ -188,11 +188,15 @@ export default defineComponent({
             ctx.lineCap = "round";
             ctx.lineJoin = "round";
         };
+
+        const resizeObserver = new ResizeObserver(initCanvas);
+
         onMounted(() => {
             setTimeout(() => {
                 initCanvas();
             }, 600);
             clearInterval(timer);
+            writingBoardRef.value && resizeObserver.observe(writingBoardRef.value);
         });
 
         // 绘制画笔墨迹方法
