@@ -13,6 +13,10 @@
             :offsetY="offsetY"
             :slideWidth="slideWidth"
             :slideHeight="slideHeight"
+            :screenWidth="screenWidth"
+            :screenHeight="screenHeight"
+            :offsetScreenX="offsetScreenX"
+            :offsetScreenY="offsetScreenY"
         />
 
         <div
@@ -151,6 +155,22 @@ export default defineComponent({
             default: 1
         },
         slideHeight: {
+            type: Number,
+            default: 1
+        },
+        screenWidth: {
+            type: Number,
+            default: 1
+        },
+        screenHeight: {
+            type: Number,
+            default: 1
+        },
+        offsetScreenX: {
+            type: Number,
+            default: 1
+        },
+        offsetScreenY: {
             type: Number,
             default: 1
         },

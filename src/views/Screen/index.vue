@@ -73,6 +73,10 @@
             :offsetY="offsetY"
             :slideWidth="slideWidth"
             :slideHeight="slideHeight"
+            :screenWidth="screenWidth"
+            :screenHeight="screenHeight"
+            :offsetScreenX="offsetScreenX"
+            :offsetScreenY="offsetScreenY"
             :enable="writingBoardToolVisible"
             :slide="currentSlide"
             @close="closeWriteBoard()"
@@ -269,6 +273,8 @@ export default defineComponent({
         const contentRef = ref();
         const offsetScreenX = ref(0);
         const offsetScreenY = ref(0);
+        const screenWidth = ref(0);
+        const screenHeight = ref(0);
 
         // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
         const setSlideContentSize = () => {
@@ -294,6 +300,8 @@ export default defineComponent({
 
             offsetScreenX.value = screenRef.value.offsetLeft;
             offsetScreenY.value = screenRef.value.offsetTop;
+            screenWidth.value = screenRef.value.clientWidth;
+            screenHeight.value = screenRef.value.clientHeight;
         };
 
         // 窗口尺寸变化监听：窗口发生变化时更新幻灯片的大小
@@ -600,7 +608,11 @@ export default defineComponent({
             markMouseDown,
             markMouseMove,
             markMouseUp,
-            getPopupContainer
+            getPopupContainer,
+            offsetScreenX,
+            offsetScreenY,
+            screenWidth,
+            screenHeight
         };
     }
 });

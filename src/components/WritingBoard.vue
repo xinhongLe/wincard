@@ -12,8 +12,8 @@
             :style="{
                 width: canvasWidth + 'px',
                 height: canvasHeight + 'px',
-                marginLeft: offsetX - (canvasWidth - slideWidth) / 2 * (scale - 1) + 'px',
-                marginTop: offsetY - (canvasHeight - slideHeight) / 2 * (scale - 1) + 'px',
+                marginLeft: offsetX - ((screenWidth - slideWidth) / 2 + offsetScreenX) * (scale - 1) + 'px',
+                marginTop: offsetY - ((screenHeight - slideHeight) / 2 + offsetScreenY) * (scale - 1) + 'px',
                 cursor: (penTempHide ? 'auto' : 'none')
             }"
         >
@@ -43,8 +43,8 @@
         <div
             class="pen"
             :style="{
-                left: mouse.x * scale + (offsetX - (canvasWidth - slideWidth) / 2 * (scale - 1)) - penSize / 2 + 'px',
-                top: mouse.y * scale + (offsetY - (canvasHeight - slideHeight) / 2 * (scale - 1)) - 36 + penSize / 2 + 'px',
+                left: mouse.x * scale + (offsetX - ((screenWidth - slideWidth) / 2 + offsetScreenX) * (scale - 1)) - penSize / 2 + 'px',
+                top: mouse.y * scale + (offsetY - ((screenHeight - slideHeight) / 2 + offsetScreenY) * (scale - 1)) - 36 + penSize / 2 + 'px',
                 color: color
             }"
             v-if="mouseInCanvas && !penTempHide && model === 'pen'"
@@ -104,6 +104,22 @@ export default defineComponent({
             default: 1
         },
         slideHeight: {
+            type: Number,
+            default: 1
+        },
+        screenWidth: {
+            type: Number,
+            default: 1
+        },
+        screenHeight: {
+            type: Number,
+            default: 1
+        },
+        offsetScreenX: {
+            type: Number,
+            default: 1
+        },
+        offsetScreenY: {
             type: Number,
             default: 1
         },
