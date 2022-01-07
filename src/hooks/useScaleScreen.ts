@@ -162,7 +162,7 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
     // 获取中心点距离可视窗左边和上边距离
     const getPointOffset = (point: { x: number, y: number }) => {
         const { offsetX, offsetY } = getDomOffset();
-        return { offsetX: (point.x - offsetX - offsetScreenX.value) / scale.value, offsetY: (point.y - offsetY - offsetScreenY.value) / scale.value };
+        return { offsetX: (point.x - offsetX) / scale.value, offsetY: (point.y - offsetY) / scale.value };
     };
 
     let center: { x: number, y: number };
