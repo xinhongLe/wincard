@@ -3,7 +3,7 @@ import { throttle, debounce } from "lodash";
 import { MutationTypes, useStore } from "@/store";
 
 const unit = 0.05; // 缩放单位
-export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, execPrev: () => void, execNext: () => void, resetPosition: () => void, contentRef: Ref<HTMLElement>) => {
+export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, execPrev: () => void, execNext: () => void, resetPosition: () => void, contentRef: Ref<HTMLElement>, offsetScreenX: Ref<number>, offsetScreenY: Ref<number>) => {
     let isMove = false;
     const store = useStore();
     const altKeyState = computed(() => store.state.altKeyState);
@@ -162,7 +162,7 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
     // 获取中心点距离可视窗左边和上边距离
     const getPointOffset = (point: { x: number, y: number }) => {
         const { offsetX, offsetY } = getDomOffset();
-        return { offsetX: (point.x - offsetX) / scale.value, offsetY: (point.y - offsetY) / scale.value };
+        return { offsetX: (point.x - offsetX - offsetScreenX.value) / scale.value, offsetY: (point.y - offsetY - offsetScreenY.value) / scale.value };
     };
 
     let center: { x: number, y: number };

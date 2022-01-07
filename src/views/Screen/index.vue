@@ -267,6 +267,8 @@ export default defineComponent({
 
         const screenRef = ref();
         const contentRef = ref();
+        const offsetScreenX = ref(0);
+        const offsetScreenY = ref(0);
 
         // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
         const setSlideContentSize = () => {
@@ -289,6 +291,9 @@ export default defineComponent({
             }
             slideWidth.value = width;
             slideHeight.value = height;
+
+            offsetScreenX.value = screenRef.value.offsetLeft;
+            offsetScreenY.value = screenRef.value.offsetTop;
         };
 
         // 窗口尺寸变化监听：窗口发生变化时更新幻灯片的大小
@@ -463,7 +468,7 @@ export default defineComponent({
             offsetX.value = 0;
             offsetY.value = 0;
         };
-        const { handleMousewheelScreen, handleMouseMove, moveScreen, touchStartListener, touchEndListener, touchMoveListener } = useScaleScreen(viewScale, offsetX, offsetY, execPrev, execNext, resetPosition, contentRef);
+        const { handleMousewheelScreen, handleMouseMove, moveScreen, touchStartListener, touchEndListener, touchMoveListener } = useScaleScreen(viewScale, offsetX, offsetY, execPrev, execNext, resetPosition, contentRef, offsetScreenX, offsetScreenY);
 
         const remarkVisible = ref(false);
 
