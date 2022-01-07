@@ -137,6 +137,10 @@ export const uploadFile = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: strin
                     }
                 }, 10);
             }
+            if (isElectron() && (window as any).electron.getCachePath && (window as any).electron.savePutFile) {
+                const savePath = (window as any).electron.getCachePath(name + "." + fileExtention);
+                (window as any).electron.savePutFile(savePath, buffer);
+            }
         });
     });
 };
