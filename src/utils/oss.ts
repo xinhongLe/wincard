@@ -19,24 +19,25 @@ export interface downloadResponse {
 
 // 为了防止多次请求ossToken getOssToken 这里对请求加上锁 进行排队处理
 let callbackStash: any = null;
-export const getToken = async (callback: any) => {
+export const getToken = async (callback: (ossToken: OssToken) => void, request?: boolean) => {
     const time = Number(localStorage.getItem("wincard_ossTokenExpireTime") || 0);
     const currentTime = new Date().getTime();
     if (callbackStash) {
         setTimeout(() => {
             // 延迟 100毫秒 处理
-            getToken(callback);
+            getToken(callback, request);
         }, 100);
         return;
     }
-    if (currentTime > time) {
-        // 没有token或者token过期 需要请求token
+    if (currentTime > time || request) {
+        // 没有token或者token过期 需要请求 token
+        // request 为 true 强制 请求刷新 token
         callbackStash = callback;
         const res: any = await getOssToken();
         if (res.resultCode === 200) {
             localStorage.setItem(
                 "wincard_ossTokenExpireTime",
-                (new Date().getTime() + 3000000).toString()
+                (new Date().getTime() + 1000 * 60 * 30).toString()
             );
             localStorage.setItem(
                 "wincard_ossToken",
@@ -44,7 +45,14 @@ export const getToken = async (callback: any) => {
             );
             callback(res.result.ossToken);
         } else {
-            callback(JSON.parse(localStorage.getItem("wincard_ossToken") || "{}"));
+            // 接口报错
+            if (res.resultCode === 105) {
+                // 频繁请求，再发起一次请求
+                getToken(callback, request);
+            } else {
+                // 非频繁请求，暂用本地ossToken
+                callback(JSON.parse(localStorage.getItem("wincard_ossToken") || "{}"));
+            }
         }
         callbackStash = null;
     } else {
@@ -62,6 +70,9 @@ class OssHelper {
 
     constructor() {
         this.autoUpdateToken();
+        setInterval(() => {
+            this.autoUpdateToken();
+        }, 1000 * 60 * 5);
     }
 
     async autoUpdateToken() {
@@ -82,10 +93,7 @@ class OssHelper {
                 },
                 refreshSTSTokenInterval: this._tokenExpirtyInterval
             });
-            setTimeout(() => {
-                this.autoUpdateToken();
-            }, this._tokenExpirtyInterval);
-        });
+        }, true);
     }
 
     get client() {
