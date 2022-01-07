@@ -8,7 +8,7 @@ import { parseText2Paragraphs } from "@/utils/textParser";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import useCreateElement from "@/hooks/useCreateElement";
 import { logInput, LOG_EVENT } from "@/utils/log";
-import useElementCount from "./useElementCount";
+import useElementRandomName from "./useElementRandomName";
 
 interface PasteTextClipboardDataOptions {
     onlySlide?: boolean;
@@ -21,7 +21,7 @@ export default () => {
 
     const { addHistorySnapshot } = useHistorySnapshot();
     const { createTextElement } = useCreateElement();
-    const { countElementByType } = useElementCount();
+    const { randomName } = useElementRandomName();
 
     /**
      * 粘贴元素（一组）
@@ -38,7 +38,7 @@ export default () => {
                 element.id
             );
 
-            element.name = element.name + `(${countElementByType(element.type) + 1})`;
+            element.name = randomName(element.type);
 
             element.id = elIdMap[element.id];
 

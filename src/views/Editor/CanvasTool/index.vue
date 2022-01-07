@@ -68,7 +68,6 @@
                 >
                     <div
                         class="tools-icon"
-                        @click="electronUpload('image')"
                     >
                         <img src="@/assets/images/icon_tp.png" alt="">
                         图片

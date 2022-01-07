@@ -15,7 +15,7 @@ import { ShapePoolItem } from "@/configs/shapes";
 import { LinePoolItem } from "@/configs/lines";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import { logInput, LOG_EVENT } from "@/utils/log";
-import useElementCount from "./useElementCount";
+import useElementRandomName from "./useElementRandomName";
 
 interface CommonElementPosition {
     top: number;
@@ -39,7 +39,7 @@ export default () => {
     const fontSize = computed(() => store.state.theme.fontSize);
     const viewportRatio = computed(() => store.state.viewportRatio);
     const creatingElement = computed(() => store.state.creatingElement);
-    const { countElementByType } = useElementCount();
+    const { randomName } = useElementRandomName();
 
     const { addHistorySnapshot } = useHistorySnapshot();
 
@@ -79,9 +79,10 @@ export default () => {
             }
 
             const id = createRandomCode();
+            const name = randomName("image");
 
             createElement({
-                name: "图片-" + id + `(${countElementByType("image") + 1})`,
+                name,
                 type: "image",
                 id,
                 src,
@@ -104,9 +105,10 @@ export default () => {
      */
     const createChartElement = (chartType: ChartType) => {
         const id = createRandomCode();
+        const name = randomName("chart");
 
         createElement({
-            name: "图表-" + id + `(${countElementByType("chart") + 1})`,
+            name,
             type: "chart",
             id,
             chartType,
@@ -158,9 +160,10 @@ export default () => {
         const height = row * DEFAULT_CELL_HEIGHT;
 
         const id = createRandomCode();
+        const name = randomName("table");
 
         createElement({
-            name: "表格-" + id + `(${countElementByType("table") + 1})`,
+            name,
             type: "table",
             id,
             width,
@@ -195,8 +198,10 @@ export default () => {
     ) => {
         const { left, top, width, height } = position;
         const id = createRandomCode();
+        const name = randomName("text");
+
         createElement({
-            name: "文本-" + id + `(${countElementByType("text") + 1})`,
+            name,
             type: "text",
             id,
             left,
@@ -222,8 +227,10 @@ export default () => {
     ) => {
         const { left, top, width, height } = position;
         const id = createRandomCode();
+        const name = randomName("shape");
+
         const newElement: PPTShapeElement = {
-            name: "形状-" + id + `(${countElementByType("shape") + 1})`,
+            name,
             type: "shape",
             id,
             left,
@@ -251,8 +258,10 @@ export default () => {
     ) => {
         const { left, top, start, end } = position;
         const id = createRandomCode();
+        const name = randomName("line");
+
         const newElement: PPTLineElement = {
-            name: "线条-" + id + `(${countElementByType("line") + 1})`,
+            name,
             type: "line",
             id,
             left,
@@ -292,8 +301,10 @@ export default () => {
         h: number;
     }) => {
         const id = createRandomCode();
+        const name = randomName("latex");
+
         createElement({
-            name: "公式-" + id + `(${countElementByType("latex") + 1})`,
+            name,
             type: "latex",
             id,
             width: data.w,
@@ -317,8 +328,10 @@ export default () => {
         const width = showType === 0 ? 500 : 100;
         const height = showType === 0 ? 300 : 100;
         const id = createRandomCode();
+        const name = randomName("video");
+
         createElement({
-            name: "视频-" + id + `(${countElementByType("video") + 1})`,
+            name,
             type: "video",
             id,
             width,
@@ -337,8 +350,10 @@ export default () => {
      */
     const createAudioElement = (src: string) => {
         const id = createRandomCode();
+        const name = randomName("audio");
+
         createElement({
-            name: "音频-" + id + `(${countElementByType("audio") + 1})`,
+            name,
             type: "audio",
             id,
             rotate: 0,
@@ -356,8 +371,10 @@ export default () => {
      */
     const createWebIFrameElement = (src: string) => {
         const id = createRandomCode();
+        const name = randomName("iframe");
+
         createElement({
-            name: "网页-" + id + `(${countElementByType("iframe") + 1})`,
+            name,
             type: "iframe",
             id,
             width: 400,
@@ -374,8 +391,10 @@ export default () => {
      */
     const createFlashElement = (src: string) => {
         const id = createRandomCode();
+        const name = randomName("flash");
+
         createElement({
-            name: "Flash-" + id + `(${countElementByType("flash") + 1})`,
+            name,
             type: "flash",
             id,
             width: 100,
@@ -391,8 +410,10 @@ export default () => {
      */
     const createMarkElement = () => {
         const id = createRandomCode();
+        const name = randomName("mark");
+
         createElement({
-            name: "批注-" + id,
+            name,
             type: "mark",
             id,
             width: 30,
