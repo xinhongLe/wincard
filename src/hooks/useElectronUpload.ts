@@ -12,7 +12,7 @@ export default () => {
         name: "video",
         extensions: ["mp4"]
     }]);
-    const properties = process.platform === "darwin" ? ["openFile", "openDirectory"] : ["openFile"];
+    const properties = (process as any).platform === "darwin" ? ["openFile", "openDirectory"] : ["openFile"];
 
     const uploadByElectron = (type: string, callback: (file: File, buffer: ArrayBuffer) => void) => {
         (window as any).electron.remote.dialog.showOpenDialog({
