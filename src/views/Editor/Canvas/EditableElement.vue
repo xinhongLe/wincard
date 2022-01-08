@@ -12,6 +12,9 @@
             :elementInfo="elementInfo"
             :selectElement="selectElement"
             :contextmenus="contextmenus"
+            :style="{
+                zIndex: editable ? 10000 : 0
+            }"
         ></component>
     </div>
 </template>
@@ -109,6 +112,11 @@ export default defineComponent({
         const store = useStore();
 
         const { setElementStep } = useStepElement();
+
+        const handleElementId = computed(() => store.state.handleElementId);
+        const editable = computed(() => {
+            return store.state.editElementID === handleElementId.value && store.state.editElementID === props.elementInfo.id;
+        });
 
         const contextmenus = (): ContextmenuItem[] => {
             if (props.elementInfo.lock) {
@@ -312,7 +320,8 @@ export default defineComponent({
 
         return {
             currentElementComponent,
-            contextmenus
+            contextmenus,
+            editable
         };
     }
 });

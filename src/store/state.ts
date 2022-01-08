@@ -45,6 +45,7 @@ export interface State {
     menuOpen: boolean;
     cacheElementID: string;
     addStepVisible: boolean;
+    editElementID: string;
 }
 
 export const state: State = {
@@ -85,5 +86,6 @@ export const state: State = {
     canvasMoveY: 0, // 画布纵向移动距离
     menuOpen: false, // 元素列表菜单是否展开
     cacheElementID: "", // 暂存元素ID;
-    addStepVisible: false // 添加步骤弹窗
+    addStepVisible: false, // 添加步骤弹窗
+    editElementID: "" // 处于编辑状态的元素
 };

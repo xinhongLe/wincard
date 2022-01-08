@@ -210,6 +210,10 @@ export const mutations: MutationTree<State> = {
         state.cacheElementID = id;
     },
 
+    [MutationTypes.EDIT_ELEMENT_ID](state, id: string) {
+        state.editElementID = id;
+    },
+
     // listen
     [MutationTypes.UPDATE_LISTEN_SYSTEM_LIST](state, list: ListenWord[]) {
         state.listenSystemList = list;

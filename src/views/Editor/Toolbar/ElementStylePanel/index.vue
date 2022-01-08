@@ -10,7 +10,12 @@
             <a-form-item label="元素名称" style="margin-bottom: 10px;">
                 <a-input style="width: 100%;" v-model:value="formState.name" @change="updateName" />
             </a-form-item>
+            <a-divider />
+            <a-form-item label="编辑状态" style="margin-bottom: 10px;">
+                <a-switch style="float: right;" :checked="editChecked" @change="onEditChange" />
+            </a-form-item>
         </a-form>
+        <a-divider />
         <component v-if="handleElement" :is="currentPanelComponent"></component>
     </div>
 </template>
@@ -81,11 +86,25 @@ export default defineComponent({
             logInput(`更改元素名 ${handleElement.value.name} 为 ${formState.name}`, LOG_EVENT.UPDATE_ELEMENT);
         }, 300);
 
+        const editChecked = computed(() => {
+            return handleElement.value.id === store.state.editElementID;
+        });
+
+        const onEditChange = (checked: boolean) => {
+            if (checked) {
+                store.commit(MutationTypes.EDIT_ELEMENT_ID, handleElement.value.id);
+            } else {
+                store.commit(MutationTypes.EDIT_ELEMENT_ID, "");
+            }
+        };
+
         return {
             formState,
             handleElement,
             updateName,
-            currentPanelComponent
+            currentPanelComponent,
+            editChecked,
+            onEditChange
         };
     }
 });
