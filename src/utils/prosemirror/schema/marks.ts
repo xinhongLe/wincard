@@ -144,8 +144,8 @@ export default {
     subscript,
     superscript,
     strikethrough,
-    underline,
     forecolor,
+    underline,
     fontsize,
     fontname,
     backcolor
