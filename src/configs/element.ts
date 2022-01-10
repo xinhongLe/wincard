@@ -14,7 +14,7 @@ export const ELEMENT_TYPE_ZH = {
 
 export const MIN_SIZE = {
     text: 20,
-    image: 20,
+    image: 5,
     shape: 5,
     chart: 200,
     table: 20,

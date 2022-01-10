@@ -354,8 +354,8 @@ export default defineComponent({
             isSettingClipRange.value = true;
             let isMouseDown = true;
 
-            const minWidth = (50 / props.width) * 100;
-            const minHeight = (50 / props.height) * 100;
+            const minWidth = (50 / props.width) * 30;
+            const minHeight = (50 / props.height) * 30;
 
             const startPageX = e.pageX;
             const startPageY = e.pageY;
