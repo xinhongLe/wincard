@@ -193,7 +193,7 @@ export default defineComponent({
         ];
         const standardColors = [
             "#c21401",
-            "#ff1e02",
+            "#ff0000",
             "#ffc12a",
             "#ffff3a",
             "#90cf5b",
