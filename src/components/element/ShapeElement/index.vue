@@ -211,7 +211,7 @@ export default defineComponent({
                 const borderRadius = props.elementInfo.radius || 0;
                 const w = props.elementInfo.width;
                 const h = props.elementInfo.height;
-                return `M 0 ${borderRadius} Q 0 0 ${borderRadius} 0 L ${w - borderRadius} 0 Q ${w} 0 ${w} ${borderRadius} L ${w} ${h - borderRadius} Q ${w} ${h} ${w - borderRadius} ${h} L ${w / 4 + 10} ${h} L ${w / 4} ${h + 40} L ${w / 4 - 10} ${h} L ${borderRadius} ${h} Q 0 ${h} 0 ${h - borderRadius} L 0 ${borderRadius} Z`;
+                return `M 0 ${borderRadius} Q 0 0 ${borderRadius} 0 L ${w - borderRadius} 0 Q ${w} 0 ${w} ${borderRadius} L ${w} ${h - borderRadius} Q ${w} ${h} ${w - borderRadius} ${h} L ${w / 4 + 10} ${h} L ${w / 4 - 10} ${h + 40} L ${w / 4 - 10} ${h} L ${borderRadius} ${h} Q 0 ${h} 0 ${h - borderRadius} L 0 ${borderRadius} Z`;
             }
             return props.elementInfo.path;
         });
