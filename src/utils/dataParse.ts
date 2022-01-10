@@ -137,6 +137,8 @@ const getElementsData = (oldElements: string[], oldActions: string[]) => {
             break;
         case 7:
         case 8:
+        case 10:
+        case 13:
             elements.push({ ...dealVideo(oldElement), actions });
             break;
         }
@@ -495,6 +497,10 @@ interface IOldVideo {
     UUID: string;
     Width: number;
     ZIndex: number;
+    EnumVideoPlayStyle: number;
+    VideoPlayStyle: number;
+    OssCoverFileName: string;
+    IsAutoPlay: boolean;
 }
 
 // 处理视频
@@ -509,7 +515,8 @@ const dealVideo = (oldVideo: IOldVideo) => {
         height: 0,
         src: "",
         showType: 0,
-        rotate: 0
+        rotate: 0,
+        poster: ""
     };
 
     element.id = oldVideo.UUID;
@@ -518,9 +525,11 @@ const dealVideo = (oldVideo: IOldVideo) => {
     element.top = oldVideo.Top;
     element.width = oldVideo.Width;
     element.height = oldVideo.Height;
-    element.src = OSS_PATH + "/" + oldVideo.OssFileName;
-    element.showType = oldVideo.Type === 7 ? 1 : 0;
+    element.src = oldVideo.OssFileName ? OSS_PATH + "/" + oldVideo.OssFileName : "";
+    element.showType = oldVideo.Type === 13 ? ((oldVideo.EnumVideoPlayStyle === 1 || oldVideo.VideoPlayStyle === 1) ? 0 : 1) : oldVideo.Type === 7 ? 1 : 0;
     element.display = oldVideo.IsVisibility;
+    element.autoPlay = oldVideo.IsAutoPlay;
+    element.poster = oldVideo.OssCoverFileName ? OSS_PATH + "/" + oldVideo.OssCoverFileName : "";
     return element;
 };
 
