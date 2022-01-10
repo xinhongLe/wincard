@@ -96,7 +96,7 @@ export default defineComponent({
         });
 
         const { orderElement } = useOrderElement();
-        const { alignElementToCanvas } = useAlignElementToCanvas();
+        const { alignElementToCanvas, alignElementToElement } = useAlignElementToCanvas();
         const { combineElements, uncombineElements } = useCombineElement();
         const { deleteElement } = useDeleteElement(0);
         const { lockElement, unlockElement } = useLockElement();
@@ -168,6 +168,38 @@ export default defineComponent({
                     handler: hideElement
                 },
                 { divider: true },
+                {
+                    text: "相对对齐",
+                    disable: !props.isMultiSelect || !!props.elementInfo.groupId,
+                    children: [
+                        {
+                            text: "左对齐",
+                            handler: () =>
+                                alignElementToElement(
+                                    ElementAlignCommands.LEFT
+                                )
+                        },
+                        {
+                            text: "右对齐",
+                            handler: () =>
+                                alignElementToElement(
+                                    ElementAlignCommands.RIGHT
+                                )
+                        },
+                        {
+                            text: "顶部对齐",
+                            handler: () =>
+                                alignElementToElement(ElementAlignCommands.TOP)
+                        },
+                        {
+                            text: "底部对齐",
+                            handler: () =>
+                                alignElementToElement(
+                                    ElementAlignCommands.BOTTOM
+                                )
+                        }
+                    ]
+                },
                 {
                     text: "水平居中",
                     handler: () =>

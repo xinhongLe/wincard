@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { PPTElement, Slide } from "@/types/slides";
+import { ElementTypes, PPTElement, Slide } from "@/types/slides";
 import { ElementAlignCommand, ElementAlignCommands } from "@/types/edit";
 import { getElementListRange } from "@/utils/element";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
@@ -17,6 +17,55 @@ export default () => {
     const currentSlide = computed<Slide>(() => store.getters.currentSlide);
 
     const { addHistorySnapshot } = useHistorySnapshot();
+
+    const getAlignValue = (command: ElementAlignCommand) => {
+        const elements = currentSlide.value.elements.filter(element => {
+            return activeElementIdList.value.includes(element.id);
+        });
+        let alignValue = 0;
+        if (command === ElementAlignCommands.TOP) {
+            elements.forEach(element => {
+                if (alignValue === 0) alignValue = element.top;
+                alignValue = Math.min(alignValue, element.top);
+            });
+        } else if (command === ElementAlignCommands.LEFT) {
+            elements.forEach(element => {
+                if (alignValue === 0) alignValue = element.left;
+                alignValue = Math.min(alignValue, element.left);
+            });
+        } else if (command === ElementAlignCommands.RIGHT) {
+            elements.forEach(element => {
+                alignValue = Math.max(alignValue, element.left + element.width);
+            });
+        } else if (command === ElementAlignCommands.BOTTOM) {
+            elements.forEach(element => {
+                alignValue = Math.max(alignValue, element.top + (element.type === ElementTypes.LINE ? Math.abs(element.start[1] - element.end[1]) : element.height));
+            });
+        }
+        return alignValue;
+    };
+
+    const alignElementToElement = (command: ElementAlignCommand) => {
+        const newElementList: PPTElement[] = JSON.parse(
+            JSON.stringify(currentSlide.value.elements)
+        );
+        const alignValue = getAlignValue(command);
+        for (const element of newElementList) {
+            if (!activeElementIdList.value.includes(element.id)) continue;
+            if (command === ElementAlignCommands.LEFT) {
+                element.left = alignValue;
+            } else if (command === ElementAlignCommands.TOP) {
+                element.top = alignValue;
+            } else if (command === ElementAlignCommands.BOTTOM) {
+                element.top = alignValue - (element.type === ElementTypes.LINE ? Math.abs(element.start[1] - element.end[1]) : element.height);
+            } else if (command === ElementAlignCommands.RIGHT) {
+                element.left = alignValue - element.width;
+            }
+        }
+
+        store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList });
+        addHistorySnapshot();
+    };
 
     /**
      * 将所有选中的元素对齐到画布
@@ -75,6 +124,7 @@ export default () => {
     };
 
     return {
-        alignElementToCanvas
+        alignElementToCanvas,
+        alignElementToElement
     };
 };
