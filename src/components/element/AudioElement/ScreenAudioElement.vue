@@ -12,21 +12,23 @@
             class="rotate-wrapper"
             :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
         >
-            <div class="element-content">
+            <div class="element-content" @mouseover="mouseover" @mouseleave="mouseleave">
                 <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="" @click="handleAudioEvent">
                 <img class="icon-image" v-else src="@/assets/images/audio.png" alt="" @click="handleAudioEvent">
                 <div class="progress-bar"
-                    v-if="showProgress"
+                    v-if="showProgress && isHideProcess"
                     :style="{
-                        width: durationBoxWidth - 16 + 'px',
-                        right: VIEWPORT_SIZE - elementInfo.width - elementInfo.left > durationBoxWidth ? -durationBoxWidth + 'px' : elementInfo.width + 16 + 'px'
+                        width: durationBoxWidth + 'px',
+                        right: VIEWPORT_SIZE - elementInfo.width - elementInfo.left > durationBoxWidth ? -durationBoxWidth + 'px' : elementInfo.width + 'px'
                     }">
-                    <a-slider v-model:value="playDuration" :max="duration" @afterChange="selectDuration"></a-slider>
-                    <div class="duration">
-                        <span>{{ secondToTime(playDuration) }}</span>
-                        <IconPlayOne v-if="!isPlay" class="icon-play" @click="handleAudioEvent" />
-                        <IconPause v-else class="icon-play" @click="handleAudioEvent" />
-                        <span>{{ secondToTime(duration) }}</span>
+                    <div>
+                        <a-slider v-model:value="playDuration" :max="duration" @afterChange="selectDuration"></a-slider>
+                        <div class="duration">
+                            <span>{{ secondToTime(playDuration) }}</span>
+                            <IconPlayOne v-if="!isPlay" class="icon-play" @click="handleAudioEvent" />
+                            <IconPause v-else class="icon-play" @click="handleAudioEvent" />
+                            <span>{{ secondToTime(duration) }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,7 +55,7 @@ export default defineComponent({
         const scale: Ref<number> = inject("slideScale") || ref(1);
         const durationBoxWidth = 200;
 
-        const { playAudio, stopAudio, showProgress, duration, playDuration, selectDuration, secondToTime, isPlay } = useAudio();
+        const { playAudio, stopAudio, showProgress, duration, playDuration, selectDuration, secondToTime, isPlay, isHideProcess, mouseover, mouseleave } = useAudio();
         const handleAudioEvent = () => {
             playAudio(audioUrl.value);
         };
@@ -76,7 +78,10 @@ export default defineComponent({
             showProgress,
             durationBoxWidth,
             isPlay,
-            VIEWPORT_SIZE
+            VIEWPORT_SIZE,
+            mouseleave,
+            mouseover,
+            isHideProcess
         };
     }
 });
@@ -114,15 +119,24 @@ export default defineComponent({
 }
 
 .progress-bar {
-    height: 50px;
-    background: #e7efff;
-    border-radius: 8px;
-    padding: 0px 6px 6px;
-    box-sizing: border-box;
     position: absolute;
     top: 0;
     bottom: 0;
     margin: auto;
+    z-index: 200;
+    padding-left: 16px;
+    height: 50px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    >div {
+        height: 50px;
+        background: #e7efff;
+        border-radius: 8px;
+        padding: 0px 6px 6px;
+        box-sizing: border-box;
+        flex: 1;
+    }
     .duration {
         width: 100%;
         display: flex;
@@ -145,6 +159,7 @@ export default defineComponent({
             margin-right: 5px;
             display: flex;
             align-items: center;
+            cursor: pointer;
         }
     }
     ::v-deep(.ant-slider-rail) {

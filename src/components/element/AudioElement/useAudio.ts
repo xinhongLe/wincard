@@ -6,6 +6,7 @@ export default () => {
     let audio: HTMLAudioElement | null = null;
     let timer: any = null;
     let isPause = false; // 是否暂停
+    const isHideProcess = ref(false);
     const showProgress = ref(false);
     const isPlay = ref(false); // 播放状态
     const duration = ref(0);
@@ -81,6 +82,13 @@ export default () => {
         return (hour > 0 ? [hour, min, sec] : [min, sec]).map(add0).join(":");
     };
 
+    const mouseover = () => {
+        isHideProcess.value = true;
+    };
+
+    const mouseleave = () => {
+        isHideProcess.value = false;
+    };
     return {
         playAudio,
         stopAudio,
@@ -89,6 +97,9 @@ export default () => {
         selectDuration,
         secondToTime,
         showProgress,
-        isPlay
+        isPlay,
+        isHideProcess,
+        mouseover,
+        mouseleave
     };
 };
