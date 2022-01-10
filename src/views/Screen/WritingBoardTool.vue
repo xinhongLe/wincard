@@ -264,7 +264,6 @@ export default defineComponent({
             const y = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY;
 
             isMouseDown = true;
-            console.log(x, y);
             lastPos = { x, y };
         };
 

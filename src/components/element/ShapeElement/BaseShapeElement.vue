@@ -126,11 +126,17 @@ export default defineComponent({
                 const h = props.elementInfo.height;
                 return `M ${borderRadius} 0 L ${w - borderRadius} 0 Q ${w} 0 ${w} ${borderRadius} L ${w} ${h - borderRadius} Q ${w} ${h} ${w - borderRadius} ${h} L ${borderRadius} ${h} Q 0 ${h} 0 ${h - borderRadius} L 0 ${borderRadius} Q 0 0 ${borderRadius} 0 Z`;
             }
+            if (props.elementInfo.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z") {
+                const borderRadius = props.elementInfo.radius || 0;
+                const w = props.elementInfo.width;
+                const h = props.elementInfo.height;
+                return `M 0 ${borderRadius} Q 0 0 ${borderRadius} 0 L ${w - borderRadius} 0 Q ${w} 0 ${w} ${borderRadius} L ${w} ${h - borderRadius} Q ${w} ${h} ${w - borderRadius} ${h} L ${w / 4 + 10} ${h} L ${w / 4} ${h + 40} L ${w / 4 - 10} ${h} L ${borderRadius} ${h} Q 0 ${h} 0 ${h - borderRadius} L 0 ${borderRadius} Z`;
+            }
             return props.elementInfo.path;
         });
 
         const isScale = computed(() => {
-            return props.elementInfo.path !== "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z";
+            return !(props.elementInfo.path === "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z" || props.elementInfo.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z");
         });
 
         return {

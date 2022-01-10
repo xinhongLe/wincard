@@ -177,7 +177,6 @@ export default defineComponent({
             if (handleElementId.value !== props.elementId) return;
 
             const commands = "command" in payload ? [payload] : payload;
-            console.log(editorView.state);
             for (const item of commands) {
                 if (item.command === "fontname" && item.value) {
                     const mark = editorView.state.schema.marks.fontname.create({

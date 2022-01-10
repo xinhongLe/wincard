@@ -516,7 +516,8 @@ const dealVideo = (oldVideo: IOldVideo) => {
         src: "",
         showType: 0,
         rotate: 0,
-        poster: ""
+        poster: "",
+        icon: ""
     };
 
     element.id = oldVideo.UUID;

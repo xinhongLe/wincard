@@ -184,7 +184,6 @@ export default defineComponent({
             listenPageList.value.splice(newIndex, 0, word);
 
             store.commit(MutationTypes.UPDATE_LISTEN_PAGE_LIST, listenPageList.value);
-            console.log(listenPageList.value.length);
         };
 
         const selectedKeys = ref<(string | number)[]>([]);
