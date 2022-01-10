@@ -60,7 +60,7 @@
         </a-input-group>
 
         <a-button-group class="row">
-            <a-popover trigger="click">
+            <a-popover placement="bottom" trigger="click">
                 <template #content>
                     <ColorPicker
                         :modelValue="richTextAttrs.color"
@@ -83,7 +83,7 @@
                     </a-button>
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click">
+            <a-popover placement="bottom" trigger="click">
                 <template #content>
                     <ColorPicker
                         :modelValue="richTextAttrs.backcolor"
@@ -108,7 +108,7 @@
                     </a-button>
                 </a-tooltip>
             </a-popover>
-            <a-popover trigger="click">
+            <a-popover placement="bottom" trigger="click">
                 <template #content>
                     <ColorPicker
                         :modelValue="fill"
