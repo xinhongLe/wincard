@@ -3,6 +3,8 @@ import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, ComputedRef, computed, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssPosterUrl, getOssVideoUrl, videoUrlToBase64 } from "@/utils/video";
+import isElectron from "is-electron";
+import {get, STORAGE_TYPES} from "@/utils/storage";
 // import { getResourceDB } from "@/utils/database";
 // import { imageUrlToBase64 } from "@/utils/image";
 
@@ -40,25 +42,27 @@ export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolea
         let icon: string | null = null;
         let video: string | null = null;
         let poster: string | null = null;
-        icon = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.icon || "");
-        if (icon) iconUrl.value = icon;
-        poster = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.poster || "");
-        if (poster) posterUrl.value = poster;
-        video = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.src || "");
-        if (video) videoUrl.value = video;
-        if (icon) {
-            iconUrl.value = icon;
-            const props = {
-                ossIcon: icon
-            };
-            !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
-        }
-        if (poster) {
-            posterUrl.value = poster;
-            const props = {
-                ossPoster: poster
-            };
-            !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+        if (isElectron() && get(STORAGE_TYPES.SET_ISCACHE)) {
+            icon = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.icon || "");
+            if (icon) iconUrl.value = icon;
+            poster = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.poster || "");
+            if (poster) posterUrl.value = poster;
+            video = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.src || "");
+            if (video) videoUrl.value = video;
+            if (icon) {
+                iconUrl.value = icon;
+                const props = {
+                    ossIcon: icon
+                };
+                !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+            }
+            if (poster) {
+                posterUrl.value = poster;
+                const props = {
+                    ossPoster: poster
+                };
+                !isScreening && store.commit(MutationTypes.UPDATE_ELEMENT, { id: videoElement.value.id, props });
+            }
         }
         if (icon && poster && video) return;
         getToken(async (ossToken: OssToken) => {

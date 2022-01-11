@@ -3,6 +3,8 @@ import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, computed, ComputedRef, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssVideoUrl, videoUrlToBase64 } from "@/utils/video";
+import isElectron from "is-electron";
+import { get, STORAGE_TYPES } from "@/utils/storage";
 // import { getResourceDB } from "@/utils/database";
 
 export default (follow: ComputedRef<Follow | undefined>, isScreening?: boolean) => {
@@ -12,8 +14,9 @@ export default (follow: ComputedRef<Follow | undefined>, isScreening?: boolean) 
     const updateVideo = async () => {
         // const resourceDB = getResourceDB();
         let video: string | null = null;
-        video = await instance?.appContext.config.globalProperties.$getLocalFileUrl(follow.value ? follow.value.src : "");
-
+        if (isElectron() && get(STORAGE_TYPES.SET_ISCACHE)) {
+            video = await instance?.appContext.config.globalProperties.$getLocalFileUrl(follow.value ? follow.value.src : "");
+        }
         getToken(async (ossToken: OssToken) => {
             // const result = await resourceDB.db.where({ id: follow.value ? follow.value.src : "" }).toArray();
             if (video) {
