@@ -12,14 +12,18 @@
         <div class="element-content" v-contextmenu="contextmenus">
             <EditableTable
                 @mousedown.stop
+                :id="elementInfo.id"
                 :data="elementInfo.data"
                 :width="elementInfo.width"
+                :height="elementInfo.height"
                 :colWidths="elementInfo.colWidths"
+                :rowHeights="rowHeights"
                 :outline="elementInfo.outline"
                 :theme="elementInfo.theme"
                 :editable="editable"
                 @change="data => updateTableCells(data)"
                 @changeColWidths="widths => updateColWidths(widths)"
+                @changeRowHeights="heights => updateRowHeights(heights)"
                 @changeSelectedCells="cells => updateSelectedCells(cells)"
             />
             <div
@@ -182,12 +186,34 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
+        // 更新表格的行高数据
+        const updateRowHeights = (heights: number[]) => {
+            const height = heights.reduce((a, b) => a + b);
+            const rowHeights = heights.map(item => item / height);
+
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: props.elementInfo.id,
+                props: { height, rowHeights }
+            });
+            addHistorySnapshot();
+        };
+
         // 更新表格当前选中的单元格
         const updateSelectedCells = (cells: string[]) => {
             nextTick(() =>
                 store.commit(MutationTypes.SET_SELECTED_TABLE_CELLS, cells)
             );
         };
+
+        const rowHeights = computed(() => {
+            let rowHeights = props.elementInfo.rowHeights || [];
+            if (rowHeights.length === 0) {
+                const rowsNum = props.elementInfo.data.length;
+                // 以前的旧数据格式处理
+                rowHeights = Array.from({ length: rowsNum }, () => 1 / rowsNum);
+            }
+            return rowHeights;
+        });
 
         return {
             elementRef,
@@ -197,7 +223,9 @@ export default defineComponent({
             updateColWidths,
             editable,
             startEdit,
-            updateSelectedCells
+            updateSelectedCells,
+            updateRowHeights,
+            rowHeights
         };
     }
 });

@@ -127,7 +127,7 @@ export default defineComponent({
                 [ElementTypes.TEXT]: TextElementOperate,
                 [ElementTypes.SHAPE]: ShapeElementOperate,
                 [ElementTypes.LINE]: LineElementOperate,
-                [ElementTypes.TABLE]: TableElementOperate,
+                [ElementTypes.TABLE]: CommonElementOperate,
                 [ElementTypes.CHART]: CommonElementOperate,
                 [ElementTypes.LATEX]: CommonElementOperate,
                 [ElementTypes.AUDIO]: ImageElementOperate,

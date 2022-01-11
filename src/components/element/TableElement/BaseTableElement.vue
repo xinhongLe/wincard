@@ -12,6 +12,8 @@
                 :data="elementInfo.data"
                 :width="elementInfo.width"
                 :colWidths="elementInfo.colWidths"
+                :height="elementInfo.height"
+                :rowHeights="rowHeights"
                 :outline="elementInfo.outline"
                 :theme="elementInfo.theme"
             />
@@ -20,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 import { PPTTableElement } from "@/types/slides";
 
 import StaticTable from "./StaticTable.vue";
@@ -35,6 +37,20 @@ export default defineComponent({
             type: Object as PropType<PPTTableElement>,
             required: true
         }
+    },
+    setup(props) {
+        const rowHeights = computed(() => {
+            let rowHeights = props.elementInfo.rowHeights || [];
+            if (rowHeights.length === 0) {
+                const rowsNum = props.elementInfo.data.length;
+                // 以前的旧数据格式处理
+                rowHeights = Array.from({ length: rowsNum }, () => 1 / rowsNum);
+            }
+            return rowHeights;
+        });
+        return {
+            rowHeights
+        };
     }
 });
 </script>

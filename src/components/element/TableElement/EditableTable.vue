@@ -1,15 +1,23 @@
 <template>
-    <div class="editable-table" :style="{ width: totalWidth + 'px' }">
+    <div class="editable-table" :style="{ width: totalWidth + 'px', height: height + 'px' }">
         <div class="handler" v-if="editable">
             <div
                 class="drag-line"
-                v-for="(pos, index) in dragLinePosition"
+                v-for="(pos, index) in dragLinePosition[0]"
                 :key="index"
                 :style="{ left: pos + 'px' }"
                 @mousedown="$event => handleMousedownColHandler($event, index)"
             ></div>
+            <div
+                class="drag-v-line"
+                v-for="(pos, index) in dragLinePosition[1]"
+                :key="index"
+                :style="{ top: pos + 'px' }"
+                @mousedown="$event => handleMousedownRowHandler($event, index)"
+            ></div>
         </div>
         <table
+            ref="tableRef"
             :class="{
                 theme: theme,
                 'row-header': theme?.rowHeader,
@@ -30,7 +38,7 @@
                 />
             </colgroup>
             <tbody>
-                <tr v-for="(rowCells, rowIndex) in tableCells" :key="rowIndex">
+                <tr v-for="(rowCells, rowIndex) in tableCells" :key="rowIndex" :style="{height: rowSizeList.length > 0 ? rowSizeList[rowIndex] + 'px' : '36px'}">
                     <td
                         class="cell"
                         :class="{
@@ -100,7 +108,7 @@ import {
     watch
 } from "vue";
 import { debounce, isEqual } from "lodash";
-import { useStore } from "@/store";
+import { MutationTypes, useStore } from "@/store";
 import { PPTElementOutline, TableCell, TableTheme } from "@/types/slides";
 import { ContextmenuItem } from "@/types/contextmenu";
 import { KEYS } from "@/configs/hotkey";
@@ -113,11 +121,15 @@ import CustomTextarea from "./CustomTextarea.vue";
 
 export default defineComponent({
     name: "editable-table",
-    emits: ["change", "changeColWidths", "changeSelectedCells"],
+    emits: ["change", "changeColWidths", "changeSelectedCells", "changeRowHeights"],
     components: {
         CustomTextarea
     },
     props: {
+        id: {
+            type: String,
+            require: true
+        },
         data: {
             type: Array as PropType<TableCell[][]>,
             required: true
@@ -126,7 +138,15 @@ export default defineComponent({
             type: Number,
             required: true
         },
+        height: {
+            type: Number,
+            required: true
+        },
         colWidths: {
+            type: Array as PropType<number[]>,
+            required: true
+        },
+        rowHeights: {
             type: Array as PropType<number[]>,
             required: true
         },
@@ -177,6 +197,20 @@ export default defineComponent({
             },
             { immediate: true }
         );
+        // 计算表格每一行的行高和总高度
+        const rowSizeList = ref<number[]>([]);
+        const totalHeight = computed(() =>
+            rowSizeList.value.reduce((a, b) => a + b)
+        );
+        watch(
+            [() => props.rowHeights, () => props.height],
+            () => {
+                rowSizeList.value = props.rowHeights.map(
+                    item => item * props.height
+                );
+            },
+            { immediate: true }
+        );
 
         // 清除全部单元格的选中状态
         // 表格处于不可编辑状态时也需要清除
@@ -194,14 +228,21 @@ export default defineComponent({
 
         // 用于拖拽列宽的操作节点位置
         const dragLinePosition = computed(() => {
-            const dragLinePosition: number[] = [];
+            const dragHLinePosition: number[] = [];
+            const dragVLinePosition: number[] = [];
             for (let i = 1; i < colSizeList.value.length + 1; i++) {
                 const pos = colSizeList.value
                     .slice(0, i)
                     .reduce((a, b) => a + b);
-                dragLinePosition.push(pos);
+                dragHLinePosition.push(pos);
             }
-            return dragLinePosition;
+            for (let i = 1; i < rowSizeList.value.length + 1; i++) {
+                const pos = rowSizeList.value
+                    .slice(0, i)
+                    .reduce((a, b) => a + b);
+                dragVLinePosition.push(pos);
+            }
+            return [dragHLinePosition, dragVLinePosition];
         });
 
         // 无效的单元格位置（被合并的单元格位置）集合
@@ -488,10 +529,12 @@ export default defineComponent({
             removeSelectedCells();
         };
 
+        let isMouseDown = false;
+
         // 鼠标拖拽调整列宽
         const handleMousedownColHandler = (e: MouseEvent, colIndex: number) => {
             removeSelectedCells();
-            let isMouseDown = true;
+            isMouseDown = true;
 
             const originWidth = colSizeList.value[colIndex];
             const startPageX = e.pageX;
@@ -515,6 +558,36 @@ export default defineComponent({
                 document.onmouseup = null;
 
                 emit("changeColWidths", colSizeList.value);
+            };
+        };
+
+        // 鼠标拖拽调整行高
+        const handleMousedownRowHandler = (e: MouseEvent, rowIndex: number) => {
+            removeSelectedCells();
+            isMouseDown = true;
+
+            const originHeight = rowSizeList.value[rowIndex];
+            const startPageY = e.pageY;
+
+            const minHeight = 50;
+
+            document.onmousemove = e => {
+                if (!isMouseDown) return;
+
+                const moveY = (e.pageY - startPageY) / canvasScale.value;
+                const height =
+                    originHeight + moveY < minHeight
+                        ? minHeight
+                        : Math.round(originHeight + moveY);
+
+                rowSizeList.value[rowIndex] = height;
+            };
+            document.onmouseup = () => {
+                isMouseDown = false;
+                document.onmousemove = null;
+                document.onmouseup = null;
+
+                emit("changeRowHeights", rowSizeList.value);
             };
         };
 
@@ -763,6 +836,32 @@ export default defineComponent({
             ];
         };
 
+        const setTableSize = () => {
+            if (!tableRef.value || isMouseDown || store.state.isScaling) return;
+            const height = tableRef.value.clientHeight - 2;
+            const htmlTrs = tableRef.value.getElementsByTagName("tr");
+            const rowHeights: number[] = [];
+            for (let i = 0; i < htmlTrs.length; i++) {
+                rowHeights.push(htmlTrs[i].clientHeight / height);
+            }
+
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: props.id,
+                props: { height, rowHeights }
+            });
+        };
+
+        const resizeObserver = new ResizeObserver(setTableSize);
+        const tableRef = ref();
+        onMounted(() => {
+            setTableSize();
+            tableRef.value && resizeObserver.observe(tableRef.value);
+        });
+
+        onUnmounted(() => {
+            tableRef.value && resizeObserver.unobserve(tableRef.value);
+        });
+
         return {
             getTextStyle,
             dragLinePosition,
@@ -782,7 +881,11 @@ export default defineComponent({
             handleInput,
             insertExcelData,
             subThemeColor,
-            formatText
+            formatText,
+            rowSizeList,
+            totalHeight,
+            handleMousedownRowHandler,
+            tableRef
         };
     }
 });
@@ -883,6 +986,22 @@ table {
     opacity: 0;
     z-index: 2;
     cursor: col-resize;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.drag-v-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: $themeColor;
+    margin-top: -1px;
+    opacity: 0;
+    z-index: 2;
+    cursor: row-resize;
 
     &:hover {
         opacity: 1;

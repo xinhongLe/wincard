@@ -1,5 +1,5 @@
 <template>
-    <div class="static-table" :style="{ width: totalWidth + 'px' }">
+    <div class="static-table" :style="{ width: totalWidth + 'px', height: height + 'px' }">
         <table
             :class="{
                 theme: theme,
@@ -21,7 +21,7 @@
                 />
             </colgroup>
             <tbody>
-                <tr v-for="(rowCells, rowIndex) in data" :key="rowIndex">
+                <tr v-for="(rowCells, rowIndex) in data" :key="rowIndex" :style="{height: rowSizeList.length > 0 ? rowSizeList[rowIndex] + 'px' : '36px'}">
                     <td
                         class="cell"
                         :style="{
@@ -66,6 +66,14 @@ export default defineComponent({
             type: Array as PropType<number[]>,
             required: true
         },
+        height: {
+            type: Number,
+            required: true
+        },
+        rowHeights: {
+            type: Array as PropType<number[]>,
+            required: true
+        },
         outline: {
             type: Object as PropType<PPTElementOutline>,
             required: true
@@ -94,6 +102,20 @@ export default defineComponent({
             { immediate: true }
         );
 
+        const rowSizeList = ref<number[]>([]);
+        const totalHeight = computed(() =>
+            rowSizeList.value.reduce((a, b) => a + b)
+        );
+        watch(
+            [() => props.rowHeights, () => props.height],
+            () => {
+                rowSizeList.value = props.rowHeights.map(
+                    item => item * props.height
+                );
+            },
+            { immediate: true }
+        );
+
         const cells = computed(() => props.data);
         const { hideCells } = useHideCells(cells);
 
@@ -106,7 +128,9 @@ export default defineComponent({
             hideCells,
             getTextStyle,
             formatText,
-            subThemeColor
+            subThemeColor,
+            totalHeight,
+            rowSizeList
         };
     }
 });
