@@ -2,7 +2,7 @@ import { Slide } from "@/types/slides";
 
 export const slides: Slide[] = [
     {
-        id: "39FFFBBE2B08D1CFD8FCA24DE655B35B",
+        id: "19FFFBBE2B08D1CFD8FCA24DE655B35B",
         type: "element",
         viewportRatio: 0.5625,
         elements: [
@@ -71,6 +71,264 @@ export const slides: Slide[] = [
                 height: 154,
                 lineHeight: 1.2,
                 content: "<p style=\"\"><strong><span style=\"font-size: 112px\">窗卡页编辑</span></strong></p>",
+                rotate: 0,
+                defaultFontName: "Microsoft Yahei",
+                defaultColor: "#333",
+                defaultFontSize: "14px"
+            },
+            {
+                name: "文本2",
+                type: "text",
+                id: "7stmVP",
+                left: 466.43937772068796,
+                top: 388,
+                width: 585,
+                height: 56,
+                content: "<p style=\"\" class=\"\"><span style=\"font-size: 24px\">基于 Vue 3.x + TypeScript</span></p>",
+                rotate: 0,
+                defaultFontName: "Microsoft Yahei",
+                defaultColor: "#333",
+                defaultFontSize: "14px"
+            },
+            {
+                name: "线条",
+                type: "line",
+                id: "FnpZs4",
+                left: 472.43937772068796,
+                top: 372.75,
+                start: [0, 0],
+                end: [549, 0],
+                points: ["", ""],
+                color: "#5b9bd5",
+                style: "solid",
+                width: 2
+            },
+            {
+                name: "Flash-KtmEq3",
+                type: "flash",
+                id: "KtmEq3",
+                width: 100,
+                height: 100,
+                left: 0,
+                top: 0,
+                src: "ElementFile/bb5b612322e0a2bf01448e4a6f83d191.swf"
+            },
+            {
+                name: "视频-dNM6zU",
+                type: "video",
+                id: "dNM6zU",
+                width: 100,
+                height: 100,
+                rotate: 0,
+                left: 245.34468775344686,
+                top: 253.94160583941607,
+                src: "ElementFile/3cf571d4cf2a4c4b2df823a27852a7d5.mp4",
+                showType: 1,
+                icon: "ElementFile/d4a9c79c7c8e83afa478f2c26cd50492.png"
+            }
+        ],
+        background: { type: "solid", color: "#ffffff" },
+        intervalDuration: 2
+    },
+    {
+        id: "29FFFBBE2B08D1CFD8FCA24DE655B35B",
+        type: "element",
+        viewportRatio: 0.5625,
+        elements: [
+            {
+                name: "形状1",
+                type: "shape",
+                id: "4cbRxp",
+                left: 0,
+                top: 200,
+                width: 645.5646899307785,
+                height: 520,
+                viewBox: 200,
+                path: "M 0 0 L 0 200 L 200 200 Z",
+                fill: "#5b9bd5",
+                fixedRatio: false,
+                opacity: 0.7,
+                rotate: 0,
+                display: true,
+                wins: [{
+                    id: "xxx",
+                    cards: [
+                        {
+                            id: "sdfs",
+                            name: "卡1",
+                            slides: [
+                                { id: "232", name: "页面一", type: 11 },
+                                { id: "23s2", name: "页面一", type: 11 },
+                                { id: "23d2", name: "页面一", type: 11 }
+                            ]
+                        },
+                        {
+                            id: "sdfs",
+                            name: "卡1",
+                            slides: [
+                                { id: "23df2", name: "页面一", type: 11 },
+                                { id: "2ddf32", name: "页面一", type: 11 },
+                                { id: "2sdfsd32", name: "页面一", type: 11 }
+                            ]
+                        }
+                    ]
+                }]
+            },
+            {
+                name: "形状2",
+                type: "shape",
+                id: "ookHrf",
+                left: 0,
+                top: 0,
+                width: 406.8721901091843,
+                height: 459.75594091201026,
+                viewBox: 200,
+                path: "M 0 0 L 0 200 L 200 200 Z",
+                fill: "#5b9bd5",
+                fixedRatio: false,
+                flipV: true,
+                rotate: 0,
+                display: true
+            },
+            {
+                name: "文本1",
+                type: "text",
+                id: "idn7Mx",
+                left: 466.43937772068796,
+                top: 200,
+                width: 585,
+                height: 154,
+                lineHeight: 1.2,
+                content: "<p style=\"\"><strong><span style=\"font-size: 112px\">第二页</span></strong></p>",
+                rotate: 0,
+                defaultFontName: "Microsoft Yahei",
+                defaultColor: "#333",
+                defaultFontSize: "14px"
+            },
+            {
+                name: "文本2",
+                type: "text",
+                id: "7stmVP",
+                left: 466.43937772068796,
+                top: 388,
+                width: 585,
+                height: 56,
+                content: "<p style=\"\" class=\"\"><span style=\"font-size: 24px\">基于 Vue 3.x + TypeScript</span></p>",
+                rotate: 0,
+                defaultFontName: "Microsoft Yahei",
+                defaultColor: "#333",
+                defaultFontSize: "14px"
+            },
+            {
+                name: "线条",
+                type: "line",
+                id: "FnpZs4",
+                left: 472.43937772068796,
+                top: 372.75,
+                start: [0, 0],
+                end: [549, 0],
+                points: ["", ""],
+                color: "#5b9bd5",
+                style: "solid",
+                width: 2
+            },
+            {
+                name: "Flash-KtmEq3",
+                type: "flash",
+                id: "KtmEq3",
+                width: 100,
+                height: 100,
+                left: 0,
+                top: 0,
+                src: "ElementFile/bb5b612322e0a2bf01448e4a6f83d191.swf"
+            },
+            {
+                name: "视频-dNM6zU",
+                type: "video",
+                id: "dNM6zU",
+                width: 100,
+                height: 100,
+                rotate: 0,
+                left: 245.34468775344686,
+                top: 253.94160583941607,
+                src: "ElementFile/3cf571d4cf2a4c4b2df823a27852a7d5.mp4",
+                showType: 1,
+                icon: "ElementFile/d4a9c79c7c8e83afa478f2c26cd50492.png"
+            }
+        ],
+        background: { type: "solid", color: "#ffffff" },
+        intervalDuration: 2
+    },
+    {
+        id: "39FFFBBE2B08D1CFD8FCA24DE655B35B",
+        type: "element",
+        viewportRatio: 0.5625,
+        elements: [
+            {
+                name: "形状1",
+                type: "shape",
+                id: "4cbRxp",
+                left: 0,
+                top: 200,
+                width: 645.5646899307785,
+                height: 520,
+                viewBox: 200,
+                path: "M 0 0 L 0 200 L 200 200 Z",
+                fill: "#5b9bd5",
+                fixedRatio: false,
+                opacity: 0.7,
+                rotate: 0,
+                display: true,
+                wins: [{
+                    id: "xxx",
+                    cards: [
+                        {
+                            id: "sdfs",
+                            name: "卡1",
+                            slides: [
+                                { id: "232", name: "页面一", type: 11 },
+                                { id: "23s2", name: "页面一", type: 11 },
+                                { id: "23d2", name: "页面一", type: 11 }
+                            ]
+                        },
+                        {
+                            id: "sdfs",
+                            name: "卡1",
+                            slides: [
+                                { id: "23df2", name: "页面一", type: 11 },
+                                { id: "2ddf32", name: "页面一", type: 11 },
+                                { id: "2sdfsd32", name: "页面一", type: 11 }
+                            ]
+                        }
+                    ]
+                }]
+            },
+            {
+                name: "形状2",
+                type: "shape",
+                id: "ookHrf",
+                left: 0,
+                top: 0,
+                width: 406.8721901091843,
+                height: 459.75594091201026,
+                viewBox: 200,
+                path: "M 0 0 L 0 200 L 200 200 Z",
+                fill: "#5b9bd5",
+                fixedRatio: false,
+                flipV: true,
+                rotate: 0,
+                display: true
+            },
+            {
+                name: "文本1",
+                type: "text",
+                id: "idn7Mx",
+                left: 466.43937772068796,
+                top: 200,
+                width: 585,
+                height: 154,
+                lineHeight: 1.2,
+                content: "<p style=\"\"><strong><span style=\"font-size: 112px\">第三页</span></strong></p>",
                 rotate: 0,
                 defaultFontName: "Microsoft Yahei",
                 defaultColor: "#333",

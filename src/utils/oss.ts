@@ -4,6 +4,7 @@ import { getOssToken } from "@/api";
 import { OSS_PATH } from "@/configs/filePath";
 import { message } from "ant-design-vue";
 import isElectron from "is-electron";
+import { get, STORAGE_TYPES } from "@/utils/storage";
 
 export interface OssToken {
     AccessKeyId: string;
@@ -145,7 +146,7 @@ export const uploadFile = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: strin
                     }
                 }, 10);
             }
-            if (isElectron() && (window as any).electron.getCachePath && (window as any).electron.savePutFile) {
+            if (isElectron() && (window as any).electron.getCachePath && (window as any).electron.savePutFile && get(STORAGE_TYPES.SET_ISCACHE)) {
                 const savePath = (window as any).electron.getCachePath(name + "." + fileExtention);
                 (window as any).electron.savePutFile(savePath, buffer);
             }

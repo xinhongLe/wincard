@@ -3,6 +3,8 @@ import { getOssImageUrl, imageUrlToBase64 } from "@/utils/image";
 import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, ComputedRef, computed, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
+import isElectron from "is-electron";
+import { get, STORAGE_TYPES } from "@/utils/storage";
 // import { getResourceDB } from "@/utils/database";
 
 declare function require(img: string): string;
@@ -16,7 +18,9 @@ export default (imageElement: ComputedRef<PPTImageElement>, isScreening?: boolea
         // 切换图片编辑 会重复拉取图片 图片缓存成base64进行存储
         // const result = await resourceDB.db.where({ id: imageElement.value.src }).toArray();
         let imageRes: string | null = null;
-        imageRes = await instance?.appContext.config.globalProperties.$getLocalFileUrl(imageElement.value.src || "");
+        if (isElectron() && get(STORAGE_TYPES.SET_ISCACHE)) {
+            imageRes = await instance?.appContext.config.globalProperties.$getLocalFileUrl(imageElement.value.src || "");
+        }
         if (imageRes) {
             imageUrl.value = imageRes;
             const props = {
