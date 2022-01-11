@@ -4,7 +4,7 @@ import { ref, watch, ComputedRef, computed, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssPosterUrl, getOssVideoUrl, videoUrlToBase64 } from "@/utils/video";
 import isElectron from "is-electron";
-import {get, STORAGE_TYPES} from "@/utils/storage";
+import { get, STORAGE_TYPES } from "@/utils/storage";
 // import { getResourceDB } from "@/utils/database";
 // import { imageUrlToBase64 } from "@/utils/image";
 
