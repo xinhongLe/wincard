@@ -241,6 +241,58 @@
                 </a-tooltip>
             </CheckboxButtonGroup>
 
+            <CheckboxButtonGroup class="row">
+                <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上标">
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.superscript"
+                        @click="emitRichTextCommand('superscript')"
+                        ><IconUpOne
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下标">
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.subscript"
+                        @click="emitRichTextCommand('subscript')"
+                        ><IconDownOne
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="行内代码"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.code"
+                        @click="emitRichTextCommand('code')"
+                        ><IconCode
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="引用">
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.blockquote"
+                        @click="emitRichTextCommand('blockquote')"
+                        ><IconQuote
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="清除格式"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        @click="emitRichTextCommand('clear')"
+                        ><IconFormat
+                    /></CheckboxButton>
+                </a-tooltip>
+            </CheckboxButtonGroup>
+
+            <a-divider />
+
             <a-radio-group
                 class="row"
                 button-style="solid"
