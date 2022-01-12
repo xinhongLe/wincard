@@ -93,6 +93,30 @@
         </div>
         <a-divider v-if="hasRadius" />
 
+        <div class="row" v-if="isChartShap">
+            <div style="flex: 3;">箭头方向：</div>
+            <a-select
+                style="flex: 4;"
+                :value="chartArrowPosition"
+                @change="value => updateChartArrowPosition(value)"
+            >
+                <a-select-option value="top">向上</a-select-option>
+                <a-select-option value="bottom">向下</a-select-option>
+                <a-select-option value="left">向左</a-select-option>
+                <a-select-option value="right">向右</a-select-option>
+            </a-select>
+        </div>
+        <div class="row" v-if="isChartShap">
+            <div style="flex: 3;">箭头位置：</div>
+            <a-input-number
+                :step="5"
+                :value="chartArrowOffset"
+                @change="value => updateChartArrowOffset(value)"
+                style="flex: 4;"
+            />
+        </div>
+        <a-divider v-if="isChartShap" />
+
         <template v-if="showTextTools">
             <a-input-group class="row">
                 <a-select
@@ -342,6 +366,8 @@ export default defineComponent({
         const fillType = ref("fill");
         const textAlign = ref("middle");
         const radius = ref(0);
+        const chartArrowPosition = ref("bottom");
+        const chartArrowOffset = ref(0);
 
         watch(
             handleElement,
@@ -362,6 +388,10 @@ export default defineComponent({
                 textAlign.value = handleElement.value?.text?.align || "middle";
 
                 radius.value = handleElement.value.radius || 0;
+
+                chartArrowPosition.value = handleElement.value.chartPosition || "bottom";
+
+                chartArrowOffset.value = handleElement.value.chartOffset || (chartArrowPosition.value === "top" || chartArrowPosition.value === "bottom" ? (Math.ceil(handleElement.value.width / 4)) : (Math.ceil(handleElement.value.height / 4)));
             },
             { deep: true, immediate: true }
         );
@@ -445,6 +475,29 @@ export default defineComponent({
             return handleElement.value.path === "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z" || handleElement.value.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z";
         });
 
+        const isChartShap = computed(() => {
+            return handleElement.value.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z";
+        });
+
+        const updateChartArrowPosition = (position: string) => {
+            console.log(position);
+            const props = { chartPosition: position };
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props
+            });
+            addHistorySnapshot();
+        };
+
+        const updateChartArrowOffset = (offset: number) => {
+            const props = { chartOffset: offset };
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props
+            });
+            addHistorySnapshot();
+        };
+
         const radiusMax = computed(() => {
             return Math.floor(Math.min(handleElement.value.height, handleElement.value.width) / 2);
         });
@@ -468,7 +521,12 @@ export default defineComponent({
             updateTextAlign,
             updateRadius,
             hasRadius,
-            radiusMax
+            radiusMax,
+            isChartShap,
+            chartArrowOffset,
+            chartArrowPosition,
+            updateChartArrowPosition,
+            updateChartArrowOffset
         };
     }
 });

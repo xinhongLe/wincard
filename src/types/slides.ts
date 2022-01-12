@@ -416,6 +416,10 @@ export interface ShapeText {
  * text?: 形状内文本
  *
  * radius: 圆角
+ *
+ * chartPosition: 聊天框箭头方向
+ *
+ * chartOffset: 聊天框箭头偏移位置
  */
 export interface PPTShapeElement extends PPTBaseElement {
     type: "shape";
@@ -433,6 +437,8 @@ export interface PPTShapeElement extends PPTBaseElement {
     special?: boolean;
     text?: ShapeText;
     radius?: number;
+    chartPosition?: "top" | "bottom" | "left" | "right";
+    chartOffset?: number;
 }
 
 export type LinePoint = "" | "arrow" | "dot";

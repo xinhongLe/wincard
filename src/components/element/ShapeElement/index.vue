@@ -211,7 +211,13 @@ export default defineComponent({
                 const borderRadius = props.elementInfo.radius || 0;
                 const w = props.elementInfo.width;
                 const h = props.elementInfo.height;
-                return `M 0 ${borderRadius} Q 0 0 ${borderRadius} 0 L ${w - borderRadius} 0 Q ${w} 0 ${w} ${borderRadius} L ${w} ${h - borderRadius} Q ${w} ${h} ${w - borderRadius} ${h} L ${w / 4 + 10} ${h} L ${w / 4 - 10} ${h + 40} L ${w / 4 - 10} ${h} L ${borderRadius} ${h} Q 0 ${h} 0 ${h - borderRadius} L 0 ${borderRadius} Z`;
+                const position = props.elementInfo.chartPosition || "bottom";
+                const offset = props.elementInfo.chartOffset || (position === "top" || position === "bottom" ? (Math.ceil(w / 4)) : (Math.ceil(h / 4)));
+                const bottom = `L ${offset + 10} ${h} L ${offset - 10} ${h + 40} L ${offset - 10} ${h}`;
+                const left = `L 0 ${offset + 10} L -40 ${offset - 10} L 0 ${offset - 10}`;
+                const right = `L ${w} ${offset - 10} L ${w + 40} ${offset + 10} L ${w} ${offset + 10}`;
+                const top = `L ${offset - 10} 0 L ${offset + 10} -40 L ${offset + 10} 0`;
+                return `M 0 ${borderRadius} Q 0 0 ${borderRadius} 0 ${position === "top" ? top : ""} L ${w - borderRadius} 0 Q ${w} 0 ${w} ${borderRadius} ${position === "right" ? right : ""} L ${w} ${h - borderRadius} Q ${w} ${h} ${w - borderRadius} ${h} ${position === "bottom" ? bottom : ""} L ${borderRadius} ${h} Q 0 ${h} 0 ${h - borderRadius} ${position === "left" ? left : ""} L 0 ${borderRadius} Z`;
             }
             return props.elementInfo.path;
         });
