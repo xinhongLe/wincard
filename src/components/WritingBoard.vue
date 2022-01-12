@@ -43,8 +43,8 @@
         <div
             class="pen"
             :style="{
-                left: mouse.x * scale + (offsetX  + offsetScreenX - ((screenWidth - slideWidth) / 2) * (scale - 1)) - penSize / 2 + 'px',
-                top: mouse.y * scale + (offsetY + offsetScreenY - ((screenHeight - slideHeight) / 2) * (scale - 1)) - 36 + penSize / 2 + 'px',
+                left: mouse.x * scale + (offsetX - ((screenWidth - slideWidth) / 2) * (scale - 1)) - penSize / 2 + 'px',
+                top: mouse.y * scale + (offsetY - ((screenHeight - slideHeight) / 2) * (scale - 1)) - 36 + penSize / 2 + 'px',
                 color: color
             }"
             v-if="mouseInCanvas && !penTempHide && model === 'pen'"
@@ -434,7 +434,7 @@ export default defineComponent({
 .eraser,
 .pen {
     pointer-events: none;
-    position: fixed;
+    position: absolute;
     z-index: 9;
 
     .icon {
