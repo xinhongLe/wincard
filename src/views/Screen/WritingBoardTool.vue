@@ -76,7 +76,7 @@
                     <IconClear class="icon" />
                 </div>
             </a-tooltip>
-            <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="黑板" overlayClassName="tipZIndex">
+            <!-- <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="黑板" overlayClassName="tipZIndex">
                 <div
                     class="btn"
                     :class="{ active: blackboard }"
@@ -84,7 +84,7 @@
                 >
                     <IconFill class="icon" />
                 </div>
-            </a-tooltip>
+            </a-tooltip> -->
             <div class="colors">
                 <div
                     class="color"
@@ -257,7 +257,7 @@ export default defineComponent({
 
         let isMouseDown = false;
         let lastPos = { x: 0, y: 0 };
-        const writingBoardPosition = ref({ x: 5, y: 120 });
+        const writingBoardPosition = ref({ x: window.innerWidth / 2 - 100, y: 120 });
 
         const handleMousedown = (e: MouseEvent | TouchEvent) => {
             const x = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
