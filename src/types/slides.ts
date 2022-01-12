@@ -547,6 +547,8 @@ export interface TableCellStyle {
     fontsize?: string;
     fontname?: string;
     align?: "left" | "center" | "right";
+    lineHeight?: number;
+    wordSpace?: number;
 }
 
 /**

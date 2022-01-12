@@ -3,8 +3,8 @@
         <a-input-group compact class="row">
             <a-select
                 style="flex: 3;"
-                :value="textAttrs.fontname"
-                @change="value => updateTextAttrs({ fontname: value })"
+                :value="richTextAttrs.fontname"
+                @change="value => emitRichTextCommand('fontname', value)"
             >
                 <template #suffixIcon><IconFontSize /></template>
                 <a-select-opt-group label="系统字体">
@@ -31,8 +31,8 @@
             <a-select
                 show-search
                 style="flex: 2;"
-                :value="textAttrs.fontsize"
-                @change="value => updateTextAttrs({ fontsize: value })"
+                :value="richTextAttrs.fontsize"
+                @change="value => emitRichTextCommand('fontsize', value)"
             >
                 <template #suffixIcon><IconAddText /></template>
                 <a-select-option
@@ -49,9 +49,9 @@
             <a-popover trigger="click">
                 <template #content>
                     <ColorPicker
-                        :modelValue="textAttrs.color"
+                        :modelValue="richTextAttrs.color"
                         @update:modelValue="
-                            value => updateTextAttrs({ color: value })
+                            value => emitRichTextCommand('color', value)
                         "
                     />
                 </template>
@@ -64,7 +64,7 @@
                         <IconText />
                         <div
                             class="text-color-block"
-                            :style="{ backgroundColor: textAttrs.color }"
+                            :style="{ backgroundColor: richTextAttrs.color }"
                         ></div>
                     </a-button>
                 </a-tooltip>
@@ -98,16 +98,16 @@
             <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="加粗">
                 <CheckboxButton
                     style="flex: 1;"
-                    :checked="textAttrs.bold"
-                    @click="updateTextAttrs({ bold: !textAttrs.bold })"
+                    :checked="richTextAttrs.bold"
+                    @click="emitRichTextCommand('bold')"
                     ><IconTextBold
                 /></CheckboxButton>
             </a-tooltip>
             <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
                 <CheckboxButton
                     style="flex: 1;"
-                    :checked="textAttrs.em"
-                    @click="updateTextAttrs({ em: !textAttrs.em })"
+                    :checked="richTextAttrs.em"
+                    @click="emitRichTextCommand('em')"
                     ><IconTextItalic
                 /></CheckboxButton>
             </a-tooltip>
@@ -118,10 +118,8 @@
             >
                 <CheckboxButton
                     style="flex: 1;"
-                    :checked="textAttrs.underline"
-                    @click="
-                        updateTextAttrs({ underline: !textAttrs.underline })
-                    "
+                    :checked="richTextAttrs.underline"
+                    @click="emitRichTextCommand('underline')"
                     ><IconTextUnderline
                 /></CheckboxButton>
             </a-tooltip>
@@ -132,22 +130,70 @@
             >
                 <CheckboxButton
                     style="flex: 1;"
-                    :checked="textAttrs.strikethrough"
-                    @click="
-                        updateTextAttrs({
-                            strikethrough: !textAttrs.strikethrough
-                        })
-                    "
+                    :checked="richTextAttrs.strikethrough"
+                    @click="emitRichTextCommand('strikethrough')"
                     ><IconStrikethrough
                 /></CheckboxButton>
             </a-tooltip>
         </CheckboxButtonGroup>
 
+        <CheckboxButtonGroup class="row">
+            <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上标">
+                <CheckboxButton
+                    style="flex: 1;"
+                    :checked="richTextAttrs.superscript"
+                    @click="emitRichTextCommand('superscript')"
+                    ><IconUpOne
+                /></CheckboxButton>
+            </a-tooltip>
+            <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下标">
+                <CheckboxButton
+                    style="flex: 1;"
+                    :checked="richTextAttrs.subscript"
+                    @click="emitRichTextCommand('subscript')"
+                    ><IconDownOne
+                /></CheckboxButton>
+            </a-tooltip>
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="行内代码"
+            >
+                <CheckboxButton
+                    style="flex: 1;"
+                    :checked="richTextAttrs.code"
+                    @click="emitRichTextCommand('code')"
+                    ><IconCode
+                /></CheckboxButton>
+            </a-tooltip>
+            <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="引用">
+                <CheckboxButton
+                    style="flex: 1;"
+                    :checked="richTextAttrs.blockquote"
+                    @click="emitRichTextCommand('blockquote')"
+                    ><IconQuote
+                /></CheckboxButton>
+            </a-tooltip>
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
+                title="清除格式"
+            >
+                <CheckboxButton
+                    style="flex: 1;"
+                    @click="emitRichTextCommand('clear')"
+                    ><IconFormat
+                /></CheckboxButton>
+            </a-tooltip>
+        </CheckboxButtonGroup>
+
+        <a-divider />
+
         <a-radio-group
             class="row"
             button-style="solid"
-            :value="textAttrs.align"
-            @change="e => updateTextAttrs({ align: e.target.value })"
+            :value="richTextAttrs.align"
+            @change="e => emitRichTextCommand('align', e.target.value)"
         >
             <a-tooltip
                 :mouseLeaveDelay="0"
@@ -173,6 +219,42 @@
                 /></a-radio-button>
             </a-tooltip>
         </a-radio-group>
+
+        <a-divider />
+
+        <div class="row">
+            <div style="flex: 2;">行间距：</div>
+            <a-select
+                show-search
+                style="flex: 3;"
+                :value="textAttrs.lineHeight"
+                @change="value => updateTextAttrs({ lineHeight: value })"
+            >
+                <template #suffixIcon><IconRowHeight /></template>
+                <a-select-option
+                    v-for="item in lineHeightOptions"
+                    :key="item"
+                    :value="item"
+                    >{{ item }}px</a-select-option
+                >
+            </a-select>
+        </div>
+        <div class="row">
+            <div style="flex: 2;">字间距：</div>
+            <a-select
+                style="flex: 3;"
+                :value="textAttrs.wordSpace"
+                @change="value => updateTextAttrs({ wordSpace: value })"
+            >
+                <template #suffixIcon><IconFullwidth /></template>
+                <a-select-option
+                    v-for="item in wordSpaceOptions"
+                    :key="item"
+                    :value="item"
+                    >{{ item }}px</a-select-option
+                >
+            </a-select>
+        </div>
 
         <a-divider />
 
@@ -274,7 +356,7 @@ import {
 import { createRandomCode } from "@/utils/common";
 import { BASE_FONTS, WEB_FONTS } from "@/configs/font";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
-
+import emitter, { EmitterEvents } from "@/utils/emitter";
 import { message } from "ant-design-vue";
 
 import ElementOutline from "../common/ElementOutline.vue";
@@ -309,7 +391,9 @@ export default defineComponent({
             backcolor: "#000",
             fontsize: "12px",
             fontname: "微软雅黑",
-            align: "left"
+            align: "left",
+            lineHeight: 28,
+            wordSpace: 0
         });
 
         const theme = ref<TableTheme>();
@@ -318,6 +402,9 @@ export default defineComponent({
         const colCount = ref(0);
         const minRowCount = ref(0);
         const minColCount = ref(0);
+        const richTextAttrs = computed(() => store.state.richTextAttrs);
+        const lineHeight = ref<number>();
+        const wordSpace = ref<number>();
 
         watch(
             handleElement,
@@ -361,7 +448,9 @@ export default defineComponent({
                     backcolor: "#000",
                     fontsize: "12px",
                     fontname: "微软雅黑",
-                    align: "left"
+                    align: "left",
+                    lineHeight: 28,
+                    wordSpace: 0
                 };
             } else {
                 textAttrs.value = {
@@ -373,7 +462,9 @@ export default defineComponent({
                     backcolor: style.backcolor || "#000",
                     fontsize: style.fontsize || "12px",
                     fontname: style.fontname || "微软雅黑",
-                    align: style.align || "left"
+                    align: style.align || "left",
+                    lineHeight: style.lineHeight || 28,
+                    wordSpace: style.wordSpace || 0
                 };
             }
         };
@@ -519,6 +610,13 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
+        const emitRichTextCommand = (command: string, value?: string) => {
+            emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command, value });
+        };
+
+        const lineHeightOptions = Array.from({ length: 232 }, (v, k) => k + 24);
+        const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10];
+
         return {
             handleElement,
             availableFonts,
@@ -536,7 +634,11 @@ export default defineComponent({
             setTableRow,
             setTableCol,
             webFonts,
-            baseFonts
+            baseFonts,
+            emitRichTextCommand,
+            richTextAttrs,
+            lineHeightOptions,
+            wordSpaceOptions
         };
     }
 });

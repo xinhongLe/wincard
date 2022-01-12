@@ -67,7 +67,32 @@
                         @mouseenter="handleCellMouseenter(rowIndex, colIndex)"
                         v-contextmenu="el => contextmenus(el)"
                     >
-                        <CustomTextarea
+                        <div
+                            class="table-edit-cell"
+                            :style="{
+                                lineHeight: cell.style.lineHeight + 'px',
+                                letterSpacing: cell.style.wordSpace + 'px'
+                            }"
+                        >
+                            <ProsemirrorEditor
+                                v-if="activedCell === `${rowIndex}_${colIndex}`"
+                                :elementId="id"
+                                :defaultColor="cell.style.color || ''"
+                                :defaultFontName="cell.style.fontname || ''"
+                                :defaultFontSize="cell.style.fontsize || ''"
+                                :editable="activedCell === `${rowIndex}_${colIndex}`"
+                                :autoFocus="true"
+                                :value="cell.text"
+                                @update="value => handleInput(value, rowIndex, colIndex)"
+                                @mousedown.stop
+                            />
+                            <div
+                                class="show-text ProseMirror-static"
+                                v-else
+                                v-html="cell.text"
+                            ></div>
+                        </div>
+                        <!-- <CustomTextarea
                             v-if="activedCell === `${rowIndex}_${colIndex}`"
                             class="cell-text"
                             :class="{
@@ -88,7 +113,7 @@
                             v-else
                             class="cell-text"
                             v-html="formatText(cell.text)"
-                        />
+                        /> -->
                     </td>
                 </tr>
             </tbody>
@@ -117,13 +142,15 @@ import { getTextStyle, formatText } from "./utils";
 import useHideCells from "./useHideCells";
 import useSubThemeColor from "./useSubThemeColor";
 
-import CustomTextarea from "./CustomTextarea.vue";
+// import CustomTextarea from "./CustomTextarea.vue";
+import ProsemirrorEditor from "@/components/element/ProsemirrorEditor.vue";
 
 export default defineComponent({
     name: "editable-table",
     emits: ["change", "changeColWidths", "changeSelectedCells", "changeRowHeights"],
     components: {
-        CustomTextarea
+        // CustomTextarea,
+        ProsemirrorEditor
     },
     props: {
         id: {
@@ -836,20 +863,24 @@ export default defineComponent({
             ];
         };
 
+        const isScaling = computed(() => store.state.isScaling);
         const setTableSize = () => {
-            if (!tableRef.value || isMouseDown || store.state.isScaling) return;
+            if (!tableRef.value || isMouseDown || isScaling.value) return;
             const height = tableRef.value.clientHeight - 2;
             const htmlTrs = tableRef.value.getElementsByTagName("tr");
             const rowHeights: number[] = [];
             for (let i = 0; i < htmlTrs.length; i++) {
                 rowHeights.push(htmlTrs[i].clientHeight / height);
             }
-
             store.commit(MutationTypes.UPDATE_ELEMENT, {
                 id: props.id,
                 props: { height, rowHeights }
             });
         };
+
+        watch(isScaling, () => {
+            if (!isScaling.value) setTableSize();
+        });
 
         const resizeObserver = new ResizeObserver(setTableSize);
         const tableRef = ref();
@@ -1006,5 +1037,13 @@ table {
     &:hover {
         opacity: 1;
     }
+}
+
+.show-text {
+    pointer-events: none;
+}
+
+.table-edit-cell {
+    padding: 5px;
 }
 </style>

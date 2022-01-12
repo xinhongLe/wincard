@@ -106,18 +106,15 @@ export default defineComponent({
         const editable = ref(false);
 
         watch(handleElementId, () => {
-            if (handleElementId.value !== props.elementInfo.id) editable.value = false;
-        });
-
-        watch(editable, () => {
-            store.commit(
-                MutationTypes.SET_DISABLE_HOTKEYS_STATE,
-                editable.value
-            );
+            if (handleElementId.value !== props.elementInfo.id) {
+                editable.value = false;
+            }
         });
 
         const startEdit = () => {
-            if (!props.elementInfo.lock) editable.value = true;
+            if (!props.elementInfo.lock) {
+                editable.value = true;
+            }
         };
 
         // 监听表格元素的尺寸变化，当高度变化时，更新高度到vuex
@@ -129,7 +126,13 @@ export default defineComponent({
         watch(isScaling, () => {
             if (handleElementId.value !== props.elementInfo.id) return;
 
-            if (isScaling.value) editable.value = false;
+            if (isScaling.value) {
+                // editable.value = false;
+                store.commit(
+                    MutationTypes.SET_DISABLE_HOTKEYS_STATE,
+                    false
+                );
+            }
 
             if (!isScaling.value && realHeightCache.value !== -1) {
                 store.commit(MutationTypes.UPDATE_ELEMENT, {
@@ -140,30 +143,30 @@ export default defineComponent({
             }
         });
 
-        const updateTableElementHeight = (entries: ResizeObserverEntry[]) => {
-            const contentRect = entries[0].contentRect;
-            if (!elementRef.value) return;
+        // const updateTableElementHeight = (entries: ResizeObserverEntry[]) => {
+        //     const contentRect = entries[0].contentRect;
+        //     if (!elementRef.value) return;
 
-            const realHeight = contentRect.height;
+        //     const realHeight = contentRect.height;
 
-            if (props.elementInfo.height !== realHeight) {
-                if (!isScaling.value) {
-                    store.commit(MutationTypes.UPDATE_ELEMENT, {
-                        id: props.elementInfo.id,
-                        props: { height: realHeight }
-                    });
-                } else realHeightCache.value = realHeight;
-            }
-        };
+        //     if (props.elementInfo.height !== realHeight) {
+        //         if (!isScaling.value) {
+        //             store.commit(MutationTypes.UPDATE_ELEMENT, {
+        //                 id: props.elementInfo.id,
+        //                 props: { height: realHeight }
+        //             });
+        //         } else realHeightCache.value = realHeight;
+        //     }
+        // };
 
-        const resizeObserver = new ResizeObserver(updateTableElementHeight);
+        // const resizeObserver = new ResizeObserver(updateTableElementHeight);
 
-        onMounted(() => {
-            if (elementRef.value) resizeObserver.observe(elementRef.value);
-        });
-        onUnmounted(() => {
-            if (elementRef.value) resizeObserver.unobserve(elementRef.value);
-        });
+        // onMounted(() => {
+        //     if (elementRef.value) resizeObserver.observe(elementRef.value);
+        // });
+        // onUnmounted(() => {
+        //     if (elementRef.value) resizeObserver.unobserve(elementRef.value);
+        // });
 
         // 更新表格内容数据
         const updateTableCells = (data: TableCell[][]) => {

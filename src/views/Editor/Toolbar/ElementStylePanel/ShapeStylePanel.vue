@@ -480,7 +480,6 @@ export default defineComponent({
         });
 
         const updateChartArrowPosition = (position: string) => {
-            console.log(position);
             const props = { chartPosition: position };
             store.commit(MutationTypes.UPDATE_ELEMENT, {
                 id: handleElement.value.id,

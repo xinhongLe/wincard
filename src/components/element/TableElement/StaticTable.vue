@@ -36,7 +36,19 @@
                         :colspan="cell.colspan"
                         v-show="!hideCells.includes(`${rowIndex}_${colIndex}`)"
                     >
-                        <div class="cell-text" v-html="formatText(cell.text)" />
+                        <div
+                            class="table-edit-cell"
+                            :style="{
+                                lineHeight: cell.style.lineHeight + 'px',
+                                letterSpacing: cell.style.wordSpace + 'px'
+                            }"
+                        >
+                            <div
+                                class="show-text ProseMirror-static"
+                                v-html="cell.text"
+                            ></div>
+                        </div>
+                        <!-- <div class="cell-text" v-html="formatText(cell.text)" /> -->
                     </td>
                 </tr>
             </tbody>
@@ -201,5 +213,13 @@ table {
         padding: 5px;
         line-height: 1.5;
     }
+}
+
+.show-text {
+    pointer-events: none;
+}
+
+.table-edit-cell {
+    padding: 5px;
 }
 </style>
