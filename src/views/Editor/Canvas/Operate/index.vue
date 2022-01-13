@@ -184,8 +184,8 @@ export default defineComponent({
 
 .display-index {
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: -22px;
+    left: -22px;
     font-size: 12px;
     width: 18px;
     height: 18px;
