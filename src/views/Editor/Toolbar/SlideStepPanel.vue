@@ -429,7 +429,11 @@ export default defineComponent({
                 onOk() {
                     stepIndex.value = i;
                     editIndex.value = actionIndex;
-                    steps.value[stepIndex.value].splice(editIndex.value, 1);
+                    if (steps.value[stepIndex.value].length === 1) {
+                        steps.value.splice(stepIndex.value, 1);
+                    } else {
+                        steps.value[stepIndex.value].splice(editIndex.value, 1);
+                    }
 
                     store.commit(MutationTypes.UPDATE_SLIDE, {
                         steps: steps.value

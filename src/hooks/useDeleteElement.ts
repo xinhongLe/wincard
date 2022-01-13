@@ -50,6 +50,7 @@ export default (from: number) => {
             steps = currentSlide.value.steps.map((step: PPTElementAction[]) => {
                 return step.filter(s => (deleteElementList.findIndex(el => el.id === s.target) === -1));
             });
+            steps = steps.filter(step => step.length > 0);
         }
 
         logInput(`${from === 2 ? "剪切" : "删除"}元素 ${deleteElementList.map(item => item.name).join("、")}`, [LOG_EVENT.DELETE_ELEMENT, LOG_EVENT.DELETE_ELEMENT_FROM_LIST, LOG_EVENT.CUT_ELEMENT, LOG_EVENT.DELETE_ELEMENT_HOT_KEY][from]);
