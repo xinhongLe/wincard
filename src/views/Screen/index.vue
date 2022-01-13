@@ -278,30 +278,32 @@ export default defineComponent({
 
         // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
         const setSlideContentSize = () => {
-            const winWidth = props.inline ? screenRef.value.clientWidth : document.body.clientWidth;
-            const winHeight = props.inline ? screenRef.value.clientHeight : document.body.clientHeight;
-            // if (remarkVisible.value) {
-            //     winWidth = winWidth - 250;
-            // }
-            let width, height;
+            nextTick(() => {
+                const winWidth = props.inline ? screenRef.value.clientWidth : document.body.clientWidth;
+                const winHeight = props.inline ? screenRef.value.clientHeight : document.body.clientHeight;
+                // if (remarkVisible.value) {
+                //     winWidth = winWidth - 250;
+                // }
+                let width, height;
 
-            if (winHeight / winWidth === viewportRatio.value) {
-                width = winWidth;
-                height = winHeight;
-            } else if (winHeight / winWidth > viewportRatio.value) {
-                width = winWidth;
-                height = winWidth * viewportRatio.value;
-            } else {
-                width = winHeight / viewportRatio.value;
-                height = winHeight;
-            }
-            slideWidth.value = width;
-            slideHeight.value = height;
+                if (winHeight / winWidth === viewportRatio.value) {
+                    width = winWidth;
+                    height = winHeight;
+                } else if (winHeight / winWidth > viewportRatio.value) {
+                    width = winWidth;
+                    height = winWidth * viewportRatio.value;
+                } else {
+                    width = winHeight / viewportRatio.value;
+                    height = winHeight;
+                }
+                slideWidth.value = width;
+                slideHeight.value = height;
 
-            offsetScreenX.value = screenRef.value.offsetLeft;
-            offsetScreenY.value = screenRef.value.offsetTop;
-            screenWidth.value = screenRef.value.clientWidth;
-            screenHeight.value = screenRef.value.clientHeight;
+                offsetScreenX.value = screenRef.value.offsetLeft;
+                offsetScreenY.value = screenRef.value.offsetTop;
+                screenWidth.value = screenRef.value.clientWidth;
+                screenHeight.value = screenRef.value.clientHeight;
+            });
         };
 
         // 窗口尺寸变化监听：窗口发生变化时更新幻灯片的大小

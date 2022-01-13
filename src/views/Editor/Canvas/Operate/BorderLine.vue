@@ -1,10 +1,11 @@
 <template>
-    <div :class="['border-line', type, { wide: isWide }]"></div>
+    <div :class="['border-line', type, { wide: isWide }, { dashed: editable }]"></div>
 </template>
 
 <script lang="ts">
-import { PropType } from "vue";
+import { computed, PropType } from "vue";
 import { OperateBorderLine } from "@/types/edit";
+import { useStore } from "@/store";
 
 export default {
     name: "border-line",
@@ -17,6 +18,14 @@ export default {
             type: Boolean,
             default: false
         }
+    },
+    setup() {
+        const store = useStore();
+        const editable = computed(() => store.state.disableHotkeys);
+
+        return {
+            editable
+        };
     }
 };
 </script>
@@ -28,7 +37,11 @@ export default {
     height: 0;
     left: 0;
     top: 0;
-    border: 0 dashed $themeColor;
+    border: 0 solid $themeColor;
+
+    &.dashed {
+        border-style: dashed;
+    }
 
     &.top {
         border-top-width: 1px;
