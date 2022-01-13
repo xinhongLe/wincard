@@ -21,7 +21,7 @@
                 />
             </colgroup>
             <tbody>
-                <tr v-for="(rowCells, rowIndex) in data" :key="rowIndex" :style="{height: rowSizeList.length > 0 ? rowSizeList[rowIndex] + 'px' : '36px'}">
+                <tr v-for="(rowCells, rowIndex) in data" :key="rowIndex" :style="{height: rowSizeList.length > 0 ? rowSizeList[rowIndex] + 'px' : ''}">
                     <td
                         class="cell"
                         :style="{
@@ -45,8 +45,14 @@
                         >
                             <div
                                 class="show-text ProseMirror-static"
+                                v-if="rowSizeList.length > 0"
                                 v-html="cell.text"
                             ></div>
+                            <div
+                                v-else
+                                class="cell-text"
+                                v-html="formatText(cell.text)"
+                            />
                         </div>
                         <!-- <div class="cell-text" v-html="formatText(cell.text)" /> -->
                     </td>
@@ -217,9 +223,8 @@ table {
 
 .show-text {
     pointer-events: none;
-}
-
-.table-edit-cell {
     padding: 5px;
 }
+
+.table-edit-cell {}
 </style>

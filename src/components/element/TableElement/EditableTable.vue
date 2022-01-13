@@ -38,7 +38,7 @@
                 />
             </colgroup>
             <tbody>
-                <tr v-for="(rowCells, rowIndex) in tableCells" :key="rowIndex" :style="{height: rowSizeList.length > 0 ? rowSizeList[rowIndex] + 'px' : '36px'}">
+                <tr v-for="(rowCells, rowIndex) in tableCells" :key="rowIndex" :style="{height: rowSizeList.length > 0 ? rowSizeList[rowIndex] + 'px' : ''}">
                     <td
                         class="cell"
                         :class="{
@@ -86,11 +86,20 @@
                                 @update="value => handleInput(value, rowIndex, colIndex)"
                                 @mousedown.stop
                             />
-                            <div
-                                class="show-text ProseMirror-static"
-                                v-else
-                                v-html="cell.text"
-                            ></div>
+
+                            <!-- 兼容已经编辑的表格数据 -->
+                            <div v-else>
+                                <div
+                                    class="show-text ProseMirror-static"
+                                    v-if="rowSizeList.length > 0"
+                                    v-html="cell.text"
+                                ></div>
+                                <div
+                                    v-else
+                                    class="cell-text"
+                                    v-html="formatText(cell.text)"
+                                />
+                            </div>
                         </div>
                         <!-- <CustomTextarea
                             v-if="activedCell === `${rowIndex}_${colIndex}`"
@@ -1041,9 +1050,8 @@ table {
 
 .show-text {
     pointer-events: none;
-}
-
-.table-edit-cell {
     padding: 5px;
 }
+
+.table-edit-cell {}
 </style>
