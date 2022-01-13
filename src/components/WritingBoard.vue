@@ -332,8 +332,8 @@ export default defineComponent({
             clearInterval(timer);
             penTempHide.value = false;
             const offset = getPointOffset({ x: e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX, y: e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY });
-            const x = e instanceof MouseEvent ? e.offsetX : offset.offsetX;
-            const y = e instanceof MouseEvent ? e.offsetY : offset.offsetY;
+            const x = e instanceof MouseEvent ? e.offsetX : offset.offsetX - props.offsetScreenX / props.scale;
+            const y = e instanceof MouseEvent ? e.offsetY : offset.offsetY - props.offsetScreenY / props.scale;
 
             isMouseDown = true;
             lastPos = { x, y };
@@ -348,8 +348,8 @@ export default defineComponent({
         // 开始绘制/擦除墨迹（移动）
         const handleMousemove = (e: MouseEvent | TouchEvent) => {
             const offset = getPointOffset({ x: e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX, y: e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY });
-            const x = e instanceof MouseEvent ? e.offsetX : offset.offsetX;
-            const y = e instanceof MouseEvent ? e.offsetY : offset.offsetY;
+            const x = e instanceof MouseEvent ? e.offsetX : offset.offsetX - props.offsetScreenX / props.scale;
+            const y = e instanceof MouseEvent ? e.offsetY : offset.offsetY - props.offsetScreenY / props.scale;
 
             updateMousePosition(x, y);
 
