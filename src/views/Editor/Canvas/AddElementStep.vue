@@ -321,6 +321,10 @@ export default defineComponent({
             store.commit(MutationTypes.SET_STEP_DIALOG, false);
         };
 
+        const updateElementAnimationDuration = (duration: number) => {
+            formState.duration = duration;
+        };
+
         return {
             steps,
             addActionVisible,
@@ -337,7 +341,8 @@ export default defineComponent({
             animationTypes,
             addStep,
             addAction,
-            closeModal
+            closeModal,
+            updateElementAnimationDuration
         };
     }
 });
