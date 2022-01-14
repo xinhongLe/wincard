@@ -50,6 +50,7 @@ import {
     Down,
     Plus,
     Minus,
+    WaterfallsH,
     Connection,
     BringToFrontOne,
     SentToBack,
@@ -199,6 +200,7 @@ export default {
         app.component("IconRight", Right);
         app.component("IconPlus", Plus);
         app.component("IconMinus", Minus);
+        app.component("IconWaterfallsH", WaterfallsH);
         app.component("IconClose", Close);
         app.component("IconCloseSmall", CloseSmall);
 
