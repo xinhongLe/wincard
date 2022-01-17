@@ -7,7 +7,8 @@ export const ELEMENT_TYPE_ZH = {
     table: "表格",
     audio: "音频",
     video: "视频",
-    frame: "网页",
+    iframe: "网页",
+    latex: "公式",
     flash: "flash",
     mark: "批注"
 };
@@ -20,7 +21,7 @@ export const MIN_SIZE = {
     table: 20,
     audio: 50,
     video: 50,
-    frame: 300,
+    iframe: 300,
     flash: 50,
     mark: 20
 };
