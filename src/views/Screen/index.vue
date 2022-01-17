@@ -267,6 +267,8 @@ export default defineComponent({
                 init();
                 writingBoardToolRef.value.putDataCanvas();
             });
+
+            resetPosition();
         });
 
         const screenRef = ref();
@@ -451,8 +453,8 @@ export default defineComponent({
             else if (
                 key === KEYS.DOWN ||
                 key === KEYS.RIGHT ||
-                key === KEYS.SPACE ||
-                key === KEYS.ENTER ||
+                // key === KEYS.SPACE ||
+                // key === KEYS.ENTER ||
                 key === KEYS.PAGEDOWN
             ) execNext();
         };
