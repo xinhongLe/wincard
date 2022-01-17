@@ -87,6 +87,19 @@
             <a-tooltip
                 :mouseLeaveDelay="0"
                 :mouseEnterDelay="0.5"
+                title="目录建"
+                :get-popup-container="getPopupContainer"
+            >
+                <IconWaterfallsH
+                    class="tool-btn"
+                    theme="two-tone"
+                    :fill="['#111', '#fff']"
+                    @click="openMenu()"
+                />
+            </a-tooltip>
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
                 title="上一步"
                 :get-popup-container="getPopupContainer"
             >
@@ -371,6 +384,10 @@ export default defineComponent({
             stepIndex.value = -1;
         });
 
+        const openMenu = () => {
+            return emit("openMenu");
+        };
+
         // 向上/向下播放
         const execPrev = () => {
             if (props.keyDisabled) return;
@@ -491,6 +508,11 @@ export default defineComponent({
         const contextmenus = (): ContextmenuItem[] => {
             return [
                 {
+                    text: "目录键",
+                    subText: "",
+                    handler: openMenu
+                },
+                {
                     text: "上一步",
                     subText: "←",
                     handler: execPrev
@@ -588,6 +610,7 @@ export default defineComponent({
             touchStartListener,
             touchEndListener,
             touchMoveListener,
+            openMenu,
             execPrev,
             execNext,
             writingBoardToolVisible,
