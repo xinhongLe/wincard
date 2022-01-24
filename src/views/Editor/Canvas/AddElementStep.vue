@@ -230,6 +230,7 @@ export default defineComponent({
             if (visible.value) {
                 addActionVisible.value = visible.value;
                 formState.target = activeElementIdList.value;
+                formState.step = "";
             }
         });
 

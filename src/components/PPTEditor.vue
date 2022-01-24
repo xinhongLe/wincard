@@ -24,6 +24,7 @@ import { IWin, Slide } from "@/types/slides";
 import { message } from "ant-design-vue";
 import { dealSaveData } from "@/utils/dataParse";
 import isElectron from "is-electron";
+import useScaleCanvas from "@/hooks/useScaleCanvas";
 
 export default defineComponent({
     name: "PPTEditor",
@@ -46,7 +47,10 @@ export default defineComponent({
 
         const slide = computed(() => props.slide);
 
+        const { setCanvasPercentage } = useScaleCanvas();
         watch(slide, () => {
+            // 放大复位
+            setCanvasPercentage(90);
             initSlides();
             if (isElectron()) {
                 // electron中保存会再次渲染失败 加日志看返回数据
