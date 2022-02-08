@@ -14,6 +14,7 @@
         >
             <div
                 class="element-content"
+                :class="{move: selectElement}"
                 :style="{
                     opacity: elementInfo.opacity,
                     filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
@@ -21,6 +22,8 @@
                     color: text.defaultColor,
                     fontFamily: text.defaultFontName
                 }"
+                @mousedown="handleSelectElement"
+                @touchstart="handleSelectElement"
             >
                 <div style="font-size: 0;">
                     <SvgWrapper
@@ -53,7 +56,7 @@
                                 :fill="
                                     elementInfo.gradient
                                         ? `url(#base-gradient-${elementInfo.id})`
-                                        : elementInfo.fill
+                                        : elementInfo.fill || 'transparent'
                                 "
                                 :stroke="outlineColor"
                                 :stroke-width="outlineWidth"
@@ -90,6 +93,17 @@ export default defineComponent({
     props: {
         elementInfo: {
             type: Object as PropType<PPTShapeElement>,
+            required: true
+        },
+        selectElement: {
+            type: Function as PropType<
+                (
+                    e: MouseEvent | TouchEvent,
+                    element: PPTShapeElement,
+                    canMove?: boolean
+                ) => void
+            >,
+            default: null,
             required: true
         }
     },
@@ -145,6 +159,13 @@ export default defineComponent({
             return !(props.elementInfo.path === "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z" || props.elementInfo.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z");
         });
 
+        const handleSelectElement = (e: MouseEvent | TouchEvent) => {
+            if (!props.selectElement) return;
+            e.stopPropagation();
+
+            props.selectElement(e, props.elementInfo);
+        };
+
         return {
             shadowStyle,
             outlineWidth,
@@ -153,6 +174,7 @@ export default defineComponent({
             flipStyle,
             text,
             path,
+            handleSelectElement,
             isScale
         };
     }
@@ -171,6 +193,10 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     position: relative;
+    &.move {
+        cursor: move;
+    }
+
     // overflow: hidden;
 
     svg {

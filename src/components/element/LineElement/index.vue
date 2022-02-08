@@ -63,6 +63,7 @@
                     stroke-width="20"
                     fill="none"
                     @mousedown="$event => handleSelectElement($event)"
+                    @touchstart="handleSelectElement"
                     v-contextmenu="contextmenus"
                 ></path>
             </SvgWrapper>
@@ -92,7 +93,7 @@ export default defineComponent({
         selectElement: {
             type: Function as PropType<
                 (
-                    e: MouseEvent,
+                    e: MouseEvent | TouchEvent,
                     element: PPTLineElement,
                     canMove?: boolean
                 ) => void
@@ -104,7 +105,7 @@ export default defineComponent({
         }
     },
     setup(props) {
-        const handleSelectElement = (e: MouseEvent) => {
+        const handleSelectElement = (e: MouseEvent | TouchEvent) => {
             if (props.elementInfo.lock) return;
             e.stopPropagation();
 

@@ -101,6 +101,10 @@ export default defineComponent({
             screenRef.value.execNext();
         };
 
+        const openShape = (event: MouseEvent) => {
+            screenRef.value.openShape(event);
+        };
+
         const pagePrev = () => {
             emit("pagePrev");
         };
@@ -130,6 +134,7 @@ export default defineComponent({
             execPrev,
             execNext,
             closeWriteBoard,
+            openShape,
             offScreen
         };
     }

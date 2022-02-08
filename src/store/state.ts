@@ -9,12 +9,15 @@ import { ToolbarState } from "@/types/toolbar";
 export interface State {
     activeElementIdList: string[];
     handleElementId: string;
+    activeScreenElementIdList: string[];
+    handleScreenElementId: string;
     activeGroupElementId: string;
     screening: boolean;
     showGridLines: boolean;
     canvasPercentage: number;
     canvasScale: number;
     creatingElement: CreatingElement | null;
+    creatingScreenShapeElement: CreatingElement | null;
     viewportRatio: number;
     intervalDuration: number,
     slides: Slide[];
@@ -46,11 +49,14 @@ export interface State {
     cacheElementID: string;
     addStepVisible: boolean;
     editElementID: string;
+    screenElements: PPTElement[];
 }
 
 export const state: State = {
     activeElementIdList: [], // 被选中的元素ID集合，包含 handleElementId
     handleElementId: "", // 正在操作的元素ID
+    activeScreenElementIdList: [], // 预览页被选中的元素ID集合，包含 handleElementId
+    handleScreenElementId: "", // 预览页正在操作的元素ID
     activeGroupElementId: "", // 组合元素成员中，被选中可独立操作的元素ID
     screening: false, // 是否进入放映状态
     showGridLines: false, // 是否显示网格线
@@ -64,6 +70,7 @@ export const state: State = {
     snapshotCursor: -1, // 历史快照指针
     snapshotLength: 0, // 历史快照长度
     creatingElement: null, // 正在插入的元素信息，需要绘制插入的元素（文字、形状、线条）
+    creatingScreenShapeElement: null, // 预览页正在插入的形状信息
     theme: theme, // 主题样式
     editorAreaFocus: false, // 编辑区域聚焦
     availableFonts: [], // 当前环境可用字体
@@ -87,5 +94,6 @@ export const state: State = {
     menuOpen: false, // 元素列表菜单是否展开
     cacheElementID: "", // 暂存元素ID;
     addStepVisible: false, // 添加步骤弹窗
-    editElementID: "" // 处于编辑状态的元素
+    editElementID: "", // 处于编辑状态的元素
+    screenElements: [] // 预览添加的形状元素列表
 };

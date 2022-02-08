@@ -59,6 +59,7 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
     const moveScreen = (
         e: MouseEvent
     ) => {
+        store.commit(MutationTypes.SET_ACTIVE_SCREEN_ELEMENT_ID_LIST, []);
         if (scale.value === 1 && offsetX.value === 0 && offsetY.value === 0) return;
         let isMouseDown = true;
         const startPageX = e.pageX;

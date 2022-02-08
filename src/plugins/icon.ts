@@ -104,6 +104,10 @@ import {
     DistributeHorizontally,
     DistributeVertically,
     BookmarkOne,
+    Square,
+    ToTop,
+    Copy,
+    Refraction,
     FolderWithdrawal
 } from "@icon-park/vue-next";
 import {
@@ -153,6 +157,7 @@ export default {
         app.component("IconBringToFront", BringToFront);
         app.component("IconSentToBack", SentToBack);
         app.component("IconBringToFrontOne", BringToFrontOne);
+        app.component("IconToTop", ToTop);
         app.component("IconSendToBack", SendToBack);
 
         // 组合
@@ -203,6 +208,7 @@ export default {
         app.component("IconWaterfallsH", WaterfallsH);
         app.component("IconClose", Close);
         app.component("IconCloseSmall", CloseSmall);
+        app.component("IconRefraction", Refraction);
 
         // 图表
         app.component("IconChartHistogram", ChartHistogram);
@@ -233,6 +239,8 @@ export default {
         app.component("IconFolderClose", FolderClose);
         app.component("IconDelete", Delete);
         app.component("IconBookmark", Bookmark);
+        app.component("IconSquare", Square);
+        app.component("IconCopy", Copy);
 
         // 视频播放器
         app.component("IconPause", Pause);

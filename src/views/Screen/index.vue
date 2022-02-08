@@ -62,11 +62,43 @@
                             :scale="scale"
                             @openCard="openCard"
                         />
+                        <div class="operates">
+                            <alignment-line
+                                v-for="(line, index) in alignmentLines"
+                                :key="index"
+                                :type="line.type"
+                                :axis="line.axis"
+                                :length="line.length"
+                                :canvasScale="viewScale"
+                            />
+                            <Operate
+                                v-for="element in shapeElementList"
+                                :key="element.id"
+                                :elementInfo="element"
+                                :isSelected="activeElementIdList.includes(element.id)"
+                                :isActive="handleElementId === element.id"
+                                :isMultiSelect="activeElementIdList.length > 1"
+                                :rotateElement="rotateElement"
+                                :scaleElement="scaleElement"
+                                :dragLineElement="dragLineElement"
+                                :canvasScale="viewScale"
+                            />
+                        </div>
+                        <div class="shape-warp" ref="shapeWarpRef">
+                            <editable-element
+                                v-for="(element, index) in shapeElementList"
+                                :key="element.id"
+                                :elementInfo="element"
+                                :elementIndex="index + 1"
+                                :isMultiSelect="activeElementIdList.length > 1"
+                                :selectElement="selectElement"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        <ElementCreateSelection v-if="creatingElement" @created="data => insertElementFromCreateSelection(data)"/>
         <WritingBoardTool
             :scale="viewScale"
             :offsetX="offsetX"
@@ -81,6 +113,13 @@
             :slide="currentSlide"
             @close="closeWriteBoard()"
             ref="writingBoardToolRef"
+        />
+
+        <ShapePool
+            v-if="isShowShape"
+            v-model:isShowShape="isShowShape"
+            :shapeTop="shapeTop"
+            :shapeLeft="shapeLeft"
         />
 
         <div class="tools" v-if="!inline">
@@ -139,6 +178,19 @@
             <a-tooltip
                 :mouseLeaveDelay="0"
                 :mouseEnterDelay="0.5"
+                title="插入形状"
+                :get-popup-container="getPopupContainer"
+            >
+                <IconRefraction
+                    class="tool-btn"
+                    theme="two-tone"
+                    :fill="['#111', '#fff']"
+                    @click="openShape"
+                />
+            </a-tooltip>
+            <a-tooltip
+                :mouseLeaveDelay="0"
+                :mouseEnterDelay="0.5"
                 title="教学建议"
                 :get-popup-container="getPopupContainer"
             >
@@ -191,7 +243,7 @@ import {
     watch
 } from "vue";
 import { throttle } from "lodash";
-import { useStore } from "@/store";
+import { MutationTypes, useStore } from "@/store";
 import { IWin, PPTElementAction, Slide, ICard } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { KEYS } from "@/configs/hotkey";
@@ -207,12 +259,30 @@ import useScaleScreen from "@/hooks/useScaleScreen";
 
 import { PAGE_TYPE } from "@/configs/page";
 import { ContextmenuItem } from "@/types/contextmenu";
+import ShapePool from "./ShapePool.vue";
+import { ShapePoolItem } from "@/configs/shapes";
+import ElementCreateSelection from "./ElementCreateSelection.vue";
+import useInsertFromCreateSelection from "./hooks/useInsertFromCreateSelection";
+import EditableElement from "./EditableElement.vue";
+import useDragElement from "./hooks/useDragElement";
+import useSelectElement from "./hooks/useSelectElement";
+import Operate from "./Operate/index.vue";
+import { AlignmentLineProps } from "@/types/edit";
+import AlignmentLine from "./AlignmentLine.vue";
+import useScaleElement from "./hooks/useScaleElement";
+import useRotateElement from "./hooks/useRotateElement";
+import useDragLineElement from "./hooks/useDragLineElement";
 
 export default defineComponent({
     name: "screen",
     components: {
         ScreenSlide,
-        WritingBoardTool
+        WritingBoardTool,
+        ShapePool,
+        ElementCreateSelection,
+        EditableElement,
+        Operate,
+        AlignmentLine
     },
     props: {
         inline: {
@@ -252,14 +322,23 @@ export default defineComponent({
 
         const slideWidth = ref(0);
         const slideHeight = ref(0);
+        const isShowShape = ref(false);
 
         const scale = computed(() => slideWidth.value / VIEWPORT_SIZE);
+        // 在鼠标绘制的范围插入元素
+        const creatingElement = computed(() => store.state.creatingScreenShapeElement);
 
         const writeBoardVisible = computed(() => props.writeBoardVisible);
         const writingBoardToolVisible = ref(writeBoardVisible.value);
 
         // 保存canvas笔记
         const writingBoardToolRef = ref();
+        const shapeWarpRef = ref<HTMLElement>();
+        const shapeElementList = computed(() => store.state.screenElements);
+        const activeElementIdList = computed(
+            () => store.state.activeScreenElementIdList
+        );
+
         watch(() => props.winList, () => {
             writingBoardToolRef.value.updateCanvasList();
         });
@@ -489,6 +568,16 @@ export default defineComponent({
             emit("openCard", wins);
         };
 
+        const shapeLeft = ref(0);
+        const shapeTop = ref(0);
+        const openShape = (e:MouseEvent) => {
+            isShowShape.value = true;
+            const target = e.target as HTMLDivElement;
+            const { left, top } = target.getBoundingClientRect();
+            shapeLeft.value = left;
+            shapeTop.value = top;
+        };
+
         const viewScale = ref(1);
         const offsetX = ref(0);
         const offsetY = ref(0);
@@ -498,6 +587,15 @@ export default defineComponent({
             offsetY.value = 0;
         };
         const { handleMousewheelScreen, handleMouseMove, moveScreen, touchStartListener, touchEndListener, touchMoveListener } = useScaleScreen(viewScale, offsetX, offsetY, execPrev, execNext, resetPosition, contentRef, offsetScreenX, offsetScreenY);
+        const alignmentLines = ref<AlignmentLineProps[]>([]);
+        const {
+            insertElementFromCreateSelection
+        } = useInsertFromCreateSelection(shapeWarpRef, viewScale);
+        const { mouseDragElement, touchDragElement } = useDragElement(shapeElementList, viewScale, alignmentLines, slideWidth, slideHeight);
+        const { selectElement } = useSelectElement(shapeElementList, mouseDragElement, touchDragElement);
+        const { scaleElement } = useScaleElement(shapeElementList, viewScale, alignmentLines, slideWidth, slideHeight);
+        const { rotateElement } = useRotateElement(shapeElementList, viewScale, shapeWarpRef);
+        const { dragLineElement } = useDragLineElement(shapeElementList, viewScale);
 
         const remarkVisible = ref(false);
 
@@ -637,8 +735,23 @@ export default defineComponent({
             markMouseUp,
             getPopupContainer,
             offsetScreenX,
+            creatingElement,
             offsetScreenY,
+            insertElementFromCreateSelection,
+            shapeWarpRef,
+            openShape,
+            selectElement,
+            rotateElement,
             screenWidth,
+            dragLineElement,
+            isShowShape,
+            shapeLeft,
+            shapeTop,
+            scaleElement,
+            handleElementId: computed(() => store.state.handleElementId),
+            shapeElementList,
+            activeElementIdList,
+            alignmentLines,
             screenHeight
         };
     }

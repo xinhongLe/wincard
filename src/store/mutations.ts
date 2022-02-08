@@ -30,8 +30,25 @@ export const mutations: MutationTree<State> = {
         state.activeElementIdList = activeElementIdList;
     },
 
+    [MutationTypes.SET_ACTIVE_SCREEN_ELEMENT_ID_LIST](
+        state,
+        activeElementIdList: string[]
+    ) {
+        if (activeElementIdList.length === 1) {
+            state.handleScreenElementId = activeElementIdList[0];
+        } else {
+            state.handleScreenElementId = "";
+        }
+
+        state.activeScreenElementIdList = activeElementIdList;
+    },
+
     [MutationTypes.SET_HANDLE_ELEMENT_ID](state, handleElementId: string) {
         state.handleElementId = handleElementId;
+    },
+
+    [MutationTypes.SET_HANDLE_SCREEN_ELEMENT_ID](state, handleElementId: string) {
+        state.handleScreenElementId = handleElementId;
     },
 
     [MutationTypes.SET_ACTIVE_GROUP_ELEMENT_ID](
@@ -43,6 +60,10 @@ export const mutations: MutationTree<State> = {
 
     [MutationTypes.SET_CREATING_ELEMENT](state, element) {
         state.creatingElement = element;
+    },
+
+    [MutationTypes.SET_SCREEN_CREATING_SHAPE_ELEMENT](state, element) {
+        state.creatingScreenShapeElement = element;
     },
 
     [MutationTypes.SET_CANVAS_PERCENTAGE](state, scale: number) {
@@ -58,6 +79,11 @@ export const mutations: MutationTree<State> = {
         const currentSlideEls = state.slides[state.slideIndex].elements;
         const newEls = [...currentSlideEls, ...elements];
         state.slides[state.slideIndex].elements = newEls;
+    },
+
+    [MutationTypes.ADD_SCREEN_ELEMENT](state, element: PPTElement | PPTElement[]) {
+        const elements = Array.isArray(element) ? element : [element];
+        state.screenElements = [...state.screenElements, ...elements];
     },
 
     [MutationTypes.SET_EDITORAREA_FOCUS](state, isFocus: boolean) {
@@ -161,6 +187,17 @@ export const mutations: MutationTree<State> = {
     [MutationTypes.UPDATE_SLIDE](state, props: Partial<Slide>) {
         const slideIndex = state.slideIndex;
         state.slides[slideIndex] = { ...state.slides[slideIndex], ...props };
+    },
+    [MutationTypes.UPDATE_SCREEN_ELEMENTS](state, props: PPTElement[]) {
+        state.screenElements = props;
+    },
+    [MutationTypes.UPDATE_SCREEN_ELEMENT](state, data: UpdateElementData) {
+        const { id, props } = data;
+        const elIdList = typeof id === "string" ? [id] : id;
+        const elements = state.screenElements.map(el => {
+            return elIdList.includes(el.id) ? { ...el, ...props } : el;
+        }) as PPTElement[];
+        state.screenElements = elements;
     },
 
     [MutationTypes.REMOVE_ELEMENT_PROPS](state, data: RemoveElementPropData) {

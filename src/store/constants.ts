@@ -56,6 +56,12 @@ export const enum MutationTypes {
 
     // screen
     SET_SCREENING = "setScreening",
+    ADD_SCREEN_ELEMENT = "addScreenElement",
+    SET_ACTIVE_SCREEN_ELEMENT_ID_LIST = "setActiveScreenElementIdList",
+    SET_SCREEN_CREATING_SHAPE_ELEMENT = "setScreenCreatingShapeElement", // 选择预览页绘制形状
+    SET_HANDLE_SCREEN_ELEMENT_ID = "setHandleScreenElementId",
+    UPDATE_SCREEN_ELEMENTS = "updateScreenElements",
+    UPDATE_SCREEN_ELEMENT = "updateScreenElement",
 
     // step
     SET_STEP_DIALOG = "setStepDialog"

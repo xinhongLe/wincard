@@ -8,7 +8,7 @@ export interface LinePoolItem {
     isCurve?: boolean;
 }
 
-interface PresetLine {
+export interface PresetLine {
     type: string;
     children: LinePoolItem[];
 }
