@@ -27,20 +27,22 @@
                 v-if="visible"
                 v-model:visible="visible"
                 :footer="null"
-                width="90%"
+                :width="width + 'px'"
                 class="reset-video-modal"
             >
-                <VideoPlayer
-                    :noTransform="true"
-                    :videoElement="elementInfo"
-                    :width="elementInfo.width"
-                    :height="elementInfo.height"
-                    :src="elementInfo.src"
-                    :poster="elementInfo.poster"
-                    :scale="scale"
-                    v-if="elementInfo.showType == 1"
-                    :isScreening="true"
-                />
+                <div :style="{height: height + 'px'}">
+                    <VideoPlayer
+                        :noTransform="true"
+                        :videoElement="elementInfo"
+                        :width="elementInfo.width"
+                        :height="elementInfo.height"
+                        :src="elementInfo.src"
+                        :poster="elementInfo.poster"
+                        :scale="scale"
+                        v-if="elementInfo.showType == 1"
+                        :isScreening="true"
+                    />
+                </div>
             </a-modal>
         </div>
     </div>
@@ -66,6 +68,18 @@ export default defineComponent({
     },
     setup(props) {
         const scale: Ref<number> = inject("slideScale") || ref(1);
+        const width = ref(0);
+        const height = ref(0);
+        const w = window.innerWidth * 0.9 - 48;
+        const h = window.innerHeight - 103;
+        const rh = w / 16 * 9;
+        if (rh < h) {
+            width.value = w + 48;
+            height.value = rh;
+        } else {
+            width.value = h / 9 * 16 + 48;
+            height.value = h;
+        }
 
         const visible = ref(false);
         const openVideo = () => {
@@ -76,6 +90,8 @@ export default defineComponent({
         const { iconUrl } = useOssVideo(videoElement, true);
 
         return {
+            height,
+            width,
             scale,
             iconUrl,
             visible,
@@ -115,9 +131,5 @@ export default defineComponent({
     top: 50% !important;
     transform: translateY(-50%) !important;
     animation: none !important;
-}
-
-.reset-video-modal video {
-    max-height: 80vh;
 }
 </style>
