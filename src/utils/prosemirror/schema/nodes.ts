@@ -2,6 +2,8 @@ import { nodes } from "prosemirror-schema-basic";
 import { Node, NodeSpec } from "prosemirror-model";
 import { orderedList, bulletList, listItem } from "prosemirror-schema-list";
 
+/* eslint-disable */
+
 const _orderedList: NodeSpec = {
     ...orderedList,
     content: "list_item+",
@@ -47,8 +49,7 @@ const paragraph: NodeSpec = {
         const { align } = node.attrs;
         let style = "";
         if (align && align !== "left") style += `text-align: ${align};`;
-
-        return ["p", { style }, 0];
+        return node.firstChild && node.firstChild.type.name !== "hard_break" ? ["p", { style }, 0] : ["p", { style, contenteditable: "true" }, ["br", { class: "ProseMirror-trailingBreak" }]];
     }
 };
 
