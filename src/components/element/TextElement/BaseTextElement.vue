@@ -17,7 +17,7 @@
                     backgroundColor: elementInfo.fill,
                     opacity: elementInfo.opacity,
                     textShadow: shadowStyle,
-                    lineHeight: elementInfo.lineHeight + 'px',
+                    lineHeight: elementInfo.lineHeight ? elementInfo.lineHeight + 'px' : undefined,
                     letterSpacing: (elementInfo.wordSpace || 0) + 'px',
                     color: elementInfo.defaultColor,
                     fontFamily: elementInfo.defaultFontName,
@@ -57,6 +57,7 @@ export default defineComponent({
         }
     },
     setup(props) {
+        console.log(props.elementInfo, "=========");
         const shadow = computed(() => props.elementInfo.shadow);
         const { shadowStyle } = useElementShadow(shadow);
 
