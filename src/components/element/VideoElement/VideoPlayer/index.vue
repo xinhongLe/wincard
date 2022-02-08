@@ -4,7 +4,7 @@
         :class="{ 'hide-controller': hideController }"
         :style="{
             width: noTransform ? '100%' : width * scale + 'px',
-            height: noTransform ? 'auto' : height * scale + 'px',
+            height: noTransform ? '100%' : height * scale + 'px',
             transform: `scale(${noTransform ? 1 : 1 / scale})`
         }"
         ref="containerRef"
