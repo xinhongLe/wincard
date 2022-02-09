@@ -71,7 +71,7 @@ export default defineComponent({
         const width = ref(0);
         const height = ref(0);
         const w = window.innerWidth * 0.9 - 48;
-        const h = window.innerHeight - 103;
+        const h = window.innerHeight - 103 - 110 - 60;
         const rh = w / 16 * 9;
         if (rh < h) {
             width.value = w + 48;
