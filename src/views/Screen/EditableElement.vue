@@ -7,7 +7,7 @@
             zIndex: elementIndex,
         }"
     >
-        <a-popover trigger="click" :get-popup-container="getPopupContainer" :align="{offset: [0, -30]}" :key="elementInfo.id">
+        <a-popover trigger="click" :align="{offset: [0, -50]}" :key="elementInfo.id">
             <template #content>
                 <a-popover trigger="click" v-if="elementInfo.type === 'shape'">
                     <template #content>
