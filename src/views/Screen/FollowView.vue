@@ -357,7 +357,9 @@ export default defineComponent({
         cursor: pointer;
         display: flex;
         align-items: center;
+        height: 42px;
         position: relative;
+        box-sizing: border-box;
     }
 
     .me-play-btn:active {
