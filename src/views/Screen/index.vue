@@ -73,13 +73,13 @@
                             <div
                                 class="operates"
                             >
-                                <alignment-line
+                                <!-- <alignment-line
                                     v-for="(line, index) in alignmentLines"
                                     :key="index"
                                     :type="line.type"
                                     :axis="line.axis"
                                     :length="line.length"
-                                />
+                                /> -->
                                 <Operate
                                     v-for="element in shapeElementList"
                                     :key="element.id"
@@ -290,8 +290,8 @@ export default defineComponent({
         ShapePool,
         ElementCreateSelection,
         EditableElement,
-        Operate,
-        AlignmentLine
+        Operate
+        // AlignmentLine
     },
     props: {
         inline: {
@@ -927,5 +927,12 @@ export default defineComponent({
     top: 0;
     left: 0;
     transform-origin: 0 0;
+    pointer-events: none;
+    .operates {
+        pointer-events: all;
+    }
+    .shape-warp {
+        pointer-events: all;
+    }
 }
 </style>

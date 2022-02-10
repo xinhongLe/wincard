@@ -60,10 +60,16 @@ export default defineComponent({
             });
         };
 
+        const resetStore = () => {
+            store.commit(MutationTypes.SET_ACTIVE_SCREEN_ELEMENT_ID_LIST, []);
+            store.commit(MutationTypes.UPDATE_SCREEN_ELEMENTS, []);
+        };
+
         updateBackground();
         watch(slide, () => {
             currentSlide.value = slide.value;
             updateBackground();
+            resetStore();
         });
 
         const keyupListener = () => {
@@ -84,6 +90,7 @@ export default defineComponent({
             document.removeEventListener("keydown", keydownListener);
             document.removeEventListener("keyup", keyupListener);
             window.removeEventListener("blur", keyupListener);
+            resetStore();
         });
 
         // store.commit(MutationTypes.SET_SLIDES, [props.slide]);
