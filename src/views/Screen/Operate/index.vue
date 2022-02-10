@@ -80,8 +80,7 @@ export default defineComponent({
                 [ElementTypes.SHAPE]: ShapeElementOperate,
                 [ElementTypes.LINE]: LineElementOperate
             };
-            if (props.elementInfo.type === ElementTypes.VIDEO) return elementTypeMap[props.elementInfo.type][props.elementInfo.showType] || null;
-            return elementTypeMap[props.elementInfo.type] || null;
+            return elementTypeMap[props.elementInfo.type];
         });
 
         return {

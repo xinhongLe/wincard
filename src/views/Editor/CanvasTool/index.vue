@@ -318,7 +318,7 @@
                     <!-- <IconVideoFile class="handler-item" /> -->
                 </a-tooltip>
             </FileInput>
-            <!-- <a-tooltip
+            <a-tooltip
                 :mouseLeaveDelay="0"
                 :mouseEnterDelay="0.5"
                 title="打点批注"
@@ -327,7 +327,7 @@
                     @click="insertMarkElement()"
                     class="handler-item"
                 />
-            </a-tooltip> -->
+            </a-tooltip>
         </div>
 
         <div class="right-handler">

@@ -62,37 +62,46 @@
                             :scale="scale"
                             @openCard="openCard"
                         />
-                        <div class="operates">
-                            <alignment-line
-                                v-for="(line, index) in alignmentLines"
-                                :key="index"
-                                :type="line.type"
-                                :axis="line.axis"
-                                :length="line.length"
-                                :canvasScale="viewScale"
-                            />
-                            <Operate
-                                v-for="element in shapeElementList"
-                                :key="element.id"
-                                :elementInfo="element"
-                                :isSelected="activeElementIdList.includes(element.id)"
-                                :isActive="handleElementId === element.id"
-                                :isMultiSelect="activeElementIdList.length > 1"
-                                :rotateElement="rotateElement"
-                                :scaleElement="scaleElement"
-                                :dragLineElement="dragLineElement"
-                                :canvasScale="viewScale"
-                            />
-                        </div>
-                        <div class="shape-warp" ref="shapeWarpRef">
-                            <editable-element
-                                v-for="(element, index) in shapeElementList"
-                                :key="element.id"
-                                :elementInfo="element"
-                                :elementIndex="index + 1"
-                                :isMultiSelect="activeElementIdList.length > 1"
-                                :selectElement="selectElement"
-                            />
+                        <div
+                            class="shape-box"
+                            :style="{
+                                width: VIEWPORT_SIZE + 'px',
+                                height: VIEWPORT_SIZE * viewportRatio + 'px',
+                                transform: `scale(${scale})`
+                            }"
+                        >
+                            <div
+                                class="operates"
+                            >
+                                <alignment-line
+                                    v-for="(line, index) in alignmentLines"
+                                    :key="index"
+                                    :type="line.type"
+                                    :axis="line.axis"
+                                    :length="line.length"
+                                />
+                                <Operate
+                                    v-for="element in shapeElementList"
+                                    :key="element.id"
+                                    :elementInfo="element"
+                                    :isSelected="activeElementIdList.includes(element.id)"
+                                    :isActive="handleElementId === element.id"
+                                    :isMultiSelect="activeElementIdList.length > 1"
+                                    :rotateElement="rotateElement"
+                                    :scaleElement="scaleElement"
+                                    :dragLineElement="dragLineElement"
+                                />
+                            </div>
+                            <div class="shape-warp" ref="shapeWarpRef">
+                                <editable-element
+                                    v-for="(element, index) in shapeElementList"
+                                    :key="element.id"
+                                    :elementInfo="element"
+                                    :elementIndex="index + 1"
+                                    :isMultiSelect="activeElementIdList.length > 1"
+                                    :selectElement="selectElement"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -590,12 +599,12 @@ export default defineComponent({
         const alignmentLines = ref<AlignmentLineProps[]>([]);
         const {
             insertElementFromCreateSelection
-        } = useInsertFromCreateSelection(shapeWarpRef, viewScale);
-        const { mouseDragElement, touchDragElement } = useDragElement(shapeElementList, viewScale, alignmentLines, slideWidth, slideHeight);
+        } = useInsertFromCreateSelection(shapeWarpRef, scale);
+        const { mouseDragElement, touchDragElement } = useDragElement(shapeElementList, scale, alignmentLines, slideWidth, slideHeight);
         const { selectElement } = useSelectElement(shapeElementList, mouseDragElement, touchDragElement);
-        const { scaleElement } = useScaleElement(shapeElementList, viewScale, alignmentLines, slideWidth, slideHeight);
-        const { rotateElement } = useRotateElement(shapeElementList, viewScale, shapeWarpRef);
-        const { dragLineElement } = useDragLineElement(shapeElementList, viewScale);
+        const { scaleElement } = useScaleElement(shapeElementList, scale, alignmentLines, slideWidth, slideHeight);
+        const { rotateElement } = useRotateElement(shapeElementList, scale, shapeWarpRef);
+        const { dragLineElement } = useDragLineElement(shapeElementList, scale);
 
         const remarkVisible = ref(false);
 
@@ -752,7 +761,9 @@ export default defineComponent({
             shapeElementList,
             activeElementIdList,
             alignmentLines,
-            screenHeight
+            screenHeight,
+            VIEWPORT_SIZE,
+            viewportRatio
         };
     }
 });
@@ -909,5 +920,12 @@ export default defineComponent({
     .mark-content {
         padding: 10px 20px;
     }
+}
+
+.shape-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
 }
 </style>

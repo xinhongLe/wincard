@@ -19,10 +19,6 @@ export default defineComponent({
             type: Object as PropType<AlignmentLineAxis>,
             required: true
         },
-        canvasScale: {
-            type: Number,
-            required: true
-        },
         length: {
             type: Number,
             required: true
@@ -30,13 +26,13 @@ export default defineComponent({
     },
     setup(props) {
         // 吸附对齐线的位置
-        const left = computed(() => props.axis.x * props.canvasScale + "px");
-        const top = computed(() => props.axis.y * props.canvasScale + "px");
+        const left = computed(() => props.axis.x + "px");
+        const top = computed(() => props.axis.y + "px");
 
         // 吸附对齐线的长度
         const sizeStyle = computed(() => {
-            if (props.type === "vertical") return { height: props.length * props.canvasScale + "px" };
-            return { width: props.length * props.canvasScale + "px" };
+            if (props.type === "vertical") return { height: props.length + "px" };
+            return { width: props.length + "px" };
         });
 
         return {
