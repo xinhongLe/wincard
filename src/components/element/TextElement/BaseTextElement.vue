@@ -57,7 +57,6 @@ export default defineComponent({
         }
     },
     setup(props) {
-        console.log(props.elementInfo, "=========");
         const shadow = computed(() => props.elementInfo.shadow);
         const { shadowStyle } = useElementShadow(shadow);
 

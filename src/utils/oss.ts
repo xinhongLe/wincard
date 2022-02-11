@@ -156,20 +156,68 @@ export const uploadFile = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: strin
 
 const fileMd5 = (file: File): Promise<string> => {
     return new Promise(resolve => {
-        const fileReader = new FileReader();
-        const spark = new SparkMD5(); // 创建md5对象（基于SparkMD5）
-        if (file.size > 1024 * 1024 * 10) {
-            const data = file.slice(0, 1024 * 1024 * 10); // 将文件进行分块 file.slice(start,length)
-            fileReader.readAsBinaryString(data); // 将文件读取为二进制码
-        } else {
-            fileReader.readAsBinaryString(file);
-        }
+        // const fileReader = new FileReader();
+        // const spark = new SparkMD5(); // 创建md5对象（基于SparkMD5）
+        // if (file.size > 1024 * 1024 * 10) {
+        //     const data = file.slice(0, 1024 * 1024 * 10); // 将文件进行分块 file.slice(start,length)
+        //     fileReader.readAsBinaryString(data); // 将文件读取为二进制码
+        // } else {
+        //     fileReader.readAsBinaryString(file);
+        // }
 
-        fileReader.addEventListener("load", () => {
-            spark.appendBinary(fileReader.result as string);
-            const md5 = spark.end();
-            resolve(md5);
-        });
+        // fileReader.addEventListener("load", () => {
+        //     spark.appendBinary(fileReader.result as string);
+        //     const md5 = spark.end();
+        //     resolve(md5);
+        // });
+        const blobSlice = File.prototype.slice;
+        const chunkSize = 2097152; // 2MB
+        const chunks = Math.ceil(file.size / chunkSize);
+        let currentChunk = 0;
+        const spark = new SparkMD5.ArrayBuffer();
+        const fileReader = new FileReader();
+
+        // const time = new Date().getTime();
+
+        fileReader.onload = (e: any) => {
+            spark.append(e.target.result); // Append array buffer
+            currentChunk++;
+
+            if (currentChunk < chunks) {
+                // console.log(
+                //     `第${currentChunk}分片解析完成, 开始第${
+                //         currentChunk + 1
+                //     } / ${chunks}分片解析`
+                // );
+                loadNext();
+            } else {
+                const md5 = spark.end(); // 得到md5
+                // console.log(
+                //     `MD5计算完成：${
+                //         file.name
+                //     } \nMD5：${md5} \n分片：${chunks} 大小:${file.size} 用时：${
+                //         new Date().getTime() - time
+                //     } ms`
+                // );
+                spark.destroy(); // 释放缓存
+                resolve(md5);
+            }
+        };
+
+        fileReader.onerror = () => {
+            if ((window as any).electron && (window as any).electron.log) {
+                (window as any).electron.log.error("oops, something went wrong.");
+                (window as any).electron.log.error(file);
+            }
+        };
+
+        const loadNext = () => {
+            const start = currentChunk * chunkSize;
+            const end = start + chunkSize >= file.size ? file.size : start + chunkSize;
+            fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+        };
+
+        loadNext();
     });
 };
 
