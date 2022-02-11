@@ -540,7 +540,10 @@ const converColor = (color: string) => {
 };
 
 export const dealSaveData = (slide: Slide) => {
-    const nSlide = JSON.parse(JSON.stringify(slide));
+    let slideString = JSON.stringify(slide);
+    // 移除文本中的换行 防止数据再渲染引起的换行变多的问题
+    slideString = slideString.replace(/<br.*?>/ig, "");
+    const nSlide = JSON.parse(slideString);
 
     // 处理背景图
     if (nSlide.background) {

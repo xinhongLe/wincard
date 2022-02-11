@@ -49,7 +49,8 @@ const paragraph: NodeSpec = {
         const { align } = node.attrs;
         let style = "";
         if (align && align !== "left") style += `text-align: ${align};`;
-        return node.firstChild && node.firstChild.type.name !== "hard_break" ? ["p", { style }, 0] : ["p", { style, contenteditable: "true" }, ["br", { class: "ProseMirror-trailingBreak" }]];
+        return ["p", { style }, 0];
+        // return node.firstChild && node.firstChild.type.name !== "hard_break" ? ["p", { style }, 0] : ["p", { style }, ["br", { class: "ProseMirror-trailingBreak" }]];
     }
 };
 
