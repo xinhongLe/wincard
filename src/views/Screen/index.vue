@@ -379,6 +379,30 @@ export default defineComponent({
         const screenWidth = ref(0);
         const screenHeight = ref(0);
 
+        const getElementLeft = (element: HTMLElement) => {
+            let actualLeft = element.offsetLeft;
+            let current = element.offsetParent as HTMLElement;
+
+            while (current !== null) {
+                actualLeft += current.offsetLeft;
+                current = current.offsetParent as HTMLElement;
+            }
+
+            return actualLeft;
+        };
+
+        const getElementTop = (element: HTMLElement) => {
+            let actualTop = element.offsetTop;
+            let current = element.offsetParent as HTMLElement;
+
+            while (current !== null) {
+                actualTop += current.offsetTop;
+                current = current.offsetParent as HTMLElement;
+            }
+
+            return actualTop;
+        };
+
         // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
         const setSlideContentSize = () => {
             nextTick(() => {
@@ -402,8 +426,8 @@ export default defineComponent({
                 slideWidth.value = width;
                 slideHeight.value = height;
 
-                offsetScreenX.value = screenRef.value.offsetLeft;
-                offsetScreenY.value = screenRef.value.offsetTop;
+                offsetScreenX.value = getElementLeft(screenRef.value);
+                offsetScreenY.value = getElementTop(screenRef.value);
                 screenWidth.value = screenRef.value.clientWidth;
                 screenHeight.value = screenRef.value.clientHeight;
             });
@@ -928,6 +952,7 @@ export default defineComponent({
     left: 0;
     transform-origin: 0 0;
     pointer-events: none;
+    overflow: hidden;
     .operates {
         pointer-events: all;
     }
