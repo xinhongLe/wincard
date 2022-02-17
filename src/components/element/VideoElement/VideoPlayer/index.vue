@@ -128,6 +128,9 @@
                     {{ playBarTime }}
                 </div>
                 <div class="bar">
+                    <div class="pause-points">
+                        <div class="pause-point" :style="{left: countPointLeft(point)}" v-for="point in pauseList" :key="point"></div>
+                    </div>
                     <div
                         class="loaded"
                         :style="{ width: loadedBarWidth }"
@@ -196,6 +199,10 @@ export default defineComponent({
         isScreening: {
             type: Boolean,
             default: false
+        },
+        pauseList: {
+            type: Array as PropType<string[]>,
+            default: () => []
         }
     },
     setup(props) {
@@ -236,6 +243,19 @@ export default defineComponent({
             { label: "0.75x", value: 0.75 },
             { label: "0.5x", value: 0.5 }
         ];
+
+        const pauseList = computed(() => props.pauseList);
+
+        const timeNum = (time: string | undefined) => {
+            if (!time) return 0;
+            const arr = time.split(":");
+            return Number(arr[0]) * 3600 + Number(arr[1]) * 60 + Number(arr[2]);
+        };
+
+        const countPointLeft = (time: string) => {
+            const pointTime = timeNum(time);
+            return pointTime / duration.value * 100 + "%";
+        };
 
         const seek = (time: number) => {
             if (!videoRef.value) return;
@@ -290,6 +310,37 @@ export default defineComponent({
 
         const handleTimeupdate = () => {
             currentTime.value = videoRef.value?.currentTime || 0;
+            // 处理视频暂停
+            if (pauseList.value.length > 0) {
+                const pauseIndex = pauseList.value.findIndex(time => {
+                    return currentTime.value < timeNum(time);
+                });
+                if (pauseIndex > -1) {
+                    const stime = timeNum(pauseList.value[pauseIndex]);
+                    checkPauseTimer(currentTime.value, stime, () => {
+                        pause();
+                    });
+                }
+            }
+        };
+
+        let timeInterval: number;
+        const checkPauseTimer = (ctime: number, stime: number, callback: any) => {
+            if (stime - ctime < 0.5 && stime - ctime > 0) {
+                // 当当前时间与停止时间间隔小于500ms时启动暂停操作
+                clearInterval(timeInterval);
+                timeInterval = window.setInterval(() => {
+                    const _ctime: number = currentTime.value;
+                    if (stime - _ctime < 0.02) {
+                        // 接近目标值
+                        clearInterval(timeInterval);
+
+                        timeInterval = -1;
+
+                        callback && callback();
+                    }
+                }, 20);
+            }
         };
 
         const handleEnded = () => {
@@ -493,7 +544,8 @@ export default defineComponent({
             toggleVolume,
             toggleLoop,
             autoHideController,
-            handleError
+            handleError,
+            countPointLeft
         };
     }
 });

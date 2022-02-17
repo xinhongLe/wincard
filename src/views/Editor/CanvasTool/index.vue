@@ -259,7 +259,7 @@
                 placement="bottom"
             >
                 <template #content>
-                    <VideoInput />
+                    <VideoInput @setQuoteVideo="setQuoteVideo" />
                 </template>
                 <a-tooltip
                     :mouseLeaveDelay="0"
@@ -405,7 +405,7 @@ export default defineComponent({
         LaTeXEditor,
         WebIFrame
     },
-    setup() {
+    setup(props, { emit }) {
         const store = useStore();
         const canvasScale = computed(() => store.state.canvasScale);
         const canUndo = computed(() => store.getters.canUndo);
@@ -499,6 +499,12 @@ export default defineComponent({
             createMarkElement();
         };
 
+        // 插入引用视频
+        const setQuoteVideo = () => {
+            videoInputVisible.value = false;
+            emit("setQuoteVideo");
+        };
+
         const isBasePPT = computed(() => store.getters.isBasePPT);
 
         const checkElectron = ref(isElectron());
@@ -539,7 +545,8 @@ export default defineComponent({
             creatingElement,
             insertMarkElement,
             electronUpload,
-            checkElectron
+            checkElectron,
+            setQuoteVideo
         };
     }
 });

@@ -6,7 +6,7 @@
             <!-- <thumbnails class="layout-content-left" /> -->
             <elements-menu class="layout-fixed-content-left" />
             <div class="layout-content-center">
-                <canvas-tool class="center-top" />
+                <canvas-tool class="center-top" @setQuoteVideo="setQuoteVideo" />
                 <component
                     class="center-body"
                     :style="{ height: `calc(100% - ${remarkHeight + 60}px)` }"
@@ -18,7 +18,7 @@
                     :style="{ height: `${remarkHeight}px` }"
                 />
             </div>
-            <toolbar class="layout-content-right" @addCard="addCard" @selectVideo="selectVideo" />
+            <toolbar class="layout-content-right" @addCard="addCard" @selectVideo="selectVideo" @updateQuoteVideo="updateQuoteVideo" />
         </div>
     </div>
 </template>
@@ -39,7 +39,7 @@ import { computed, defineComponent, ref } from "vue";
 import useGlobalHotkey from "@/hooks/useGlobalHotkey";
 import usePasteEvent from "@/hooks/usePasteEvent";
 
-import { IWin, Slide } from "@/types/slides";
+import { IWin, PPTVideoElement, Slide } from "@/types/slides";
 import { useStore } from "@/store";
 import { PAGE_TYPE } from "@/configs/page";
 
@@ -83,13 +83,23 @@ export default defineComponent({
             emit("selectVideo");
         };
 
+        const setQuoteVideo = () => {
+            emit("setQuoteVideo");
+        };
+
+        const updateQuoteVideo = (element: PPTVideoElement) => {
+            emit("updateQuoteVideo", element);
+        };
+
         return {
             currentPageComponent,
             remarkHeight,
             currentSlide,
             onSave,
             addCard,
-            selectVideo
+            selectVideo,
+            setQuoteVideo,
+            updateQuoteVideo
         };
     }
 });

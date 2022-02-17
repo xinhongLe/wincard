@@ -662,6 +662,10 @@ export interface PPTLatexElement extends PPTBaseElement {
  * icon: 音频图标地址
  *
  * ossIcon: 音频图标 oss 访问地址
+ *
+ * pauseList: 引用视频断点信息
+ *
+ * fileID: 引用视频关联信息
  */
 export interface PPTVideoElement extends PPTBaseElement {
     type: "video";
@@ -675,6 +679,8 @@ export interface PPTVideoElement extends PPTBaseElement {
     poster?: string;
     ossPoster?: string;
     autoPlay?: boolean;
+    pauseList?: string[];
+    fileID?: string;
 }
 
 /**

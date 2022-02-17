@@ -16,7 +16,7 @@
             </a-form-item>
         </a-form>
         <a-divider />
-        <component v-if="handleElement" :is="currentPanelComponent"></component>
+        <component v-if="handleElement" :is="currentPanelComponent" @updateQuoteVideo="updateQuoteVideo"></component>
     </div>
 </template>
 
@@ -24,7 +24,7 @@
 import { debounce } from "lodash";
 import { computed, ComputedRef, defineComponent, reactive, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { ElementTypes, PPTElement } from "@/types/slides";
+import { ElementTypes, PPTElement, PPTVideoElement } from "@/types/slides";
 
 import TextStylePanel from "./TextStylePanel.vue";
 import ImageStylePanel from "./ImageStylePanel.vue";
@@ -42,7 +42,7 @@ import { logInput, LOG_EVENT } from "@/utils/log";
 
 export default defineComponent({
     name: "element-style-panel",
-    setup() {
+    setup(props, { emit }) {
         const store = useStore();
         const handleElement = computed<PPTElement>(
             () => store.getters.handleElement
@@ -98,13 +98,18 @@ export default defineComponent({
             }
         };
 
+        const updateQuoteVideo = (element: PPTVideoElement) => {
+            emit("updateQuoteVideo", element);
+        };
+
         return {
             formState,
             handleElement,
             updateName,
             currentPanelComponent,
             editChecked,
-            onEditChange
+            onEditChange,
+            updateQuoteVideo
         };
     }
 });

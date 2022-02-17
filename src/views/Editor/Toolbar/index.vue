@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="content">
-            <component :is="currentPanelComponent" @addCard="addCard" @selectVideo="selectVideo"></component>
+            <component :is="currentPanelComponent" @addCard="addCard" @selectVideo="selectVideo" @updateQuoteVideo="updateQuoteVideo"></component>
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@
 <script lang="ts">
 import { computed, ComputedRef, defineComponent, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { IWin, PPTElement } from "@/types/slides";
+import { IWin, PPTElement, PPTVideoElement } from "@/types/slides";
 import { ToolbarState, ToolbarStates } from "@/types/toolbar";
 
 import ElementStylePanel from "./ElementStylePanel/index.vue";
@@ -130,13 +130,18 @@ export default defineComponent({
             emit("selectVideo");
         };
 
+        const updateQuoteVideo = (element: PPTVideoElement) => {
+            emit("updateQuoteVideo", element);
+        };
+
         return {
             toolbarState,
             currentTabs,
             setToolbarState,
             currentPanelComponent,
             addCard,
-            selectVideo
+            selectVideo,
+            updateQuoteVideo
         };
     }
 });

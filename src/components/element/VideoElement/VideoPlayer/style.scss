@@ -118,6 +118,24 @@
             background: rgba(255, 255, 255, 0.2);
             cursor: pointer;
 
+            .pause-points {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                height: 3px;
+                .pause-point {
+                    width: 5px;
+                    height: 5px;
+                    border-radius: 50%;
+                    transform: translateX(-50%);
+                    position: absolute;
+                    top: -1px;
+                    background-color: #fff;
+                }
+            }
+
             .loaded {
                 position: absolute;
                 left: 0;

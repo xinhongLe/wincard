@@ -62,16 +62,23 @@
         </div>
 
         <div class="reset-video">
-            <FileInput v-if="!checkElectron" accept="video/*" @change="files => resetVideo(files)">
+            <FileInput v-if="!checkElectron && !handleElement.fileID" accept="video/*" @change="files => resetVideo(files)">
                 <a-button block>更换视频</a-button>
             </FileInput>
-            <a-button block v-if="checkElectron" @click="electronUpload('video')">更换视频</a-button>
+            <a-button block v-if="checkElectron && !handleElement.fileID" @click="electronUpload('video')">更换视频</a-button>
+            <a-button block v-if="handleElement.fileID" @click="updateQuoteVideo()">更换视频</a-button>
         </div>
 
         <a-divider />
         <div class="row" v-if="handleElement.showType === 0">
             <div style="flex: 2;">自动播放：</div>
             <a-switch v-model:checked="autoPlay" @change="autoPlayChange" />
+        </div>
+
+        <a-divider />
+        <div class="row">
+            <div style="flex: 2;">弹框视频：</div>
+            <a-switch v-model:checked="isPopUpVideo" @change="videoModelChange" />
         </div>
     </div>
 </template>
@@ -88,13 +95,15 @@ import useElectronUpload from "@/hooks/useElectronUpload";
 
 export default defineComponent({
     name: "video-style-panel",
-    setup() {
+    setup(props, { emit }) {
         const store = useStore();
         const handleElement = computed<PPTVideoElement>(
             () => store.getters.handleElement
         );
 
         const autoPlay = ref(!!handleElement.value?.autoPlay);
+
+        const isPopUpVideo = ref(handleElement.value.showType === 1);
 
         watch(handleElement, () => {
             autoPlay.value = !!handleElement.value?.autoPlay;
@@ -105,6 +114,15 @@ export default defineComponent({
                 id: handleElement.value.id,
                 props: {
                     autoPlay: autoPlay.value
+                }
+            });
+        };
+
+        const videoModelChange = () => {
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props: {
+                    showType: isPopUpVideo.value ? 1 : 0
                 }
             });
         };
@@ -146,6 +164,11 @@ export default defineComponent({
             });
         };
 
+        // 更新断点视频
+        const updateQuoteVideo = () => {
+            emit("updateQuoteVideo", handleElement.value);
+        };
+
         const checkElectron = ref(isElectron());
         const { uploadByElectron } = useElectronUpload();
         const electronUpload = (type: string, fun: number) => {
@@ -165,7 +188,10 @@ export default defineComponent({
             checkElectron,
             electronUpload,
             autoPlay,
-            autoPlayChange
+            autoPlayChange,
+            updateQuoteVideo,
+            isPopUpVideo,
+            videoModelChange
         };
     }
 });

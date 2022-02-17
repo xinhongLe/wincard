@@ -37,6 +37,7 @@
                 :src="videoUrl"
                 :poster="elementInfo.poster"
                 :scale="scale"
+                :pauseList="elementInfo.pauseList"
             />
 
             <div
@@ -61,6 +62,7 @@
                 :poster="elementInfo.poster"
                 :scale="scale"
                 v-if="elementInfo.showType == 1"
+                :pauseList="elementInfo.pauseList"
             />
         </a-modal>
     </div>

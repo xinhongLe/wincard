@@ -324,7 +324,7 @@ export default () => {
      * 创建视频元素
      * @param src 视频地址
      */
-    const createVideoElement = (src: string, showType: number) => {
+    const createVideoElement = (src: string, showType: number, fileID?: string, pauseList?: string[]) => {
         const width = showType === 0 ? 500 : 100;
         const height = showType === 0 ? 300 : 100;
         const id = createRandomCode();
@@ -340,7 +340,8 @@ export default () => {
             left: (VIEWPORT_SIZE - width) / 2,
             top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
             src,
-            showType
+            showType,
+            ...(fileID ? { fileID, pauseList } : {})
         });
     };
 

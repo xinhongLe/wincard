@@ -3,6 +3,8 @@
         @onSave="onSave"
         @addCard="addCard"
         @selectVideo="selectVideo"
+        @setQuoteVideo="setQuoteVideo"
+        @updateQuoteVideo="updateQuoteVideo"
     />
     <Screen
         ref="screenRef"
@@ -20,15 +22,16 @@ import { computed, defineComponent, onMounted, PropType, provide, ref, watch } f
 import { ActionTypes, MutationTypes, useStore } from "@/store";
 
 import useSlideHandler from "@/hooks/useSlideHandler";
-import { IWin, Slide } from "@/types/slides";
+import { IWin, PPTVideoElement, Slide } from "@/types/slides";
 import { message } from "ant-design-vue";
 import { dealSaveData } from "@/utils/dataParse";
 import isElectron from "is-electron";
 import useScaleCanvas from "@/hooks/useScaleCanvas";
+import useCreateElement from "@/hooks/useCreateElement";
 
 export default defineComponent({
     name: "PPTEditor",
-    emits: ["onSave", "addCard", "selectVideo"],
+    emits: ["onSave", "addCard", "selectVideo", "setQuoteVideo", "updateQuoteVideo"],
     components: { Editor, Screen },
     props: {
         slide: {
@@ -131,6 +134,28 @@ export default defineComponent({
             emit("selectVideo");
         };
 
+        const setQuoteVideo = () => {
+            emit("setQuoteVideo");
+        };
+
+        const updateQuoteVideo = (element: PPTVideoElement) => {
+            emit("updateQuoteVideo", element);
+        };
+
+        const { createVideoElement } = useCreateElement();
+        const createQuoteVideo = (key: string, fileID: string, pauseList: string[]) => {
+            createVideoElement(key, 0, fileID, pauseList);
+        };
+
+        const updateVideoElement = (element: PPTVideoElement) => {
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: element.id,
+                props: {
+                    ...element
+                }
+            });
+        };
+
         return {
             currentSlide,
             screening,
@@ -143,7 +168,11 @@ export default defineComponent({
             selectVideo,
             closeScreen,
             execPrev,
-            execNext
+            execNext,
+            setQuoteVideo,
+            createQuoteVideo,
+            updateVideoElement,
+            updateQuoteVideo
         };
     }
 });

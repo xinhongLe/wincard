@@ -17,6 +17,7 @@
                 :poster="elementInfo.poster"
                 :scale="scale"
                 :isScreening="true"
+                :pauseList="elementInfo.pauseList"
             />
         </div>
         <div class="element-content" v-if="elementInfo.showType == 1">
@@ -41,6 +42,7 @@
                         :scale="scale"
                         v-if="elementInfo.showType == 1"
                         :isScreening="true"
+                        :pauseList="elementInfo.pauseList"
                     />
                 </div>
             </a-modal>

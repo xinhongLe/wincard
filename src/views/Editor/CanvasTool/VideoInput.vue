@@ -4,6 +4,7 @@
             <a-tooltip
                 :mouseLeaveDelay="0"
                 :mouseEnterDelay="0.5"
+                :get-popup-container="getPopupContainer"
                 title="插入小视频"
             >
                 <IconVideoOne class="handler-item" />
@@ -13,6 +14,7 @@
             v-if="checkElectron"
             :mouseLeaveDelay="0"
             :mouseEnterDelay="0.5"
+            :get-popup-container="getPopupContainer"
             title="插入小视频"
         >
             <IconVideoOne class="handler-item" @click="electronUpload(1)" />
@@ -22,6 +24,7 @@
             <a-tooltip
                 :mouseLeaveDelay="0"
                 :mouseEnterDelay="0.5"
+                :get-popup-container="getPopupContainer"
                 title="插入大视频"
             >
                 <IconBigVideo class="handler-item" />
@@ -31,9 +34,18 @@
             v-if="checkElectron"
             :mouseLeaveDelay="0"
             :mouseEnterDelay="0.5"
+            :get-popup-container="getPopupContainer"
             title="插入大视频"
         >
             <IconBigVideo class="handler-item" @click="electronUpload(0)" />
+        </a-tooltip>
+        <a-tooltip
+            :mouseLeaveDelay="0"
+            :mouseEnterDelay="0.5"
+            :get-popup-container="getPopupContainer"
+            title="插入引用视频"
+        >
+            <IconVideoTwo class="handler-item" @click="setQuoteVideo()" />
         </a-tooltip>
     </div>
 </template>
@@ -50,7 +62,7 @@ import useElectronUpload from "@/hooks/useElectronUpload";
 export default defineComponent({
     components: { FileInput },
     name: "video-input",
-    setup() {
+    setup(props, { emit }) {
         const { createVideoElement } = useCreateElement();
 
         const insertVideoElement = (files: File[], type: number, buffer?: ArrayBuffer) => {
@@ -69,10 +81,20 @@ export default defineComponent({
             });
         };
 
+        const setQuoteVideo = () => {
+            emit("setQuoteVideo", setQuoteVideo);
+        };
+
+        const getPopupContainer = (trigger: HTMLElement) => {
+            return trigger.parentElement;
+        };
+
         return {
             checkElectron,
             electronUpload,
-            insertVideoElement
+            insertVideoElement,
+            getPopupContainer,
+            setQuoteVideo
         };
     }
 });
@@ -82,6 +104,7 @@ export default defineComponent({
 .video-input {
     display: flex;
     align-items: center;
+    padding: 0 8px;
 }
 
 .handler-item {
