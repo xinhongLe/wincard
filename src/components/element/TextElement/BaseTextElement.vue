@@ -31,7 +31,7 @@
                 />
                 <div
                     class="text ProseMirror-static"
-                    v-html="elementInfo.content"
+                    v-html="textHtml"
                 ></div>
             </div>
         </div>
@@ -59,9 +59,13 @@ export default defineComponent({
     setup(props) {
         const shadow = computed(() => props.elementInfo.shadow);
         const { shadowStyle } = useElementShadow(shadow);
+        const textHtml = computed(() => {
+            return props.elementInfo.content.replace(/<p(?:\s+?[^>]*?)?>\s*?<\/p>/ig, "<p><br class=\"ProseMirror-trailingBreak\" /></p>");
+        });
 
         return {
-            shadowStyle
+            shadowStyle,
+            textHtml
         };
     }
 });
