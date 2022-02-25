@@ -108,7 +108,8 @@ import {
     ToTop,
     Copy,
     Refraction,
-    FolderWithdrawal
+    FolderWithdrawal,
+    FullScreenOne
 } from "@icon-park/vue-next";
 import {
     DEFAULT_ICON_CONFIGS,
@@ -138,6 +139,7 @@ export default {
         // 全屏
         app.component("IconFullScreen", FullScreen);
         app.component("IconOffFullScreen", FolderWithdrawal);
+        app.component("IconFullScreenOne", FullScreenOne);
 
         // 撤销重做
         app.component("IconBack", Back);

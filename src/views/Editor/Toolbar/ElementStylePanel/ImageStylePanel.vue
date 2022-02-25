@@ -95,6 +95,11 @@
         <a-divider />
         <ElementShadow />
         <a-divider />
+        <div class="row">
+            <div style="flex: 2;">支持预览：</div>
+            <a-switch v-model:checked="preview" @change="previewModelChange" />
+        </div>
+        <a-divider />
 
         <FileInput v-if="!checkElectron" @change="files => replaceImage(files)">
             <a-button class="full-width-btn"
@@ -253,6 +258,16 @@ export default defineComponent({
         const filterOptions = ref<FilterOption[]>(
             JSON.parse(JSON.stringify(defaultFilters))
         );
+
+        const preview = ref(!!handleElement.value.preview);
+        const previewModelChange = () => {
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props: {
+                    preview: preview.value
+                }
+            });
+        };
 
         watch(
             handleElement,
@@ -488,7 +503,9 @@ export default defineComponent({
             imageViewModel,
             imageViewModelChange,
             checkElectron,
-            electronUpload
+            electronUpload,
+            preview,
+            previewModelChange
         };
     }
 });

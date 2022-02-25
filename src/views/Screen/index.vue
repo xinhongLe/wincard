@@ -619,6 +619,7 @@ export default defineComponent({
             offsetX.value = 0;
             offsetY.value = 0;
         };
+        provide("resetPosition", resetPosition);
         const { handleMousewheelScreen, handleMouseMove, moveScreen, touchStartListener, touchEndListener, touchMoveListener } = useScaleScreen(viewScale, offsetX, offsetY, execPrev, execNext, resetPosition, contentRef, offsetScreenX, offsetScreenY);
         const alignmentLines = ref<AlignmentLineProps[]>([]);
         const {
