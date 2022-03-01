@@ -50,6 +50,7 @@ export interface State {
     addStepVisible: boolean;
     editElementID: string;
     screenElements: PPTElement[];
+    spinning: boolean;
 }
 
 export const state: State = {
@@ -95,5 +96,6 @@ export const state: State = {
     cacheElementID: "", // 暂存元素ID;
     addStepVisible: false, // 添加步骤弹窗
     editElementID: "", // 处于编辑状态的元素
-    screenElements: [] // 预览添加的形状元素列表
+    screenElements: [], // 预览添加的形状元素列表
+    spinning: false // 上传loading
 };

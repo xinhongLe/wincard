@@ -64,7 +64,9 @@ export const enum MutationTypes {
     UPDATE_SCREEN_ELEMENT = "updateScreenElement",
 
     // step
-    SET_STEP_DIALOG = "setStepDialog"
+    SET_STEP_DIALOG = "setStepDialog",
+
+    SET_UPLOAD_LOADING = "setUploadLoading"
 }
 
 export const enum ActionTypes {

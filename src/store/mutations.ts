@@ -307,5 +307,9 @@ export const mutations: MutationTree<State> = {
 
     [MutationTypes.SET_STEP_DIALOG](state, visible) {
         state.addStepVisible = visible;
+    },
+
+    [MutationTypes.SET_UPLOAD_LOADING](state, visible) {
+        state.spinning = visible;
     }
 };

@@ -5,6 +5,7 @@ import { OSS_PATH } from "@/configs/filePath";
 import { message } from "ant-design-vue";
 import isElectron from "is-electron";
 import { get, STORAGE_TYPES } from "@/utils/storage";
+import emitter, { EmitterEvents } from "./emitter";
 
 export interface OssToken {
     AccessKeyId: string;
@@ -117,8 +118,10 @@ const put = (key: string, file: File | ArrayBuffer, resolve: (key: string) => vo
         .put(key, file)
         .then(() => {
             resolve(key);
+            emitter.emit(EmitterEvents.SET_UPLOAD_LOADING, false);
         })
         .catch(err => {
+            emitter.emit(EmitterEvents.SET_UPLOAD_LOADING, false);
             if ((window as any).electron && (window as any).electron.log) {
                 (window as any).electron.log.error(err);
                 (window as any).electron.log.error(file);
@@ -129,6 +132,7 @@ const put = (key: string, file: File | ArrayBuffer, resolve: (key: string) => vo
 };
 
 export const uploadFile = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: string): Promise<string> => {
+    emitter.emit(EmitterEvents.SET_UPLOAD_LOADING, true);
     return new Promise((resolve, reject) => {
         fileMd5(file).then((md5: string) => {
             const fileExtention = file.name.split(".")[
