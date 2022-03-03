@@ -1,20 +1,25 @@
 <template>
     <div class="listen-box">
-        <div class="listen-list-box">
-            <div class="listen-word-list">
+        <div class="listen-list-box" :style="{alignItems: isAlignCenter ? 'center' : 'flex-start'}">
+            <div class="listen-word-list" ref="listenRef">
                 <div
                     class="listen-word-item"
+                    :class="current === index && 'active'"
                     v-for="(item, index) in wordList"
                     :key="index"
                     @click="selectWord(index)"
                 >
-                    {{ showWord ? item.name : index + 1 }}
+                    <div class="listen-word-view" v-if="showWord" v-font-scale="48">
+                        {{item.name }}
+                    </div>
+                    <div class="listen-word-view" v-else>
+                        {{ index + 1 }}
+                    </div>
                     <div class="listening" v-if="current === index">
                         <img
                             src="@/assets/images/icon_volume_notice_small.png"
                             alt=""
                         />
-                        正在播报...
                     </div>
                     <img class="over-mark" v-if="current === wordList.length && index + 1 === wordList.length" src="@/assets/images/icon_over.png" alt="">
                 </div>
@@ -55,8 +60,9 @@
 <script lang="ts">
 import useListen from "@/hooks/useListen";
 import { Slide } from "@/types/slides";
-import { computed, defineComponent, onDeactivated, onUnmounted, PropType, ref } from "vue";
+import { computed, defineComponent, nextTick, onDeactivated, onMounted, onUnmounted, PropType, ref } from "vue";
 import { useStore } from "@/store";
+import { VIEWPORT_SIZE } from "@/configs/canvas";
 
 export default defineComponent({
     props: {
@@ -146,6 +152,29 @@ export default defineComponent({
             clearTimeout(playTimer);
         });
 
+        const listenRef = ref();
+        const isAlignCenter = ref(false);
+        const viewportRatio = computed(() => store.state.viewportRatio);
+
+        const watchListenWordBox = () => {
+            nextTick(() => {
+                if (listenRef.value) isAlignCenter.value = listenRef.value.clientHeight < viewportRatio.value * VIEWPORT_SIZE;
+            });
+        };
+
+        const resizeObserver = new ResizeObserver(watchListenWordBox);
+
+        onMounted(() => {
+            if (listenRef.value) {
+                watchListenWordBox();
+                resizeObserver.observe(listenRef.value);
+            }
+        });
+
+        onUnmounted(() => {
+            if (listenRef.value) resizeObserver.unobserve(listenRef.value);
+        });
+
         return {
             wordList,
             current,
@@ -153,7 +182,9 @@ export default defineComponent({
             isStop,
             control,
             selectWord,
-            showWord
+            showWord,
+            listenRef,
+            isAlignCenter
         };
     }
 });
@@ -172,46 +203,53 @@ export default defineComponent({
         min-width: 0;
         height: calc(100% - 52px);
         overflow-y: auto;
+        display: flex;
     }
     .listen-word-list {
         width: 100%;
         box-sizing: border-box;
         padding: 20px 0 20px 20px;
         display: flex;
-        flex-wrap: wrap;        // justify-content: space-between;
+        flex-wrap: wrap;
+        // justify-content: space-between;
+        justify-content: center;
         .listen-word-item {
             background-image: url(~@/assets/images/bg_card.png);
             background-size: 100% 100%;
             height: 80px;
-            width: calc((100% - 100px) / 5);
+            width: calc((100% - 100px) / 4);
             margin-bottom: 20px;
-            font-size: 22px;
+            font-size: 50px;
             font-weight: 600;
-            white-space: nowrap;
-            text-align: center;
-            overflow: hidden;
             box-sizing: border-box;
             padding: 10px;
-            text-overflow: ellipsis;
-            line-height: 52px;
             position: relative;
             margin-right: 20px;
             cursor: pointer;
+            .listen-word-view {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 48px;
+                position: relative;
+                top: -2px;
+                line-height: 1.2;
+                word-break: break-all;
+            }
+            &.active {
+                background-image: url(~@/assets/images/bg_card_over.png);
+            }
         }
     }
     .listening {
         position: absolute;
-        bottom: 10px;
-        font-size: 12px;
-        line-height: 1;
+        top: 10px;
+        right: 10px;
         display: flex;
-        align-items: center;
-        left: 50%;
-        transform: translateX(-50%);
-        color: $themeColor;
+        align-items: flex-start;
         img {
-            width: 14px;
-            margin-right: 5px;
+            width: 20px;
         }
     }
     .listen-footer {

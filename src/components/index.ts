@@ -20,7 +20,6 @@ import "@/assets/styles/variable.scss";
 import Icon from "@/plugins/icon";
 import Component from "@/plugins/component";
 import Directive from "@/plugins/directive";
-// import { getToken } from "@/utils/oss";
 
 export default {
     install(app: App, url: string, flashWeb: string, getLocalFileUrl?: () => Promise<string>) {
