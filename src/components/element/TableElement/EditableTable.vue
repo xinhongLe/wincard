@@ -1006,7 +1006,7 @@ table {
     .cell-text {
         min-height: 32px;
         padding: 5px;
-        line-height: 1.5;
+        line-height: 2;
         user-select: none;
         cursor: text;
 

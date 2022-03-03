@@ -85,7 +85,7 @@
                     <div
                         class="show-text ProseMirror-static"
                         v-else
-                        v-html="text.content"
+                        v-html="textHtml"
                     ></div>
                 </div>
             </div>
@@ -226,6 +226,10 @@ export default defineComponent({
             return !(props.elementInfo.path === "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z" || props.elementInfo.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z");
         });
 
+        const textHtml = computed(() => {
+            return text.value.content.replace(/<p(?:\s+?[^>]*?)?>\s*?<\/p>/ig, "<p><br class=\"ProseMirror-trailingBreak\" /></p>");
+        });
+
         return {
             shadowStyle,
             outlineWidth,
@@ -238,7 +242,8 @@ export default defineComponent({
             updateText,
             enterEditing,
             path,
-            isScale
+            isScale,
+            textHtml
         };
     }
 });

@@ -69,7 +69,7 @@
                 </div>
 
                 <div class="shape-text" :class="text.align">
-                    <div class="ProseMirror-static" v-html="text.content"></div>
+                    <div class="ProseMirror-static" v-html="textHtml"></div>
                 </div>
             </div>
         </div>
@@ -166,6 +166,10 @@ export default defineComponent({
             props.selectElement(e, props.elementInfo);
         };
 
+        const textHtml = computed(() => {
+            return text.value.content.replace(/<p(?:\s+?[^>]*?)?>\s*?<\/p>/ig, "<p><br class=\"ProseMirror-trailingBreak\" /></p>");
+        });
+
         return {
             shadowStyle,
             outlineWidth,
@@ -175,7 +179,8 @@ export default defineComponent({
             text,
             path,
             handleSelectElement,
-            isScale
+            isScale,
+            textHtml
         };
     }
 });
