@@ -216,7 +216,7 @@ export default defineComponent({
         .listen-word-item {
             background-image: url(~@/assets/images/bg_card.png);
             background-size: 100% 100%;
-            height: 80px;
+            height: 110px;
             width: calc((100% - 100px) / 4);
             margin-bottom: 20px;
             font-size: 50px;
