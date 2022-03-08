@@ -300,7 +300,7 @@
                     <!-- <IconWeb class="handler-item" /> -->
                 </a-tooltip>
             </a-popover>
-            <FileInput
+            <!-- <FileInput
                 accept="application/x-shockwave-flash"
                 @change="(files) => insertFlashElement(files)"
             >
@@ -315,9 +315,9 @@
                         <img src="@/assets/images/icon_flash.png" alt="">
                         Flash
                     </div>
-                    <!-- <IconVideoFile class="handler-item" /> -->
+                    <IconVideoFile class="handler-item" />
                 </a-tooltip>
-            </FileInput>
+            </FileInput> -->
             <!-- <a-tooltip
                 :mouseLeaveDelay="0"
                 :mouseEnterDelay="0.5"
