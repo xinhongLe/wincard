@@ -104,6 +104,10 @@ export const mutations: MutationTree<State> = {
         state.richTextAttrs = attrs;
     },
 
+    [MutationTypes.SET_FORMATTER_ATTRS](state, attrs: TextAttrs | null) {
+        state.formatterAttrs = attrs;
+    },
+
     [MutationTypes.SET_SCALING_STATE](state, isScaling: boolean) {
         state.isScaling = isScaling;
     },

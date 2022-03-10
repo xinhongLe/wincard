@@ -98,7 +98,7 @@ interface DefaultAttrs {
 }
 const _defaultAttrs: DefaultAttrs = {
     color: "#000",
-    backcolor: "#000",
+    backcolor: "#00000000",
     fontsize: "20px",
     fontname: "微软雅黑",
     align: "left"
@@ -161,7 +161,7 @@ export const defaultRichTextAttrs: TextAttrs = {
     subscript: false,
     code: false,
     color: "#000",
-    backcolor: "#000",
+    backcolor: "#00000000",
     fontsize: "20px",
     fontname: "微软雅黑",
     align: "left",

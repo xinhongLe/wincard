@@ -20,6 +20,7 @@ import { getTextAttrs } from "@/utils/prosemirror/utils";
 import emitter, { EmitterEvents, RichTextCommand } from "@/utils/emitter";
 import { alignmentCommand } from "@/utils/prosemirror/commands/setTextAlign";
 import { toggleList } from "@/utils/prosemirror/commands/toggleList";
+import { PPTElement } from "@/types/slides";
 
 export default defineComponent({
     name: "prosemirror-editor",
@@ -52,6 +53,10 @@ export default defineComponent({
         autoFocus: {
             type: Boolean,
             default: false
+        },
+        editType: {
+            type: String,
+            default: "text"
         }
     },
     setup(props, { emit }) {
@@ -167,17 +172,47 @@ export default defineComponent({
             if (props.autoFocus) editorView.focus();
         });
 
+        // 监听是否聚焦变量的变化
+        watch(() => props.autoFocus, () => {
+            if (props.autoFocus) editorView.focus();
+        });
+
         onUnmounted(() => {
             editorView && editorView.destroy();
         });
 
+        const groupIdList = computed(() => store.state.activeElementIdList);
+        const handleElement = computed<PPTElement>(() => store.getters.handleElement);
         // 执行富文本命令（可以是一个或多个）
         // 部分命令在执行前先判断当前选区是否为空，如果选区为空先进行全选操作
         const execCommand = (payload: RichTextCommand | RichTextCommand[]) => {
-            if (handleElementId.value !== props.elementId) return;
+            if (props.editType === "table") {
+                // 当编辑元素为表格时
+                // 当表格是不可编辑状态时，传入编辑的elementId为表格的id
+                // 当表格是可编辑状态，传入编辑的elementId为单元格中富文本的id
+                if (handleElementId.value !== props.elementId && groupIdList.value.indexOf(props.elementId) === -1 && !props.editable) return;
+                if (handleElementId.value && handleElementId.value !== props.elementId && !props.editable) return;
+                // 表格最后一个格式没有内容是设置格式会一直加回车 所有此处判断如果没有内容直接不执行样式设置
+                if (!editorView.dom.textContent) return;
+            } else {
+                // 选中的元素放行
+                // 存在于组当中的元素放行
+                if (handleElementId.value !== props.elementId && groupIdList.value.indexOf(props.elementId) === -1) return;
+                // 当是组合元素中选中某个元素 要排除组中非选中的元素
+                if (handleElementId.value && handleElementId.value !== props.elementId) return;
+            }
+
+            // 当前富文本格式 用于判断样式是否已经实现，如果已经是该样式则不执行该命令
+            const attrs = getTextAttrs(editorView, {
+                color: props.defaultColor,
+                fontname: props.defaultFontName,
+                fontsize: props.defaultFontSize
+            });
 
             const commands = "command" in payload ? [payload] : payload;
             for (const item of commands) {
+                // value 相等的命令不执行
+                if (attrs[item.command] === item.value && item.command !== "clear") continue;
                 if (item.command === "fontname" && item.value) {
                     const mark = editorView.state.schema.marks.fontname.create({
                         fontname: item.value

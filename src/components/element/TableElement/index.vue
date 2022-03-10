@@ -193,7 +193,6 @@ export default defineComponent({
         const updateRowHeights = (heights: number[]) => {
             const height = heights.reduce((a, b) => a + b);
             const rowHeights = heights.map(item => item / height);
-
             store.commit(MutationTypes.UPDATE_ELEMENT, {
                 id: props.elementInfo.id,
                 props: { height, rowHeights }

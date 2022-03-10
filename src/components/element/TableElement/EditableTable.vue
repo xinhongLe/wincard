@@ -75,16 +75,16 @@
                             }"
                         >
                             <ProsemirrorEditor
-                                v-if="activedCell === `${rowIndex}_${colIndex}`"
-                                :elementId="id"
+                                v-if="textEditable"
+                                editType="table"
+                                :elementId="editable ? cell.id : id"
                                 :defaultColor="cell.style.color || ''"
                                 :defaultFontName="cell.style.fontname || ''"
                                 :defaultFontSize="cell.style.fontsize || ''"
-                                :editable="activedCell === `${rowIndex}_${colIndex}`"
-                                :autoFocus="true"
+                                :editable="textEditable"
+                                :autoFocus="editCell === `${rowIndex}_${colIndex}`"
                                 :value="cell.text"
                                 @update="value => handleInput(value, rowIndex, colIndex)"
-                                @mousedown.stop
                             />
 
                             <!-- 兼容已经编辑的表格数据 -->
@@ -153,6 +153,7 @@ import useSubThemeColor from "./useSubThemeColor";
 
 // import CustomTextarea from "./CustomTextarea.vue";
 import ProsemirrorEditor from "@/components/element/ProsemirrorEditor.vue";
+import emitter, { EmitterEvents } from "@/utils/emitter";
 
 export default defineComponent({
     name: "editable-table",
@@ -258,6 +259,7 @@ export default defineComponent({
         watch(
             () => props.editable,
             () => {
+                emitter.emit(EmitterEvents.WATCH_TABLE_EDITABLE, props.editable);
                 if (!props.editable) removeSelectedCells();
             }
         );
@@ -348,6 +350,9 @@ export default defineComponent({
         // 设置选中单元格状态（鼠标点击或拖选）
         const handleMouseup = () => (isStartSelect.value = false);
 
+        // 编辑的表格 为了富文本聚焦
+        const editCell = ref();
+
         const handleCellMousedown = (
             e: MouseEvent,
             rowIndex: number,
@@ -357,6 +362,9 @@ export default defineComponent({
                 endCell.value = [];
                 isStartSelect.value = true;
                 startCell.value = [rowIndex, colIndex];
+                setTimeout(() => {
+                    editCell.value = `${rowIndex}_${colIndex}`;
+                }, 20);
             }
         };
 
@@ -721,14 +729,10 @@ export default defineComponent({
         });
 
         // 单元格文字输入时更新表格数据
-        const handleInput = debounce(
-            function(value, rowIndex, colIndex) {
-                tableCells.value[rowIndex][colIndex].text = value;
-                emit("change", tableCells.value);
-            },
-            300,
-            { trailing: true }
-        );
+        const handleInput = (value: string, rowIndex: number, colIndex: number) => {
+            tableCells.value[rowIndex][colIndex].text = value;
+            emit("change", tableCells.value);
+        };
 
         // 插入来自Excel的数据，表格的行/列数不够时自动补足
         const insertExcelData = (
@@ -902,6 +906,11 @@ export default defineComponent({
             tableRef.value && resizeObserver.unobserve(tableRef.value);
         });
 
+        // 当不需要富文本显示的时候不使用富文本渲染 降低性能消耗
+        const textEditable = computed(() => {
+            return store.state.handleElementId === props.id || store.state.activeElementIdList.indexOf(props.id || "") > -1;
+        });
+
         return {
             getTextStyle,
             dragLinePosition,
@@ -911,6 +920,7 @@ export default defineComponent({
             hideCells,
             selectedCells,
             activedCell,
+            editCell,
             selectedRange,
             handleCellMousedown,
             handleCellMouseenter,
@@ -925,7 +935,8 @@ export default defineComponent({
             rowSizeList,
             totalHeight,
             handleMousedownRowHandler,
-            tableRef
+            tableRef,
+            textEditable
         };
     }
 });
@@ -1050,8 +1061,9 @@ table {
 
 .show-text {
     pointer-events: none;
-    padding: 5px;
 }
 
-.table-edit-cell {}
+.table-edit-cell {
+    padding: 5px;
+}
 </style>

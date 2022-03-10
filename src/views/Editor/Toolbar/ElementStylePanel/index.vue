@@ -8,21 +8,293 @@
             :wrapper-col="{ span: 17 }"
         >
             <a-form-item label="元素名称" style="margin-bottom: 10px;">
-                <a-input style="width: 100%;" v-model:value="formState.name" @change="updateName" />
+                <a-input
+                    style="width: 100%;"
+                    v-model:value="formState.name"
+                    @change="updateName"
+                />
             </a-form-item>
             <a-divider />
             <a-form-item label="编辑状态" style="margin-bottom: 10px;">
-                <a-switch style="float: right;" :checked="editChecked" @change="onEditChange" />
+                <a-switch
+                    style="float: right;"
+                    :checked="editChecked"
+                    @change="onEditChange"
+                />
             </a-form-item>
         </a-form>
         <a-divider />
-        <component v-if="handleElement" :is="currentPanelComponent" @updateQuoteVideo="updateQuoteVideo"></component>
+        <component
+            v-if="handleElement"
+            :is="currentPanelComponent"
+            @updateQuoteVideo="updateQuoteVideo"
+        ></component>
+        <div v-if="!currentPanelComponent">
+            <a-input-group compact class="row">
+                <a-select
+                    style="flex: 3;"
+                    :value="richTextAttrs.fontname"
+                    @change="value => emitRichTextCommand('fontname', value)"
+                >
+                    <template #suffixIcon><IconFontSize /></template>
+                    <a-select-opt-group label="系统字体">
+                        <a-select-option
+                            v-for="font in baseFonts"
+                            :key="font.value"
+                            :value="font.value"
+                        >
+                            <span :style="{ fontFamily: font.value }">{{
+                                font.label
+                            }}</span>
+                        </a-select-option>
+                    </a-select-opt-group>
+                    <!-- <a-select-opt-group label="在线字体">
+                    <a-select-option
+                        v-for="font in webFonts"
+                        :key="font.value"
+                        :value="font.value"
+                    >
+                        <span>{{ font.label }}</span>
+                    </a-select-option>
+                </a-select-opt-group> -->
+                </a-select>
+                <a-select
+                    show-search
+                    style="flex: 2;"
+                    :value="richTextAttrs.fontsize"
+                    @change="value => emitRichTextCommand('fontsize', value)"
+                >
+                    <template #suffixIcon><IconAddText /></template>
+                    <a-select-option
+                        v-for="fontsize in fontSizeOptions"
+                        :key="fontsize"
+                        :value="fontsize"
+                    >
+                        {{ fontsize }}
+                    </a-select-option>
+                </a-select>
+            </a-input-group>
+
+            <a-button-group class="row">
+                <a-popover trigger="click">
+                    <template #content>
+                        <ColorPicker
+                            :modelValue="richTextAttrs.color"
+                            @update:modelValue="
+                                value => emitRichTextCommand('color', value)
+                            "
+                        />
+                    </template>
+                    <a-tooltip
+                        :mouseLeaveDelay="0"
+                        :mouseEnterDelay="0.5"
+                        title="文字颜色"
+                    >
+                        <a-button class="text-color-btn" style="flex: 1;">
+                            <IconText />
+                            <div
+                                class="text-color-block"
+                                :style="{
+                                    backgroundColor: richTextAttrs.color
+                                }"
+                            ></div>
+                        </a-button>
+                    </a-tooltip>
+                </a-popover>
+            </a-button-group>
+
+            <CheckboxButtonGroup class="row">
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="加粗"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.bold"
+                        @click="
+                            emitRichTextCommand('bold', !richTextAttrs.bold)
+                        "
+                        ><IconTextBold
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="斜体"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.em"
+                        @click="emitRichTextCommand('em', !richTextAttrs.em)"
+                        ><IconTextItalic
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="下划线"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.underline"
+                        @click="
+                            emitRichTextCommand(
+                                'underline',
+                                !richTextAttrs.underline
+                            )
+                        "
+                        ><IconTextUnderline
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="删除线"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.strikethrough"
+                        @click="
+                            emitRichTextCommand(
+                                'strikethrough',
+                                !richTextAttrs.strikethrough
+                            )
+                        "
+                        ><IconStrikethrough
+                    /></CheckboxButton>
+                </a-tooltip>
+            </CheckboxButtonGroup>
+
+            <CheckboxButtonGroup class="row">
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="上标"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.superscript"
+                        @click="
+                            emitRichTextCommand(
+                                'superscript',
+                                !richTextAttrs.superscript
+                            )
+                        "
+                        ><IconUpOne
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="下标"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.subscript"
+                        @click="
+                            emitRichTextCommand(
+                                'subscript',
+                                !richTextAttrs.subscript
+                            )
+                        "
+                        ><IconDownOne
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="行内代码"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.code"
+                        @click="
+                            emitRichTextCommand('code', !richTextAttrs.code)
+                        "
+                        ><IconCode
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="引用"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        :checked="richTextAttrs.blockquote"
+                        @click="
+                            emitRichTextCommand(
+                                'blockquote',
+                                !richTextAttrs.blockquote
+                            )
+                        "
+                        ><IconQuote
+                    /></CheckboxButton>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="清除格式"
+                >
+                    <CheckboxButton
+                        style="flex: 1;"
+                        @click="emitRichTextCommand('clear')"
+                        ><IconFormat
+                    /></CheckboxButton>
+                </a-tooltip>
+            </CheckboxButtonGroup>
+
+            <a-divider />
+
+            <a-radio-group
+                class="row"
+                button-style="solid"
+                :value="richTextAttrs.align"
+                @change="e => emitRichTextCommand('align', e.target.value)"
+            >
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="左对齐"
+                >
+                    <a-radio-button value="left" style="flex: 1;"
+                        ><IconAlignTextLeft
+                    /></a-radio-button>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="居中"
+                >
+                    <a-radio-button value="center" style="flex: 1;"
+                        ><IconAlignTextCenter
+                    /></a-radio-button>
+                </a-tooltip>
+                <a-tooltip
+                    :mouseLeaveDelay="0"
+                    :mouseEnterDelay="0.5"
+                    title="右对齐"
+                >
+                    <a-radio-button value="right" style="flex: 1;"
+                        ><IconAlignTextRight
+                    /></a-radio-button>
+                </a-tooltip>
+            </a-radio-group>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
 import { debounce } from "lodash";
-import { computed, ComputedRef, defineComponent, reactive, watch } from "vue";
+import {
+    computed,
+    ComputedRef,
+    defineComponent,
+    reactive,
+    ref,
+    watch
+} from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { ElementTypes, PPTElement, PPTVideoElement } from "@/types/slides";
 
@@ -39,6 +311,12 @@ import IFrameStylePanel from "./IFrameStylePanel.vue";
 import FlashStylePanel from "./FlashStylePanel.vue";
 import MarkStylePanel from "./MarkStylePanel.vue";
 import { logInput, LOG_EVENT } from "@/utils/log";
+import { defaultRichTextAttrs } from "@/utils/prosemirror/utils";
+import emitter, { EmitterEvents } from "@/utils/emitter";
+import { BASE_FONTS, WEB_FONTS } from "@/configs/font";
+
+const webFonts = WEB_FONTS;
+const baseFonts = BASE_FONTS;
 
 export default defineComponent({
     name: "element-style-panel",
@@ -73,7 +351,9 @@ export default defineComponent({
         });
 
         watch(handleElement, () => {
-            formState.name = handleElement.value ? handleElement.value.name : "";
+            formState.name = handleElement.value
+                ? handleElement.value.name
+                : "";
         });
 
         const updateName = debounce(() => {
@@ -83,7 +363,10 @@ export default defineComponent({
                     name: formState.name
                 }
             });
-            logInput(`更改元素名 ${handleElement.value.name} 为 ${formState.name}`, LOG_EVENT.UPDATE_ELEMENT);
+            logInput(
+                `更改元素名 ${handleElement.value.name} 为 ${formState.name}`,
+                LOG_EVENT.UPDATE_ELEMENT
+            );
         }, 300);
 
         const editChecked = computed(() => {
@@ -92,7 +375,10 @@ export default defineComponent({
 
         const onEditChange = (checked: boolean) => {
             if (checked) {
-                store.commit(MutationTypes.EDIT_ELEMENT_ID, handleElement.value.id);
+                store.commit(
+                    MutationTypes.EDIT_ELEMENT_ID,
+                    handleElement.value.id
+                );
             } else {
                 store.commit(MutationTypes.EDIT_ELEMENT_ID, "");
             }
@@ -102,6 +388,15 @@ export default defineComponent({
             emit("updateQuoteVideo", element);
         };
 
+        const richTextAttrs = ref(defaultRichTextAttrs);
+
+        const emitRichTextCommand = (command: string, value?: string) => {
+            richTextAttrs.value[command] = value;
+            emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command, value });
+        };
+
+        const fontSizeOptions = Array.from({ length: 245 }, (v, k) => k + 12 + "px");
+
         return {
             formState,
             handleElement,
@@ -109,8 +404,22 @@ export default defineComponent({
             currentPanelComponent,
             editChecked,
             onEditChange,
-            updateQuoteVideo
+            updateQuoteVideo,
+            emitRichTextCommand,
+            richTextAttrs,
+            webFonts,
+            baseFonts,
+            fontSizeOptions
         };
     }
 });
 </script>
+
+<style scoped>
+.row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+</style>

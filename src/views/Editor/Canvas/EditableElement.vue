@@ -49,6 +49,7 @@ import WebIFrameElement from "@/components/element/IFrameElement/index.vue";
 import FlashElement from "@/components/element/FlashElement/index.vue";
 import MarkElement from "@/components/element/MarkElement/index.vue";
 import { MutationTypes, useStore } from "@/store";
+import emitter, { EmitterEvents, RichTextCommand } from "@/utils/emitter";
 
 export default defineComponent({
     name: "editable-element",
@@ -118,6 +119,31 @@ export default defineComponent({
             return store.state.editElementID === handleElementId.value && store.state.editElementID === props.elementInfo.id;
         });
 
+        const richTextAttrs = computed(() => store.state.richTextAttrs);
+        const formatterAttrs = computed(() => store.state.formatterAttrs);
+
+        const copyFormat = () => {
+            store.commit(MutationTypes.SET_FORMATTER_ATTRS, richTextAttrs.value);
+        };
+
+        // 发射富文本设置命令（批量）
+        const emitBatchRichTextCommand = () => {
+            const commands: RichTextCommand[] = [];
+            for (const key in formatterAttrs.value) {
+                if (typeof formatterAttrs.value[key] === "boolean" && formatterAttrs.value[key]) {
+                    commands.push({
+                        command: key
+                    });
+                } else if (typeof formatterAttrs.value[key] === "string") {
+                    commands.push({
+                        command: key,
+                        value: formatterAttrs.value[key]
+                    });
+                }
+            }
+            emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, commands);
+        };
+
         const contextmenus = (): ContextmenuItem[] => {
             if (props.elementInfo.lock) {
                 return [
@@ -155,6 +181,18 @@ export default defineComponent({
                     text: "加入步骤",
                     subText: "",
                     handler: setElementStep
+                },
+                { divider: true },
+                {
+                    text: "复制格式",
+                    subText: "",
+                    handler: copyFormat
+                },
+                {
+                    text: "粘贴格式",
+                    disable: !formatterAttrs.value,
+                    subText: "",
+                    handler: emitBatchRichTextCommand
                 },
                 { divider: true },
                 {

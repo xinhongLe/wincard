@@ -71,13 +71,13 @@
 
                 <div class="shape-text" :class="text.align">
                     <ProsemirrorEditor
-                        v-if="editable"
+                        v-if="textEditable"
                         :elementId="elementInfo.id"
                         :defaultColor="text.defaultColor"
                         :defaultFontName="text.defaultFontName"
                         :defaultFontSize="text.defaultFontSize"
                         :editable="!elementInfo.lock"
-                        :autoFocus="true"
+                        :autoFocus="autoFocus"
                         :value="text.content"
                         @update="value => updateText(value)"
                         @mousedown.stop
@@ -230,13 +230,23 @@ export default defineComponent({
             return text.value.content.replace(/<p(?:\s+?[^>]*?)?>\s*?<\/p>/ig, "<p><br class=\"ProseMirror-trailingBreak\" /></p>");
         });
 
+        // 当不需要富文本显示的时候不使用富文本渲染 降低性能消耗
+        const textEditable = computed(() => {
+            return editable.value || (store.state.handleElementId !== props.elementInfo.id && store.state.activeElementIdList.indexOf(props.elementInfo.id || "") > -1);
+        });
+
+        const autoFocus = computed(() => {
+            return store.state.handleElementId === props.elementInfo.id && editable.value;
+        });
+
         return {
             shadowStyle,
             outlineWidth,
             outlineStyle,
             outlineColor,
             flipStyle,
-            editable,
+            textEditable,
+            autoFocus,
             text,
             handleSelectElement,
             updateText,
