@@ -20,7 +20,6 @@ import { getTextAttrs } from "@/utils/prosemirror/utils";
 import emitter, { EmitterEvents, RichTextCommand } from "@/utils/emitter";
 import { alignmentCommand } from "@/utils/prosemirror/commands/setTextAlign";
 import { toggleList } from "@/utils/prosemirror/commands/toggleList";
-import { PPTElement } from "@/types/slides";
 
 export default defineComponent({
     name: "prosemirror-editor",
@@ -182,7 +181,7 @@ export default defineComponent({
         });
 
         const groupIdList = computed(() => store.state.activeElementIdList);
-        const handleElement = computed<PPTElement>(() => store.getters.handleElement);
+        // const handleElement = computed<PPTElement>(() => store.getters.handleElement);
         // 执行富文本命令（可以是一个或多个）
         // 部分命令在执行前先判断当前选区是否为空，如果选区为空先进行全选操作
         const execCommand = (payload: RichTextCommand | RichTextCommand[]) => {

@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, defineComponent, watch, ref } from "vue";
+import { computed, PropType, defineComponent } from "vue";
 import { PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import useSlideBackgroundStyle from "@/hooks/useSlideBackgroundStyle";
 import ScreenElement from "./ScreenElement.vue";

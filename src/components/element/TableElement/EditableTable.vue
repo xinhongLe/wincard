@@ -141,7 +141,7 @@ import {
     ref,
     watch
 } from "vue";
-import { debounce, isEqual } from "lodash";
+import { isEqual } from "lodash";
 import { MutationTypes, useStore } from "@/store";
 import { PPTElementOutline, TableCell, TableTheme } from "@/types/slides";
 import { ContextmenuItem } from "@/types/contextmenu";

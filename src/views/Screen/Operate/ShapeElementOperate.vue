@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, ref } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 
 import { PPTShapeElement } from "@/types/slides";
 import { OperateResizeHandler } from "@/types/edit";

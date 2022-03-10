@@ -133,7 +133,7 @@ export default defineComponent({
         height: 50px;
         background: #e7efff;
         border-radius: 8px;
-        padding: 0px 6px 6px;
+        padding: 0 6px 6px;
         box-sizing: border-box;
         flex: 1;
     }

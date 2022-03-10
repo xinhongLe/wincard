@@ -11,8 +11,8 @@ export default () => {
 
     // 进入放映状态（从当前页开始）
     const enterScreening = async () => {
-        if ((window as any).electron && !(window as any).electron.isFullScreen() && !(window as any).electron.isMac()) {
-            (window as any).electron.setFullScreen();
+        if (window.electron && !window.electron.isFullScreen() && !window.electron.isMac()) {
+            window.electron.setFullScreen();
             await sleep(300);
         }
         enterFullscreen();

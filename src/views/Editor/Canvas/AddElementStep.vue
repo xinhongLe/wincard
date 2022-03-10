@@ -110,7 +110,7 @@
                         </div>
                     </template>
                     <a-button class="element-animation-btn">
-                        <IconEffects style="margin-right: 5px" />
+                        <IconEffects style="margin-right: 5px;" />
                         {{
                             formState.inAni
                                 ? animationTypes[formState.inAni]
@@ -162,7 +162,7 @@
                         </div>
                     </template>
                     <a-button class="element-animation-btn">
-                        <IconEffects style="margin-right: 5px" />
+                        <IconEffects style="margin-right: 5px;" />
                         {{
                             formState.outAni
                                 ? animationTypes[formState.outAni]
@@ -179,7 +179,7 @@
                     :step="100"
                     :value="formState.duration"
                     @change="(value) => updateElementAnimationDuration(value)"
-                    style="width: 100%"
+                    style="width: 100%;"
                 />
             </a-form-item>
         </a-form>
@@ -265,7 +265,7 @@ export default defineComponent({
         // 监听 当前页面数据变化  初始化 页面 elements
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
         const steps = computed(() => currentSlide.value.steps || []);
-        const elementTarget = computed(() => store.state.cacheElementID);
+        // const elementTarget = computed(() => store.state.cacheElementID);
         const elementList = ref<PPTElement[]>([]);
         const setLocalElementList = () => {
             elementList.value = currentSlide.value && currentSlide.value.elements
@@ -434,8 +434,5 @@ export default defineComponent({
     .input-btn {
         margin-left: 5px;
     }
-}
-.element-animation-btn {
-    width: 100%;
 }
 </style>

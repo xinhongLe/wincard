@@ -446,7 +446,7 @@ export default defineComponent({
             });
         };
 
-        const insertFlashElement = (files: File[], buffer?: ArrayBuffer) => {
+        const insertFlashElement = (files: File[]) => {
             const flashFile = files[0];
             if (!flashFile) return;
             uploadFlash(flashFile).then((key) => {
@@ -611,9 +611,10 @@ export default defineComponent({
         width: 24px;
         margin: 0 auto 4px;
     }
+
     font-size: 13px;
     transform: scale(0.8);
-    color: #5D5D5D;
+    color: #5d5d5d;
     cursor: pointer;
     padding: 5px 15px;
     border-radius: 3px;

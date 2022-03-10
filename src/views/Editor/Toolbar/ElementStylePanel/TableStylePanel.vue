@@ -405,8 +405,6 @@ export default defineComponent({
         const minColCount = ref(0);
         const cellRichTextAttrs = computed(() => store.state.richTextAttrs);
         const richTextAttrs = ref(defaultRichTextAttrs);
-        const lineHeight = ref<number>();
-        const wordSpace = ref<number>();
 
         watch(
             handleElement,

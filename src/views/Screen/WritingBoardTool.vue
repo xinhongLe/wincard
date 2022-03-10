@@ -127,7 +127,7 @@ const writingBoardColors = [
 ];
 interface Icanvas {
     id: string,
-    data: any
+    data: ImageData
 }
 
 export default defineComponent({

@@ -61,7 +61,7 @@ export default defineComponent({
             initSlides();
             if (isElectron()) {
                 // electron中保存会再次渲染失败 加日志看返回数据
-                (window as any).electron.log.info("初始化slide数据：", slide.value);
+                window.electron.log.info("初始化slide数据：", slide.value);
             }
         });
 

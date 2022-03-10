@@ -19,8 +19,10 @@ export interface downloadResponse {
     expiration: string;
 }
 
+type IOssTokenCallback = (ossToken: OssToken) => void;
+
 // 为了防止多次请求ossToken getOssToken 这里对请求加上锁 进行排队处理
-let callbackStash: any = null;
+let callbackStash: IOssTokenCallback | null = null;
 export const getToken = async (callback: (ossToken: OssToken) => void, request?: boolean) => {
     const time = Number(localStorage.getItem("wincard_ossTokenExpireTime") || 0);
     const currentTime = new Date().getTime();
@@ -35,7 +37,7 @@ export const getToken = async (callback: (ossToken: OssToken) => void, request?:
         // 没有token或者token过期 需要请求 token
         // request 为 true 强制 请求刷新 token
         callbackStash = callback;
-        const res: any = await getOssToken();
+        const res = await getOssToken();
         if (res.resultCode === 200) {
             localStorage.setItem(
                 "wincard_ossTokenExpireTime",
@@ -122,9 +124,9 @@ const put = (key: string, file: File | ArrayBuffer, resolve: (key: string) => vo
         })
         .catch(err => {
             emitter.emit(EmitterEvents.SET_UPLOAD_LOADING, false);
-            if ((window as any).electron && (window as any).electron.log) {
-                (window as any).electron.log.error(err);
-                (window as any).electron.log.error(file);
+            if (window.electron && window.electron.log) {
+                window.electron.log.error(err);
+                window.electron.log.error(file);
             }
             message.error("上传失败！");
             reject(new Error("上传出错了"));
@@ -135,6 +137,7 @@ export const uploadFile = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: strin
     emitter.emit(EmitterEvents.SET_UPLOAD_LOADING, true);
     return new Promise((resolve, reject) => {
         fileMd5(file).then((md5: string) => {
+            console.log(md5);
             const fileExtention = file.name.split(".")[
                 file.name.split(".").length - 1
             ];
@@ -150,9 +153,9 @@ export const uploadFile = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: strin
                     }
                 }, 10);
             }
-            if (isElectron() && (window as any).electron.getCachePath && (window as any).electron.savePutFile && get(STORAGE_TYPES.SET_ISCACHE)) {
-                const savePath = (window as any).electron.getCachePath(name + "." + fileExtention);
-                (window as any).electron.savePutFile(savePath, buffer);
+            if (isElectron() && window.electron.getCachePath && window.electron.savePutFile && get(STORAGE_TYPES.SET_ISCACHE)) {
+                const savePath = window.electron.getCachePath(name + "." + fileExtention);
+                window.electron.savePutFile(savePath, buffer);
             }
         });
     });
@@ -160,20 +163,6 @@ export const uploadFile = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: strin
 
 const fileMd5 = (file: File): Promise<string> => {
     return new Promise(resolve => {
-        // const fileReader = new FileReader();
-        // const spark = new SparkMD5(); // 创建md5对象（基于SparkMD5）
-        // if (file.size > 1024 * 1024 * 10) {
-        //     const data = file.slice(0, 1024 * 1024 * 10); // 将文件进行分块 file.slice(start,length)
-        //     fileReader.readAsBinaryString(data); // 将文件读取为二进制码
-        // } else {
-        //     fileReader.readAsBinaryString(file);
-        // }
-
-        // fileReader.addEventListener("load", () => {
-        //     spark.appendBinary(fileReader.result as string);
-        //     const md5 = spark.end();
-        //     resolve(md5);
-        // });
         const blobSlice = File.prototype.slice;
         const chunkSize = 2097152; // 2MB
         const chunks = Math.ceil(file.size / chunkSize);
@@ -181,37 +170,23 @@ const fileMd5 = (file: File): Promise<string> => {
         const spark = new SparkMD5.ArrayBuffer();
         const fileReader = new FileReader();
 
-        // const time = new Date().getTime();
-
-        fileReader.onload = (e: any) => {
-            spark.append(e.target.result); // Append array buffer
+        fileReader.onload = () => {
+            spark.append(fileReader.result as ArrayBuffer); // Append array buffer
             currentChunk++;
 
             if (currentChunk < chunks) {
-                // console.log(
-                //     `第${currentChunk}分片解析完成, 开始第${
-                //         currentChunk + 1
-                //     } / ${chunks}分片解析`
-                // );
                 loadNext();
             } else {
                 const md5 = spark.end(); // 得到md5
-                // console.log(
-                //     `MD5计算完成：${
-                //         file.name
-                //     } \nMD5：${md5} \n分片：${chunks} 大小:${file.size} 用时：${
-                //         new Date().getTime() - time
-                //     } ms`
-                // );
                 spark.destroy(); // 释放缓存
                 resolve(md5);
             }
         };
 
         fileReader.onerror = () => {
-            if ((window as any).electron && (window as any).electron.log) {
-                (window as any).electron.log.error("oops, something went wrong.");
-                (window as any).electron.log.error(file);
+            if (window.electron && window.electron.log) {
+                window.electron.log.error("oops, something went wrong.");
+                window.electron.log.error(file);
             }
         };
 

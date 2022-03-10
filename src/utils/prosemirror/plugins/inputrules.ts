@@ -2,10 +2,10 @@ import { NodeType, Schema } from "prosemirror-model";
 import {
     inputRules,
     wrappingInputRule,
-    textblockTypeInputRule,
-    smartQuotes,
-    emDash,
-    ellipsis
+    textblockTypeInputRule
+    // smartQuotes,
+    // emDash,
+    // ellipsis
 } from "prosemirror-inputrules";
 
 const blockQuoteRule = (nodeType: NodeType) =>

@@ -50,13 +50,12 @@ export default defineComponent({
         const currentSlide = computed(() => store.getters.currentSlide);
         const teach = computed(() => currentSlide.value.teach);
 
-        const teachList = ref<Teach[]>([]);
-
-        getTeachList({ state: 2 }).then((res: any) => {
+        const initTeachList = async () => {
+            const res = await getTeachList({ state: 2 });
             if (res.success) {
-                teachList.value = res.result.filter((item: any) => {
+                teachList.value = res.result.filter((item) => {
                     return !!item.Url;
-                }).map((item: any) => {
+                }).map((item) => {
                     return {
                         id: item.ID,
                         name: item.Name,
@@ -64,7 +63,11 @@ export default defineComponent({
                     };
                 });
             }
-        });
+        };
+
+        const teachList = ref<Teach[]>([]);
+
+        initTeachList();
 
         const selectedRow = ref<string>();
 

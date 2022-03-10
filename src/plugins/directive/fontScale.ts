@@ -24,7 +24,7 @@ const FontScaleDirective = {
         setFontSize(el, binding.value);
     },
 
-    unmounted(el: HTMLElement) {
+    unmounted() {
         // console.log(el);
     }
 };

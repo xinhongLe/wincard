@@ -23,7 +23,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 import { useStore } from "@/store";
-import { ElementTypes, PPTElement, Slide } from "@/types/slides";
+import { ElementTypes, PPTElement } from "@/types/slides";
 
 import BaseImageElement from "@/components/element/ImageElement/BaseImageElement.vue";
 import BaseTextElement from "@/components/element/TextElement/BaseTextElement.vue";

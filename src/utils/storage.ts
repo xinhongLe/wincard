@@ -9,9 +9,9 @@ export enum STORAGE_TYPES {
     SET_ISCACHE = "SET_ISCACHE"
 }
 
-export const set = (name: STORAGE_TYPES, value: any) => {
+export const set = (name: STORAGE_TYPES, value: unknown) => {
     if (isElectron()) {
-        (window as any).electron.store.set(`${PREFIX}_${name}`, typeof value === "string" ? value : JSON.stringify(value));
+        window.electron.store.set(`${PREFIX}_${name}`, typeof value === "string" ? value : JSON.stringify(value));
     } else {
         localStorage.setItem(`${PREFIX}_${name}`, typeof value === "string" ? value : JSON.stringify(value));
     }
@@ -20,7 +20,7 @@ export const set = (name: STORAGE_TYPES, value: any) => {
 export const get = (name: STORAGE_TYPES) => {
     let item;
     if (isElectron()) {
-        item = (window as any).electron.store.get(`${PREFIX}_${name}`);
+        item = window.electron.store.get(`${PREFIX}_${name}`);
     } else {
         item = localStorage.getItem(`${PREFIX}_${name}`);
     }
@@ -35,7 +35,7 @@ export const get = (name: STORAGE_TYPES) => {
 
 export const remove = (name: string) => {
     if (isElectron()) {
-        (window as any).electron.store.delete(`${PREFIX}_${name}`);
+        window.electron.store.delete(`${PREFIX}_${name}`);
     } else {
         localStorage.removeItem(`${PREFIX}_${name}`);
     }
@@ -43,7 +43,7 @@ export const remove = (name: string) => {
 
 export const clear = () => {
     if (isElectron()) {
-        (window as any).electron.store.clear();
+        window.electron.store.clear();
     } else {
         Object.keys(localStorage).forEach((name) => {
             const REGEXP = /^VUE_(.+)/;
