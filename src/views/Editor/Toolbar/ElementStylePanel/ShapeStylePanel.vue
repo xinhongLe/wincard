@@ -589,7 +589,7 @@ export default defineComponent({
 }
 .row {
     width: 100%;
-    display: flex;
+    display: flex !important;
     align-items: center;
     margin-bottom: 10px;
 }
