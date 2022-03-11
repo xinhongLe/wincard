@@ -97,7 +97,10 @@ export default defineComponent({
         });
 
         const { orderElement } = useOrderElement();
-        const { alignElementToCanvas, alignElementToElement } = useAlignElementToCanvas();
+        const {
+            alignElementToCanvas,
+            alignElementToElement
+        } = useAlignElementToCanvas();
         const { combineElements, uncombineElements } = useCombineElement();
         const { deleteElement } = useDeleteElement(0);
         const { lockElement, unlockElement } = useLockElement();
@@ -116,21 +119,30 @@ export default defineComponent({
 
         const handleElementId = computed(() => store.state.handleElementId);
         const editable = computed(() => {
-            return store.state.editElementID === handleElementId.value && store.state.editElementID === props.elementInfo.id;
+            return (
+                store.state.editElementID === handleElementId.value &&
+                store.state.editElementID === props.elementInfo.id
+            );
         });
 
         const richTextAttrs = computed(() => store.state.richTextAttrs);
         const formatterAttrs = computed(() => store.state.formatterAttrs);
 
         const copyFormat = () => {
-            store.commit(MutationTypes.SET_FORMATTER_ATTRS, richTextAttrs.value);
+            store.commit(
+                MutationTypes.SET_FORMATTER_ATTRS,
+                richTextAttrs.value
+            );
         };
 
         // 发射富文本设置命令（批量）
         const emitBatchRichTextCommand = () => {
             const commands: RichTextCommand[] = [];
             for (const key in formatterAttrs.value) {
-                if (typeof formatterAttrs.value[key] === "boolean" && formatterAttrs.value[key]) {
+                if (
+                    typeof formatterAttrs.value[key] === "boolean" &&
+                    formatterAttrs.value[key]
+                ) {
                     commands.push({
                         command: key
                     });
@@ -170,6 +182,15 @@ export default defineComponent({
                     subText: "Ctrl + V",
                     handler: pasteElement
                 },
+                { divider: true, hide: !props.isMultiSelect },
+                {
+                    text: props.elementInfo.groupId ? "取消组合" : "组合",
+                    subText: "Ctrl + G",
+                    handler: props.elementInfo.groupId
+                        ? uncombineElements
+                        : combineElements,
+                    hide: !props.isMultiSelect
+                },
                 { divider: true },
                 {
                     text: "暂存目标",
@@ -207,15 +228,69 @@ export default defineComponent({
                 },
                 { divider: true },
                 {
+                    text: "置于顶层",
+                    disable: props.isMultiSelect && !props.elementInfo.groupId,
+                    handler: () =>
+                        orderElement(
+                            props.elementInfo,
+                            ElementOrderCommands.TOP
+                        ),
+                    children: [
+                        {
+                            text: "置于顶层",
+                            handler: () =>
+                                orderElement(
+                                    props.elementInfo,
+                                    ElementOrderCommands.TOP
+                                )
+                        },
+                        {
+                            text: "上移一层",
+                            handler: () =>
+                                orderElement(
+                                    props.elementInfo,
+                                    ElementOrderCommands.UP
+                                )
+                        }
+                    ]
+                },
+                {
+                    text: "置于底层",
+                    disable: props.isMultiSelect && !props.elementInfo.groupId,
+                    handler: () =>
+                        orderElement(
+                            props.elementInfo,
+                            ElementOrderCommands.BOTTOM
+                        ),
+                    children: [
+                        {
+                            text: "置于底层",
+                            handler: () =>
+                                orderElement(
+                                    props.elementInfo,
+                                    ElementOrderCommands.BOTTOM
+                                )
+                        },
+                        {
+                            text: "下移一层",
+                            handler: () =>
+                                orderElement(
+                                    props.elementInfo,
+                                    ElementOrderCommands.DOWN
+                                )
+                        }
+                    ]
+                },
+                { divider: true },
+                {
                     text: "相对对齐",
-                    disable: !props.isMultiSelect || !!props.elementInfo.groupId,
+                    disable:
+                        !props.isMultiSelect || !!props.elementInfo.groupId,
                     children: [
                         {
                             text: "左对齐",
                             handler: () =>
-                                alignElementToElement(
-                                    ElementAlignCommands.LEFT
-                                )
+                                alignElementToElement(ElementAlignCommands.LEFT)
                         },
                         {
                             text: "右对齐",
@@ -304,86 +379,29 @@ export default defineComponent({
                 },
                 { divider: true },
                 {
-                    text: "置于顶层",
-                    disable: props.isMultiSelect && !props.elementInfo.groupId,
-                    handler: () =>
-                        orderElement(
-                            props.elementInfo,
-                            ElementOrderCommands.TOP
-                        ),
+                    text: "更多",
                     children: [
                         {
-                            text: "置于顶层",
-                            handler: () =>
-                                orderElement(
-                                    props.elementInfo,
-                                    ElementOrderCommands.TOP
-                                )
+                            text: "设置链接",
+                            handler: props.openLinkDialog
+                        },
+
+                        {
+                            text: "全选",
+                            subText: "Ctrl + A",
+                            handler: selectAllElement
                         },
                         {
-                            text: "上移一层",
-                            handler: () =>
-                                orderElement(
-                                    props.elementInfo,
-                                    ElementOrderCommands.UP
-                                )
-                        }
-                    ]
-                },
-                {
-                    text: "置于底层",
-                    disable: props.isMultiSelect && !props.elementInfo.groupId,
-                    handler: () =>
-                        orderElement(
-                            props.elementInfo,
-                            ElementOrderCommands.BOTTOM
-                        ),
-                    children: [
-                        {
-                            text: "置于底层",
-                            handler: () =>
-                                orderElement(
-                                    props.elementInfo,
-                                    ElementOrderCommands.BOTTOM
-                                )
+                            text: "锁定",
+                            subText: "Ctrl + L",
+                            handler: lockElement
                         },
                         {
-                            text: "下移一层",
-                            handler: () =>
-                                orderElement(
-                                    props.elementInfo,
-                                    ElementOrderCommands.DOWN
-                                )
+                            text: "删除",
+                            subText: "Delete",
+                            handler: deleteElement
                         }
                     ]
-                },
-                { divider: true },
-                {
-                    text: "设置链接",
-                    handler: props.openLinkDialog
-                },
-                {
-                    text: props.elementInfo.groupId ? "取消组合" : "组合",
-                    subText: "Ctrl + G",
-                    handler: props.elementInfo.groupId
-                        ? uncombineElements
-                        : combineElements,
-                    hide: !props.isMultiSelect
-                },
-                {
-                    text: "全选",
-                    subText: "Ctrl + A",
-                    handler: selectAllElement
-                },
-                {
-                    text: "锁定",
-                    subText: "Ctrl + L",
-                    handler: lockElement
-                },
-                {
-                    text: "删除",
-                    subText: "Delete",
-                    handler: deleteElement
                 }
             ];
         };
