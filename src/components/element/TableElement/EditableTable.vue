@@ -81,7 +81,7 @@
                                 :defaultColor="cell.style.color || ''"
                                 :defaultFontName="cell.style.fontname || ''"
                                 :defaultFontSize="cell.style.fontsize || ''"
-                                :editable="textEditable"
+                                :editable="editCell === `${rowIndex}_${colIndex}`"
                                 :autoFocus="editCell === `${rowIndex}_${colIndex}`"
                                 :value="cell.text"
                                 @update="value => handleInput(value, rowIndex, colIndex)"
