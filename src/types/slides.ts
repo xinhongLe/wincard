@@ -897,3 +897,8 @@ export interface ICard {
     ID:string,
     Name: string | undefined,
 }
+
+export enum SaveType {
+    Save,
+    SaveAs
+}

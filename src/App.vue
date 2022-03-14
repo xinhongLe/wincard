@@ -1,19 +1,20 @@
 <template>
-    <PPTEditor ref="editor" :slide="slide" @onSave="onSave" @addCard="addCard" />
+    <PPTEditor ref="editor" :slide="slide" @onSave="onSave" @addCard="addCard" :isShowSaveAs="isShowSaveAs" v-model:windowName="windowName" :isShowName="true"/>
     <!-- <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @closeWriteBoard="closeWriteBoard" :useScale="true" @openCard="openCard" :keyDisabled="true" :isInit="false" /> -->
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { slides } from "./mocks/slides";
-import { IWin, Slide } from "./types/slides";
+import { IWin, Slide, SaveType } from "./types/slides";
 import { dealOldData } from "@/utils/dataParse";
 
 export default defineComponent({
     name: "APP",
     setup() {
         const editor = ref();
-
+        const isShowSaveAs = ref(false);
+        const windowName = ref("");
         const screenRef = ref();
         // screenRef.value.execPrev(); 上一步
         // screenRef.value.execNext(); 下一步
@@ -29,9 +30,9 @@ export default defineComponent({
         //     console.log("====数据是否变化", editor.value.getDataIsChange());
         // }, 5000);
 
-        const onSave = (slideData: Slide) => {
+        const onSave = (slideData: Slide, type: SaveType) => {
             console.log("数据是否变化", editor.value.getDataIsChange());
-            console.log(JSON.stringify(slideData));
+            console.log(JSON.stringify(slideData), type);
             localStorage.exampleSlide0 = JSON.stringify(JSON.stringify(slideData));
             slide.value = {
                 id: "xxx",
@@ -138,6 +139,8 @@ export default defineComponent({
             pageNext,
             openCard,
             screenRef,
+            windowName,
+            isShowSaveAs,
             closeWriteBoard
         };
     }
