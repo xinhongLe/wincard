@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, ref } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 
 import { PPTLineElement } from "@/types/slides";
 import { OperateLineHandler, OperateLineHandlers } from "@/types/edit";

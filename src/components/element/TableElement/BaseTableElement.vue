@@ -42,7 +42,7 @@ export default defineComponent({
         const rowHeights = computed(() => {
             let rowHeights = props.elementInfo.rowHeights || [];
             if (rowHeights.length === 0) {
-                const rowsNum = props.elementInfo.data.length;
+                // const rowsNum = props.elementInfo.data.length;
                 // 以前的旧数据格式处理
                 // rowHeights = Array.from({ length: rowsNum }, () => 1 / rowsNum);
                 rowHeights = [];

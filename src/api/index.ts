@@ -39,9 +39,34 @@ interface IGetTeach {
     state: number;
 }
 
-export function getOssToken() {
+export interface IResponse<T> {
+    resultCode: number;
+    result: T;
+    success: boolean;
+    resultDesc: string;
+}
+
+interface ITeach {
+    ID: string;
+    Name: string;
+    Url: string;
+}
+
+interface IOssToken {
+    AccessKeyId: string;
+    AccessKeySecret: string;
+    Expiration: string;
+    SecurityToken: string;
+}
+
+interface IOssResult {
+    ossToken: IOssToken;
+}
+
+export function getOssToken(): Promise<IResponse<IOssResult>> {
     return request({
-        baseURL: (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
+        baseURL:
+            window.VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
         url: "/Api/V3/Auxiliary/GetOssToken",
         method: "post",
         data: {}
@@ -51,7 +76,8 @@ export function getOssToken() {
 // 获取字词库
 export function getSystemWordList(data: ISearchWord) {
     return request({
-        baseURL: (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
+        baseURL:
+            window.VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
         url: "/Api/WCP/Listen/SearchWordsPagination",
         method: "post",
         data
@@ -61,7 +87,8 @@ export function getSystemWordList(data: ISearchWord) {
 // 上传字词
 export function addSystemWord(data: IUploadWord) {
     return request({
-        baseURL: (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
+        baseURL:
+            window.VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
         url: "/API/WCP/Listen/AddCardWord",
         method: "post",
         data
@@ -93,7 +120,8 @@ export function addSystemWord(data: IUploadWord) {
 // 更新库字词
 export function editSystemWord(data: IUploadWord) {
     return request({
-        baseURL: (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
+        baseURL:
+            window.VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
         url: "/API/WCP/Listen/EditCardWord",
         method: "post",
         data
@@ -103,7 +131,8 @@ export function editSystemWord(data: IUploadWord) {
 // 获取听写页字词列表
 export function getPageWordList(data: IGetWord) {
     return request({
-        baseURL: (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
+        baseURL:
+            window.VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
         url: "/API/WCP/Listen/GetPageWords",
         method: "post",
         data
@@ -111,9 +140,10 @@ export function getPageWordList(data: IGetWord) {
 }
 
 // 获取教具列表
-export function getTeachList(data: IGetTeach) {
+export function getTeachList(data: IGetTeach): Promise<IResponse<ITeach[]>> {
     return request({
-        baseURL: (window as any).VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
+        baseURL:
+            window.VUE_APP_WINCARD_AI_XUE_SHI_API || AI_XUE_SHI_API,
         url: "/API/W1/TeachingMiniTool/ToolManage/GetToolList",
         method: "post",
         data

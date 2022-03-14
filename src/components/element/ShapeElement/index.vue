@@ -71,13 +71,13 @@
 
                 <div class="shape-text" :class="text.align">
                     <ProsemirrorEditor
-                        v-if="editable"
+                        v-if="textEditable"
                         :elementId="elementInfo.id"
                         :defaultColor="text.defaultColor"
                         :defaultFontName="text.defaultFontName"
                         :defaultFontSize="text.defaultFontSize"
                         :editable="!elementInfo.lock"
-                        :autoFocus="true"
+                        :autoFocus="autoFocus"
                         :value="text.content"
                         @update="value => updateText(value)"
                         @mousedown.stop
@@ -85,7 +85,7 @@
                     <div
                         class="show-text ProseMirror-static"
                         v-else
-                        v-html="text.content"
+                        v-html="textHtml"
                     ></div>
                 </div>
             </div>
@@ -226,19 +226,34 @@ export default defineComponent({
             return !(props.elementInfo.path === "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z" || props.elementInfo.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z");
         });
 
+        const textHtml = computed(() => {
+            return text.value.content.replace(/<p(?:\s+?[^>]*?)?>\s*?<\/p>/ig, "<p><br class=\"ProseMirror-trailingBreak\" /></p>");
+        });
+
+        // 当不需要富文本显示的时候不使用富文本渲染 降低性能消耗
+        const textEditable = computed(() => {
+            return editable.value || (store.state.handleElementId !== props.elementInfo.id && store.state.activeElementIdList.indexOf(props.elementInfo.id || "") > -1);
+        });
+
+        const autoFocus = computed(() => {
+            return store.state.handleElementId === props.elementInfo.id && editable.value;
+        });
+
         return {
             shadowStyle,
             outlineWidth,
             outlineStyle,
             outlineColor,
             flipStyle,
-            editable,
+            textEditable,
+            autoFocus,
             text,
             handleSelectElement,
             updateText,
             enterEditing,
             path,
-            isScale
+            isScale,
+            textHtml
         };
     }
 });

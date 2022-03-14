@@ -21,7 +21,7 @@ export default () => {
                 //  !isPause 改变进度条时会触发oncanplay
                 if (audio && !isPause) {
                     isPlay.value = true;
-                    duration.value = Math.floor(audio!.duration);
+                    duration.value = Math.floor(audio.duration);
                     audio.play();
                     updateDuration();
                 }

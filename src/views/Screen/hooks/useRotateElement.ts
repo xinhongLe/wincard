@@ -2,8 +2,6 @@ import { Ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import {
     PPTElement,
-    PPTTextElement,
-    PPTImageElement,
     PPTShapeElement
 } from "@/types/slides";
 

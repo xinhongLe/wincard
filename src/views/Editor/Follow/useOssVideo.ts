@@ -2,7 +2,7 @@ import { Follow } from "@/types/slides";
 import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, computed, ComputedRef, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { getOssVideoUrl, videoUrlToBase64 } from "@/utils/video";
+import { getOssVideoUrl } from "@/utils/video";
 import isElectron from "is-electron";
 import { get, STORAGE_TYPES } from "@/utils/storage";
 // import { getResourceDB } from "@/utils/database";

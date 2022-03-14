@@ -49,8 +49,6 @@ import {
     computed,
     defineComponent,
     nextTick,
-    onMounted,
-    onUnmounted,
     PropType,
     ref,
     watch
@@ -193,7 +191,6 @@ export default defineComponent({
         const updateRowHeights = (heights: number[]) => {
             const height = heights.reduce((a, b) => a + b);
             const rowHeights = heights.map(item => item / height);
-
             store.commit(MutationTypes.UPDATE_ELEMENT, {
                 id: props.elementInfo.id,
                 props: { height, rowHeights }
@@ -211,7 +208,7 @@ export default defineComponent({
         const rowHeights = computed(() => {
             let rowHeights = props.elementInfo.rowHeights || [];
             if (rowHeights.length === 0) {
-                const rowsNum = props.elementInfo.data.length;
+                // const rowsNum = props.elementInfo.data.length;
                 // 以前的旧数据格式处理
                 // rowHeights = Array.from({ length: rowsNum }, () => 1 / rowsNum);
                 rowHeights = [];

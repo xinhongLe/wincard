@@ -15,7 +15,7 @@ export const enterFullscreen = () => {
 // 退出全屏
 export const exitFullscreen = () => {
     if (isElectron()) {
-        return (window as any).electron.minimizeWindow();
+        return window.electron.minimizeWindow();
     }
     const dom: any = document;
     if (dom.exitFullscreen) dom.exitFullscreen();

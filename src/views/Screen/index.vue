@@ -243,7 +243,8 @@
 <script lang="ts">
 import {
     computed,
-    defineComponent, inject, nextTick,
+    defineComponent,
+    nextTick,
     onMounted,
     onUnmounted,
     PropType,
@@ -252,14 +253,12 @@ import {
     watch
 } from "vue";
 import { throttle } from "lodash";
-import { MutationTypes, useStore } from "@/store";
+import { useStore } from "@/store";
 import { IWin, PPTElementAction, Slide, ICard } from "@/types/slides";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { KEYS } from "@/configs/hotkey";
-import { exitFullscreen, isFullscreen } from "@/utils/fullscreen";
+import { isFullscreen } from "@/utils/fullscreen";
 import useScreening from "@/hooks/useScreening";
-import isElectron from "is-electron";
-// import { message } from "ant-design-vue";
 
 import ScreenSlide from "./ScreenSlide.vue";
 import WritingBoardTool from "./WritingBoardTool.vue";
@@ -269,7 +268,7 @@ import useScaleScreen from "@/hooks/useScaleScreen";
 import { PAGE_TYPE } from "@/configs/page";
 import { ContextmenuItem } from "@/types/contextmenu";
 import ShapePool from "./ShapePool.vue";
-import { ShapePoolItem } from "@/configs/shapes";
+// import { ShapePoolItem } from "@/configs/shapes";
 import ElementCreateSelection from "./ElementCreateSelection.vue";
 import useInsertFromCreateSelection from "./hooks/useInsertFromCreateSelection";
 import EditableElement from "./EditableElement.vue";
@@ -277,7 +276,7 @@ import useDragElement from "./hooks/useDragElement";
 import useSelectElement from "./hooks/useSelectElement";
 import Operate from "./Operate/index.vue";
 import { AlignmentLineProps } from "@/types/edit";
-import AlignmentLine from "./AlignmentLine.vue";
+// import AlignmentLine from "./AlignmentLine.vue";
 import useScaleElement from "./hooks/useScaleElement";
 import useRotateElement from "./hooks/useRotateElement";
 import useDragLineElement from "./hooks/useDragLineElement";
@@ -620,7 +619,7 @@ export default defineComponent({
             offsetY.value = 0;
         };
         provide("resetPosition", resetPosition);
-        const { handleMousewheelScreen, handleMouseMove, moveScreen, touchStartListener, touchEndListener, touchMoveListener } = useScaleScreen(viewScale, offsetX, offsetY, execPrev, execNext, resetPosition, contentRef, offsetScreenX, offsetScreenY);
+        const { handleMousewheelScreen, handleMouseMove, moveScreen, touchStartListener, touchEndListener, touchMoveListener } = useScaleScreen(viewScale, offsetX, offsetY, execPrev, execNext, resetPosition, contentRef);
         const alignmentLines = ref<AlignmentLineProps[]>([]);
         const {
             insertElementFromCreateSelection

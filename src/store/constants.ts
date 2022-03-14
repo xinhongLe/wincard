@@ -11,6 +11,7 @@ export const enum MutationTypes {
     SET_AVAILABLE_FONTS = "setAvailableFonts",
     SET_DISABLE_HOTKEYS_STATE = "setDisableHotkeysState",
     SET_RICHTEXT_ATTRS = "setRichTextAttrs",
+    SET_FORMATTER_ATTRS = "setFormatterAttrs",
     SET_SCALING_STATE = "setScalingState",
     SET_THUMBNAILS_FOCUS = "setThumbnailsFocus",
     SET_GRID_LINES_STATE = "setGridLinesState",
@@ -64,7 +65,9 @@ export const enum MutationTypes {
     UPDATE_SCREEN_ELEMENT = "updateScreenElement",
 
     // step
-    SET_STEP_DIALOG = "setStepDialog"
+    SET_STEP_DIALOG = "setStepDialog",
+
+    SET_UPLOAD_LOADING = "setUploadLoading"
 }
 
 export const enum ActionTypes {

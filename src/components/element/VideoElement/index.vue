@@ -27,6 +27,7 @@
             class="element-content"
             v-contextmenu="contextmenus"
             @mousedown="($event) => handleSelectElement($event, false)"
+            :style="{ transform: `rotate(${elementInfo.rotate || 0}deg)` }"
             v-if="elementInfo.showType == 0"
         >
             <VideoPlayer

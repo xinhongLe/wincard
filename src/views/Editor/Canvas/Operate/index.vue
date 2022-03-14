@@ -55,7 +55,7 @@ import ImageElementOperate from "./ImageElementOperate.vue";
 import TextElementOperate from "./TextElementOperate.vue";
 import ShapeElementOperate from "./ShapeElementOperate.vue";
 import LineElementOperate from "./LineElementOperate.vue";
-import TableElementOperate from "./TableElementOperate.vue";
+// import TableElementOperate from "./TableElementOperate.vue";
 import CommonElementOperate from "./CommonElementOperate.vue";
 import NOElementOperate from "./NOElementOperate.vue";
 import LinkHandler from "./LinkHandler.vue";

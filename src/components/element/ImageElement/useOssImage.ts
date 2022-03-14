@@ -1,5 +1,5 @@
 import { PPTImageElement } from "@/types/slides";
-import { getOssImageUrl, imageUrlToBase64 } from "@/utils/image";
+import { getOssImageUrl } from "@/utils/image";
 import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, ComputedRef, computed, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";

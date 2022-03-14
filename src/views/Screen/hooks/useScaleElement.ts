@@ -2,19 +2,14 @@ import { computed, Ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import {
     PPTElement,
-    PPTImageElement,
-    PPTLineElement,
-    PPTShapeElement
+    PPTLineElement
 } from "@/types/slides";
 import {
     OperateResizeHandlers,
-    AlignmentLineProps,
-    MultiSelectRange
+    AlignmentLineProps
 } from "@/types/edit";
-import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { MIN_SIZE } from "@/configs/element";
 import { AlignLine, uniqAlignLines } from "@/utils/element";
-import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 interface RotateElementData {
     left: number;
@@ -139,7 +134,7 @@ export default (
     let baseTop = 0;
     let horizontalLines: AlignLine[] = [];
     let verticalLines: AlignLine[] = [];
-    let getSizeWithinRange: (size: number) => any;
+    let getSizeWithinRange: (size: number) => number;
 
     // 对齐吸附方法
     // 将收集到的对齐吸附线与计算的目标元素当前的位置大小相关数据做对比，差值小于设定的值时执行自动缩放校正
@@ -442,8 +437,9 @@ export default (
 
         // 元素最小缩放限制
         const minSize = MIN_SIZE[element.type] || 20;
-        getSizeWithinRange = (size: number) =>
-            size < minSize ? minSize : size;
+        getSizeWithinRange = (size: number) => {
+            return size < minSize ? minSize : size;
+        };
 
         let points: ReturnType<typeof getRotateElementPoints>;
         baseLeft = 0;

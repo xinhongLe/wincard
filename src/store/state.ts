@@ -31,6 +31,7 @@ export interface State {
     oldSlides: boolean;
     isScaling: boolean;
     richTextAttrs: TextAttrs;
+    formatterAttrs: TextAttrs | null;
     disableHotkeys: boolean;
     ctrlKeyState: boolean;
     shiftKeyState: boolean;
@@ -50,6 +51,7 @@ export interface State {
     addStepVisible: boolean;
     editElementID: string;
     screenElements: PPTElement[];
+    spinning: boolean;
 }
 
 export const state: State = {
@@ -77,6 +79,7 @@ export const state: State = {
     oldSlides: false, // 是否存在未保存的旧数据
     isScaling: false, // 正在进行元素缩放
     richTextAttrs: defaultRichTextAttrs, // 富文本状态
+    formatterAttrs: null, // 格式刷状态
     disableHotkeys: false, // 禁用快捷键
     ctrlKeyState: false, // ctrl键按下状态
     shiftKeyState: false, // shift键按下状态
@@ -95,5 +98,6 @@ export const state: State = {
     cacheElementID: "", // 暂存元素ID;
     addStepVisible: false, // 添加步骤弹窗
     editElementID: "", // 处于编辑状态的元素
-    screenElements: [] // 预览添加的形状元素列表
+    screenElements: [], // 预览添加的形状元素列表
+    spinning: false // 上传loading
 };

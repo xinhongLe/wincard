@@ -42,7 +42,7 @@ export default defineComponent({
             visible.value = true;
         };
 
-        const web = ref((window as any).VUE_APP_WINCARD_AI_XUE_SHI_FLASH_WEB);
+        const web = ref(window.VUE_APP_WINCARD_AI_XUE_SHI_FLASH_WEB);
 
         const flashElement = computed(() => props.elementInfo);
         const { iconUrl, flashUrl } = useOssFlash(flashElement, () => {

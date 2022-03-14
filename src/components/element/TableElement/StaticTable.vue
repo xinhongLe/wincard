@@ -225,6 +225,4 @@ table {
     pointer-events: none;
     padding: 5px;
 }
-
-.table-edit-cell {}
 </style>

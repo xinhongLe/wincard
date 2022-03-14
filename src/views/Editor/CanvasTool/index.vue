@@ -300,7 +300,7 @@
                     <!-- <IconWeb class="handler-item" /> -->
                 </a-tooltip>
             </a-popover>
-            <FileInput
+            <!-- <FileInput
                 accept="application/x-shockwave-flash"
                 @change="(files) => insertFlashElement(files)"
             >
@@ -315,9 +315,9 @@
                         <img src="@/assets/images/icon_flash.png" alt="">
                         Flash
                     </div>
-                    <!-- <IconVideoFile class="handler-item" /> -->
+                    <IconVideoFile class="handler-item" />
                 </a-tooltip>
-            </FileInput>
+            </FileInput> -->
             <!-- <a-tooltip
                 :mouseLeaveDelay="0"
                 :mouseEnterDelay="0.5"
@@ -446,7 +446,7 @@ export default defineComponent({
             });
         };
 
-        const insertFlashElement = (files: File[], buffer?: ArrayBuffer) => {
+        const insertFlashElement = (files: File[]) => {
             const flashFile = files[0];
             if (!flashFile) return;
             uploadFlash(flashFile).then((key) => {
@@ -611,9 +611,10 @@ export default defineComponent({
         width: 24px;
         margin: 0 auto 4px;
     }
+
     font-size: 13px;
     transform: scale(0.8);
-    color: #5D5D5D;
+    color: #5d5d5d;
     cursor: pointer;
     padding: 5px 15px;
     border-radius: 3px;

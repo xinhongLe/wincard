@@ -189,7 +189,7 @@ export default defineComponent({
             return Number(arr[0]) * 3600 + Number(arr[1]) * 60 + Number(arr[2]);
         };
 
-        const checkPauseTimer = (ctime: number, stime: number, callback: any) => {
+        const checkPauseTimer = (ctime: number, stime: number, callback: () => void) => {
             if (mode.value !== 0 && stime - ctime < 0.5 && stime - ctime > 0) {
                 // 当当前时间与停止时间间隔小于500ms时启动暂停操作
                 clearInterval(timeInterval);

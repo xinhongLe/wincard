@@ -3,7 +3,7 @@
         <div
             class="base-element-image"
             :style="elementPosition"
-            @click="() => elementInfo.preview && !preview && startPreview()"
+            @dblclick="() => elementInfo.preview && !preview && startPreview()"
         >
             <div
                 class="rotate-wrapper"

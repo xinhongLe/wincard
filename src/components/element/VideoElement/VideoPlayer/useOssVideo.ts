@@ -2,7 +2,7 @@ import { PPTVideoElement } from "@/types/slides";
 import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, ComputedRef, computed, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { getOssPosterUrl, getOssVideoUrl, videoUrlToBase64 } from "@/utils/video";
+import { getOssPosterUrl, getOssVideoUrl } from "@/utils/video";
 import isElectron from "is-electron";
 import { get, STORAGE_TYPES } from "@/utils/storage";
 // import { getResourceDB } from "@/utils/database";

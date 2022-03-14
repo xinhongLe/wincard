@@ -3,7 +3,7 @@ import { throttle, debounce } from "lodash";
 import { MutationTypes, useStore } from "@/store";
 
 const unit = 0.05; // 缩放单位
-export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, execPrev: () => void, execNext: () => void, resetPosition: () => void, contentRef: Ref<HTMLElement>, offsetScreenX: Ref<number>, offsetScreenY: Ref<number>) => {
+export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, execPrev: () => void, execNext: () => void, resetPosition: () => void, contentRef: Ref<HTMLElement>) => {
     let isMove = false;
     const store = useStore();
     const altKeyState = computed(() => store.state.altKeyState);
@@ -11,7 +11,7 @@ export default (scale: Ref<number>, offsetX: Ref<number>, offsetY: Ref<number>, 
         if (altKeyState.value) store.commit(MutationTypes.SET_ALT_KEY_STATE, false);
     };
 
-    const keydownListener = (e: KeyboardEvent) => {
+    const keydownListener = () => {
         if (!altKeyState.value) store.commit(MutationTypes.SET_ALT_KEY_STATE, true);
     };
 

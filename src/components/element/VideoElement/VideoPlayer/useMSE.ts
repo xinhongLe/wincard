@@ -20,7 +20,7 @@ export default (src: string, videoRef: Ref<HTMLVideoElement | undefined>) => {
         }
 
         if (type === "hls") {
-            const Hls = (window as any).Hls;
+            const Hls = window.Hls;
 
             if (Hls && Hls.isSupported()) {
                 const hls = new Hls();
@@ -28,7 +28,7 @@ export default (src: string, videoRef: Ref<HTMLVideoElement | undefined>) => {
                 hls.attachMedia(videoRef.value);
             }
         } else if (type === "flv") {
-            const flvjs = (window as any).flvjs;
+            const flvjs = window.flvjs;
             if (flvjs && flvjs.isSupported()) {
                 const flvPlayer = flvjs.createPlayer({
                     type: "flv",

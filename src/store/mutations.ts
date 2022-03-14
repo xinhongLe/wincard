@@ -104,6 +104,10 @@ export const mutations: MutationTree<State> = {
         state.richTextAttrs = attrs;
     },
 
+    [MutationTypes.SET_FORMATTER_ATTRS](state, attrs: TextAttrs | null) {
+        state.formatterAttrs = attrs;
+    },
+
     [MutationTypes.SET_SCALING_STATE](state, isScaling: boolean) {
         state.isScaling = isScaling;
     },
@@ -307,5 +311,9 @@ export const mutations: MutationTree<State> = {
 
     [MutationTypes.SET_STEP_DIALOG](state, visible) {
         state.addStepVisible = visible;
+    },
+
+    [MutationTypes.SET_UPLOAD_LOADING](state, visible) {
+        state.spinning = visible;
     }
 };

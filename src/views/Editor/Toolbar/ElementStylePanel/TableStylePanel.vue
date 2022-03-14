@@ -3,7 +3,7 @@
         <a-input-group compact class="row">
             <a-select
                 style="flex: 3;"
-                :value="richTextAttrs.fontname"
+                :value="editable ? cellRichTextAttrs.fontname : richTextAttrs.fontname"
                 @change="value => emitRichTextCommand('fontname', value)"
             >
                 <template #suffixIcon><IconFontSize /></template>
@@ -99,15 +99,15 @@
                 <CheckboxButton
                     style="flex: 1;"
                     :checked="richTextAttrs.bold"
-                    @click="emitRichTextCommand('bold')"
+                    @click="emitRichTextCommand('bold', !richTextAttrs.bold)"
                     ><IconTextBold
                 /></CheckboxButton>
             </a-tooltip>
             <a-tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
                 <CheckboxButton
                     style="flex: 1;"
-                    :checked="richTextAttrs.em"
-                    @click="emitRichTextCommand('em')"
+                    :checked="editable ? cellRichTextAttrs.em : richTextAttrs.em"
+                    @click="emitRichTextCommand('em', editable ? !cellRichTextAttrs.em : !richTextAttrs.em)"
                     ><IconTextItalic
                 /></CheckboxButton>
             </a-tooltip>
@@ -119,7 +119,7 @@
                 <CheckboxButton
                     style="flex: 1;"
                     :checked="richTextAttrs.underline"
-                    @click="emitRichTextCommand('underline')"
+                    @click="emitRichTextCommand('underline', !richTextAttrs.underline)"
                     ><IconTextUnderline
                 /></CheckboxButton>
             </a-tooltip>
@@ -131,7 +131,7 @@
                 <CheckboxButton
                     style="flex: 1;"
                     :checked="richTextAttrs.strikethrough"
-                    @click="emitRichTextCommand('strikethrough')"
+                    @click="emitRichTextCommand('strikethrough', !richTextAttrs.strikethrough)"
                     ><IconStrikethrough
                 /></CheckboxButton>
             </a-tooltip>
@@ -142,7 +142,7 @@
                 <CheckboxButton
                     style="flex: 1;"
                     :checked="richTextAttrs.superscript"
-                    @click="emitRichTextCommand('superscript')"
+                    @click="emitRichTextCommand('superscript', !richTextAttrs.superscript)"
                     ><IconUpOne
                 /></CheckboxButton>
             </a-tooltip>
@@ -150,7 +150,7 @@
                 <CheckboxButton
                     style="flex: 1;"
                     :checked="richTextAttrs.subscript"
-                    @click="emitRichTextCommand('subscript')"
+                    @click="emitRichTextCommand('subscript', !richTextAttrs.subscript)"
                     ><IconDownOne
                 /></CheckboxButton>
             </a-tooltip>
@@ -162,7 +162,7 @@
                 <CheckboxButton
                     style="flex: 1;"
                     :checked="richTextAttrs.code"
-                    @click="emitRichTextCommand('code')"
+                    @click="emitRichTextCommand('code', !richTextAttrs.code)"
                     ><IconCode
                 /></CheckboxButton>
             </a-tooltip>
@@ -170,7 +170,7 @@
                 <CheckboxButton
                     style="flex: 1;"
                     :checked="richTextAttrs.blockquote"
-                    @click="emitRichTextCommand('blockquote')"
+                    @click="emitRichTextCommand('blockquote', !richTextAttrs.blockquote)"
                     ><IconQuote
                 /></CheckboxButton>
             </a-tooltip>
@@ -345,7 +345,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from "vue";
+import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import {
     PPTTableElement,
@@ -361,6 +361,7 @@ import { message } from "ant-design-vue";
 
 import ElementOutline from "../common/ElementOutline.vue";
 import ColorButton from "../common/ColorButton.vue";
+import { defaultRichTextAttrs } from "@/utils/prosemirror/utils";
 
 const webFonts = WEB_FONTS;
 const baseFonts = BASE_FONTS;
@@ -402,9 +403,8 @@ export default defineComponent({
         const colCount = ref(0);
         const minRowCount = ref(0);
         const minColCount = ref(0);
-        const richTextAttrs = computed(() => store.state.richTextAttrs);
-        const lineHeight = ref<number>();
-        const wordSpace = ref<number>();
+        const cellRichTextAttrs = computed(() => store.state.richTextAttrs);
+        const richTextAttrs = ref(defaultRichTextAttrs);
 
         watch(
             handleElement,
@@ -611,8 +611,20 @@ export default defineComponent({
         };
 
         const emitRichTextCommand = (command: string, value?: string) => {
+            if (!editable.value) richTextAttrs.value[command] = value;
             emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command, value });
         };
+
+        const editable = ref(false);
+        const watchEditable = (isEditable: boolean) => {
+            editable.value = isEditable;
+            if (!isEditable) richTextAttrs.value = defaultRichTextAttrs;
+        };
+        emitter.on(EmitterEvents.WATCH_TABLE_EDITABLE, watchEditable);
+
+        onUnmounted(() => {
+            emitter.off(EmitterEvents.WATCH_TABLE_EDITABLE, watchEditable);
+        });
 
         const lineHeightOptions = Array.from({ length: 232 }, (v, k) => k + 24);
         const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10];
@@ -636,7 +648,9 @@ export default defineComponent({
             webFonts,
             baseFonts,
             emitRichTextCommand,
+            cellRichTextAttrs,
             richTextAttrs,
+            editable,
             lineHeightOptions,
             wordSpaceOptions
         };
@@ -647,7 +661,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .row {
     width: 100%;
-    display: flex;
+    display: flex !important;
     align-items: center;
     margin-bottom: 10px;
 }

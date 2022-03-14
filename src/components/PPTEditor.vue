@@ -12,12 +12,15 @@
         @openCard="openCard"
         v-if="screening"
     />
+    <div v-if="spinning" class="spinning-box">
+        <a-spin :spinning="spinning" tip="上传中..." />
+    </div>
 </template>
 
 <script lang="ts">
 import Editor from "@/views/Editor/index.vue";
 import Screen from "@/views/Screen/index.vue";
-import { computed, defineComponent, onMounted, PropType, provide, ref, watch } from "vue";
+import { computed, defineComponent, onMounted, onUnmounted, PropType, provide, ref, watch } from "vue";
 // import { Modal } from "ant-design-vue";
 import { ActionTypes, MutationTypes, useStore } from "@/store";
 
@@ -28,6 +31,7 @@ import { dealSaveData } from "@/utils/dataParse";
 import isElectron from "is-electron";
 import useScaleCanvas from "@/hooks/useScaleCanvas";
 import useCreateElement from "@/hooks/useCreateElement";
+import emitter, { EmitterEvents } from "@/utils/emitter";
 
 export default defineComponent({
     name: "PPTEditor",
@@ -77,7 +81,7 @@ export default defineComponent({
             initSlides();
             if (isElectron()) {
                 // electron中保存会再次渲染失败 加日志看返回数据
-                (window as any).electron.log.info("初始化slide数据：", slide.value);
+                window.electron.log.info("初始化slide数据：", slide.value);
             }
         });
 
@@ -182,9 +186,19 @@ export default defineComponent({
             });
         };
 
+        const spinning = computed(() => store.state.spinning);
+        const setUploadLoading = (visible: boolean) => {
+            store.commit(MutationTypes.SET_UPLOAD_LOADING, visible);
+        };
+        emitter.on(EmitterEvents.SET_UPLOAD_LOADING, setUploadLoading);
+        onUnmounted(() => {
+            emitter.off(EmitterEvents.SET_UPLOAD_LOADING, setUploadLoading);
+        });
+
         return {
             currentSlide,
             screening,
+            spinning,
             onSave,
             addCard,
             openCard,
@@ -203,3 +217,18 @@ export default defineComponent({
     }
 });
 </script>
+
+<style scoped>
+.spinning-box {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100000;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>

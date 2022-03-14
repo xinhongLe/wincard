@@ -1,4 +1,4 @@
-import { Ref, computed, getCurrentInstance, watch, ref } from "vue";
+import { Ref, getCurrentInstance, watch, ref } from "vue";
 import { SlideBackground } from "@/types/slides";
 import isElectron from "is-electron";
 import { get, STORAGE_TYPES } from "@/utils/storage";
@@ -7,7 +7,7 @@ import { get, STORAGE_TYPES } from "@/utils/storage";
 export default (background: Ref<SlideBackground | undefined>) => {
     const instance = getCurrentInstance();
 
-    const backgroundStyle = ref<any>({ backgroundColor: "#fff" });
+    const backgroundStyle = ref<unknown>({ backgroundColor: "#fff" });
 
     const updateBackground = async () => {
         if (!background.value) return { backgroundColor: "#fff" };
