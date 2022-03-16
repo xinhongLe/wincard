@@ -120,6 +120,14 @@ export interface PPTElementOutline {
  * outAni?: 退出动画
  *
  * duration?: 执行延迟时间
+ *
+ * inDuration?: 进入自定义路径动画执行时间
+ *
+ * outDuration?: 退出自定义路径动画执行时间
+ *
+ * inPath?: 进入自定义动画路径
+ *
+ * outPath?: 退出自定义动画路径
  */
 export interface PPTElementAction {
     type: "none" | "show" | "hide" | "toggle";
@@ -127,6 +135,10 @@ export interface PPTElementAction {
     inAni?: string;
     outAni?: string;
     duration?: number;
+    inDuration?: number;
+    outDuration?: number;
+    inPath?: string;
+    outPath?: string;
 }
 
 /**

@@ -7,6 +7,13 @@ export const INANIMATIONS = [
         ]
     },
     {
+        type: "custom",
+        name: "自定义路径动画",
+        children: [
+            { name: "曲线", value: "curve" }
+        ]
+    },
+    {
         type: "bounce",
         name: "弹跳",
         children: [
@@ -102,6 +109,13 @@ export const OUTANIMATIONS = [
         name: "无",
         children: [
             { name: "无", value: "" }
+        ]
+    },
+    {
+        type: "custom",
+        name: "自定义路径动画",
+        children: [
+            { name: "曲线", value: "curve" }
         ]
     },
     {

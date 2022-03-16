@@ -12,6 +12,18 @@
             @created="data => insertElementFromCreateSelection(data)"
         />
         <div
+            class="svg-animation-draw"
+            :style="{
+                width: viewportStyles.width * canvasScale + 'px',
+                height: viewportStyles.height * canvasScale + 'px',
+                left: viewportStyles.left + canvasMoveX + 'px',
+                top: viewportStyles.top + canvasMoveY + 'px'
+            }"
+            v-if="showCustomAnimationDraw"
+        >
+            <svg-custom-animation :close="() => showCustomAnimationDraw = false" :path="animationPath" />
+        </div>
+        <div
             class="viewport-wrapper"
             @mousedown="$event => moveCanvas($event)"
             :style="{
@@ -91,7 +103,7 @@
 
 <script lang="ts">
 import { throttle } from "lodash";
-import { computed, defineComponent, watch, ref, watchEffect } from "vue";
+import { computed, defineComponent, watch, ref, watchEffect, onUnmounted } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { removeAllRanges } from "@/utils/selection";
 import { KEYS } from "@/configs/hotkey";
@@ -122,10 +134,12 @@ import Operate from "./Operate/index.vue";
 import ViewportBackground from "./ViewportBackground.vue";
 import LinkDialog from "./LinkDialog.vue";
 import AddElementStep from "./AddElementStep.vue";
+import SvgCustomAnimation from "./SvgCustomAnimation.vue";
 
 import { PPTElement, Slide } from "@/types/slides";
 import { AlignmentLineProps } from "@/types/edit";
 import { ContextmenuItem } from "@/types/contextmenu";
+import emitter, { EmitterEvents } from "@/utils/emitter";
 
 export default defineComponent({
     name: "editor-canvas",
@@ -138,7 +152,8 @@ export default defineComponent({
         MultiSelectOperate,
         Operate,
         LinkDialog,
-        AddElementStep
+        AddElementStep,
+        SvgCustomAnimation
     },
     setup() {
         const store = useStore();
@@ -289,6 +304,17 @@ export default defineComponent({
             ];
         };
 
+        const showCustomAnimationDraw = ref(false);
+        const animationPath = ref("");
+        const openCustiomAnimation = (path: string) => {
+            animationPath.value = path;
+            showCustomAnimationDraw.value = true;
+        };
+        emitter.on(EmitterEvents.OPEN_CUSTOM_ANIMATION, openCustiomAnimation);
+        onUnmounted(() => {
+            emitter.off(EmitterEvents.OPEN_CUSTOM_ANIMATION, openCustiomAnimation);
+        });
+
         return {
             handleElementId,
             activeGroupElementId,
@@ -315,7 +341,9 @@ export default defineComponent({
             linkDialogVisible,
             moveCanvas,
             canvasMoveX,
-            canvasMoveY
+            canvasMoveY,
+            showCustomAnimationDraw,
+            animationPath
         };
     }
 });
@@ -339,5 +367,10 @@ export default defineComponent({
     top: 0;
     left: 0;
     transform-origin: 0 0;
+}
+
+.svg-animation-draw {
+    position: absolute;
+    z-index: 101;
 }
 </style>

@@ -99,6 +99,20 @@
                     </a-popover>
                 </a-form-item>
 
+                <a-form-item label="进入时长:" v-if="customAnimation.indexOf(formState.inAni) > -1">
+                    <a-input-number
+                        :min="0"
+                        :max="10000"
+                        :step="100"
+                        :value="formState.inDuration"
+                        @change="updateElementInAnimationDuration"
+                        style="
+                            width: calc(100% - 40px);
+                            margin-right: 5px;"
+                        />
+                    毫秒
+                </a-form-item>
+
                 <a-form-item label="退出动画:">
                     <a-popover
                         trigger="click"
@@ -152,6 +166,20 @@
                     </a-popover>
                 </a-form-item>
 
+                <a-form-item label="退出时长:" v-if="customAnimation.indexOf(formState.outAni) > -1">
+                    <a-input-number
+                        :min="0"
+                        :max="10000"
+                        :step="100"
+                        :value="formState.outDuration"
+                        @change="updateElementOutAnimationDuration"
+                        style="
+                            width: calc(100% - 40px);
+                            margin-right: 5px;"
+                        />
+                    毫秒
+                </a-form-item>
+
                 <a-form-item label="延迟时间:">
                     <a-input-number
                         :min="0"
@@ -183,7 +211,7 @@
 
         <a-divider v-if="cardList.length > 0" />
 
-        <a-button type="primary" block @click="isEdit = false; addActionVisible = true">新增事件</a-button>
+        <a-button type="primary" block @click="openAddAction">新增事件</a-button>
 
         <a-divider />
 
@@ -239,12 +267,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, watch, watchEffect } from "vue";
+import { computed, defineComponent, onUnmounted, reactive, ref, watch, watchEffect } from "vue";
 import { IWin, PPTCard, PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import { MutationTypes, useStore } from "@/store";
 import { INANIMATIONS, OUTANIMATIONS } from "@/configs/animation";
 import { message, Modal } from "ant-design-vue";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
+import emitter, { EmitterEvents } from "@/utils/emitter";
 
 const animationTypes: { [key: string]: string } = {};
 
@@ -275,6 +304,10 @@ export default defineComponent({
             target: "",
             inAni: "",
             outAni: "",
+            inDuration: 1000,
+            inPath: "",
+            outDuration: 1000,
+            outPath: "",
             type: "show",
             duration: 0
         });
@@ -296,6 +329,8 @@ export default defineComponent({
             }
         ]);
 
+        const customAnimation = ref(["curve"]);
+
         // 监听 当前页面数据变化  初始化 页面 elements
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
         const elementList = ref<PPTElement[]>([]);
@@ -314,16 +349,42 @@ export default defineComponent({
         const addActionVisible = ref(false);
         const isEdit = ref(false);
         const editIndex = ref(0);
+        const setCustomAnimationType = ref("");
+
+        const setCustomAnimation = (path: string) => {
+            if (setCustomAnimationType.value === "in") formState.inPath = path;
+            if (setCustomAnimationType.value === "out") formState.outPath = path;
+            addActionVisible.value = true;
+        };
 
         const addAnimation = (animation: string, type: string) => {
             if (type === "in") formState.inAni = animation;
             if (type === "out") formState.outAni = animation;
+            if (customAnimation.value.indexOf(animation) > -1) {
+                // 自定义动画
+                setCustomAnimationType.value = type;
+                addActionVisible.value = false;
+                emitter.emit(EmitterEvents.OPEN_CUSTOM_ANIMATION, (type === "in" ? formState.inPath : formState.outPath) || "");
+            }
             inAnimationPoolVisible.value = false;
             outAnimationPoolVisible.value = false;
         };
 
+        emitter.on(EmitterEvents.SET_CUSTOM_ANIMATION, setCustomAnimation);
+        onUnmounted(() => {
+            emitter.off(EmitterEvents.SET_CUSTOM_ANIMATION, setCustomAnimation);
+        });
+
         const updateElementAnimationDuration = (duration: number) => {
             formState.duration = duration;
+        };
+
+        const updateElementInAnimationDuration = (duration: number) => {
+            formState.inDuration = duration;
+        };
+
+        const updateElementOutAnimationDuration = (duration: number) => {
+            formState.outDuration = duration;
         };
 
         const { addHistorySnapshot } = useHistorySnapshot();
@@ -338,10 +399,28 @@ export default defineComponent({
             formState.inAni = _action.inAni || "";
             formState.outAni = _action.outAni || "";
             formState.duration = _action.duration || 0;
+            formState.inDuration = _action.inDuration || 1000;
+            formState.outDuration = _action.outDuration || 1000;
+            formState.inPath = _action.inPath || "";
+            formState.inPath = _action.outPath || "";
 
             isEdit.value = true;
 
             addActionVisible.value = true;
+        };
+
+        const openAddAction = () => {
+            isEdit.value = false;
+            addActionVisible.value = true;
+            formState.target = "";
+            formState.type = "show";
+            formState.inAni = "";
+            formState.outAni = "";
+            formState.duration = 0;
+            formState.inDuration = 1000;
+            formState.outDuration = 1000;
+            formState.inPath = "";
+            formState.inPath = "";
         };
 
         // 新增事件
@@ -464,18 +543,22 @@ export default defineComponent({
             addActionVisible,
             animationTypes,
             isEdit,
+            customAnimation,
             addAction,
             editAction,
             deleteAction,
             addAnimation,
             openEditAction,
             updateElementAnimationDuration,
+            updateElementOutAnimationDuration,
+            updateElementInAnimationDuration,
             addCard,
             activeCard,
             cardList,
             deleteCard,
             inputTarget,
-            getElementName
+            getElementName,
+            openAddAction
         };
     }
 });
