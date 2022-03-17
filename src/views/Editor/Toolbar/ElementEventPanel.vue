@@ -402,7 +402,7 @@ export default defineComponent({
             formState.inDuration = _action.inDuration || 1000;
             formState.outDuration = _action.outDuration || 1000;
             formState.inPath = _action.inPath || "";
-            formState.inPath = _action.outPath || "";
+            formState.outPath = _action.outPath || "";
 
             isEdit.value = true;
 

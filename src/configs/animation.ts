@@ -207,3 +207,5 @@ export const OUTANIMATIONS = [
         ]
     }
 ];
+
+export const CUSTOM_ANIMATIONS = ["curve"];

@@ -1,5 +1,7 @@
+/* eslint-disable */
 import { Ref } from "vue";
 import { PPTElementAction, Slide } from "@/types/slides";
+import { CUSTOM_ANIMATIONS } from "@/configs/animation";
 
 export default (slide: Ref<Slide>) => {
     const setDisplay = (display: boolean, id: string) => {
@@ -18,7 +20,7 @@ export default (slide: Ref<Slide>) => {
         const animationType = action.type === "show" ? "show" : (action.type === "toggle" ? (display ? "hide" : "show") : "hide");
         const animation = noAnimation ? "" : animationType === "show" ? action.inAni : action.outAni;
         if (action.type === "none") return;
-        const elRef = document.querySelector(`#screen-element-${action.target} [class^=base-element-]`) || document.querySelector(`#screen-element-${action.target} [class^=editable-element-]`);
+        const elRef: HTMLElement | null = document.querySelector(`#screen-element-${action.target} [class^=base-element-]`) || document.querySelector(`#screen-element-${action.target} [class^=editable-element-]`);
 
         setTimeout(() => {
             if (elRef) {
@@ -26,22 +28,30 @@ export default (slide: Ref<Slide>) => {
                 if (animationType === "show") {
                     setDisplay(true, element.id);
                 }
+                // 判断是否为自定义动画
+                if (CUSTOM_ANIMATIONS.indexOf(animation || "") > -1) {
+                    const duration = noAnimation ? 0 : animationType === "show" ? action.inDuration : action.outDuration;
+                    const path = noAnimation ? "" : animationType === "show" ? action.inPath : action.outPath;
+                    (<any>elRef).style.offsetPath = `path("M${path}")`;
+                    (<any>elRef).style.offsetRotate = "0deg";
+                    elRef.style.animation = `animation-move ${(duration || 0) / 1000}s linear forwards`;
+                } else {
+                    const animationName = `${prefix}${animation}`;
+                    elRef.classList.add(`${prefix}animated`, animationName);
 
-                const animationName = `${prefix}${animation}`;
-                elRef.classList.add(`${prefix}animated`, animationName);
+                    const handleAnimationEnd = () => {
+                        setDisplay(animationType === "show", element.id);
 
-                const handleAnimationEnd = () => {
-                    setDisplay(animationType === "show", element.id);
+                        elRef.classList.remove(`${prefix}animated`, animationName);
+                    };
+                    elRef.addEventListener("animationend", handleAnimationEnd, {
+                        once: true
+                    });
 
-                    elRef.classList.remove(`${prefix}animated`, animationName);
-                };
-                elRef.addEventListener("animationend", handleAnimationEnd, {
-                    once: true
-                });
-
-                if (animationType === "hide" && !action.outAni) {
-                    // 当需要执行隐藏 却没有隐藏动画时 直接 隐藏
-                    handleAnimationEnd();
+                    if (animationType === "hide" && !action.outAni) {
+                        // 当需要执行隐藏 却没有隐藏动画时 直接 隐藏
+                        handleAnimationEnd();
+                    }
                 }
             }
         }, noAnimation ? 0 : action.duration || 0);

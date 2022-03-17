@@ -154,3 +154,7 @@ a {
 sup {
     top: -1em;
 }
+
+@keyframes animation-move {
+    100% { offset-distance: 100%;}
+}

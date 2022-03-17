@@ -308,6 +308,7 @@ export default defineComponent({
         const animationPath = ref("");
         const openCustiomAnimation = (path: string) => {
             animationPath.value = path;
+            console.log(animationPath.value);
             showCustomAnimationDraw.value = true;
         };
         emitter.on(EmitterEvents.OPEN_CUSTOM_ANIMATION, openCustiomAnimation);

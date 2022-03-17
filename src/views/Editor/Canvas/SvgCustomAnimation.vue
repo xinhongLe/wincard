@@ -71,28 +71,28 @@ export default defineComponent({
         let path = "";
 
         const drawPath = () => {
-            if (props.path && pathRef.value) {
-                pathID = createRandomCode();
-                addSvgElement(pathRef.value, {
-                    element: "polyline",
-                    attr: {
-                        id: pathID,
-                        points: props.path,
-                        fill: "none",
-                        opacity: 1,
-                        stroke: "#000",
-                        "stroke-width": 3,
-                        "stroke-linecap": "square",
-                        "stroke-dasharray": "5,5",
-                        style: "marker-start: url(#triangleStart);marker-end: url(#triangleEnd);"
-                    }
-                });
-            }
+            nextTick(() => {
+                if (props.path && pathRef.value) {
+                    pathID = createRandomCode();
+                    addSvgElement(pathRef.value, {
+                        element: "polyline",
+                        attr: {
+                            id: pathID,
+                            points: props.path,
+                            fill: "none",
+                            opacity: 1,
+                            stroke: "#000",
+                            "stroke-width": 3,
+                            "stroke-linecap": "square",
+                            "stroke-dasharray": "5,5",
+                            style: "marker-start: url(#triangleStart);marker-end: url(#triangleEnd);"
+                        }
+                    });
+                }
+            });
         };
 
-        nextTick(() => {
-            drawPath();
-        });
+        drawPath();
 
         const drawStart = (evt: MouseEvent) => {
             evt.preventDefault();
