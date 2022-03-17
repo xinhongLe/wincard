@@ -20,6 +20,7 @@
                 top: viewportStyles.top + canvasMoveY + 'px'
             }"
             v-if="showCustomAnimationDraw"
+            v-click-outside="() => showCustomAnimationDraw = false"
         >
             <svg-custom-animation :close="() => showCustomAnimationDraw = false" :path="animationPath" />
         </div>
@@ -308,7 +309,6 @@ export default defineComponent({
         const animationPath = ref("");
         const openCustiomAnimation = (path: string) => {
             animationPath.value = path;
-            console.log(animationPath.value);
             showCustomAnimationDraw.value = true;
         };
         emitter.on(EmitterEvents.OPEN_CUSTOM_ANIMATION, openCustiomAnimation);

@@ -173,8 +173,11 @@ export default defineComponent({
                                 props.close();
                             },
                             onCancel() {
-                                pathID = "";
-                                path = "";
+                                setTimeout(() => {
+                                    emitter.emit(EmitterEvents.OPEN_CUSTOM_ANIMATION, "");
+                                    pathID = "";
+                                    path = "";
+                                }, 300);
                             }
                         });
                     }
@@ -200,6 +203,6 @@ export default defineComponent({
 
 <style lang="scss">
 .pen {
-    // cursor: move;
+    cursor: url(~@/assets/images/write.png) 0 32, auto;
 }
 </style>

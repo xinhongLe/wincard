@@ -270,7 +270,7 @@
 import { computed, defineComponent, onUnmounted, reactive, ref, watch, watchEffect } from "vue";
 import { IWin, PPTCard, PPTElement, PPTElementAction, Slide } from "@/types/slides";
 import { MutationTypes, useStore } from "@/store";
-import { INANIMATIONS, OUTANIMATIONS } from "@/configs/animation";
+import { CUSTOM_ANIMATIONS, INANIMATIONS, OUTANIMATIONS } from "@/configs/animation";
 import { message, Modal } from "ant-design-vue";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import emitter, { EmitterEvents } from "@/utils/emitter";
@@ -329,7 +329,7 @@ export default defineComponent({
             }
         ]);
 
-        const customAnimation = ref(["curve"]);
+        const customAnimation = ref(CUSTOM_ANIMATIONS);
 
         // 监听 当前页面数据变化  初始化 页面 elements
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
