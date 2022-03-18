@@ -55,6 +55,10 @@ export default defineComponent({
         path: {
             type: String,
             required: true
+        },
+        type: {
+            type: String,
+            default: "custom"
         }
     },
     setup(props) {
@@ -123,15 +127,24 @@ export default defineComponent({
             evt.preventDefault();
             evt.stopPropagation();
             if (canDrawing.value && pathID && svgMatrix.value) {
+                let tempPath = path;
                 const point = transformPoint(
                     evt.pageX,
                     evt.pageY,
                     svgMatrix.value
                 );
-                path += point.x + "," + point.y + " ";
+                tempPath += point.x + "," + point.y + " ";
+                switch (props.type) {
+                case "beeline":
+                    // 不做处理
+                    break;
+                case "custom":
+                    path = tempPath;
+                    break;
+                }
                 const shape = pathRef.value.querySelector(`[id='${pathID}']`);
                 if (shape) {
-                    shape.setAttributeNS(null, "points", path);
+                    shape.setAttributeNS(null, "points", tempPath);
                 }
             }
         };
@@ -139,7 +152,7 @@ export default defineComponent({
         const drawEnd = (evt: MouseEvent) => {
             evt.preventDefault();
             evt.stopPropagation();
-            if (pathID && canDrawing.value) {
+            if (pathID && canDrawing.value && svgMatrix.value) {
                 canDrawing.value = false;
                 const shape = pathRef.value.querySelector(`[id='${pathID}']`);
                 if (shape) {
@@ -156,6 +169,13 @@ export default defineComponent({
                         pathID = "";
                         path = "";
                     } else {
+                        const point = transformPoint(
+                            evt.pageX,
+                            evt.pageY,
+                            svgMatrix.value
+                        );
+                        path += point.x + "," + point.y + " ";
+                        shape.setAttributeNS(null, "points", path);
                         // 绘制成功 变成虚线
                         shape.setAttribute("stroke-dasharray", "5,5");
                         // 补充开头结尾箭头标识
@@ -174,7 +194,10 @@ export default defineComponent({
                             },
                             onCancel() {
                                 setTimeout(() => {
-                                    emitter.emit(EmitterEvents.OPEN_CUSTOM_ANIMATION, "");
+                                    emitter.emit(EmitterEvents.OPEN_CUSTOM_ANIMATION, {
+                                        path: "",
+                                        type: props.type
+                                    });
                                     pathID = "";
                                     path = "";
                                 }, 300);

@@ -22,7 +22,7 @@
             v-if="showCustomAnimationDraw"
             v-click-outside="() => showCustomAnimationDraw = false"
         >
-            <svg-custom-animation :close="() => showCustomAnimationDraw = false" :path="animationPath" />
+            <svg-custom-animation :close="() => showCustomAnimationDraw = false" :path="animationPath" :type="animationType" />
         </div>
         <div
             class="viewport-wrapper"
@@ -140,7 +140,7 @@ import SvgCustomAnimation from "./SvgCustomAnimation.vue";
 import { PPTElement, Slide } from "@/types/slides";
 import { AlignmentLineProps } from "@/types/edit";
 import { ContextmenuItem } from "@/types/contextmenu";
-import emitter, { EmitterEvents } from "@/utils/emitter";
+import emitter, { CustomAnimation, EmitterEvents } from "@/utils/emitter";
 
 export default defineComponent({
     name: "editor-canvas",
@@ -307,8 +307,10 @@ export default defineComponent({
 
         const showCustomAnimationDraw = ref(false);
         const animationPath = ref("");
-        const openCustiomAnimation = (path: string) => {
-            animationPath.value = path;
+        const animationType = ref("custom");
+        const openCustiomAnimation = (custom: CustomAnimation) => {
+            animationPath.value = custom.path;
+            animationType.value = custom.type;
             showCustomAnimationDraw.value = true;
         };
         emitter.on(EmitterEvents.OPEN_CUSTOM_ANIMATION, openCustiomAnimation);
@@ -344,7 +346,8 @@ export default defineComponent({
             canvasMoveX,
             canvasMoveY,
             showCustomAnimationDraw,
-            animationPath
+            animationPath,
+            animationType
         };
     }
 });

@@ -364,7 +364,10 @@ export default defineComponent({
                 // 自定义动画
                 setCustomAnimationType.value = type;
                 addActionVisible.value = false;
-                emitter.emit(EmitterEvents.OPEN_CUSTOM_ANIMATION, (type === "in" ? formState.inPath : formState.outPath) || "");
+                emitter.emit(EmitterEvents.OPEN_CUSTOM_ANIMATION, {
+                    path: (type === "in" ? formState.inPath : formState.outPath) || "",
+                    type: animation
+                });
             }
             inAnimationPoolVisible.value = false;
             outAnimationPoolVisible.value = false;

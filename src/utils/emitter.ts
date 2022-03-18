@@ -15,6 +15,11 @@ export interface RichTextCommand {
     value?: string;
 }
 
+export interface CustomAnimation {
+    path: string;
+    type: string;
+}
+
 type Events = {
     [EmitterEvents.RICH_TEXT_COMMAND]: RichTextCommand | RichTextCommand[];
     [EmitterEvents.OPEN_CHART_DATA_EDITOR]: void;
@@ -22,7 +27,7 @@ type Events = {
     [EmitterEvents.SET_UPLOAD_LOADING]: boolean;
     [EmitterEvents.WATCH_TABLE_EDITABLE]: boolean;
     [EmitterEvents.SET_CUSTOM_ANIMATION]: string;
-    [EmitterEvents.OPEN_CUSTOM_ANIMATION]: string;
+    [EmitterEvents.OPEN_CUSTOM_ANIMATION]: CustomAnimation;
 };
 
 const emitter: Emitter<Events> = mitt<Events>();

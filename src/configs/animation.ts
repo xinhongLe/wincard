@@ -10,7 +10,8 @@ export const INANIMATIONS = [
         type: "custom",
         name: "自定义路径动画",
         children: [
-            { name: "曲线", value: "curve" }
+            { name: "直线", value: "beeline" },
+            { name: "自定义", value: "custom" }
         ]
     },
     {
@@ -115,7 +116,8 @@ export const OUTANIMATIONS = [
         type: "custom",
         name: "自定义路径动画",
         children: [
-            { name: "曲线", value: "curve" }
+            { name: "直线", value: "beeline" },
+            { name: "自定义", value: "custom" }
         ]
     },
     {
@@ -208,4 +210,4 @@ export const OUTANIMATIONS = [
     }
 ];
 
-export const CUSTOM_ANIMATIONS = ["curve"];
+export const CUSTOM_ANIMATIONS = ["custom", "beeline"];
