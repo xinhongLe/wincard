@@ -156,6 +156,10 @@ sup {
 }
 
 @keyframes animation-move {
+    0% {
+        top: 0;
+        left: 0;
+    }
     100% {
         offset-distance: 100%;
         top: 0;
