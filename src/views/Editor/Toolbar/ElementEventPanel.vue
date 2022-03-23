@@ -358,6 +358,7 @@ export default defineComponent({
         };
 
         const addAnimation = (animation: string, type: string) => {
+            if (!formState.target) return message.warning("请先选择目标元素");
             if (type === "in") formState.inAni = animation;
             if (type === "out") formState.outAni = animation;
             if (customAnimation.value.indexOf(animation) > -1) {
@@ -366,7 +367,8 @@ export default defineComponent({
                 addActionVisible.value = false;
                 emitter.emit(EmitterEvents.OPEN_CUSTOM_ANIMATION, {
                     path: (type === "in" ? formState.inPath : formState.outPath) || "",
-                    type: animation
+                    type: animation,
+                    target: formState.target
                 });
             }
             inAnimationPoolVisible.value = false;

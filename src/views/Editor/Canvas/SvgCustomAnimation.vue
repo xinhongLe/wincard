@@ -1,12 +1,14 @@
 <template>
     <div
-        class="svg-container pen"
+        class="svg-container"
+        :class="(type !== 'dragBeeline' && type !== 'dragCustom') && 'pen'"
         @mousedown="drawStart"
         @mousemove="drawing"
         @mouseup="drawEnd"
         @mouseout="drawEnd"
+        :style="{ transform: `scale(${scale})` }"
     >
-        <svg-wrapper width="100%" height="100%" :viewBox="viewBox">
+        <svg-wrapper :width="width" :height="height" :viewBox="viewBox">
             <defs>
                 <marker
                     id="triangleStart"
@@ -34,6 +36,23 @@
 
             <g ref="pathRef"></g>
         </svg-wrapper>
+        <div
+            class="move-element"
+            @mousedown="moveStart"
+            @mousemove="moving"
+            @mouseup="moveEnd"
+            :style="{
+                width: element.width + 'px',
+                height: element.height + 'px',
+                top: element.top + 'px',
+                left: element.left + 'px'
+            }"
+        ></div>
+        <component
+            :is="currentElementComponent"
+            :elementInfo="element"
+            style="z-index: -1;"
+        ></component>
     </div>
 </template>
 
@@ -45,6 +64,23 @@ import { useStore } from "@/store";
 import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { Modal } from "ant-design-vue";
 import emitter, { EmitterEvents } from "@/utils/emitter";
+import { ElementTypes, PPTElement, Slide } from "@/types/slides";
+
+import BaseImageElement from "@/components/element/ImageElement/BaseImageElement.vue";
+import BaseTextElement from "@/components/element/TextElement/BaseTextElement.vue";
+import BaseShapeElement from "@/components/element/ShapeElement/BaseShapeElement.vue";
+import BaseLineElement from "@/components/element/LineElement/BaseLineElement.vue";
+import ScreenChartElement from "@/components/element/ChartElement/ScreenChartElement.vue";
+import BaseTableElement from "@/components/element/TableElement/BaseTableElement.vue";
+import BaseLatexElement from "@/components/element/LatexElement/BaseLatexElement.vue";
+import ScreenAudioElement from "@/components/element/AudioElement/ScreenAudioElement.vue";
+import ScreenVideoElement from "@/components/element/VideoElement/ScreenVideoElement.vue";
+import ScreenIFrameElement from "@/components/element/IFrameElement/ScreenIFrameElement.vue";
+import ScreenFlashElement from "@/components/element/FlashElement/ScreenFlashElement.vue";
+import ScreenMarkElement from "@/components/element/MarkElement/ScreenMarkElement.vue";
+
+type IElement = PPTElement & { height?: number };
+
 export default defineComponent({
     name: "svg-custom-animation",
     props: {
@@ -59,6 +95,14 @@ export default defineComponent({
         type: {
             type: String,
             default: "custom"
+        },
+        target: {
+            type: String,
+            required: true
+        },
+        scale: {
+            type: Number,
+            required: true
         }
     },
     setup(props) {
@@ -67,12 +111,36 @@ export default defineComponent({
         const pathRef = ref();
         const svgMatrix = ref<null | DOMMatrix>();
         const viewportRatio = computed(() => store.state.viewportRatio);
+        const width = ref(VIEWPORT_SIZE);
+        const height = ref(VIEWPORT_SIZE * viewportRatio.value);
         const viewBox = computed(() => {
-            return `0 0 ${VIEWPORT_SIZE} ${VIEWPORT_SIZE * viewportRatio.value}`;
+            return `0 0 ${width.value} ${height.value}`;
         });
 
         let pathID = "";
         let path = "";
+
+        const currentSlide = computed<Slide>(() => store.getters.currentSlide);
+        const elementCopy = currentSlide.value.elements.find(item => { return item.id === props.target; });
+        const element = ref<IElement | undefined>(elementCopy ? JSON.parse(JSON.stringify(elementCopy)) : undefined);
+
+        const currentElementComponent = computed(() => {
+            const elementTypeMap = {
+                [ElementTypes.IMAGE]: BaseImageElement,
+                [ElementTypes.TEXT]: BaseTextElement,
+                [ElementTypes.SHAPE]: BaseShapeElement,
+                [ElementTypes.LINE]: BaseLineElement,
+                [ElementTypes.CHART]: ScreenChartElement,
+                [ElementTypes.TABLE]: BaseTableElement,
+                [ElementTypes.LATEX]: BaseLatexElement,
+                [ElementTypes.AUDIO]: ScreenAudioElement,
+                [ElementTypes.VIDEO]: ScreenVideoElement,
+                [ElementTypes.IFRAME]: ScreenIFrameElement,
+                [ElementTypes.FLASH]: ScreenFlashElement,
+                [ElementTypes.MARK]: ScreenMarkElement
+            };
+            return (props.type === "dragBeeline" || props.type === "dragCustom") ? element.value ? elementTypeMap[element.value.type] : null : null;
+        });
 
         const drawPath = () => {
             nextTick(() => {
@@ -101,11 +169,30 @@ export default defineComponent({
         const drawStart = (evt: MouseEvent) => {
             evt.preventDefault();
             evt.stopPropagation();
+            if (props.type === "dragBeeline" || props.type === "dragCustom") return;
+            start(evt);
+        };
+
+        let startPoint = { x: 0, y: 0 };
+        const moveStart = (evt: MouseEvent) => {
+            evt.preventDefault();
+            evt.stopPropagation();
+            start(evt);
+        };
+
+        const start = (evt: MouseEvent) => {
             canDrawing.value = true;
             svgMatrix.value = pathRef.value.getScreenCTM().inverse();
             if (!svgMatrix.value) return (canDrawing.value = false);
             const point = transformPoint(evt.pageX, evt.pageY, svgMatrix.value);
-            path = point.x + "," + point.y + " ";
+
+            if ((props.type === "dragBeeline" || props.type === "dragCustom") && element.value) {
+                startPoint = point;
+                path = (element.value.left + element.value.width / 2) + "," + (element.value.top + (element.value.height || 4) / 2) + " ";
+            } else {
+                path = point.x + "," + point.y + " ";
+            }
+
             pathID = createRandomCode();
             addSvgElement(pathRef.value, {
                 element: "polyline",
@@ -126,6 +213,17 @@ export default defineComponent({
         const drawing = (evt: MouseEvent) => {
             evt.preventDefault();
             evt.stopPropagation();
+            if (props.type === "dragBeeline" || props.type === "dragCustom") return;
+            ing(evt);
+        };
+
+        const moving = (evt: MouseEvent) => {
+            evt.preventDefault();
+            evt.stopPropagation();
+            ing(evt);
+        };
+
+        const ing = (evt: MouseEvent) => {
             if (canDrawing.value && pathID && svgMatrix.value) {
                 let tempPath = path;
                 const point = transformPoint(
@@ -133,13 +231,26 @@ export default defineComponent({
                     evt.pageY,
                     svgMatrix.value
                 );
-                tempPath += point.x + "," + point.y + " ";
+
                 switch (props.type) {
                 case "beeline":
-                    // 不做处理
+                    tempPath += point.x + "," + point.y + " ";
                     break;
                 case "custom":
+                    tempPath += point.x + "," + point.y + " ";
                     path = tempPath;
+                    break;
+                case "dragBeeline":
+                case "dragCustom":
+                    if (element.value) {
+                        const moveX = point.x - startPoint.x;
+                        const moveY = point.y - startPoint.y;
+                        startPoint = point;
+                        element.value.top += moveY;
+                        element.value.left += moveX;
+                        tempPath += (element.value.left + element.value.width / 2) + "," + (element.value.top + (element.value.height || 4) / 2) + " ";
+                    }
+                    if (props.type === "dragCustom") path = tempPath;
                     break;
                 }
                 const shape = pathRef.value.querySelector(`[id='${pathID}']`);
@@ -152,6 +263,17 @@ export default defineComponent({
         const drawEnd = (evt: MouseEvent) => {
             evt.preventDefault();
             evt.stopPropagation();
+            if (props.type === "dragBeeline" || props.type === "dragCustom") return;
+            end(evt);
+        };
+
+        const moveEnd = (evt: MouseEvent) => {
+            evt.preventDefault();
+            evt.stopPropagation();
+            end(evt);
+        };
+
+        const end = (evt: MouseEvent) => {
             if (pathID && canDrawing.value && svgMatrix.value) {
                 canDrawing.value = false;
                 const shape = pathRef.value.querySelector(`[id='${pathID}']`);
@@ -174,7 +296,14 @@ export default defineComponent({
                             evt.pageY,
                             svgMatrix.value
                         );
-                        path += point.x + "," + point.y + " ";
+
+                        if ((props.type === "dragBeeline" || props.type === "dragCustom") && element.value) {
+                            startPoint = point;
+                            path += (element.value.left + element.value.width / 2) + "," + (element.value.top + (element.value.height || 4) / 2) + " ";
+                        } else {
+                            path += point.x + "," + point.y + " ";
+                        }
+
                         shape.setAttributeNS(null, "points", path);
                         // 绘制成功 变成虚线
                         shape.setAttribute("stroke-dasharray", "5,5");
@@ -196,7 +325,8 @@ export default defineComponent({
                                 setTimeout(() => {
                                     emitter.emit(EmitterEvents.OPEN_CUSTOM_ANIMATION, {
                                         path: "",
-                                        type: props.type
+                                        type: props.type,
+                                        target: props.target
                                     });
                                     pathID = "";
                                     path = "";
@@ -216,16 +346,36 @@ export default defineComponent({
             drawStart,
             drawing,
             drawEnd,
+            moveStart,
+            moving,
+            moveEnd,
             canDrawing,
             pathRef,
-            viewBox
+            viewBox,
+            element,
+            width,
+            height,
+            currentElementComponent
         };
     }
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .pen {
     cursor: url(~@/assets/images/write.png) 0 32, auto;
+}
+
+.move-element {
+    position: absolute;
+    z-index: 1;
+    cursor: move;
+}
+
+.svg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
 }
 </style>

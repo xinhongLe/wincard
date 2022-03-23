@@ -18,6 +18,7 @@ export interface RichTextCommand {
 export interface CustomAnimation {
     path: string;
     type: string;
+    target: string;
 }
 
 type Events = {

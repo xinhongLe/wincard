@@ -11,7 +11,9 @@ export const INANIMATIONS = [
         name: "自定义路径动画",
         children: [
             { name: "直线", value: "beeline" },
-            { name: "自定义", value: "custom" }
+            { name: "自定义", value: "custom" },
+            { name: "拖拽直线", value: "dragBeeline" },
+            { name: "拖拽自定义", value: "dragCustom" }
         ]
     },
     {
@@ -117,7 +119,9 @@ export const OUTANIMATIONS = [
         name: "自定义路径动画",
         children: [
             { name: "直线", value: "beeline" },
-            { name: "自定义", value: "custom" }
+            { name: "自定义", value: "custom" },
+            { name: "拖拽直线", value: "dragBeeline" },
+            { name: "拖拽自定义", value: "dragCustom" }
         ]
     },
     {
@@ -210,4 +214,4 @@ export const OUTANIMATIONS = [
     }
 ];
 
-export const CUSTOM_ANIMATIONS = ["custom", "beeline"];
+export const CUSTOM_ANIMATIONS = ["custom", "beeline", "dragBeeline", "dragCustom"];

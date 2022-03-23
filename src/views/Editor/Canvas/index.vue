@@ -22,7 +22,7 @@
             v-if="showCustomAnimationDraw"
             v-click-outside="() => showCustomAnimationDraw = false"
         >
-            <svg-custom-animation :close="() => showCustomAnimationDraw = false" :path="animationPath" :type="animationType" />
+            <svg-custom-animation :close="() => showCustomAnimationDraw = false" :target="animationTarget" :path="animationPath" :type="animationType" :scale="canvasScale" />
         </div>
         <div
             class="viewport-wrapper"
@@ -308,9 +308,11 @@ export default defineComponent({
         const showCustomAnimationDraw = ref(false);
         const animationPath = ref("");
         const animationType = ref("custom");
+        const animationTarget = ref("");
         const openCustiomAnimation = (custom: CustomAnimation) => {
             animationPath.value = custom.path;
             animationType.value = custom.type;
+            animationTarget.value = custom.target;
             showCustomAnimationDraw.value = true;
         };
         emitter.on(EmitterEvents.OPEN_CUSTOM_ANIMATION, openCustiomAnimation);
@@ -347,7 +349,8 @@ export default defineComponent({
             canvasMoveY,
             showCustomAnimationDraw,
             animationPath,
-            animationType
+            animationType,
+            animationTarget
         };
     }
 });
