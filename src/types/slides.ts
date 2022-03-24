@@ -128,6 +128,12 @@ export interface PPTElementOutline {
  * inPath?: 进入自定义动画路径
  *
  * outPath?: 退出自定义动画路径
+ *
+ * audioName?: 音频文件名
+ *
+ * audioSrc?: 音频 fileName 请求 oss 使用
+ *
+ * audioOssSrc?: 音频 oss 访问路径
  */
 export interface PPTElementAction {
     type: "none" | "show" | "hide" | "toggle";
@@ -139,6 +145,10 @@ export interface PPTElementAction {
     outDuration?: number;
     inPath?: string;
     outPath?: string;
+    audioName?: string;
+    audioSrc?: string;
+    audioOssSrc?: string;
+    ossExpiration?: string;
 }
 
 /**

@@ -1,9 +1,15 @@
 /* eslint-disable */
-import { Ref } from "vue";
+import { getCurrentInstance, Ref } from "vue";
 import { PPTElementAction, Slide } from "@/types/slides";
 import { CUSTOM_ANIMATIONS } from "@/configs/animation";
+import isElectron from "is-electron";
+import { get, STORAGE_TYPES } from "@/utils/storage";
+import { getToken, OssToken } from "@/utils/oss";
+import { getOssAudioUrl } from "@/utils/audio";
 
 export default (slide: Ref<Slide>) => {
+    const instance = getCurrentInstance();
+
     const setDisplay = (display: boolean, id: string) => {
         const elements = slide.value.elements.map(el => {
             return id === el.id ? { ...el, ...{ display } } : el;
@@ -24,7 +30,13 @@ export default (slide: Ref<Slide>) => {
 
         setTimeout(() => {
             if (elRef) {
+                // 如果当前效果和点击触发效果一样将不执行下面的逻辑
+                // if ((display ? "show" : "hide") === animationType) return;
                 if (animationType === "hide" && !action.outAni) {
+                    // 执行动画的音效
+                    if (action.audioSrc) {
+                        runPlayAudio(action);
+                    }
                     // 当需要执行隐藏 却没有隐藏动画时 直接 隐藏
                     return setDisplay(false, element.id);
                 }
@@ -70,8 +82,49 @@ export default (slide: Ref<Slide>) => {
                         once: true
                     });
                 }
+
+                // 执行动画的音效
+                if (action.audioSrc) {
+                    runPlayAudio(action);
+                }
             }
         }, noAnimation ? 0 : action.duration || 0);
+    };
+
+    const runPlayAudio = async (action: PPTElementAction) => {
+        let audioUrl = "";
+        if (action.audioSrc) {
+            if (isElectron() && get(STORAGE_TYPES.SET_ISCACHE)) {
+                audioUrl = await instance?.appContext.config.globalProperties.$getLocalFileUrl(action.audioSrc);
+            }
+            if (audioUrl) {
+                playAudio(audioUrl);
+            } else {
+                getToken(async (ossToken: OssToken) => {
+                    if (action.audioOssSrc && action.ossExpiration === ossToken.Expiration) {
+                        // ossSrc 存在 且 ossToken 未过期 则不请求 直接返回
+                        audioUrl = action.audioOssSrc;
+                    } else {
+                        const res = await getOssAudioUrl(action.audioSrc || "");
+                        audioUrl = res.url;
+                        action.audioOssSrc = audioUrl;
+                        action.ossExpiration = ossToken.Expiration;
+                    }
+                    playAudio(audioUrl);
+                });
+            }
+        }
+    };
+
+    const playAudio = (audioUrl: string) => {
+        const audio = new Audio();
+        audio.src = audioUrl;
+        audio.onended = () => {
+            audio && audio.remove();
+        };
+        audio.oncanplay = () => {
+            audio.play();
+        };
     };
 
     return {

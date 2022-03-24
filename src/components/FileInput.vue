@@ -48,6 +48,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .input {
-    display: none;
+    display: none !important;
 }
 </style>
