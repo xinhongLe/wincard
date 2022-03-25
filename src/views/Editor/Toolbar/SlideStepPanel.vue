@@ -50,6 +50,25 @@
                     </a-select>
                 </a-form-item>
 
+                <a-form-item label="触发音效:">
+                    <div class="form-flex">
+                        <a-input
+                            class="form-select"
+                            v-model:value="formState.audioName"
+                            @change="audioChange"
+                            allowClear
+                        />
+                        <a-button v-if="checkElectron" class="input-btn" value="small"  @click="electronUpload()">上传</a-button>
+                        <FileInput
+                            accept="audio/*"
+                            @change="(files) => insertAudio(files)"
+                            v-if="!checkElectron"
+                        >
+                            <a-button class="input-btn" value="small">上传</a-button>
+                        </FileInput>
+                    </div>
+                </a-form-item>
+
                 <a-form-item label="进入动画:">
                     <a-popover
                         trigger="click"
@@ -317,6 +336,9 @@ import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 import Draggable from "vuedraggable";
 import emitter, { EmitterEvents } from "@/utils/emitter";
+import { uploadAudio } from "@/utils/audio";
+import isElectron from "is-electron";
+import useElectronUpload from "@/hooks/useElectronUpload";
 
 const animationTypes: { [key: string]: string } = {};
 
@@ -345,7 +367,9 @@ export default defineComponent({
             outDuration: 1000,
             outPath: "",
             type: "show",
-            duration: 0
+            duration: 0,
+            audioName: "",
+            audioSrc: ""
         });
 
         const actions = ref([
@@ -453,6 +477,8 @@ export default defineComponent({
             formState.outDuration = _action.outDuration || 1000;
             formState.inPath = _action.inPath || "";
             formState.outPath = _action.outPath || "";
+            formState.audioSrc = _action.audioSrc || "";
+            formState.audioName = _action.audioName || "";
 
             addActionVisible.value = true;
         };
@@ -568,6 +594,27 @@ export default defineComponent({
             });
             return element ? element.name : "无";
         };
+
+        const audioChange = () => {
+            if (formState.audioName === "") {
+                formState.audioSrc = "";
+            }
+        };
+        const insertAudio = (files: File[], buffer?: ArrayBuffer) => {
+            const audioFile = files[0];
+            if (!audioFile) return;
+            uploadAudio(audioFile, buffer).then((key) => {
+                formState.audioName = audioFile.name;
+                formState.audioSrc = key;
+            });
+        };
+        const checkElectron = ref(isElectron());
+        const { uploadByElectron } = useElectronUpload();
+        const electronUpload = () => {
+            uploadByElectron("audio", (file: File, buffer: ArrayBuffer) => {
+                insertAudio([file], buffer);
+            });
+        };
         return {
             isEdit,
             steps,
@@ -582,6 +629,7 @@ export default defineComponent({
             addActionVisible,
             animationTypes,
             customAnimation,
+            checkElectron,
             updateElementInAnimationDuration,
             updateElementOutAnimationDuration,
             addStep,
@@ -595,7 +643,10 @@ export default defineComponent({
             handleDragEnd,
             updateElementAnimationDuration,
             inputTarget,
-            getElementName
+            getElementName,
+            audioChange,
+            electronUpload,
+            insertAudio
         };
     }
 });
