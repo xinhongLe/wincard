@@ -239,11 +239,12 @@ export default () => {
             height,
             viewBox: data.viewBox,
             path: data.path,
-            fill: themeColor.value,
+            fill: data.noFill ? "transparent" : themeColor.value,
             fixedRatio: false,
             rotate: 0
         };
         if (data.special) newElement.special = true;
+        if (data.noFill) newElement.outline = { style: "solid", width: 4, color: themeColor.value };
         createElement(newElement);
     };
 
