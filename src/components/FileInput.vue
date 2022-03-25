@@ -47,6 +47,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.file-input {
+    overflow: hidden;
+    position: relative;
+}
+
 .input {
     display: none !important;
 }

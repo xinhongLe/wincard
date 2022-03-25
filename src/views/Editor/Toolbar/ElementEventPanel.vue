@@ -571,6 +571,7 @@ export default defineComponent({
         const insertAudio = (files: File[], buffer?: ArrayBuffer) => {
             const audioFile = files[0];
             if (!audioFile) return;
+            if (audioFile.size > 1024 * 1024 * 1024) return message.warning("上传音频不能大于1MB");
             uploadAudio(audioFile, buffer).then((key) => {
                 formState.audioName = audioFile.name;
                 formState.audioSrc = key;
