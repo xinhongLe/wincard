@@ -1,6 +1,6 @@
 {
     "name": "wincard",
-    "version": "1.9.9",
+    "version": "2.0.2",
     "main": "./dist/wincard.umd.min.js",
     "typings": "./index.d.ts",
     "files": [
