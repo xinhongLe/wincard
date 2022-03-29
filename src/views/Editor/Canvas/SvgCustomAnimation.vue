@@ -47,6 +47,7 @@
                 top: element.top + 'px',
                 left: element.left + 'px'
             }"
+            v-if="type === 'dragBeeline' || type === 'dragCustom'"
         ></div>
         <component
             :is="currentElementComponent"
