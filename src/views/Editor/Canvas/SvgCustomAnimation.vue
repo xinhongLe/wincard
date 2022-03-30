@@ -8,7 +8,7 @@
         @mouseout="drawEnd"
         :style="{ transform: `scale(${scale})` }"
     >
-        <svg-wrapper :width="width" :height="height" :viewBox="viewBox">
+        <svg-wrapper class="svg" :width="width" :height="height" :viewBox="viewBox">
             <defs>
                 <marker
                     id="triangleStart"
@@ -369,7 +369,7 @@ export default defineComponent({
 
 .move-element {
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     cursor: move;
 }
 
@@ -378,5 +378,9 @@ export default defineComponent({
     top: 0;
     left: 0;
     transform-origin: top left;
+    .svg {
+        position: relative;
+        z-index: 1;
+    }
 }
 </style>
