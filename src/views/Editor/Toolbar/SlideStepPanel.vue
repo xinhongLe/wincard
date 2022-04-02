@@ -460,6 +460,18 @@ export default defineComponent({
             stepIndex.value = i;
             isEdit.value = false;
             addActionVisible.value = true;
+
+            formState.target = "";
+            formState.type = "show";
+            formState.inAni = "";
+            formState.outAni = "";
+            formState.duration = 0;
+            formState.inDuration = 1000;
+            formState.outDuration = 1000;
+            formState.inPath = "";
+            formState.outPath = "";
+            formState.audioSrc = "";
+            formState.audioName = "";
         };
 
         const openEditAction = (i: number, actionIndex: number) => {
