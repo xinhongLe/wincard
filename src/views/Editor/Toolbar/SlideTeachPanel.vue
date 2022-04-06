@@ -14,8 +14,14 @@
             cancelText="取消"
             @ok="savePage"
         >
+            <a-input-search
+                class="search-input"
+                v-model:value="inputValue"
+                placeholder="请输入检索的教具名"
+                @input="searchFilter"
+            />
             <a-table
-                :data-source="teachList"
+                :data-source="filterTeachList"
                 :columns="columns"
                 :rowKey="(record, index) => record.id"
                 bordered
@@ -31,6 +37,7 @@ import { computed, defineComponent, ref } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getTeachList } from "@/api";
 import { Teach } from "@/types/slides";
+import { debounce } from "lodash";
 
 export default defineComponent({
     name: "slide-teach-panel",
@@ -62,10 +69,13 @@ export default defineComponent({
                         src: item.Url.indexOf("http") > -1 ? item.Url : "https://" + item.Url
                     };
                 });
+
+                searchFilter();
             }
         };
 
         const teachList = ref<Teach[]>([]);
+        const filterTeachList = ref<Teach[]>([]);
 
         initTeachList();
 
@@ -90,6 +100,13 @@ export default defineComponent({
             addSelectTeachVisible.value = true;
         };
 
+        const inputValue = ref("");
+        const searchFilter = debounce(() => {
+            filterTeachList.value = teachList.value.filter(item => {
+                return item.name.indexOf(inputValue.value) > -1;
+            });
+        }, 300);
+
         return {
             savePage,
             addSelectTeachVisible,
@@ -97,8 +114,17 @@ export default defineComponent({
             openSelectTeach,
             columns,
             teachList,
-            teach
+            teach,
+            inputValue,
+            searchFilter,
+            filterTeachList
         };
     }
 });
 </script>
+
+<style scoped>
+.search-input {
+    margin-bottom: 10px;
+}
+</style>
