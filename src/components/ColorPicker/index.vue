@@ -8,6 +8,9 @@
             />
         </div>
         <div class="picker-controls">
+            <div class="picker-color-learn" v-if="isElectron()" @click="learnColor">
+                <IconDetection />
+            </div>
             <div class="picker-color-wrap">
                 <div
                     class="picker-current-color"
@@ -100,6 +103,7 @@ import Checkboard from "./Checkboard.vue";
 import Hue from "./Hue.vue";
 import Saturation from "./Saturation.vue";
 import EditableInput from "./EditableInput.vue";
+import isElectron from "is-electron";
 
 const RECENT_COLORS = "RECENT_COLORS";
 
@@ -263,6 +267,16 @@ export default defineComponent({
             updateRecentColorsCache();
         };
 
+        const learnColor = async () => {
+            if (window.electron) {
+                const colorString = await window.electron.getColorHexRGB();
+
+                emit("update:modelValue", colorString);
+
+                updateRecentColorsCache();
+            }
+        };
+
         return {
             themeColors,
             standardColors,
@@ -272,7 +286,9 @@ export default defineComponent({
             currentColor,
             changeColor,
             selectPresetColor,
-            recentColors
+            recentColors,
+            isElectron,
+            learnColor
         };
     }
 });
@@ -366,5 +382,19 @@ export default defineComponent({
 }
 .recent-colors {
     @include flex-grid-layout();
+}
+
+.picker-color-learn {
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    &:hover {
+        color: rgb(91, 155, 213);
+    }
 }
 </style>

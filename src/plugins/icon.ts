@@ -109,7 +109,8 @@ import {
     Copy,
     Refraction,
     FolderWithdrawal,
-    FullScreenOne
+    FullScreenOne,
+    Detection
 } from "@icon-park/vue-next";
 import {
     DEFAULT_ICON_CONFIGS,
@@ -243,6 +244,7 @@ export default {
         app.component("IconBookmark", Bookmark);
         app.component("IconSquare", Square);
         app.component("IconCopy", Copy);
+        app.component("IconDetection", Detection);
 
         // 视频播放器
         app.component("IconPause", Pause);
