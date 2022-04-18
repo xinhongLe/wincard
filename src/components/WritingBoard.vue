@@ -43,8 +43,8 @@
         <div
             class="pen"
             :style="{
-                left: mouse.x * scale + (offsetX - ((screenWidth - slideWidth) / 2) * (scale - 1)) - penSize / 2 + 'px',
-                top: mouse.y * scale + (offsetY - ((screenHeight - slideHeight) / 2) * (scale - 1)) - 36 + penSize / 2 + 'px',
+                left: mouse.x * scale + (offsetX - ((screenWidth - slideWidth) / 2) * (scale - 1)) - penSize / 4 + 'px',
+                top: mouse.y * scale + (offsetY - ((screenHeight - slideHeight) / 2) * (scale - 1)) - 36 + penSize / 4 + 'px',
                 color: color
             }"
             v-if="mouseInCanvas && !penTempHide && model === 'pen'"
@@ -343,6 +343,9 @@ export default defineComponent({
                 updateMousePosition(x, y);
                 mouseInCanvas.value = true;
             }
+
+            // 绘制点
+            draw(x, y, penSize.value);
         };
 
         // 开始绘制/擦除墨迹（移动）

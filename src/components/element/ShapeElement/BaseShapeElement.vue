@@ -86,7 +86,7 @@ import useElementFlip from "@/components/element/hooks/useElementFlip";
 import GradientDefs from "./GradientDefs.vue";
 
 export default defineComponent({
-    name: "base-element-shape",
+    name: "base-shape-element",
     components: {
         GradientDefs
     },
@@ -103,8 +103,7 @@ export default defineComponent({
                     canMove?: boolean
                 ) => void
             >,
-            default: null,
-            required: true
+            default: null
         }
     },
     setup(props) {

@@ -73,7 +73,7 @@ export default defineComponent({
 
             return {
                 left: screenWidth <= x + menuWidth ? x - menuWidth : x,
-                top: screenHeight <= y + menuHeight ? y - menuHeight : y
+                top: screenHeight <= y + menuHeight ? (y - menuHeight < 0 ? 0 : y - menuHeight) : y
             };
         });
 

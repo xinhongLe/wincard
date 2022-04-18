@@ -197,14 +197,18 @@ import { message } from "ant-design-vue";
 const animationTypes: { [key: string]: string } = {};
 
 for (const type of INANIMATIONS) {
-    for (const animation of type.children) {
-        animationTypes[animation.value] = animation.name;
+    if (type.type !== "custom") {
+        for (const animation of type.children) {
+            animationTypes[animation.value] = animation.name;
+        }
     }
 }
 
 for (const type of OUTANIMATIONS) {
-    for (const animation of type.children) {
-        animationTypes[animation.value] = animation.name;
+    if (type.type !== "custom") {
+        for (const animation of type.children) {
+            animationTypes[animation.value] = animation.name;
+        }
     }
 }
 
@@ -274,8 +278,8 @@ export default defineComponent({
         };
         watchEffect(setLocalElementList);
 
-        const inAnimations = INANIMATIONS;
-        const outAnimations = OUTANIMATIONS;
+        const inAnimations = INANIMATIONS.filter(item => { return item.type !== "custom"; });
+        const outAnimations = OUTANIMATIONS.filter(item => { return item.type !== "custom"; });
         const hoverPreviewAnimation = ref("");
         const inAnimationPoolVisible = ref(false);
         const outAnimationPoolVisible = ref(false);

@@ -473,6 +473,10 @@ export default defineComponent({
                     colspan: 1,
                     rowspan: 1,
                     text: "",
+                    style: {
+                        color: "#000",
+                        fontname: "Microsoft Yahei"
+                    },
                     id: createRandomCode()
                 });
             }
@@ -488,6 +492,10 @@ export default defineComponent({
                     colspan: 1,
                     rowspan: 1,
                     text: "",
+                    style: {
+                        color: "#000",
+                        fontname: "Microsoft Yahei"
+                    },
                     id: createRandomCode()
                 };
                 item.splice(colIndex, 0, cell);

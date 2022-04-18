@@ -550,6 +550,10 @@ export default defineComponent({
                 id: createRandomCode(),
                 colspan: 1,
                 rowspan: 1,
+                style: {
+                    color: "#000",
+                    fontname: "Microsoft Yahei"
+                },
                 text: ""
             });
             const newTableCells: TableCell[][] = new Array(
@@ -582,6 +586,10 @@ export default defineComponent({
                     id: createRandomCode(),
                     colspan: 1,
                     rowspan: 1,
+                    style: {
+                        color: "#000",
+                        fontname: "Microsoft Yahei"
+                    },
                     text: ""
                 });
                 item.push(...cells);

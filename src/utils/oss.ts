@@ -137,7 +137,6 @@ export const uploadFile = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: strin
     emitter.emit(EmitterEvents.SET_UPLOAD_LOADING, true);
     return new Promise((resolve, reject) => {
         fileMd5(file).then((md5: string) => {
-            console.log(md5);
             const fileExtention = file.name.split(".")[
                 file.name.split(".").length - 1
             ];
