@@ -2,6 +2,7 @@
     <Editor
         @onSave="onSave"
         @addCard="addCard"
+        @onDeleteWin="onDeleteWin"
         @selectVideo="selectVideo"
         @setQuoteVideo="setQuoteVideo"
         @updateQuoteVideo="updateQuoteVideo"
@@ -35,7 +36,7 @@ import emitter, { EmitterEvents } from "@/utils/emitter";
 
 export default defineComponent({
     name: "PPTEditor",
-    emits: ["onSave", "addCard", "selectVideo", "setQuoteVideo", "updateQuoteVideo", "updateSlide", "update:windowName"],
+    emits: ["onSave", "addCard", "selectVideo", "setQuoteVideo", "updateQuoteVideo", "updateSlide", "update:windowName", "onDeleteWin"],
     components: { Editor, Screen },
     props: {
         slide: {
@@ -46,6 +47,10 @@ export default defineComponent({
             default: false
         },
         isShowName: {
+            type: Boolean,
+            default: false
+        },
+        isShowDeleteBtn: {
             type: Boolean,
             default: false
         },
@@ -65,6 +70,7 @@ export default defineComponent({
         provide("slideScale", canvasScale);
         provide("isShowSaveAs", computed(() => props.isShowSaveAs));
         provide("isShowName", computed(() => props.isShowName));
+        provide("isShowDeleteBtn", computed(() => props.isShowDeleteBtn));
         provide("windowName", {
             windowName: computed(() => props.windowName),
             updateName: (name: string) => {
@@ -156,6 +162,10 @@ export default defineComponent({
             emit("onSave", dealSaveData(slide), type);
         };
 
+        const onDeleteWin = () => {
+            emit("onDeleteWin");
+        };
+
         const addCard = (callback: (wins: IWin[]) => void) => {
             emit("addCard", callback);
         };
@@ -210,6 +220,7 @@ export default defineComponent({
             execPrev,
             execNext,
             setQuoteVideo,
+            onDeleteWin,
             createQuoteVideo,
             updateVideoElement,
             updateQuoteVideo

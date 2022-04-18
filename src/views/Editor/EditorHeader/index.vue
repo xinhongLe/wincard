@@ -12,6 +12,9 @@
                     </a-menu>
                 </template>
             </a-dropdown> -->
+            <div class="a-menu-item delete" @click="deleteWindow" v-if="isShowDeleteBtn">
+                <IconDelete /> <span class="text">删除</span>
+            </div>
             <a-dropdown :trigger="['click']" v-if="isBasePPT">
                 <div class="a-menu-item">
                     <IconEdit /> <span class="text">编辑</span>
@@ -120,6 +123,7 @@ export default defineComponent({
         const slides = computed(() => store.state.slides);
         const isShowSaveAs = inject("isShowSaveAs");
         const isShowName = inject("isShowName");
+        const isShowDeleteBtn = inject("isShowDeleteBtn");
         const { windowName, updateName } = inject("windowName") as any;
 
         const showGridLines = computed(() => store.state.showGridLines);
@@ -135,6 +139,10 @@ export default defineComponent({
 
         const save = (type: SaveType) => {
             emit("onSave", slides.value[0], type);
+        };
+
+        const deleteWindow = () => {
+            emit("onDeleteWin");
         };
 
         const hotkeyDrawerVisible = ref(false);
@@ -191,8 +199,10 @@ export default defineComponent({
             nameEditRef,
             windowName,
             isShowSaveAs,
+            isShowDeleteBtn,
             keypress,
             onInput,
+            deleteWindow,
             save
         };
     }
@@ -240,6 +250,9 @@ export default defineComponent({
     padding: 0 10px;
     transition: background-color $transitionDelay;
     cursor: pointer;
+    &.delete {
+        color: #ff6b6b;
+    }
 
     .text {
         margin-left: 4px;

@@ -1,6 +1,6 @@
 <template>
     <div class="ppt-editor">
-        <editor-header class="layout-header" @onSave="onSave" />
+        <editor-header class="layout-header" @onSave="onSave" @onDeleteWin="onDeleteWin"/>
 
         <div class="layout-content">
             <!-- <thumbnails class="layout-content-left" /> -->
@@ -75,6 +75,10 @@ export default defineComponent({
             emit("onSave", slide, type);
         };
 
+        const onDeleteWin = () => {
+            emit("onDeleteWin");
+        };
+
         const addCard = (callback: (wins: IWin[]) => void) => {
             emit("addCard", callback);
         };
@@ -97,6 +101,7 @@ export default defineComponent({
             currentSlide,
             onSave,
             addCard,
+            onDeleteWin,
             selectVideo,
             setQuoteVideo,
             updateQuoteVideo
