@@ -63,6 +63,7 @@ export default defineComponent({
         const resetStore = () => {
             store.commit(MutationTypes.SET_ACTIVE_SCREEN_ELEMENT_ID_LIST, []);
             store.commit(MutationTypes.UPDATE_SCREEN_ELEMENTS, []);
+            store.commit(MutationTypes.SET_VIEWPORT_RATIO, slide.value.viewportRatio || 0.5625);
         };
 
         updateBackground();
