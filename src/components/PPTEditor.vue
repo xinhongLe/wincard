@@ -2,6 +2,7 @@
     <Editor
         @onSave="onSave"
         @addCard="addCard"
+        @onDeleteWin="onDeleteWin"
         @selectVideo="selectVideo"
         @setQuoteVideo="setQuoteVideo"
         @updateQuoteVideo="updateQuoteVideo"
@@ -25,7 +26,7 @@ import { computed, defineComponent, onMounted, onUnmounted, PropType, provide, r
 import { ActionTypes, MutationTypes, useStore } from "@/store";
 
 import useSlideHandler from "@/hooks/useSlideHandler";
-import { IWin, PPTVideoElement, Slide } from "@/types/slides";
+import { IWin, PPTVideoElement, Slide, SaveType } from "@/types/slides";
 import { message } from "ant-design-vue";
 import { dealSaveData } from "@/utils/dataParse";
 import isElectron from "is-electron";
@@ -35,11 +36,27 @@ import emitter, { EmitterEvents } from "@/utils/emitter";
 
 export default defineComponent({
     name: "PPTEditor",
-    emits: ["onSave", "addCard", "selectVideo", "setQuoteVideo", "updateQuoteVideo"],
+    emits: ["onSave", "addCard", "selectVideo", "setQuoteVideo", "updateQuoteVideo", "updateSlide", "update:windowName", "onDeleteWin"],
     components: { Editor, Screen },
     props: {
         slide: {
             type: Object as PropType<Slide>
+        },
+        isShowSaveAs: {
+            type: Boolean,
+            default: false
+        },
+        isShowName: {
+            type: Boolean,
+            default: false
+        },
+        isShowDeleteBtn: {
+            type: Boolean,
+            default: false
+        },
+        windowName: {
+            type: String,
+            default: ""
         }
     },
     setup(props, { emit }) {
@@ -51,6 +68,15 @@ export default defineComponent({
 
         const canvasScale = computed(() => store.state.canvasScale);
         provide("slideScale", canvasScale);
+        provide("isShowSaveAs", computed(() => props.isShowSaveAs));
+        provide("isShowName", computed(() => props.isShowName));
+        provide("isShowDeleteBtn", computed(() => props.isShowDeleteBtn));
+        provide("windowName", {
+            windowName: computed(() => props.windowName),
+            updateName: (name: string) => {
+                emit("update:windowName", name);
+            }
+        });
 
         const slide = computed(() => props.slide);
 
@@ -63,6 +89,12 @@ export default defineComponent({
                 // electron中保存会再次渲染失败 加日志看返回数据
                 window.electron.log.info("初始化slide数据：", slide.value);
             }
+        });
+
+        watch(currentSlide, (v) => {
+            emit("updateSlide", v);
+        }, {
+            deep: true
         });
 
         const { resetSlides } = useSlideHandler();
@@ -126,8 +158,12 @@ export default defineComponent({
             return screening.value;
         };
 
-        const onSave = (slide: Slide) => {
-            emit("onSave", dealSaveData(slide));
+        const onSave = (slide: Slide, type: SaveType) => {
+            emit("onSave", dealSaveData(slide), type);
+        };
+
+        const onDeleteWin = () => {
+            emit("onDeleteWin");
         };
 
         const addCard = (callback: (wins: IWin[]) => void) => {
@@ -184,6 +220,7 @@ export default defineComponent({
             execPrev,
             execNext,
             setQuoteVideo,
+            onDeleteWin,
             createQuoteVideo,
             updateVideoElement,
             updateQuoteVideo

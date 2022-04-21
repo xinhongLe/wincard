@@ -42,8 +42,8 @@
             @mousemove="moving"
             @mouseup="moveEnd"
             :style="{
-                width: element.width + 'px',
-                height: element.height + 'px',
+                width: moveWidth + 'px',
+                height: moveHeight + 'px',
                 top: element.top + 'px',
                 left: element.left + 'px'
             }"
@@ -189,7 +189,7 @@ export default defineComponent({
 
             if ((props.type === "dragBeeline" || props.type === "dragCustom") && element.value) {
                 startPoint = point;
-                path = (element.value.left + element.value.width / 2) + "," + (element.value.top + (element.value.height || 4) / 2) + " ";
+                path = (element.value.left + moveWidth.value / 2) + "," + (element.value.top + moveHeight.value / 2) + " ";
             } else {
                 path = point.x + "," + point.y + " ";
             }
@@ -249,7 +249,7 @@ export default defineComponent({
                         startPoint = point;
                         element.value.top += moveY;
                         element.value.left += moveX;
-                        tempPath += (element.value.left + element.value.width / 2) + "," + (element.value.top + (element.value.height || 4) / 2) + " ";
+                        tempPath += (element.value.left + moveWidth.value / 2) + "," + (element.value.top + moveHeight.value / 2) + " ";
                     }
                     if (props.type === "dragCustom") path = tempPath;
                     break;
@@ -300,7 +300,7 @@ export default defineComponent({
 
                         if ((props.type === "dragBeeline" || props.type === "dragCustom") && element.value) {
                             startPoint = point;
-                            path += (element.value.left + element.value.width / 2) + "," + (element.value.top + (element.value.height || 4) / 2) + " ";
+                            path += (element.value.left + moveWidth.value / 2) + "," + (element.value.top + moveHeight.value / 2) + " ";
                         } else {
                             path += point.x + "," + point.y + " ";
                         }
@@ -343,6 +343,19 @@ export default defineComponent({
             canDrawing.value = false;
         };
 
+        const moveWidth = computed(() => {
+            const width = element.value?.type === "line" ? Math.abs(
+                element.value.start[0] - element.value.end[0]
+            ) : element.value?.width;
+            return !width || width < 24 ? 24 : width;
+        });
+        const moveHeight = computed(() => {
+            const height = element.value?.type === "line" ? Math.abs(
+                element.value.start[1] - element.value.end[1]
+            ) : element.value?.height;
+            return !height || height < 24 ? 24 : height;
+        });
+
         return {
             drawStart,
             drawing,
@@ -356,7 +369,9 @@ export default defineComponent({
             element,
             width,
             height,
-            currentElementComponent
+            currentElementComponent,
+            moveHeight,
+            moveWidth
         };
     }
 });

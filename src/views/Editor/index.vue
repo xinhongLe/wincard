@@ -1,6 +1,6 @@
 <template>
     <div class="ppt-editor">
-        <editor-header class="layout-header" @onSave="onSave" />
+        <editor-header class="layout-header" @onSave="onSave" @onDeleteWin="onDeleteWin"/>
 
         <div class="layout-content">
             <!-- <thumbnails class="layout-content-left" /> -->
@@ -39,7 +39,7 @@ import { computed, defineComponent, ref } from "vue";
 import useGlobalHotkey from "@/hooks/useGlobalHotkey";
 import usePasteEvent from "@/hooks/usePasteEvent";
 
-import { IWin, PPTVideoElement, Slide } from "@/types/slides";
+import { IWin, PPTVideoElement, Slide, SaveType } from "@/types/slides";
 import { useStore } from "@/store";
 import { PAGE_TYPE } from "@/configs/page";
 
@@ -71,8 +71,12 @@ export default defineComponent({
         useGlobalHotkey();
         usePasteEvent();
 
-        const onSave = (slide: Slide) => {
-            emit("onSave", slide);
+        const onSave = (slide: Slide, type: SaveType) => {
+            emit("onSave", slide, type);
+        };
+
+        const onDeleteWin = () => {
+            emit("onDeleteWin");
         };
 
         const addCard = (callback: (wins: IWin[]) => void) => {
@@ -97,6 +101,7 @@ export default defineComponent({
             currentSlide,
             onSave,
             addCard,
+            onDeleteWin,
             selectVideo,
             setQuoteVideo,
             updateQuoteVideo
