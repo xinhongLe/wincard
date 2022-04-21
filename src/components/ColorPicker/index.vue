@@ -97,7 +97,7 @@
 import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import tinycolor, { ColorFormats } from "tinycolor2";
 import { debounce } from "lodash";
-
+import { message } from "ant-design-vue";
 import Alpha from "./Alpha.vue";
 import Checkboard from "./Checkboard.vue";
 import Hue from "./Hue.vue";
@@ -270,9 +270,8 @@ export default defineComponent({
         const learnColor = async () => {
             if (window.electron) {
                 const colorString = await window.electron.getColorHexRGB();
-
+                if (!colorString && window.electron && window.electron.isMac()) return message.warning("请在安全性与隐私中设置程序允许访问屏幕录制");
                 emit("update:modelValue", colorString);
-
                 updateRecentColorsCache();
             }
         };
