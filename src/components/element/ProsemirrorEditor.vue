@@ -180,6 +180,12 @@ export default defineComponent({
             editorView && editorView.destroy();
         });
 
+        // 上下标字体缩小规则
+        const downFontSize = (fontSize: string) => {
+            const size = Number(fontSize.replace(/px/, ""));
+            return (size - 15 > 15 ? size - 15 : 15) + "px";
+        };
+
         const groupIdList = computed(() => store.state.activeElementIdList);
         // const handleElement = computed<PPTElement>(() => store.getters.handleElement);
         // 执行富文本命令（可以是一个或多个）
@@ -281,11 +287,19 @@ export default defineComponent({
                         editorView.dispatch
                     );
                 } else if (item.command === "subscript") {
+                    if (!attrs.subscript) {
+                        const fontSize = downFontSize(attrs.fontsize);
+                        execCommand({ command: "fontsize", value: fontSize });
+                    }
                     toggleMark(editorView.state.schema.marks.subscript)(
                         editorView.state,
                         editorView.dispatch
                     );
                 } else if (item.command === "superscript") {
+                    if (!attrs.superscript) {
+                        const fontSize = downFontSize(attrs.fontsize);
+                        execCommand({ command: "fontsize", value: fontSize });
+                    }
                     toggleMark(editorView.state.schema.marks.superscript)(
                         editorView.state,
                         editorView.dispatch

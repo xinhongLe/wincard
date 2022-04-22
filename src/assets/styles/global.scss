@@ -155,6 +155,10 @@ sup {
     top: -1em;
 }
 
+sub {
+    bottom: -.5rem;
+}
+
 @keyframes animation-move {
     0% {
         top: 0;
