@@ -148,18 +148,18 @@ export default defineComponent({
                         click: handleClick
                     },
                     editable: () => props.editable,
-                    handlePaste: (view: EditorView, event: ClipboardEvent) => {
-                        /**
-                         * 处理复制粘贴带样式问题，由原先的Ctrl+V, Ctrl+Shift+V 统一成 Ctrl+V
-                         */
-                        if (event.clipboardData === null) return false;
-                        const slice = __parseFromClipboard(view, event.clipboardData.getData("text/plain"), event.clipboardData.getData("text/html"), true, view.state.selection.$from);
-                        if (!slice) return false;
-                        var singleNode = slice.openStart === 0 && slice.openEnd === 0 && slice.content.childCount === 1 ? slice.content.firstChild : null;
-                        var tr = singleNode ? view.state.tr.replaceSelectionWith(singleNode, true) : view.state.tr.replaceSelection(slice);
-                        view.dispatch(tr.scrollIntoView().setMeta("paste", true).setMeta("uiEvent", "paste"));
-                        return true;
-                    },
+                    // handlePaste: (view: EditorView, event: ClipboardEvent) => {
+                    //     /**
+                    //      * 处理复制粘贴带样式问题，由原先的Ctrl+V, Ctrl+Shift+V 统一成 Ctrl+V
+                    //      */
+                    //     if (event.clipboardData === null) return false;
+                    //     const slice = __parseFromClipboard(view, event.clipboardData.getData("text/plain"), event.clipboardData.getData("text/html"), true, view.state.selection.$from);
+                    //     if (!slice) return false;
+                    //     var singleNode = slice.openStart === 0 && slice.openEnd === 0 && slice.content.childCount === 1 ? slice.content.firstChild : null;
+                    //     var tr = singleNode ? view.state.tr.replaceSelectionWith(singleNode, true) : view.state.tr.replaceSelection(slice);
+                    //     view.dispatch(tr.scrollIntoView().setMeta("paste", true).setMeta("uiEvent", "paste"));
+                    //     return true;
+                    // },
                     handleTextInput: () => {
                         /**
                          * 输入的文本强制刷新Store
