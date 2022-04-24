@@ -20,6 +20,7 @@ import { getTextAttrs } from "@/utils/prosemirror/utils";
 import emitter, { EmitterEvents, RichTextCommand } from "@/utils/emitter";
 import { alignmentCommand } from "@/utils/prosemirror/commands/setTextAlign";
 import { toggleList } from "@/utils/prosemirror/commands/toggleList";
+import { Slice } from "prosemirror-model";
 
 export default defineComponent({
     name: "prosemirror-editor",
@@ -163,6 +164,12 @@ export default defineComponent({
                     handleTextInput: () => {
                         /**
                          * 输入的文本强制刷新Store
+                         */
+                        handleInput();
+                    },
+                    handleDrop: () => {
+                        /**
+                         * 当文本内容是拖拽的时候刷新Store
                          */
                         handleInput();
                     }
