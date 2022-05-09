@@ -48,15 +48,6 @@
                             }}</span>
                         </a-select-option>
                     </a-select-opt-group>
-                    <!-- <a-select-opt-group label="在线字体">
-                    <a-select-option
-                        v-for="font in webFonts"
-                        :key="font.value"
-                        :value="font.value"
-                    >
-                        <span>{{ font.label }}</span>
-                    </a-select-option>
-                </a-select-opt-group> -->
                 </a-select>
                 <a-select
                     show-search
@@ -281,6 +272,28 @@
                     /></a-radio-button>
                 </a-tooltip>
             </a-radio-group>
+
+            <a-divider />
+            <div class="row">
+                <div style="flex: 2;">行间距：</div>
+                <a-select
+                    show-search
+                    style="flex: 3;"
+                    :value="lineHeight"
+                    @change="value => updateLineHeight(value)"
+                >
+                    <template #suffixIcon><IconRowHeight /></template>
+                    <a-select-option
+                        v-for="item in lineHeightOptions"
+                        :key="item"
+                        :value="item"
+                        >{{ item }}px</a-select-option
+                    >
+                </a-select>
+            </div>
+
+            <a-divider />
+            <ElementOutline batch />
         </div>
     </div>
 </template>
@@ -310,16 +323,19 @@ import AudioStylePanel from "./AudioStylePanel.vue";
 import IFrameStylePanel from "./IFrameStylePanel.vue";
 import FlashStylePanel from "./FlashStylePanel.vue";
 import MarkStylePanel from "./MarkStylePanel.vue";
+import ElementOutline from "../common/ElementOutline.vue";
 import { logInput, LOG_EVENT } from "@/utils/log";
 import { defaultRichTextAttrs } from "@/utils/prosemirror/utils";
 import emitter, { EmitterEvents } from "@/utils/emitter";
 import { BASE_FONTS, WEB_FONTS } from "@/configs/font";
+import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 const webFonts = WEB_FONTS;
 const baseFonts = BASE_FONTS;
 
 export default defineComponent({
     name: "element-style-panel",
+    components: { ElementOutline },
     setup(props, { emit }) {
         const store = useStore();
         const handleElement = computed<PPTElement>(
@@ -388,6 +404,8 @@ export default defineComponent({
             emit("updateQuoteVideo", element);
         };
 
+        const { addHistorySnapshot } = useHistorySnapshot();
+
         const richTextAttrs = ref(defaultRichTextAttrs);
 
         const emitRichTextCommand = (command: string, value?: string) => {
@@ -396,6 +414,17 @@ export default defineComponent({
         };
 
         const fontSizeOptions = Array.from({ length: 245 }, (v, k) => k + 12 + "px");
+        const lineHeightOptions = Array.from({ length: 232 }, (v, k) => k + 24);
+
+        // 设置行高
+        const updateLineHeight = (value: number) => {
+            const props = { lineHeight: value };
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: store.state.activeElementIdList,
+                props
+            });
+            addHistorySnapshot();
+        };
 
         return {
             formState,
@@ -409,7 +438,9 @@ export default defineComponent({
             richTextAttrs,
             webFonts,
             baseFonts,
-            fontSizeOptions
+            fontSizeOptions,
+            lineHeightOptions,
+            updateLineHeight
         };
     }
 });

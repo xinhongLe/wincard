@@ -176,14 +176,15 @@ export const mutations: MutationTree<State> = {
         state.selectedSlidesIndex = selectedSlidesIndex;
     },
 
-    [MutationTypes.UPDATE_ELEMENT](state, data: UpdateElementData) {
+    [MutationTypes.UPDATE_ELEMENT](state, data: UpdateElementData, onlyText?: boolean) {
+        // onlyText 为了处理批量设置文本行高和边框 排除其他元素
         const { id, props } = data;
         const elIdList = typeof id === "string" ? [id] : id;
 
         const slideIndex = state.slideIndex;
         const slide = state.slides[slideIndex];
         const elements = slide.elements.map(el => {
-            return elIdList.includes(el.id) ? { ...el, ...props } : el;
+            return elIdList.includes(el.id) ? (onlyText && el.type !== "text" ? el : { ...el, ...props }) : el;
         });
         state.slides[slideIndex].elements = elements as PPTElement[];
     },
@@ -206,12 +207,13 @@ export const mutations: MutationTree<State> = {
 
     [MutationTypes.REMOVE_ELEMENT_PROPS](state, data: RemoveElementPropData) {
         const { id, propName } = data;
+        const elIdList = typeof id === "string" ? [id] : id;
         const propsNames = typeof propName === "string" ? [propName] : propName;
 
         const slideIndex = state.slideIndex;
         const slide = state.slides[slideIndex];
         const elements = slide.elements.map(el => {
-            return el.id === id ? omit(el, propsNames) : el;
+            return elIdList.includes(el.id) ? omit(el, propsNames) : el;
         });
         state.slides[slideIndex].elements = elements as PPTElement[];
     },

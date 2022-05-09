@@ -64,21 +64,26 @@ export default defineComponent({
         fixed: {
             type: Boolean,
             default: false
+        },
+        batch: {
+            type: Boolean,
+            default: false
         }
     },
-    setup() {
+    setup(props) {
         const store = useStore();
+        const batch = computed(() => props.batch);
         const handleElement = computed<PPTElement>(
             () => store.getters.handleElement
         );
 
-        const outline = ref<PPTElementOutline>();
+        const outline = ref<PPTElementOutline | undefined>({ width: 2, color: "#000", style: "solid" });
         const hasOutline = ref(false);
 
         watch(
             handleElement,
             () => {
-                if (!handleElement.value) return;
+                if (!handleElement.value || batch.value) return;
                 outline.value =
                     "outline" in handleElement.value
                         ? handleElement.value.outline
@@ -92,8 +97,9 @@ export default defineComponent({
 
         const updateOutline = (outlineProps: Partial<PPTElementOutline>) => {
             const props = { outline: { ...outline.value, ...outlineProps } };
+            if (batch.value) outline.value = props.outline;
             store.commit(MutationTypes.UPDATE_ELEMENT, {
-                id: handleElement.value.id,
+                id: batch.value ? store.state.activeElementIdList : handleElement.value.id,
                 props
             });
             addHistorySnapshot();
@@ -102,18 +108,20 @@ export default defineComponent({
         const toggleOutline = (checked: boolean) => {
             if (checked) {
                 const props = {
-                    outline: { width: 2, color: "#000", style: "solid" }
+                    outline: outline.value
                 };
                 store.commit(MutationTypes.UPDATE_ELEMENT, {
-                    id: handleElement.value.id,
+                    id: batch.value ? store.state.activeElementIdList : handleElement.value.id,
                     props
                 });
             } else {
                 store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, {
-                    id: handleElement.value.id,
+                    id: batch.value ? store.state.activeElementIdList : handleElement.value.id,
                     propName: "outline"
                 });
             }
+            console.log(checked);
+            if (batch.value) hasOutline.value = checked;
             addHistorySnapshot();
         };
 
