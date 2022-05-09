@@ -73,6 +73,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="speed">
+                    <div class="icon speed-icon">
+                        <span
+                            class="icon-content"
+                            @click="speedMenuVisible = !speedMenuVisible"
+                            >倍速</span
+                        >
+                        <div
+                            class="speed-menu"
+                            v-if="speedMenuVisible"
+                            @mouseleave="speedMenuVisible = false"
+                        >
+                            <div
+                                class="speed-menu-item"
+                                :class="{ active: item.value === playbackRate }"
+                                v-for="item in speedOptions"
+                                :key="item.label"
+                                @click="speed(item.value)"
+                            >
+                                {{ item.label }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <span class="time">
                     <span class="ptime">{{ ptime }}</span> /
                     <span class="dtime">{{ dtime }}</span>
