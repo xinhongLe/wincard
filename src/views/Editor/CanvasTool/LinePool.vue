@@ -36,9 +36,7 @@
                                 stroke="currentColor"
                                 fill="none"
                                 stroke-width="2"
-                                :stroke-dasharray="
-                                    line.style === 'solid' ? '0, 0' : '4, 1'
-                                "
+                                :stroke-dasharray="{solid: '0, 0', dashed: '4, 1', dashedPoint: '5, 2, 2, 2'}[line.style]"
                                 stroke-linecap
                                 stroke-linejoin
                                 stroke-miterlimit

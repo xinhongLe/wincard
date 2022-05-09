@@ -477,7 +477,7 @@ export type LinePoint = "" | "arrow" | "dot";
  *
  * end: 终点位置（[x, y]）
  *
- * style: 线条样式（实线、虚线）
+ * style: 线条样式（实线、虚线、点线间隔）
  *
  * color: 线条颜色
  *
@@ -493,7 +493,7 @@ export interface PPTLineElement extends Omit<PPTBaseElement, "height"> {
     type: "line";
     start: [number, number];
     end: [number, number];
-    style: "solid" | "dashed";
+    style: "solid" | "dashed" | "dashedPoint";
     color: string;
     points: [LinePoint, LinePoint];
     shadow?: PPTElementShadow;

@@ -96,9 +96,13 @@ export default defineComponent({
             return height < 24 ? 24 : height;
         });
 
-        const lineDashArray = computed(() =>
-            props.elementInfo.style === "dashed" ? "10, 5" : "0, 0"
-        );
+        const lineDashArray = computed(() => {
+            return {
+                solid: "0 0",
+                dashed: "10 6",
+                dashedPoint: `${10 + props.elementInfo.width} ${6 + props.elementInfo.width} ${props.elementInfo.width} ${6 + props.elementInfo.width}`
+            };
+        });
 
         const path = computed(() => {
             return getLineElementPath(props.elementInfo);

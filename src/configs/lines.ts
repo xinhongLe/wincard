@@ -2,7 +2,7 @@ import { LinePoint } from "@/types/slides";
 
 export interface LinePoolItem {
     path: string;
-    style: "solid" | "dashed";
+    style: "solid" | "dashed" | "dashedPoint";
     points: [LinePoint, LinePoint];
     isBroken?: boolean;
     isCurve?: boolean;
@@ -19,6 +19,7 @@ export const LINE_LIST: PresetLine[] = [
         children: [
             { path: "M 0 0 L 20 20", style: "solid", points: ["", ""] },
             { path: "M 0 0 L 20 20", style: "dashed", points: ["", ""] },
+            { path: "M 0 0 L 20 20", style: "dashedPoint", points: ["", ""] },
             { path: "M 0 0 L 20 20", style: "solid", points: ["", "arrow"] },
             { path: "M 0 0 L 20 20", style: "solid", points: ["arrow", "arrow"] },
             { path: "M 0 0 L 20 20", style: "dashed", points: ["", "arrow"] },
