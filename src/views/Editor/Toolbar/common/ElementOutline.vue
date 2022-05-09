@@ -120,7 +120,6 @@ export default defineComponent({
                     propName: "outline"
                 });
             }
-            console.log(checked);
             if (batch.value) hasOutline.value = checked;
             addHistorySnapshot();
         };

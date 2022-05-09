@@ -7,6 +7,7 @@
             name="upload"
             ref="inputRef"
             :accept="accept"
+            v-bind="setAttrs"
             @change="$event => handleChange($event)"
         />
     </div>
@@ -24,7 +25,7 @@ export default defineComponent({
             default: "image/*"
         }
     },
-    setup(props, { emit }) {
+    setup(props, { emit, attrs }) {
         const inputRef = ref<HTMLInputElement>();
 
         const handleClick = () => {
@@ -37,10 +38,13 @@ export default defineComponent({
             if (files) emit("change", files);
         };
 
+        const setAttrs = attrs.setAttrs || {};
+
         return {
             handleClick,
             handleChange,
-            inputRef
+            inputRef,
+            setAttrs
         };
     }
 });

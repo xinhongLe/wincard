@@ -60,7 +60,7 @@
                 </div>
                 <!-- <IconPicture class="handler-item" @click="electronUpload('image')" /> -->
             </a-tooltip>
-            <FileInput v-if="!checkElectron" @change="files => insertImageElement(files)">
+            <FileInput v-if="!checkElectron" :setAttrs="{ multiple: 'multiple' }" @change="files => insertImageElement(files)">
                 <a-tooltip
                     :mouseLeaveDelay="0"
                     :mouseEnterDelay="0.5"
@@ -433,9 +433,11 @@ export default defineComponent({
         const insertImageElement = (files: File[], buffer?: ArrayBuffer) => {
             const imageFile = files[0];
             if (!imageFile) return;
-            uploadImage(imageFile, buffer).then((key) => {
-                createImageElement(key);
-            });
+            for (let i = 0; i < files.length; i++) {
+                uploadImage(files[i], buffer).then((key) => {
+                    createImageElement(key);
+                });
+            }
         };
 
         const insertAudioElement = (files: File[], buffer?: ArrayBuffer) => {

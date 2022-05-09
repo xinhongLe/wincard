@@ -19,15 +19,17 @@ export default () => {
             title: "选择上传文件",
             buttonLabel: "确定",
             filters: filterMap.get(type),
-            properties: properties
+            properties: [...properties, ...(type === "image" ? ["multiSelections"] : [])]
         }).then((file: any) => {
             if (!file.canceled) {
-                const path = file.filePaths[0];
-                window.electron.readFile(path, (buffer: ArrayBuffer) => {
-                    const fileName = path.replace(/(.*\/)*([^.]+)/i, "$2");
-                    const newFile = new File([buffer], fileName);
-                    callback(newFile, buffer);
-                });
+                for (let i = 0; i < file.filePaths.length; i++) {
+                    const path = file.filePaths[i];
+                    window.electron.readFile(path, (buffer: ArrayBuffer) => {
+                        const fileName = path.replace(/(.*\/)*([^.]+)/i, "$2");
+                        const newFile = new File([buffer], fileName);
+                        callback(newFile, buffer);
+                    });
+                }
             }
         }).catch((err: any) => {
             if (window.electron && window.electron.log) {
