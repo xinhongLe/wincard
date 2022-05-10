@@ -1,6 +1,20 @@
 <template>
     <div class="shape-style-panel">
         <div class="row">
+            <a-popover
+                trigger="click"
+                v-model:visible="shapePoolVisible"
+                placement="bottom"
+            >
+                <template #content>
+                    <ShapePool @select="(shape) => updateShape(shape)" />
+                </template>
+                <a-button style="flex: 1;">更换形状</a-button>
+            </a-popover>
+        </div>
+        <a-divider />
+
+        <div class="row">
             <a-select
                 style="flex: 10;"
                 :value="fillType"
@@ -387,6 +401,8 @@ import ElementOutline from "../common/ElementOutline.vue";
 import ElementShadow from "../common/ElementShadow.vue";
 import ElementFlip from "../common/ElementFlip.vue";
 import ColorButton from "../common/ColorButton.vue";
+import ShapePool from "../../CanvasTool/ShapePool.vue";
+import { ShapePoolItem } from "@/configs/shapes";
 
 const webFonts = WEB_FONTS;
 const baseFonts = BASE_FONTS;
@@ -398,7 +414,8 @@ export default defineComponent({
         ElementOutline,
         ElementShadow,
         ElementFlip,
-        ColorButton
+        ColorButton,
+        ShapePool
     },
     setup() {
         const store = useStore();
@@ -553,6 +570,17 @@ export default defineComponent({
             return Math.floor(Math.min(handleElement.value.height, handleElement.value.width) / 2);
         });
 
+        // 更换形状
+        const shapePoolVisible = ref(false);
+        const updateShape = (shape: ShapePoolItem) => {
+            console.log(shape, handleElement.value);
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props: shape
+            });
+            addHistorySnapshot();
+        };
+
         return {
             radius,
             fill,
@@ -577,7 +605,9 @@ export default defineComponent({
             chartArrowOffset,
             chartArrowPosition,
             updateChartArrowPosition,
-            updateChartArrowOffset
+            updateChartArrowOffset,
+            shapePoolVisible,
+            updateShape
         };
     }
 });

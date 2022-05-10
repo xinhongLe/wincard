@@ -701,7 +701,6 @@ export default defineComponent({
 
         const setColWidth = (e: KeyboardEvent) => {
             const value = +(e.target as HTMLInputElement).value;
-            console.log(colWidth.value);
             // 计算每一列的宽度 及 总宽度
             const colWidths: number[] = [];
             let totalWidth = 0;
@@ -733,7 +732,6 @@ export default defineComponent({
 
         const setRowHeight = (e: KeyboardEvent) => {
             const value = +(e.target as HTMLInputElement).value;
-            console.log(rowHeight.value);
             // 计算每一行的高度 及 总高度
             const rowHeights: number[] = [];
             let totalHeight = 0;
