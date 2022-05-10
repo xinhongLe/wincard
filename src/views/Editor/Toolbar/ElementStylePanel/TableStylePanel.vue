@@ -265,7 +265,7 @@
         <div class="row">
             <div style="flex: 2;">行数：</div>
             <a-input-number
-                :min="minRowCount"
+                :min="1"
                 :max="20"
                 v-model:value="rowCount"
                 @pressEnter="e => setTableRow(e)"
@@ -276,11 +276,36 @@
         <div class="row">
             <div style="flex: 2;">列数：</div>
             <a-input-number
-                :min="minColCount"
+                :min="1"
                 :max="20"
                 v-model:value="colCount"
                 @pressEnter="e => setTableCol(e)"
                 @blur="e => setTableCol(e)"
+                style="flex: 3;"
+            />
+        </div>
+
+        <a-divider />
+
+        <div class="row">
+            <div style="flex: 2;">行高：</div>
+            <a-input-number
+                :disabled="selectedCells.length === 0"
+                :min="25"
+                v-model:value="rowHeight"
+                @pressEnter="e => setRowHeight(e)"
+                @blur="e => setRowHeight(e)"
+                style="flex: 3;"
+            />
+        </div>
+        <div class="row">
+            <div style="flex: 2;">列宽：</div>
+            <a-input-number
+                :disabled="selectedCells.length === 0"
+                :min="50"
+                v-model:value="colWidth"
+                @pressEnter="e => setColWidth(e)"
+                @blur="e => setColWidth(e)"
                 style="flex: 3;"
             />
         </div>
@@ -473,7 +498,10 @@ export default defineComponent({
             if (selectedCells.value.length) updateTextAttrState();
         });
 
-        watch(selectedCells, updateTextAttrState);
+        watch(selectedCells, () => {
+            updateTextAttrState();
+            updateRowAndColNum();
+        });
 
         // 设置单元格内容文本样式
         const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {
@@ -538,51 +566,20 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
-        // 设置表格行数（只能增加）
+        // 设置表格行数
         const setTableRow = (e: KeyboardEvent) => {
             const value = +(e.target as HTMLInputElement).value;
             const rowCount = handleElement.value.data.length;
 
             if (value === rowCount) return;
-            if (value < rowCount) return message.warning("设置行数不能少于当前值");
-
-            const rowCells: TableCell[] = new Array(colCount.value).fill({
-                id: createRandomCode(),
-                colspan: 1,
-                rowspan: 1,
-                style: {
-                    color: "#000",
-                    fontname: "Microsoft Yahei"
-                },
-                text: ""
-            });
-            const newTableCells: TableCell[][] = new Array(
-                value - rowCount
-            ).fill(rowCells);
-
-            const tableCells: TableCell[][] = JSON.parse(
+            let tableCells: TableCell[][] = JSON.parse(
                 JSON.stringify(handleElement.value.data)
             );
-            tableCells.push(...newTableCells);
-
-            const props = { data: tableCells };
-            store.commit(MutationTypes.UPDATE_ELEMENT, {
-                id: handleElement.value.id,
-                props
-            });
-            addHistorySnapshot();
-        };
-
-        // 设置表格列数（只能增加）
-        const setTableCol = (e: KeyboardEvent) => {
-            const value = +(e.target as HTMLInputElement).value;
-            const colCount = handleElement.value.data[0].length;
-
-            if (value === colCount) return;
-            if (value < colCount) return message.warning("设置列数不能少于当前值");
-
-            const tableCells = handleElement.value.data.map(item => {
-                const cells: TableCell[] = new Array(value - colCount).fill({
+            if (value < rowCount) {
+                tableCells = tableCells.slice(0, value);
+                // return message.warning("设置行数不能少于当前值");
+            } else {
+                const rowCells: TableCell[] = new Array(colCount.value).fill({
                     id: createRandomCode(),
                     colspan: 1,
                     rowspan: 1,
@@ -592,15 +589,56 @@ export default defineComponent({
                     },
                     text: ""
                 });
-                item.push(...cells);
-                return item;
-            });
+                const newTableCells: TableCell[][] = new Array(
+                    value - rowCount
+                ).fill(rowCells);
 
-            const colSizeList = handleElement.value.colWidths.map(
+                tableCells.push(...newTableCells);
+            }
+
+            const props = { data: tableCells };
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props
+            });
+            addHistorySnapshot();
+        };
+
+        // 设置表格列数
+        const setTableCol = (e: KeyboardEvent) => {
+            const value = +(e.target as HTMLInputElement).value;
+            const colCount = handleElement.value.data[0].length;
+
+            if (value === colCount) return;
+            let tableCells = handleElement.value.data;
+            let colSizeList = handleElement.value.colWidths.map(
                 item => item * handleElement.value.width
             );
-            const newColSizeList = new Array(value - colCount).fill(100);
-            colSizeList.push(...newColSizeList);
+            if (value < colCount) {
+                tableCells = tableCells.map(item => {
+                    return item.slice(0, value);
+                });
+                colSizeList = colSizeList.slice(0, value);
+                // return message.warning("设置列数不能少于当前值");
+            } else {
+                tableCells = tableCells.map(item => {
+                    const cells: TableCell[] = new Array(value - colCount).fill({
+                        id: createRandomCode(),
+                        colspan: 1,
+                        rowspan: 1,
+                        style: {
+                            color: "#000",
+                            fontname: "Microsoft Yahei"
+                        },
+                        text: ""
+                    });
+                    item.push(...cells);
+                    return item;
+                });
+
+                const newColSizeList = new Array(value - colCount).fill(100);
+                colSizeList.push(...newColSizeList);
+            }
 
             const width = handleElement.value.width + 100 * (value - colCount);
             const colWidths = colSizeList.map(item => item / width);
@@ -637,6 +675,94 @@ export default defineComponent({
         const lineHeightOptions = Array.from({ length: 232 }, (v, k) => k + 24);
         const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10];
 
+        // 行高列宽配置
+        const rowHeight = ref(25);
+        const colWidth = ref(50);
+        let rows: string[] = [];
+        let cols: string[] = [];
+        const updateRowAndColNum = () => {
+            rows = [];
+            cols = [];
+            if (selectedCells.value.length === 0) return;
+            // 选中表格发生变化，计算列宽和行高
+            selectedCells.value.forEach(cell => {
+                const rc = cell.split("_");
+                if (rows.indexOf(rc[0]) === -1) rows.push(rc[0]);
+                if (cols.indexOf(rc[1]) === -1) cols.push(rc[1]);
+            });
+
+            // 取选中的第一个的数据进行计算显示
+            // 四舍五入
+            // 计算行高
+            rowHeight.value = Math.round(handleElement.value.height * handleElement.value.rowHeights[rows[0]]);
+            // 计算列宽
+            colWidth.value = Math.round(handleElement.value.width * handleElement.value.colWidths[cols[0]]);
+        };
+
+        const setColWidth = (e: KeyboardEvent) => {
+            const value = +(e.target as HTMLInputElement).value;
+            console.log(colWidth.value);
+            // 计算每一列的宽度 及 总宽度
+            const colWidths: number[] = [];
+            let totalWidth = 0;
+            handleElement.value.colWidths.forEach((col, index) => {
+                if (cols.indexOf(index.toString()) === -1) {
+                    colWidths.push(col * handleElement.value.width);
+                    totalWidth += col * handleElement.value.width;
+                } else {
+                    colWidths.push(value);
+                    totalWidth += value;
+                }
+            });
+
+            // 重新计算元素中的rowHeights及height
+            const props = {
+                colWidths: colWidths.map(col => {
+                    return col / totalWidth;
+                }),
+                width: totalWidth
+            };
+
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props
+            });
+
+            addHistorySnapshot();
+        };
+
+        const setRowHeight = (e: KeyboardEvent) => {
+            const value = +(e.target as HTMLInputElement).value;
+            console.log(rowHeight.value);
+            // 计算每一行的高度 及 总高度
+            const rowHeights: number[] = [];
+            let totalHeight = 0;
+            handleElement.value.rowHeights.forEach((row, index) => {
+                if (rows.indexOf(index.toString()) === -1) {
+                    rowHeights.push(row * handleElement.value.height);
+                    totalHeight += row * handleElement.value.height;
+                } else {
+                    rowHeights.push(value);
+                    totalHeight += value;
+                }
+            });
+
+            // 重新计算元素中的rowHeights及height
+            const props = {
+                rowHeights: rowHeights.map(row => {
+                    return row / totalHeight;
+                }),
+                height: totalHeight
+            };
+
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props
+            });
+
+            addHistorySnapshot();
+        };
+
         return {
             handleElement,
             availableFonts,
@@ -660,7 +786,12 @@ export default defineComponent({
             richTextAttrs,
             editable,
             lineHeightOptions,
-            wordSpaceOptions
+            wordSpaceOptions,
+            rowHeight,
+            colWidth,
+            selectedCells,
+            setRowHeight,
+            setColWidth
         };
     }
 });

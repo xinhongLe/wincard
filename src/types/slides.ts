@@ -636,7 +636,7 @@ export interface PPTTableElement extends PPTBaseElement {
     outline: PPTElementOutline;
     theme?: TableTheme;
     colWidths: number[];
-    rowHeights?: number[];
+    rowHeights: number[];
     data: TableCell[][];
 }
 

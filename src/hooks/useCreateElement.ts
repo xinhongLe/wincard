@@ -155,6 +155,7 @@ export default () => {
         const DEFAULT_CELL_HEIGHT = 36;
 
         const colWidths: number[] = new Array(col).fill(1 / col);
+        const rowHeights: number[] = new Array(row).fill(1 / row);
 
         const width = col * DEFAULT_CELL_WIDTH;
         const height = row * DEFAULT_CELL_HEIGHT;
@@ -169,6 +170,7 @@ export default () => {
             width,
             height,
             colWidths,
+            rowHeights,
             data,
             left: (VIEWPORT_SIZE - width) / 2,
             top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,

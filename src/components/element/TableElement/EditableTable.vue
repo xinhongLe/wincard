@@ -312,6 +312,7 @@ export default defineComponent({
                     }
                 }
             }
+
             return selectedCells;
         });
 
