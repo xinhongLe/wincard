@@ -129,7 +129,29 @@
                 style="flex: 4;"
             />
         </div>
-        <a-divider v-if="isChartShap" />
+        <div class="row" v-if="isOvalChartShap">
+            <div style="flex: 3;">箭头方向：</div>
+            <a-select
+                style="flex: 4;"
+                :value="ovalChartArrowPosition"
+                @change="value => updateOvalChartArrowPosition(value)"
+            >
+                <a-select-option value="leftTop">左上</a-select-option>
+                <a-select-option value="rightTop">右上</a-select-option>
+                <a-select-option value="leftBottom">左下</a-select-option>
+                <a-select-option value="rightBottom">右下</a-select-option>
+            </a-select>
+        </div>
+        <div class="row" v-if="isOvalChartShap">
+            <div style="flex: 3;">箭头位置：</div>
+            <a-input-number
+                :step="5"
+                :value="ovalChartArrowOffset"
+                @change="value => updateOvalChartArrowOffset(value)"
+                style="flex: 4;"
+            />
+        </div>
+        <a-divider v-if="isChartShap || isOvalChartShap" />
 
         <template v-if="showTextTools">
             <a-input-group class="row">
@@ -437,6 +459,8 @@ export default defineComponent({
         const radius = ref(0);
         const chartArrowPosition = ref("bottom");
         const chartArrowOffset = ref(0);
+        const ovalChartArrowPosition = ref("leftBottom");
+        const ovalChartArrowOffset = ref(0);
 
         watch(
             handleElement,
@@ -461,6 +485,10 @@ export default defineComponent({
                 chartArrowPosition.value = handleElement.value.chartPosition || "bottom";
 
                 chartArrowOffset.value = handleElement.value.chartOffset || (chartArrowPosition.value === "top" || chartArrowPosition.value === "bottom" ? (Math.ceil(handleElement.value.width / 4)) : (Math.ceil(handleElement.value.height / 4)));
+
+                ovalChartArrowPosition.value = handleElement.value.ovalChartPosition || "leftBottom";
+
+                ovalChartArrowOffset.value = typeof handleElement.value.ovalChartOffset !== "undefined" ? handleElement.value.ovalChartOffset : { leftBottom: 50, rightBottom: 150, leftTop: 50, rightTop: 150 }[ovalChartArrowPosition.value || "leftBottom"];
             },
             { deep: true, immediate: true }
         );
@@ -544,8 +572,14 @@ export default defineComponent({
             return handleElement.value.path === "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z" || handleElement.value.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z";
         });
 
+        // 基础聊天框
         const isChartShap = computed(() => {
             return handleElement.value.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z";
+        });
+
+        // 椭圆聊天框
+        const isOvalChartShap = computed(() => {
+            return handleElement.value.path === "M 50 240 L 60 191.6515138991168 A 100 100 0 1 1 100 200 Z";
         });
 
         const updateChartArrowPosition = (position: string) => {
@@ -581,6 +615,23 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
+        const updateOvalChartArrowPosition = (position: string) => {
+            const props = { ovalChartPosition: position };
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props
+            });
+            addHistorySnapshot();
+        };
+
+        const updateOvalChartArrowOffset = (offset: number) => {
+            const props = { ovalChartOffset: offset };
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props
+            });
+            addHistorySnapshot();
+        };
         return {
             radius,
             fill,
@@ -607,7 +658,12 @@ export default defineComponent({
             updateChartArrowPosition,
             updateChartArrowOffset,
             shapePoolVisible,
-            updateShape
+            updateShape,
+            isOvalChartShap,
+            ovalChartArrowPosition,
+            ovalChartArrowOffset,
+            updateOvalChartArrowPosition,
+            updateOvalChartArrowOffset
         };
     }
 });

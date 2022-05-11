@@ -108,7 +108,7 @@ export default defineComponent({
         const toggleOutline = (checked: boolean) => {
             if (checked) {
                 const props = {
-                    outline: outline.value
+                    outline: outline.value || { width: 2, color: "#000", style: "solid" }
                 };
                 store.commit(MutationTypes.UPDATE_ELEMENT, {
                     id: batch.value ? store.state.activeElementIdList : handleElement.value.id,

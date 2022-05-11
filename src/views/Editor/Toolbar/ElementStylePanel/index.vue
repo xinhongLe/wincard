@@ -415,6 +415,7 @@ export default defineComponent({
 
         const fontSizeOptions = Array.from({ length: 245 }, (v, k) => k + 12 + "px");
         const lineHeightOptions = Array.from({ length: 232 }, (v, k) => k + 24);
+        const lineHeight = ref(1.2);
 
         // 设置行高
         const updateLineHeight = (value: number) => {
@@ -440,7 +441,8 @@ export default defineComponent({
             baseFonts,
             fontSizeOptions,
             lineHeightOptions,
-            updateLineHeight
+            updateLineHeight,
+            lineHeight
         };
     }
 });

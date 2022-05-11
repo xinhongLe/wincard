@@ -464,6 +464,8 @@ export interface PPTShapeElement extends PPTBaseElement {
     radius?: number;
     chartPosition?: "top" | "bottom" | "left" | "right";
     chartOffset?: number;
+    ovalChartPosition?: "leftTop" | "rightTop" | "leftBottom" | "rightBottom",
+    ovalChartOffset?: number;
 }
 
 export type LinePoint = "" | "arrow" | "dot";

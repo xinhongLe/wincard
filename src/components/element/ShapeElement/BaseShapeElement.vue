@@ -82,6 +82,7 @@ import { PPTShapeElement, ShapeText } from "@/types/slides";
 import useElementOutline from "@/components/element/hooks/useElementOutline";
 import useElementShadow from "@/components/element/hooks/useElementShadow";
 import useElementFlip from "@/components/element/hooks/useElementFlip";
+import useSpecialShape from "./useSpecailShape";
 
 import GradientDefs from "./GradientDefs.vue";
 
@@ -119,44 +120,8 @@ export default defineComponent({
         const flipV = computed(() => props.elementInfo.flipV);
         const { flipStyle } = useElementFlip(flipH, flipV);
 
-        const text = computed<ShapeText>(() => {
-            const defaultText: ShapeText = {
-                content: "",
-                defaultFontName: "微软雅黑",
-                defaultColor: "#000",
-                align: "middle",
-                defaultFontSize: "14px"
-            };
-            if (!props.elementInfo.text) return defaultText;
-
-            return props.elementInfo.text;
-        });
-
-        const path = computed(() => {
-            if (props.elementInfo.path === "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z") {
-                const borderRadius = props.elementInfo.radius || 0;
-                const w = props.elementInfo.width;
-                const h = props.elementInfo.height;
-                return `M ${borderRadius} 0 L ${w - borderRadius} 0 Q ${w} 0 ${w} ${borderRadius} L ${w} ${h - borderRadius} Q ${w} ${h} ${w - borderRadius} ${h} L ${borderRadius} ${h} Q 0 ${h} 0 ${h - borderRadius} L 0 ${borderRadius} Q 0 0 ${borderRadius} 0 Z`;
-            }
-            if (props.elementInfo.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z") {
-                const borderRadius = props.elementInfo.radius || 0;
-                const w = props.elementInfo.width;
-                const h = props.elementInfo.height;
-                const position = props.elementInfo.chartPosition || "bottom";
-                const offset = props.elementInfo.chartOffset || (position === "top" || position === "bottom" ? (Math.ceil(w / 4)) : (Math.ceil(h / 4)));
-                const bottom = `L ${offset + 10} ${h} L ${offset - 10} ${h + 40} L ${offset - 10} ${h}`;
-                const left = `L 0 ${offset + 10} L -40 ${offset - 10} L 0 ${offset - 10}`;
-                const right = `L ${w} ${offset - 10} L ${w + 40} ${offset + 10} L ${w} ${offset + 10}`;
-                const top = `L ${offset - 10} 0 L ${offset + 10} -40 L ${offset + 10} 0`;
-                return `M 0 ${borderRadius} Q 0 0 ${borderRadius} 0 ${position === "top" ? top : ""} L ${w - borderRadius} 0 Q ${w} 0 ${w} ${borderRadius} ${position === "right" ? right : ""} L ${w} ${h - borderRadius} Q ${w} ${h} ${w - borderRadius} ${h} ${position === "bottom" ? bottom : ""} L ${borderRadius} ${h} Q 0 ${h} 0 ${h - borderRadius} ${position === "left" ? left : ""} L 0 ${borderRadius} Z`;
-            }
-            return props.elementInfo.path;
-        });
-
-        const isScale = computed(() => {
-            return !(props.elementInfo.path === "M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z" || props.elementInfo.path === "M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 160 Q 200 200 160 200 L 100 200 L 80 240 L 60 200 L 40 200 Q 0 200 0 160 L 0 40 Z");
-        });
+        const elementInfo = computed(() => props.elementInfo);
+        const { text, textHtml, path, isScale } = useSpecialShape(elementInfo);
 
         const handleSelectElement = (e: MouseEvent | TouchEvent) => {
             if (!props.selectElement) return;
@@ -164,10 +129,6 @@ export default defineComponent({
 
             props.selectElement(e, props.elementInfo);
         };
-
-        const textHtml = computed(() => {
-            return text.value.content.replace(/<p(?:\s+?[^>]*?)?>\s*?<\/p>/ig, "<p><br class=\"ProseMirror-trailingBreak\" /></p>");
-        });
 
         return {
             shadowStyle,
