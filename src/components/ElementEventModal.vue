@@ -265,9 +265,19 @@ for (const type of OUTANIMATIONS) {
     }
 }
 
-interface formState extends PPTElementAction {
-    step?: string,
-    target: string | string[]
+interface formState {
+    step?: string;
+    target: string | string[];
+    type: "none" | "show" | "hide" | "toggle";
+    inAni?: string;
+    outAni?: string;
+    duration?: number;
+    inDuration?: number;
+    outDuration?: number;
+    inPath?: string;
+    outPath?: string;
+    audioName?: string;
+    audioSrc?: string;
 }
 
 export default defineComponent({
@@ -414,7 +424,7 @@ export default defineComponent({
                 emitter.emit(EmitterEvents.OPEN_CUSTOM_ANIMATION, {
                     path: (type === "in" ? formState.inPath : formState.outPath) || "",
                     type: animation,
-                    target: props.isMultiple ? formState.target[0] : formState.target
+                    target: typeof formState.target === "object" ? formState.target[0] : formState.target
                 });
             }
             inAnimationPoolVisible.value = false;
@@ -468,13 +478,15 @@ export default defineComponent({
                     // 批量设置元素时
                     if (formState.step === "") return message.warning("请选择目标步骤");
                     if (formState.target.length === 0) return message.warning("请选择事件目标元素");
-                    const result = formState.target.map(elId => {
-                        return {
-                            ...formState,
-                            target: elId
-                        };
-                    });
-                    steps.value[formState.step] = steps.value[formState.step].concat(JSON.parse(JSON.stringify(result)));
+                    if (typeof formState.target === "object") {
+                        const result = formState.target.map(elId => {
+                            return {
+                                ...formState,
+                                target: elId
+                            };
+                        });
+                        if (formState.step) steps.value[formState.step] = steps.value[formState.step].concat(JSON.parse(JSON.stringify(result)));
+                    }
                 } else {
                     // 单个元素设置
                     steps.value[props.stepIndex].push(JSON.parse(JSON.stringify(formState)));
@@ -498,8 +510,6 @@ export default defineComponent({
             }
 
             emit("update:visible", false);
-
-            isEdit.value = false;
 
             addHistorySnapshot();
         };
