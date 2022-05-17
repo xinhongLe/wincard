@@ -83,7 +83,7 @@
                                 :defaultFontSize="cell.style.fontsize || ''"
                                 :editable="editCell === `${rowIndex}_${colIndex}`"
                                 :autoFocus="editCell === `${rowIndex}_${colIndex}`"
-                                :value="cell.text"
+                                :value="dealInputText(cell.text)"
                                 @update="value => handleInput(value, rowIndex, colIndex)"
                             />
 
@@ -92,7 +92,7 @@
                                 <div
                                     class="show-text ProseMirror-static"
                                     v-if="rowSizeList.length > 0"
-                                    v-html="cell.text"
+                                    v-html="textHtml(cell.text)"
                                 ></div>
                                 <div
                                     v-else
@@ -920,6 +920,14 @@ export default defineComponent({
             return store.state.handleElementId === props.id || store.state.activeElementIdList.indexOf(props.id || "") > -1;
         });
 
+        const textHtml = (text: string) => {
+            return text.replace(/<p(?:\s+?[^>]*?)?>\s*?<\/p>/ig, "<p><br class=\"ProseMirror-trailingBreak\" /></p>");
+        };
+
+        const dealInputText = (text: string) => {
+            return text.replace(/<br.*?>/ig, "");
+        };
+
         return {
             getTextStyle,
             dragLinePosition,
@@ -945,7 +953,9 @@ export default defineComponent({
             totalHeight,
             handleMousedownRowHandler,
             tableRef,
-            textEditable
+            textEditable,
+            textHtml,
+            dealInputText
         };
     }
 });

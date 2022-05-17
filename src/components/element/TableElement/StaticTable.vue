@@ -46,7 +46,7 @@
                             <div
                                 class="show-text ProseMirror-static"
                                 v-if="rowSizeList.length > 0"
-                                v-html="cell.text"
+                                v-html="textHtml(cell.text)"
                             ></div>
                             <div
                                 v-else
@@ -140,6 +140,10 @@ export default defineComponent({
         const theme = computed(() => props.theme);
         const { subThemeColor } = useSubThemeColor(theme);
 
+        const textHtml = (text: string) => {
+            return text.replace(/<p(?:\s+?[^>]*?)?>\s*?<\/p>/ig, "<p><br class=\"ProseMirror-trailingBreak\" /></p>");
+        };
+
         return {
             colSizeList,
             totalWidth,
@@ -148,7 +152,8 @@ export default defineComponent({
             formatText,
             subThemeColor,
             totalHeight,
-            rowSizeList
+            rowSizeList,
+            textHtml
         };
     }
 });

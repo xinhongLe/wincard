@@ -78,7 +78,7 @@
                         :defaultFontSize="text.defaultFontSize"
                         :editable="!elementInfo.lock"
                         :autoFocus="autoFocus"
-                        :value="text.content"
+                        :value="dealInputText(text.content)"
                         @update="value => updateText(value)"
                         @mousedown.stop
                     />
@@ -198,6 +198,10 @@ export default defineComponent({
             return store.state.handleElementId === props.elementInfo.id && editable.value;
         });
 
+        const dealInputText = (text: string) => {
+            return text.replace(/<br.*?>/ig, "");
+        };
+
         return {
             shadowStyle,
             outlineWidth,
@@ -212,7 +216,8 @@ export default defineComponent({
             enterEditing,
             path,
             isScale,
-            textHtml
+            textHtml,
+            dealInputText
         };
     }
 });
