@@ -16,9 +16,7 @@
             <div class="mark-title">
                 教学建议
             </div>
-            <div class="mark-content">
-                {{currentSlide.remark}}
-            </div>
+            <div class="mark-content" v-html="remark"></div>
         </div>
         <div
             class="slide-list"
@@ -631,7 +629,9 @@ export default defineComponent({
         const { dragLineElement } = useDragLineElement(shapeElementList, scale);
 
         const remarkVisible = ref(false);
-
+        const remark = computed(() => {
+            return currentSlide.value.remark?.replace(/\n/g, "<br />");
+        });
         watch(remarkVisible, () => {
             setSlideContentSize();
         });
@@ -759,6 +759,7 @@ export default defineComponent({
             resetPosition,
             contextmenus,
             remarkVisible,
+            remark,
             closeWriteBoard,
             offScreen,
             markOffsetX,
