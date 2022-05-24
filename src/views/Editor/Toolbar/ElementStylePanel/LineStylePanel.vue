@@ -66,6 +66,21 @@
         </div>
 
         <a-divider />
+
+        <CheckboxButtonGroup class="row">
+            <CheckboxButton
+                style="flex: 1;"
+                @click="updateFlip('flipV')"
+                ><IconFlipVertically /> 垂直翻转</CheckboxButton
+            >
+            <CheckboxButton
+                style="flex: 1;"
+                @click="updateFlip('flipH')"
+                ><IconFlipHorizontally /> 水平翻转</CheckboxButton
+            >
+        </CheckboxButtonGroup>
+
+        <a-divider />
         <ElementShadow />
     </div>
 </template>
@@ -101,9 +116,26 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
+        const updateFlip = (type: string) => {
+            const props: Partial<PPTLineElement> = {};
+            if (type === "flipV") {
+                props.start = [handleElement.value.start[0], handleElement.value.end[1]];
+                props.end = [handleElement.value.end[0], handleElement.value.start[1]];
+            } else {
+                props.start = [handleElement.value.end[0], handleElement.value.start[1]];
+                props.end = [handleElement.value.start[0], handleElement.value.end[1]];
+            }
+            store.commit(MutationTypes.UPDATE_ELEMENT, {
+                id: handleElement.value.id,
+                props
+            });
+            addHistorySnapshot();
+        };
+
         return {
             handleElement,
-            updateLine
+            updateLine,
+            updateFlip
         };
     }
 });
