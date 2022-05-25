@@ -357,7 +357,7 @@ export default defineComponent({
         });
 
         watch(slide, () => {
-            writingBoardToolRef.value.getDataCanvas();
+            writingBoardToolRef.value && writingBoardToolRef.value.getDataCanvas();
             stepIndex.value = -1;
             currentSlide.value = slide.value;
             setSlideContentSize();
