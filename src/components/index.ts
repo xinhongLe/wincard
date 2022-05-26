@@ -2,6 +2,7 @@ import { App } from "vue";
 
 import PPTEditor from "./PPTEditor.vue";
 import ScreenView from "./ScreenView.vue";
+import ThumbnailSlide from "./ThumbnailSlide/index.vue";
 import { store, key } from "@/store";
 import Antd from "ant-design-vue";
 
@@ -42,6 +43,7 @@ export default {
         app.use(store, key);
         app.component("PPTEditor", PPTEditor);
         app.component("ScreenView", ScreenView);
+        app.component("ThumbnailSlide", ThumbnailSlide);
         const _getLocalFileUrl = () => {
             return new Promise(resolve => {
                 resolve("");

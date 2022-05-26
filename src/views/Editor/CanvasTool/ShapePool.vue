@@ -33,6 +33,9 @@
                 </div>
             </div>
         </div>
+        <a-button class="custom-btn" block @click="selectShape({viewBox: 48, path: ''})">
+            自定义形状
+        </a-button>
     </div>
 </template>
 
@@ -61,7 +64,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .shape-pool {
     width: 340px;
-    max-height: 540px;
+    max-height: 580px;
     overflow: auto;
     margin-bottom: -12px;
     margin-right: -12px;
@@ -103,5 +106,9 @@ export default defineComponent({
     svg:not(:root) {
         overflow: visible;
     }
+}
+
+.custom-btn {
+    margin-bottom: 15px;
 }
 </style>

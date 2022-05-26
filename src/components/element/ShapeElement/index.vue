@@ -43,9 +43,7 @@
                         </defs>
                         <g
                             :transform="
-                                `scale(${isScale ? elementInfo.width /
-                                    elementInfo.viewBox : 1}, ${isScale ? elementInfo.height /
-                                    elementInfo.viewBox : 1}) translate(0,0) matrix(1,0,0,1,0,0)`
+                                `scale(${isScale ? (elementInfo.custom ? (elementInfo.width / elementInfo.customViewBox[0]) : (elementInfo.width / elementInfo.viewBox)) : 1}, ${isScale ? (elementInfo.custom ? (elementInfo.height / elementInfo.customViewBox[1]) : (elementInfo.height / elementInfo.viewBox)) : 1}) translate(0,0) matrix(1,0,0,1,0,0)`
                             "
                         >
                             <path
