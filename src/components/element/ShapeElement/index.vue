@@ -94,7 +94,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, ref, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { PPTShapeElement, ShapeText } from "@/types/slides";
+import { PPTShapeElement } from "@/types/slides";
 import { ContextmenuItem } from "@/types/contextmenu";
 import useElementOutline from "@/components/element/hooks/useElementOutline";
 import useElementShadow from "@/components/element/hooks/useElementShadow";

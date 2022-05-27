@@ -13,14 +13,13 @@ import {
 } from "vue";
 import { debounce } from "lodash";
 import { MutationTypes, useStore } from "@/store";
-import { EditorView, __parseFromClipboard } from "prosemirror-view";
+import { EditorView } from "prosemirror-view";
 import { toggleMark, wrapIn, selectAll } from "prosemirror-commands";
 import { initProsemirrorEditor, createDocument } from "@/utils/prosemirror";
 import { getTextAttrs } from "@/utils/prosemirror/utils";
 import emitter, { EmitterEvents, RichTextCommand } from "@/utils/emitter";
 import { alignmentCommand } from "@/utils/prosemirror/commands/setTextAlign";
 import { toggleList } from "@/utils/prosemirror/commands/toggleList";
-import { Slice } from "prosemirror-model";
 
 export default defineComponent({
     name: "prosemirror-editor",

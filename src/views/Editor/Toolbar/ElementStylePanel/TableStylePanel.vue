@@ -382,7 +382,6 @@ import { createRandomCode } from "@/utils/common";
 import { BASE_FONTS, WEB_FONTS } from "@/configs/font";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import emitter, { EmitterEvents } from "@/utils/emitter";
-import { message } from "ant-design-vue";
 
 import ElementOutline from "../common/ElementOutline.vue";
 import ColorButton from "../common/ColorButton.vue";

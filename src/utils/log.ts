@@ -3,11 +3,11 @@
  * @param eventType
  */
 export const logInput = (content: string, eventType: number, option?: string) => {
-    // console.log(content, eventType, option);
+    console.log(content, eventType, option);
 };
 
 export const writeLog = (content: string, eventType: number, pageId: string, pageName: string, option?: string) => {
-    //
+    console.log(content, eventType, pageId, pageName, option);
 };
 
 export const enum LOG_EVENT {
