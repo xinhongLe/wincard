@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="content">
-            <component :is="currentPanelComponent" @addCard="addCard" @selectVideo="selectVideo" @updateQuoteVideo="updateQuoteVideo"></component>
+            <component :is="currentPanelComponent" @selectGame="selectGame" @addCard="addCard" @selectVideo="selectVideo" @updateQuoteVideo="updateQuoteVideo"></component>
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@
 <script lang="ts">
 import { computed, ComputedRef, defineComponent, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
-import { IWin, PPTElement, PPTVideoElement } from "@/types/slides";
+import { IGame, IWin, PPTElement, PPTVideoElement } from "@/types/slides";
 import { ToolbarState, ToolbarStates } from "@/types/toolbar";
 
 import ElementStylePanel from "./ElementStylePanel/index.vue";
@@ -35,6 +35,7 @@ import SlideStepPanel from "./SlideStepPanel.vue";
 import SlideListenPanel from "./SlideListenPanel.vue";
 import SlideFollowPanel from "./SlideFollowPanel.vue";
 import SlideTeachPanel from "./SlideTeachPanel.vue";
+import SlideGamePanel from "./SlideGamePanel.vue";
 import { PAGE_TYPE } from "@/configs/page";
 
 export default defineComponent({
@@ -73,7 +74,8 @@ export default defineComponent({
                 ...currentSlide.value.type === PAGE_TYPE.ELEMENT ? [{ label: "步骤", value: ToolbarStates.SLIDE_STEP }] : [],
                 ...currentSlide.value.type === PAGE_TYPE.LISTEN ? [{ label: "听写", value: ToolbarStates.SLIDE_LISTEN }] : [],
                 ...currentSlide.value.type === PAGE_TYPE.FOLLOW ? [{ label: "跟读", value: ToolbarStates.SLIDE_FOLLOW }] : [],
-                ...currentSlide.value.type === PAGE_TYPE.TEACH ? [{ label: "教具", value: ToolbarStates.SLIDE_TEACH }] : []
+                ...currentSlide.value.type === PAGE_TYPE.TEACH ? [{ label: "教具", value: ToolbarStates.SLIDE_TEACH }] : [],
+                ...currentSlide.value.type === PAGE_TYPE.GAME ? [{ label: "游戏", value: ToolbarStates.SLIDE_GAME }] : []
             ];
         });
         const multiSelectTabs = [
@@ -117,13 +119,19 @@ export default defineComponent({
                 [ToolbarStates.SLIDE_STEP]: SlideStepPanel,
                 [ToolbarStates.SLIDE_LISTEN]: SlideListenPanel,
                 [ToolbarStates.SLIDE_FOLLOW]: SlideFollowPanel,
-                [ToolbarStates.SLIDE_TEACH]: SlideTeachPanel
+                [ToolbarStates.SLIDE_TEACH]: SlideTeachPanel,
+                [ToolbarStates.SLIDE_GAME]: SlideGamePanel
             };
+
             return panelMap[toolbarState.value] || null;
         });
 
         const addCard = (callback: (wins: IWin[]) => void) => {
             emit("addCard", callback);
+        };
+
+        const selectGame = (obj: {type: string, fun: (game: IGame) => void}) => {
+            emit("selectGame", obj);
         };
 
         const selectVideo = () => {
@@ -140,6 +148,7 @@ export default defineComponent({
             setToolbarState,
             currentPanelComponent,
             addCard,
+            selectGame,
             selectVideo,
             updateQuoteVideo
         };
@@ -180,6 +189,7 @@ export default defineComponent({
     }
 }
 .content {
+    height: 100%;
     padding: 12px;
     font-size: 13px;
 

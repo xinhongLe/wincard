@@ -18,7 +18,7 @@
                     :style="{ height: `${remarkHeight}px` }"
                 />
             </div>
-            <toolbar class="layout-content-right" @addCard="addCard" @selectVideo="selectVideo" @updateQuoteVideo="updateQuoteVideo" />
+            <toolbar class="layout-content-right" @selectGame="selectGame" @addCard="addCard" @selectVideo="selectVideo" @updateQuoteVideo="updateQuoteVideo" />
         </div>
     </div>
 </template>
@@ -34,12 +34,13 @@ import Remark from "./Remark/index.vue";
 import Listen from "./Listen/index.vue";
 import Follow from "./Follow/index.vue";
 import Teach from "./Teach/index.vue";
+import Game from "./Game/index.vue";
 import { computed, defineComponent, ref } from "vue";
 
 import useGlobalHotkey from "@/hooks/useGlobalHotkey";
 import usePasteEvent from "@/hooks/usePasteEvent";
 
-import { IWin, PPTVideoElement, Slide, SaveType } from "@/types/slides";
+import { IGame, IWin, PPTVideoElement, Slide, SaveType } from "@/types/slides";
 import { useStore } from "@/store";
 import { PAGE_TYPE } from "@/configs/page";
 
@@ -63,8 +64,10 @@ export default defineComponent({
                 [PAGE_TYPE.ELEMENT]: CanvasBoard,
                 [PAGE_TYPE.LISTEN]: Listen,
                 [PAGE_TYPE.FOLLOW]: Follow,
-                [PAGE_TYPE.TEACH]: Teach
+                [PAGE_TYPE.TEACH]: Teach,
+                [PAGE_TYPE.GAME]: Game
             };
+
             return pageTypeMap[currentSlide.value.type] || null;
         });
 
@@ -81,6 +84,10 @@ export default defineComponent({
 
         const addCard = (callback: (wins: IWin[]) => void) => {
             emit("addCard", callback);
+        };
+
+        const selectGame = (obj: {type: string, fun: (game: IGame) => void}) => {
+            emit("selectGame", obj);
         };
 
         const selectVideo = () => {
@@ -101,6 +108,7 @@ export default defineComponent({
             currentSlide,
             onSave,
             addCard,
+            selectGame,
             onDeleteWin,
             selectVideo,
             setQuoteVideo,
