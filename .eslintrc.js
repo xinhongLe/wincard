@@ -29,6 +29,7 @@ module.exports = {
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "no-unmodified-loop-condition": "off",
         "standard/no-callback-literal": "off",
-        "@typescript-eslint/no-var-requires": "off"
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-explicit-any": ["off"]
     }
 };

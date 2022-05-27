@@ -47,7 +47,7 @@
                 top: mouse.y * scale + (offsetY - ((screenHeight - slideHeight) / 2) * (scale - 1)) - 36 + penSize / 4 + 'px',
                 color: color
             }"
-            v-if="mouseInCanvas && !penTempHide && model === 'pen'"
+            v-if="mouseInCanvas && !penTempHide && model === 'pen' && !canTouch"
         >
             <IconWrite class="icon" size="36" />
         </div>
@@ -133,6 +133,7 @@ export default defineComponent({
         }
     },
     setup(props) {
+        const canTouch = ("ontouchstart" in window) || ((window as any).DocumentTouch && document instanceof (window as any).DocumentTouch);
         let ctx: CanvasRenderingContext2D | null = null;
         const writingBoardRef = ref<HTMLElement>();
         const canvasRef = ref<HTMLCanvasElement>();
@@ -208,6 +209,8 @@ export default defineComponent({
 
             ctx.lineWidth = lineWidth;
             ctx.strokeStyle = props.color;
+            ctx.lineJoin = "round";
+            ctx.lineCap = "round";
             ctx.beginPath();
             ctx.moveTo(lastPosX, lastPosY);
             ctx.lineTo(posX, posY);
@@ -402,7 +405,8 @@ export default defineComponent({
             contentRef,
             getCanvas,
             putCanvas,
-            penTempHide
+            penTempHide,
+            canTouch
         };
     }
 });

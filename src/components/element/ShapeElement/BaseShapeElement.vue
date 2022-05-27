@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
-import { PPTShapeElement, ShapeText } from "@/types/slides";
+import { PPTShapeElement } from "@/types/slides";
 import useElementOutline from "@/components/element/hooks/useElementOutline";
 import useElementShadow from "@/components/element/hooks/useElementShadow";
 import useElementFlip from "@/components/element/hooks/useElementFlip";
