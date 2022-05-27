@@ -76,6 +76,21 @@ export interface Teach {
 }
 
 /**
+ * 游戏页
+ *
+ * id: 游戏id
+ *
+ * src: 游戏链接
+ *
+ * name: 游戏名
+ */
+export interface Game {
+    id: string;
+    name: string;
+    src: string;
+}
+
+/**
  * 元素阴影
  *
  * h: 水平偏移量
@@ -188,6 +203,15 @@ export interface PPTCard {
 export interface IWin {
     id: string;
     cards: PPTCard[];
+}
+
+/**
+ *  游戏
+ */
+export interface IGame {
+    id: string;
+    name: string;
+    src: string
 }
 
 /**
@@ -865,12 +889,13 @@ export interface SlideBackground {
  */
 export interface Slide {
     id: string;
-    type: "element" | "listen" | "follow" | "teach",
+    type: "element" | "listen" | "follow" | "teach" | "game",
     viewportRatio?: number;
     elements: PPTElement[];
     listenWords?: ListenWord[];
     follow?: Follow;
     teach?: Teach;
+    game?: Game;
     remark?: string;
     background?: SlideBackground;
     animations?: PPTAnimation[];

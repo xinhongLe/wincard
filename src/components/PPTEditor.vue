@@ -2,6 +2,7 @@
     <Editor
         @onSave="onSave"
         @addCard="addCard"
+        @selectGame="selectGame"
         @onDeleteWin="onDeleteWin"
         @selectVideo="selectVideo"
         @setQuoteVideo="setQuoteVideo"
@@ -26,7 +27,7 @@ import { computed, defineComponent, onMounted, onUnmounted, PropType, provide, r
 import { ActionTypes, MutationTypes, useStore } from "@/store";
 
 import useSlideHandler from "@/hooks/useSlideHandler";
-import { IWin, PPTVideoElement, Slide, SaveType } from "@/types/slides";
+import { IGame, IWin, PPTVideoElement, Slide, SaveType } from "@/types/slides";
 import { message } from "ant-design-vue";
 import { dealSaveData } from "@/utils/dataParse";
 import isElectron from "is-electron";
@@ -36,7 +37,7 @@ import emitter, { EmitterEvents } from "@/utils/emitter";
 
 export default defineComponent({
     name: "PPTEditor",
-    emits: ["onSave", "addCard", "selectVideo", "setQuoteVideo", "updateQuoteVideo", "updateSlide", "update:windowName", "onDeleteWin"],
+    emits: ["onSave", "addCard", "selectGame", "selectVideo", "setQuoteVideo", "updateQuoteVideo", "updateSlide", "update:windowName", "onDeleteWin"],
     components: { Editor, Screen },
     props: {
         slide: {
@@ -170,6 +171,10 @@ export default defineComponent({
             emit("addCard", callback);
         };
 
+        const selectGame = (obj: {type: string, fun: (game: IGame) => void}) => {
+            emit("selectGame", obj);
+        };
+
         const selectVideo = () => {
             emit("selectVideo");
         };
@@ -211,6 +216,7 @@ export default defineComponent({
             spinning,
             onSave,
             addCard,
+            selectGame,
             openCard,
             getCurrentSlide,
             getDataIsChange,
