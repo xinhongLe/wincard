@@ -9,9 +9,11 @@
         }"
     >
         <div
+            v-if="elementInfo.showType == 0"
             class="element-content"
             :style="{ backgroundImage: `url(${elementInfo.poster})` }"
-        >
+        ></div>
+        <div class="element-content" v-else>
             <img class="icon-image" v-if="iconUrl" :src="iconUrl" alt="">
             <img class="icon-image" v-else src="@/assets/images/video.png" alt="">
         </div>
@@ -50,7 +52,6 @@ export default defineComponent({
 .element-content {
     width: 100%;
     height: 100%;
-    background-color: #000;
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;

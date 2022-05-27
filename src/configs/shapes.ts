@@ -1,6 +1,8 @@
 export interface ShapePoolItem {
     viewBox: number;
     path: string;
+    custom?: boolean;
+    customViewBox?: [number, number];
     special?: boolean;
     noFill?: boolean;
 }

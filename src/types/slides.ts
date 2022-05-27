@@ -474,6 +474,8 @@ export interface PPTShapeElement extends PPTBaseElement {
     type: "shape";
     viewBox: number;
     path: string;
+    customViewBox?: [number, number];
+    custom?: boolean;
     fixedRatio: boolean;
     fill: string;
     gradient?: ShapeGradient;

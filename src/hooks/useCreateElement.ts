@@ -240,6 +240,7 @@ export default () => {
             width,
             height,
             viewBox: data.viewBox,
+            custom: !!data.custom,
             path: data.path,
             fill: data.noFill ? "transparent" : themeColor.value,
             fixedRatio: false,
@@ -247,6 +248,7 @@ export default () => {
         };
         if (data.special) newElement.special = true;
         if (data.noFill) newElement.outline = { style: "solid", width: 4, color: themeColor.value };
+        if (data.custom) newElement.customViewBox = data.customViewBox;
         createElement(newElement);
     };
 

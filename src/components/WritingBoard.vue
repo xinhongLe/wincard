@@ -376,13 +376,13 @@ export default defineComponent({
 
         // 获取画布
         const getCanvas = () => {
-            if (!ctx || !canvasRef.value) return;
+            if (!ctx || !canvasRef.value || canvasRef.value.width === 0 || canvasRef.value.height === 0) return;
             const imageData = ctx.getImageData(0, 0, canvasRef.value.width, canvasRef.value.height);
             return imageData;
         };
         // 设置画布
         const putCanvas = (data: any) => {
-            if (!ctx || !canvasRef.value) return;
+            if (!ctx || !canvasRef.value || canvasRef.value.width === 0 || canvasRef.value.height === 0) return;
             ctx.putImageData(data, 0, 0);
         };
 

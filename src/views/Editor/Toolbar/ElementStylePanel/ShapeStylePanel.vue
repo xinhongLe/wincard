@@ -607,7 +607,6 @@ export default defineComponent({
         // 更换形状
         const shapePoolVisible = ref(false);
         const updateShape = (shape: ShapePoolItem) => {
-            console.log(shape, handleElement.value);
             store.commit(MutationTypes.UPDATE_ELEMENT, {
                 id: handleElement.value.id,
                 props: shape
