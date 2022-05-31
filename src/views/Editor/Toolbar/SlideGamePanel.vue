@@ -13,7 +13,7 @@
 
         <a-button v-if="game" class="bottom-btn" type="primary" block @click="selectGame('gameType')">游戏配置</a-button>
 
-        <a-modal v-model:visible="visible" title="提示"  okText="保存" cancelText="取消" @ok="handleOk">
+        <a-modal v-model:visible="visible" title="提示"  okText="确定" cancelText="取消" @ok="handleOk">
             <p>跟换游戏将删除已配置好的游戏配置，是否继续?</p>
         </a-modal>
     </div>

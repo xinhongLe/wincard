@@ -261,7 +261,7 @@ export const slides: Slide[] = [
     },
     {
         id: "39FFFBBE2B08D1CFD8FCA24DE655B35B",
-        type: "element",
+        type: "listen",
         viewportRatio: 0.5625,
         elements: [
             {
@@ -438,5 +438,29 @@ export const slides: Slide[] = [
             ]
         },
         intervalDuration: 2
+    },
+    {
+        id: "3A040B6C356D54511C2BA63A99DA19ED",
+        type: "teach",
+        viewportRatio: 0.5625,
+        remark: "",
+        elements: [],
+        teach: {
+            id: "3A008C601465843E3F4EBB568BA525B1",
+            name: "RJYXandSJYX",
+            src: "http://uat-game.xixingjia.com/tea-tool/equilibrant"
+        }
+    },
+    {
+        id: "3A040B6C356D54511C2BA63A99DA19ED",
+        type: "game",
+        viewportRatio: 0.5625,
+        remark: "",
+        elements: []
+        // game: {
+        //     id: "3A008C601465843E3F4EBB568BA525B1",
+        //     name: "RJYXandSJYX",
+        //     src: "http://uat-game.xixingjia.com/tea-tool/equilibrant"
+        // }
     }
 ];
