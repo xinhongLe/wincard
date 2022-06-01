@@ -70,7 +70,7 @@
         </div>
 
         <a-divider />
-        <div class="row" v-if="handleElement.showType === 0">
+        <div class="row">
             <div style="flex: 2;">自动播放：</div>
             <a-switch v-model:checked="autoPlay" @change="autoPlayChange" />
         </div>

@@ -524,7 +524,7 @@ export default defineComponent({
             clearTimeout(timeout);
         });
 
-        if (videoElement.value.showType === 0 && videoElement.value.autoPlay && props.isScreening) {
+        if (videoElement.value.autoPlay && props.isScreening) {
             autoPlay();
         }
 
