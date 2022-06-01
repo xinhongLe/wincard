@@ -31,7 +31,7 @@ import CanvasTool from "./CanvasTool/index.vue";
 import ElementsMenu from "./ElementsMenu/index.vue";
 import Toolbar from "./Toolbar/index.vue";
 import Remark from "./Remark/index.vue";
-import Listen from "./Listen/index.vue";
+import Listen from "@/components/Listen/index.vue";
 import Follow from "./Follow/index.vue";
 import Teach from "./Teach/index.vue";
 import Game from "./Game/index.vue";

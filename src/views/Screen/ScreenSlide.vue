@@ -24,7 +24,7 @@ import { VIEWPORT_SIZE } from "@/configs/canvas";
 import { PAGE_TYPE } from "@/configs/page";
 
 import ElementView from "./ElementView.vue";
-import ListenView from "./ListenView.vue";
+import ListenView from "@/components/Listen/ScreenListen.vue";
 import FollowView from "./FollowView.vue";
 import TeachView from "./TeachView.vue";
 

@@ -14,13 +14,16 @@
                 transform: `scale(${scale})`
             }"
         >
-            <div class="background" :style="backgroundStyle"></div>
-            <thumbnail-element
-                v-for="(element, index) in slide.elements"
-                :key="element.id"
-                :elementInfo="element"
-                :elementIndex="index + 1"
-            />
+            <div v-if="slide.type === 'element'">
+                <div class="background" :style="backgroundStyle"></div>
+                <thumbnail-element
+                    v-for="(element, index) in slide.elements"
+                    :key="element.id"
+                    :elementInfo="element"
+                    :elementIndex="index + 1"
+                />
+            </div>
+            <ListenView :slide="slide" v-if="slide.type === 'listen'" />
         </div>
     </div>
 </template>
@@ -33,11 +36,13 @@ import { VIEWPORT_SIZE } from "@/configs/canvas";
 import useSlideBackgroundStyle from "@/hooks/useSlideBackgroundStyle";
 
 import ThumbnailElement from "./ThumbnailElement.vue";
+import ListenView from "../Listen/BaseListen.vue";
 
 export default defineComponent({
     name: "thumbnail-slide",
     components: {
-        ThumbnailElement
+        ThumbnailElement,
+        ListenView
     },
     props: {
         slide: {
