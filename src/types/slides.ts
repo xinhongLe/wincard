@@ -869,7 +869,7 @@ export interface SlideBackground {
  *
  * id: 页面ID
  *
- * type: 页面类型 element 普通素材页 listen 听写页 follow 跟读页 teach 教具页
+ * type: 页面类型 element 普通素材页 listen 听写页 follow 跟读页 teach 教具页 game游戏页
  *
  * listenWords: 听写页单词列表
  *
@@ -888,6 +888,8 @@ export interface SlideBackground {
  * steps: 操作步骤
  *
  * intervalDuration 音频播放间隔时长
+ *
+ * config 游戏页配置参数
  */
 export interface Slide {
     id: string;
@@ -904,6 +906,7 @@ export interface Slide {
     turningMode?: "no" | "fade" | "slideX" | "slideY";
     steps?: PPTElementAction[][],
     intervalDuration?: number,
+    config?: any
 }
 
 /**
