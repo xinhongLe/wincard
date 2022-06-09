@@ -4,7 +4,7 @@
         <div>
             <ScreenElement
                 v-for="(element, index) in elements"
-                :key="element.id"
+                :key="`${element.id}_${slide.id}`"
                 :elementInfo="element"
                 :elementIndex="index + 1"
                 :animationIndex="animationIndex"
