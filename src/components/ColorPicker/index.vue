@@ -8,7 +8,7 @@
             />
         </div>
         <div class="picker-controls">
-            <div class="picker-color-learn" v-if="isElectron()" @click="learnColor">
+            <div class="picker-color-learn" @click="learnColor">
                 <IconDetection />
             </div>
             <div class="picker-color-wrap">
@@ -245,7 +245,8 @@ export default defineComponent({
 
         onMounted(() => {
             const recentColorsCache = localStorage.getItem(RECENT_COLORS);
-            if (recentColorsCache) recentColors.value = JSON.parse(recentColorsCache);
+            if (recentColorsCache)
+                recentColors.value = JSON.parse(recentColorsCache);
         });
 
         watch(recentColors, () => {
@@ -268,6 +269,20 @@ export default defineComponent({
         };
 
         const learnColor = async () => {
+            if ("EyeDropper" in window) {
+                const eyeDropper = new (window as any).EyeDropper();
+                eyeDropper
+                    .open()
+                    .then((result: { sRGBHex: string }) => {
+                        const tColor = tinycolor(result.sRGBHex);
+                        hue.value = tColor.toHsl().h;
+                        color.value = tColor.toRgb();
+                        emit("update:modelValue", result.sRGBHex);
+                        updateRecentColorsCache();
+                    });
+                return;
+            }
+
             if (window.electron) {
                 const colorString = await window.electron.getColorHexRGB();
                 if (!colorString && window.electron && window.electron.isMac()) return message.warning("请在安全性与隐私中设置程序允许访问屏幕录制");
