@@ -7,6 +7,7 @@
         @selectVideo="selectVideo"
         @setQuoteVideo="setQuoteVideo"
         @updateQuoteVideo="updateQuoteVideo"
+        @openLessonDesign="openLessonDesign"
     />
     <Screen
         ref="screenRef"
@@ -37,7 +38,7 @@ import emitter, { EmitterEvents } from "@/utils/emitter";
 
 export default defineComponent({
     name: "PPTEditor",
-    emits: ["onSave", "addCard", "selectGame", "selectVideo", "setQuoteVideo", "updateQuoteVideo", "updateSlide", "update:windowName", "onDeleteWin"],
+    emits: ["onSave", "addCard", "selectGame", "selectVideo", "setQuoteVideo", "updateQuoteVideo", "updateSlide", "update:windowName", "onDeleteWin", "openLessonDesign"],
     components: { Editor, Screen },
     props: {
         slide: {
@@ -187,6 +188,10 @@ export default defineComponent({
             emit("updateQuoteVideo", element);
         };
 
+        const openLessonDesign = () => {
+            emit("openLessonDesign");
+        };
+
         const { createVideoElement } = useCreateElement();
         const createQuoteVideo = (key: string, fileID: string, pauseList: string[]) => {
             createVideoElement(key, 0, fileID, pauseList);
@@ -229,7 +234,8 @@ export default defineComponent({
             onDeleteWin,
             createQuoteVideo,
             updateVideoElement,
-            updateQuoteVideo
+            updateQuoteVideo,
+            openLessonDesign
         };
     }
 });
