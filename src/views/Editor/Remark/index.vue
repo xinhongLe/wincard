@@ -3,8 +3,13 @@
         <div class="resize-handler" @mousedown="$event => resize($event)"></div>
         <textarea
             :value="remark"
-            placeholder="点击输入教学建议"
-            @input="$event => handleInput($event)"
+            placeholder="点击输入教学过程"
+            @input="$event => handleInput($event, 'remark')"
+        ></textarea>
+        <textarea
+            :value="design"
+            placeholder="点击输入设计意图"
+            @input="$event => handleInput($event, 'design')"
         ></textarea>
     </div>
 </template>
@@ -27,10 +32,11 @@ export default defineComponent({
         const store = useStore();
         const currentSlide = computed<Slide>(() => store.getters.currentSlide);
         const remark = computed(() => currentSlide.value?.remark || "");
+        const design = computed(() => currentSlide.value?.design || "");
 
-        const handleInput = (e: InputEvent) => {
+        const handleInput = (e: InputEvent, key: string) => {
             const value = (e.target as HTMLTextAreaElement).value;
-            store.commit(MutationTypes.UPDATE_SLIDE, { remark: value });
+            store.commit(MutationTypes.UPDATE_SLIDE, { [key]: value });
         };
 
         const resize = (e: MouseEvent) => {
@@ -61,6 +67,7 @@ export default defineComponent({
 
         return {
             remark,
+            design,
             handleInput,
             resize
         };
@@ -75,7 +82,7 @@ export default defineComponent({
     background-color: #fff;
 
     textarea {
-        width: 100%;
+        width: 50%;
         height: 100%;
         overflow-y: auto;
         resize: none;
@@ -86,6 +93,10 @@ export default defineComponent({
         background-color: transparent;
         line-height: 16px;
         @include absolute-0();
+        &:last-child {
+            left: 50%;
+            border-left: 1px solid $borderColor;
+        }
     }
 }
 .resize-handler {

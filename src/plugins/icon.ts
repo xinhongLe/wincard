@@ -111,7 +111,7 @@ import {
     FolderWithdrawal,
     FullScreenOne,
     Detection,
-    FileDoc
+    Word
 } from "@icon-park/vue-next";
 import {
     DEFAULT_ICON_CONFIGS,
@@ -246,7 +246,7 @@ export default {
         app.component("IconSquare", Square);
         app.component("IconCopy", Copy);
         app.component("IconDetection", Detection);
-        app.component("IconFileDoc", FileDoc);
+        app.component("IconWord", Word);
 
         // 视频播放器
         app.component("IconPause", Pause);

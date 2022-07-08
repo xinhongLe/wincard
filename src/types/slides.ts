@@ -901,6 +901,7 @@ export interface Slide {
     teach?: Teach;
     game?: Game;
     remark?: string;
+    design?: string;
     background?: SlideBackground;
     animations?: PPTAnimation[];
     turningMode?: "no" | "fade" | "slideX" | "slideY";

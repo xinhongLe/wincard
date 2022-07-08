@@ -68,7 +68,7 @@
         </div>
         <div class="right">
             <div class="a-menu-item" @click="openLessonDesign()">
-                <IconFileDoc /> <span class="text">教案设计</span>
+                <IconWord /> <span class="text">教案设计</span>
             </div>
             <div class="a-menu-item" @click="enterScreening()">
                 <IconPpt fill="#666"/> <span class="text">预览</span>

@@ -1,6 +1,6 @@
 <template>
     <div class="ppt-editor">
-        <editor-header class="layout-header" @onSave="onSave" @onDeleteWin="onDeleteWin"/>
+        <editor-header class="layout-header" @onSave="onSave" @onDeleteWin="onDeleteWin" @openLessonDesign="openLessonDesign" />
 
         <div class="layout-content">
             <!-- <thumbnails class="layout-content-left" /> -->
@@ -102,6 +102,10 @@ export default defineComponent({
             emit("updateQuoteVideo", element);
         };
 
+        const openLessonDesign = () => {
+            emit("openLessonDesign");
+        };
+
         return {
             currentPageComponent,
             remarkHeight,
@@ -112,7 +116,8 @@ export default defineComponent({
             onDeleteWin,
             selectVideo,
             setQuoteVideo,
-            updateQuoteVideo
+            updateQuoteVideo,
+            openLessonDesign
         };
     }
 });

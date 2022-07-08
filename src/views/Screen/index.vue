@@ -13,10 +13,18 @@
             @touchmove="markMouseMove($event)"
             @touchend="markMouseUp()"
         >
-            <div class="mark-title">
-                教学建议
+            <div class="mark-flex">
+                <div class="mark-title">
+                    教学过程
+                </div>
+                <div class="mark-content" v-html="remark"></div>
             </div>
-            <div class="mark-content" v-html="remark"></div>
+            <div class="mark-flex">
+                <div class="mark-title">
+                    设计意图
+                </div>
+                <div class="mark-content" v-html="design"></div>
+            </div>
         </div>
         <div
             class="slide-list"
@@ -632,6 +640,9 @@ export default defineComponent({
         const remark = computed(() => {
             return currentSlide.value.remark?.replace(/\n/g, "<br />");
         });
+        const design = computed(() => {
+            return currentSlide.value.design?.replace(/\n/g, "<br />");
+        });
         watch(remarkVisible, () => {
             setSlideContentSize();
         });
@@ -760,6 +771,7 @@ export default defineComponent({
             contextmenus,
             remarkVisible,
             remark,
+            design,
             closeWriteBoard,
             offScreen,
             markOffsetX,
@@ -929,7 +941,7 @@ export default defineComponent({
     background: #fff;
     right: 0;
     bottom: 60px;
-    width: 300px;
+    width: 600px;
     min-height: 250px;
     // padding: 20px;
     line-height: 24px;
@@ -937,6 +949,13 @@ export default defineComponent({
     box-shadow: 0 0 15px 0 rgb(0 0 0 / 10%);
     cursor: move;
     user-select: none;
+    display: flex;
+    .mark-flex {
+        flex: 1;
+        &:last-child {
+            border-left: 1px solid #ccc;
+        }
+    }
     .mark-title {
         padding: 10px 20px;
         font-size: 16px;

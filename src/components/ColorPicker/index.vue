@@ -245,8 +245,7 @@ export default defineComponent({
 
         onMounted(() => {
             const recentColorsCache = localStorage.getItem(RECENT_COLORS);
-            if (recentColorsCache)
-                recentColors.value = JSON.parse(recentColorsCache);
+            if (recentColorsCache) recentColors.value = JSON.parse(recentColorsCache);
         });
 
         watch(recentColors, () => {
