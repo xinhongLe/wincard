@@ -6,7 +6,7 @@ export default () => {
     }]);
     filterMap.set("audio", [{
         name: "audio",
-        extensions: ["mp3"]
+        extensions: ["mp3", "wav"]
     }]);
     filterMap.set("video", [{
         name: "video",
