@@ -145,7 +145,7 @@ export default defineComponent({
         };
 
         const getCurrentSlide = () => {
-            return slide;
+            return dealSaveData(currentSlide.value);
         };
 
         const closeScreen = () => {
