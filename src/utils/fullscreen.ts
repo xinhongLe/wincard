@@ -25,6 +25,9 @@ export const exitFullscreen = () => {
 
 // 判断是否全屏
 export const isFullscreen = () => {
+    if (isElectron()) {
+        return window.electron.isFullScreen();
+    }
     const dom: any = document;
     return dom.mozFullScreen || dom.webkitIsFullScreen || dom.webkitFullScreen;
 };
