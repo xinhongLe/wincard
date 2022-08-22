@@ -31,7 +31,6 @@ import useSlideHandler from "@/hooks/useSlideHandler";
 import { IGame, IWin, PPTVideoElement, Slide, SaveType } from "@/types/slides";
 import { message } from "ant-design-vue";
 import { dealSaveData } from "@/utils/dataParse";
-import isElectron from "is-electron";
 import useScaleCanvas from "@/hooks/useScaleCanvas";
 import useCreateElement from "@/hooks/useCreateElement";
 import emitter, { EmitterEvents } from "@/utils/emitter";
@@ -87,7 +86,7 @@ export default defineComponent({
             // 放大复位
             setCanvasPercentage(90);
             initSlides();
-            if (isElectron()) {
+            if (window.isElectron) {
                 // electron中保存会再次渲染失败 加日志看返回数据
                 window.electron.log.info("初始化slide数据：", slide.value);
             }

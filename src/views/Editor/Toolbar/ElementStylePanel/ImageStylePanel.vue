@@ -127,7 +127,6 @@ import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import ElementOutline from "../common/ElementOutline.vue";
 import ElementShadow from "../common/ElementShadow.vue";
 import ElementFlip from "../common/ElementFlip.vue";
-import isElectron from "is-electron";
 import useElectronUpload from "@/hooks/useElectronUpload";
 
 interface FilterOption {
@@ -480,7 +479,7 @@ export default defineComponent({
             addHistorySnapshot();
         };
 
-        const checkElectron = ref(isElectron());
+        const checkElectron = ref(window.isElectron);
         const { uploadByElectron } = useElectronUpload();
         const electronUpload = (type: string) => {
             uploadByElectron(type, (file: File, buffer: ArrayBuffer) => {

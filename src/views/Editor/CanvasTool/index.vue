@@ -392,7 +392,6 @@ import TableGenerator from "./TableGenerator.vue";
 import VideoInput from "./VideoInput.vue";
 import LaTeXEditor from "@/components/LaTeXEditor/index.vue";
 import WebIFrame from "./WebIFrame.vue";
-import isElectron from "is-electron";
 
 export default defineComponent({
     name: "canvas-tool",
@@ -509,7 +508,7 @@ export default defineComponent({
 
         const isBasePPT = computed(() => store.getters.isBasePPT);
 
-        const checkElectron = ref(isElectron());
+        const checkElectron = ref(window.isElectron);
         const { uploadByElectron } = useElectronUpload();
         const electronUpload = (type: string) => {
             uploadByElectron(type, (file: File, buffer: ArrayBuffer) => {

@@ -103,7 +103,6 @@ import Checkboard from "./Checkboard.vue";
 import Hue from "./Hue.vue";
 import Saturation from "./Saturation.vue";
 import EditableInput from "./EditableInput.vue";
-import isElectron from "is-electron";
 
 const RECENT_COLORS = "RECENT_COLORS";
 
@@ -300,7 +299,6 @@ export default defineComponent({
             changeColor,
             selectPresetColor,
             recentColors,
-            isElectron,
             learnColor
         };
     }

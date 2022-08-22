@@ -4,7 +4,6 @@ import { ref, watch, ComputedRef, computed, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssAudioUrl } from "@/utils/audio";
 import { getOssImageUrl } from "@/utils/image";
-import isElectron from "is-electron";
 import { get, STORAGE_TYPES } from "@/utils/storage";
 // import { getResourceDB } from "@/utils/database";
 
@@ -32,7 +31,7 @@ export default (audioElement: ComputedRef<PPTAudioElement>, isScreening?: boolea
         // if (iconResult.length > 0 && audioResult.length > 0) return;
         let icon: string | null = null;
         let audio: string | null = null;
-        if (isElectron() && get(STORAGE_TYPES.SET_ISCACHE)) {
+        if (window.isElectron && get(STORAGE_TYPES.SET_ISCACHE)) {
             icon = await instance?.appContext.config.globalProperties.$getLocalFileUrl(audioElement.value.icon || "");
             if (icon) {
                 iconUrl.value = icon;

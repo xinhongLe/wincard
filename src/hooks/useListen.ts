@@ -5,7 +5,6 @@ import { ListenWord } from "@/types/slides";
 import { getOssAudioUrl, uploadAudio } from "@/utils/audio";
 import { message } from "ant-design-vue";
 import { debounce } from "lodash";
-import isElectron from "is-electron";
 import { get, STORAGE_TYPES } from "@/utils/storage";
 // import { getResourceDB } from "@/utils/database";
 
@@ -159,7 +158,7 @@ export default (addListenVisible?: Ref<boolean>, addWordVisible?: Ref<boolean>) 
     const playAudio = debounce(async (word: ListenWord, callback?: (hasError?: boolean) => void) => {
         // const result = await resourceDB.db.where({ id: word.file }).toArray();
         let audioRes: string | null = null;
-        if (isElectron() && get(STORAGE_TYPES.SET_ISCACHE)) {
+        if (window.isElectron && get(STORAGE_TYPES.SET_ISCACHE)) {
             audioRes = await instance?.appContext.config.globalProperties.$getLocalFileUrl(word.file || "");
         }
         if (audio && !audio.paused) audio.pause();

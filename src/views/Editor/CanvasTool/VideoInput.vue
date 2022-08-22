@@ -56,7 +56,6 @@ import FileInput from "@/components/FileInput.vue";
 import useCreateElement from "@/hooks/useCreateElement";
 
 import { uploadVideo } from "@/utils/video";
-import isElectron from "is-electron";
 import useElectronUpload from "@/hooks/useElectronUpload";
 
 export default defineComponent({
@@ -73,7 +72,7 @@ export default defineComponent({
             });
         };
 
-        const checkElectron = ref(isElectron());
+        const checkElectron = ref(window.isElectron);
         const { uploadByElectron } = useElectronUpload();
         const electronUpload = (type: number) => {
             uploadByElectron("video", (file: File, buffer: ArrayBuffer) => {

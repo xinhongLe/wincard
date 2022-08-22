@@ -21,6 +21,7 @@ import "@/assets/styles/variable.scss";
 import Icon from "@/plugins/icon";
 import Component from "@/plugins/component";
 import Directive from "@/plugins/directive";
+import isElectron from "is-electron";
 
 declare global {
     interface Window {
@@ -29,13 +30,15 @@ declare global {
         VUE_APP_WINCARD_AI_XUE_SHI_FLASH_WEB: string;
         Hls: any;
         flvjs: any;
+        isElectron: boolean;
     }
 }
 
 export default {
-    install(app: App, url: string, flashWeb: string, getLocalFileUrl?: () => Promise<string>) {
+    install(app: App, url: string, flashWeb: string, getLocalFileUrl?: () => Promise<string>, electron?: boolean) {
         window.VUE_APP_WINCARD_AI_XUE_SHI_API = url;
         window.VUE_APP_WINCARD_AI_XUE_SHI_FLASH_WEB = flashWeb;
+        window.isElectron = typeof electron === "undefined" ? isElectron() : electron;
         app.use(Icon);
         app.use(Component);
         app.use(Directive);

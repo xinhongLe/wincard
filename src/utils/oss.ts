@@ -3,7 +3,6 @@ import SparkMD5 from "spark-md5";
 import { getOssToken } from "@/api";
 import { OSS_PATH } from "@/configs/filePath";
 import { message } from "ant-design-vue";
-import isElectron from "is-electron";
 import { get, STORAGE_TYPES } from "@/utils/storage";
 import emitter, { EmitterEvents } from "./emitter";
 
@@ -152,7 +151,7 @@ export const uploadFile = (file: File, buffer?: ArrayBuffer, UP_OSS_PATH?: strin
                     }
                 }, 10);
             }
-            if (isElectron() && window.electron.getCachePath && window.electron.savePutFile && get(STORAGE_TYPES.SET_ISCACHE)) {
+            if (window.isElectron && window.electron.getCachePath && window.electron.savePutFile && get(STORAGE_TYPES.SET_ISCACHE)) {
                 const savePath = window.electron.getCachePath(name + "." + fileExtention);
                 window.electron.savePutFile(savePath, buffer);
             }

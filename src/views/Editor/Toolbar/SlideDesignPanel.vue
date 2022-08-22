@@ -301,7 +301,6 @@ import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 
 import ColorButton from "./common/ColorButton.vue";
 import { uploadImage } from "@/utils/image";
-import isElectron from "is-electron";
 import useElectronUpload from "@/hooks/useElectronUpload";
 
 const themes = PRESET_THEMES;
@@ -480,7 +479,7 @@ export default defineComponent({
         const isBasePPT = computed(() => store.getters.isBasePPT);
         const isListen = computed(() => store.getters.isListen);
 
-        const checkElectron = ref(isElectron());
+        const checkElectron = ref(window.isElectron);
         const { uploadByElectron } = useElectronUpload();
         const electronUpload = (type: string) => {
             uploadByElectron(type, (file: File, buffer: ArrayBuffer) => {

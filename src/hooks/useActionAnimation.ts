@@ -2,7 +2,6 @@
 import { getCurrentInstance, Ref } from "vue";
 import { PPTElementAction, Slide } from "@/types/slides";
 import { CUSTOM_ANIMATIONS } from "@/configs/animation";
-import isElectron from "is-electron";
 import { get, STORAGE_TYPES } from "@/utils/storage";
 import { getToken, OssToken } from "@/utils/oss";
 import { getOssAudioUrl } from "@/utils/audio";
@@ -95,7 +94,7 @@ export default (slide: Ref<Slide>) => {
     const runPlayAudio = async (action: PPTElementAction) => {
         let audioUrl = "";
         if (action.audioSrc) {
-            if (isElectron() && get(STORAGE_TYPES.SET_ISCACHE)) {
+            if (window.isElectron && get(STORAGE_TYPES.SET_ISCACHE)) {
                 audioUrl = await instance?.appContext.config.globalProperties.$getLocalFileUrl(action.audioSrc);
             }
             if (audioUrl) {

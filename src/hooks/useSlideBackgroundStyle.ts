@@ -1,6 +1,5 @@
 import { Ref, getCurrentInstance, watch, ref } from "vue";
 import { SlideBackground } from "@/types/slides";
-import isElectron from "is-electron";
 import { get, STORAGE_TYPES } from "@/utils/storage";
 
 // 将页面背景数据转换为css样式
@@ -31,7 +30,7 @@ export default (background: Ref<SlideBackground | undefined>) => {
             // 背景图模式
             // 包括：背景图、背景大小，是否重复
             let imageRes: string | null = null;
-            if (isElectron() && get(STORAGE_TYPES.SET_ISCACHE)) {
+            if (window.isElectron && get(STORAGE_TYPES.SET_ISCACHE)) {
                 imageRes = await instance?.appContext.config.globalProperties.$getLocalFileUrl(image || "");
             }
             if (!ossSrc && !imageRes) {

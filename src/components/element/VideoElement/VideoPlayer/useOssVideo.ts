@@ -3,7 +3,6 @@ import { getToken, OssToken } from "@/utils/oss";
 import { ref, watch, ComputedRef, computed, getCurrentInstance } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { getOssPosterUrl, getOssVideoUrl } from "@/utils/video";
-import isElectron from "is-electron";
 import { get, STORAGE_TYPES } from "@/utils/storage";
 // import { getResourceDB } from "@/utils/database";
 // import { imageUrlToBase64 } from "@/utils/image";
@@ -42,7 +41,7 @@ export default (videoElement: ComputedRef<PPTVideoElement>, isScreening?: boolea
         let icon: string | null = null;
         let video: string | null = null;
         let poster: string | null = null;
-        if (isElectron() && get(STORAGE_TYPES.SET_ISCACHE)) {
+        if (window.isElectron && get(STORAGE_TYPES.SET_ISCACHE)) {
             icon = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.icon || "");
             if (icon) iconUrl.value = icon;
             poster = await instance?.appContext.config.globalProperties.$getLocalFileUrl(videoElement.value.poster || "");

@@ -1,5 +1,3 @@
-import isElectron from "is-electron";
-
 const PREFIX = "VUE";
 
 export enum STORAGE_TYPES {
@@ -10,7 +8,7 @@ export enum STORAGE_TYPES {
 }
 
 export const set = (name: STORAGE_TYPES, value: unknown) => {
-    if (isElectron()) {
+    if (window.isElectron) {
         window.electron.store.set(`${PREFIX}_${name}`, typeof value === "string" ? value : JSON.stringify(value));
     } else {
         localStorage.setItem(`${PREFIX}_${name}`, typeof value === "string" ? value : JSON.stringify(value));
@@ -19,7 +17,7 @@ export const set = (name: STORAGE_TYPES, value: unknown) => {
 
 export const get = (name: STORAGE_TYPES) => {
     let item;
-    if (isElectron()) {
+    if (window.isElectron) {
         item = window.electron.store.get(`${PREFIX}_${name}`);
     } else {
         item = localStorage.getItem(`${PREFIX}_${name}`);
@@ -34,7 +32,7 @@ export const get = (name: STORAGE_TYPES) => {
 };
 
 export const remove = (name: string) => {
-    if (isElectron()) {
+    if (window.isElectron) {
         window.electron.store.delete(`${PREFIX}_${name}`);
     } else {
         localStorage.removeItem(`${PREFIX}_${name}`);
@@ -42,7 +40,7 @@ export const remove = (name: string) => {
 };
 
 export const clear = () => {
-    if (isElectron()) {
+    if (window.isElectron) {
         window.electron.store.clear();
     } else {
         Object.keys(localStorage).forEach((name) => {

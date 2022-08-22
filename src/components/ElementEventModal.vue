@@ -249,7 +249,6 @@ import { uploadAudio } from "@/utils/audio";
 import emitter, { EmitterEvents } from "@/utils/emitter";
 import { message } from "ant-design-vue";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
-import isElectron from "is-electron";
 
 const animationTypes: { [key: string]: string } = {};
 
@@ -533,7 +532,7 @@ export default defineComponent({
                 formState.audioSrc = key;
             });
         };
-        const checkElectron = ref(isElectron());
+        const checkElectron = ref(window.isElectron);
         const { uploadByElectron } = useElectronUpload();
         const electronUpload = () => {
             uploadByElectron("audio", (file: File, buffer: ArrayBuffer) => {
