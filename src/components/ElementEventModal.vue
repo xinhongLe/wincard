@@ -484,7 +484,7 @@ export default defineComponent({
                                 target: elId
                             };
                         });
-                        if (formState.step) steps.value[formState.step] = steps.value[formState.step].concat(JSON.parse(JSON.stringify(result)));
+                        if (typeof formState.step === "number") steps.value[formState.step] = steps.value[formState.step].concat(JSON.parse(JSON.stringify(result)));
                     }
                 } else {
                     // 单个元素设置
