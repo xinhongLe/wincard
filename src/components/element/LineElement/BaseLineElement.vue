@@ -101,7 +101,7 @@ export default defineComponent({
                 solid: "0 0",
                 dashed: "10 6",
                 dashedPoint: `${10 + props.elementInfo.width} ${6 + props.elementInfo.width} ${props.elementInfo.width} ${6 + props.elementInfo.width}`
-            };
+            }[props.elementInfo.style];
         });
 
         const path = computed(() => {
