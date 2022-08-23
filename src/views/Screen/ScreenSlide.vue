@@ -27,6 +27,7 @@ import ElementView from "./ElementView.vue";
 import ListenView from "@/components/Listen/ScreenListen.vue";
 import FollowView from "./FollowView.vue";
 import TeachView from "./TeachView.vue";
+import Game from "./GameView.vue";
 
 export default defineComponent({
     name: "screen-slide",
@@ -58,7 +59,8 @@ export default defineComponent({
                 [PAGE_TYPE.ELEMENT]: ElementView,
                 [PAGE_TYPE.LISTEN]: ListenView,
                 [PAGE_TYPE.FOLLOW]: FollowView,
-                [PAGE_TYPE.TEACH]: TeachView
+                [PAGE_TYPE.TEACH]: TeachView,
+                [PAGE_TYPE.GAME]: Game
             };
             return pageTypeMap[slideType.value] || null;
         });
