@@ -458,7 +458,11 @@ export default defineComponent({
 
         const setAction = () => {
             const _actions: PPTElementAction[] = handleElement.value.actions || [];
-            _actions.push(JSON.parse(JSON.stringify(formState)));
+            if (isEdit.value) {
+                _actions[props.editIndex] = JSON.parse(JSON.stringify(formState));
+            } else {
+                _actions.push(JSON.parse(JSON.stringify(formState)));
+            }
 
             store.commit(MutationTypes.UPDATE_ELEMENT, {
                 id: handleElement.value.id,
