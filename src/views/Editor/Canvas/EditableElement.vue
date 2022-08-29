@@ -50,6 +50,7 @@ import FlashElement from "@/components/element/FlashElement/index.vue";
 import MarkElement from "@/components/element/MarkElement/index.vue";
 import { MutationTypes, useStore } from "@/store";
 import emitter, { EmitterEvents, RichTextCommand } from "@/utils/emitter";
+import { createRandomCode } from "@/utils/common";
 
 export default defineComponent({
     name: "editable-element",
@@ -77,7 +78,7 @@ export default defineComponent({
             required: true
         }
     },
-    setup(props) {
+    setup(props, { emit }) {
         const currentElementComponent = computed(() => {
             const elementTypeMap = {
                 [ElementTypes.IMAGE]: ImageElement,
@@ -154,6 +155,20 @@ export default defineComponent({
                 }
             }
             emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, commands);
+        };
+
+        const activeElementList = computed<PPTElement[] | null>(() => store.getters.activeElementList);
+        const outElements = () => {
+            const elements: PPTElement[] = JSON.parse(JSON.stringify(activeElementList.value || []));
+            // 处理成组合元素
+            const groupId = createRandomCode();
+            elements.forEach(element => {
+                return {
+                    ...element,
+                    groupId
+                };
+            });
+            emit("outElements", elements);
         };
 
         const contextmenus = (): ContextmenuItem[] => {
@@ -384,6 +399,11 @@ export default defineComponent({
                         {
                             text: "设置链接",
                             handler: props.openLinkDialog
+                        },
+
+                        {
+                            text: "导出素材",
+                            handler: outElements
                         },
 
                         {

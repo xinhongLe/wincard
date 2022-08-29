@@ -8,6 +8,7 @@
         @setQuoteVideo="setQuoteVideo"
         @updateQuoteVideo="updateQuoteVideo"
         @openLessonDesign="openLessonDesign"
+        @outElements="outElements"
     />
     <Screen
         ref="screenRef"
@@ -28,7 +29,7 @@ import { computed, defineComponent, onMounted, onUnmounted, PropType, provide, r
 import { ActionTypes, MutationTypes, useStore } from "@/store";
 
 import useSlideHandler from "@/hooks/useSlideHandler";
-import { IGame, IWin, PPTVideoElement, Slide, SaveType } from "@/types/slides";
+import { IGame, IWin, PPTVideoElement, Slide, SaveType, PPTElement } from "@/types/slides";
 import { message } from "ant-design-vue";
 import { dealSaveData } from "@/utils/dataParse";
 import useScaleCanvas from "@/hooks/useScaleCanvas";
@@ -37,7 +38,7 @@ import emitter, { EmitterEvents } from "@/utils/emitter";
 
 export default defineComponent({
     name: "PPTEditor",
-    emits: ["onSave", "addCard", "selectGame", "selectVideo", "setQuoteVideo", "updateQuoteVideo", "updateSlide", "update:windowName", "onDeleteWin", "openLessonDesign"],
+    emits: ["onSave", "addCard", "selectGame", "selectVideo", "setQuoteVideo", "updateQuoteVideo", "updateSlide", "update:windowName", "onDeleteWin", "openLessonDesign", "outElements"],
     components: { Editor, Screen },
     props: {
         slide: {
@@ -214,6 +215,10 @@ export default defineComponent({
             emitter.off(EmitterEvents.SET_UPLOAD_LOADING, setUploadLoading);
         });
 
+        const outElements = (elements: PPTElement[]) => {
+            emit("outElements", elements);
+        };
+
         return {
             currentSlide,
             screening,
@@ -234,7 +239,8 @@ export default defineComponent({
             createQuoteVideo,
             updateVideoElement,
             updateQuoteVideo,
-            openLessonDesign
+            openLessonDesign,
+            outElements
         };
     }
 });

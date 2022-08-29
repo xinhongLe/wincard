@@ -1,12 +1,21 @@
 <template>
-    <PPTEditor ref="editor" :slide="slide" @onSave="onSave" @addCard="addCard" :isShowSaveAs="isShowSaveAs" v-model:windowName="windowName" :isShowName="true"/>
+    <PPTEditor
+        ref="editor"
+        :slide="slide"
+        @onSave="onSave"
+        @addCard="addCard"
+        :isShowSaveAs="isShowSaveAs"
+        v-model:windowName="windowName"
+        :isShowName="true"
+        @outElements="outElements"
+    />
     <!-- <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @closeWriteBoard="closeWriteBoard" :useScale="true" @openCard="openCard" :keyDisabled="true" :isInit="false" /> -->
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { slides } from "./mocks/slides";
-import { IWin, Slide, SaveType } from "./types/slides";
+import { IWin, Slide, SaveType, PPTElement } from "./types/slides";
 import { dealOldData } from "@/utils/dataParse";
 
 export default defineComponent({
@@ -130,6 +139,10 @@ export default defineComponent({
             console.log("===========");
         };
 
+        const outElements = (elements: PPTElement[]) => {
+            console.log("outElements", elements);
+        };
+
         return {
             editor,
             onSave,
@@ -141,7 +154,8 @@ export default defineComponent({
             screenRef,
             windowName,
             isShowSaveAs,
-            closeWriteBoard
+            closeWriteBoard,
+            outElements
         };
     }
 });

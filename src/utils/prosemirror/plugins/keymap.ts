@@ -10,9 +10,9 @@ import {
     toggleMark,
     selectParentNode,
     joinUp,
-    joinDown,
-    Command
+    joinDown
 } from "prosemirror-commands";
+import { Command } from "prosemirror-state";
 
 export const buildKeymap = (schema: Schema) => {
     const keys = {};

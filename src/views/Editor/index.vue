@@ -11,6 +11,7 @@
                     class="center-body"
                     :style="{ height: `calc(100% - ${remarkHeight + 60}px)` }"
                     :is="currentPageComponent"
+                    @outElements="outElements"
                 ></component>
                 <remark
                     class="center-bottom"
@@ -40,7 +41,7 @@ import { computed, defineComponent, ref } from "vue";
 import useGlobalHotkey from "@/hooks/useGlobalHotkey";
 import usePasteEvent from "@/hooks/usePasteEvent";
 
-import { IGame, IWin, PPTVideoElement, Slide, SaveType } from "@/types/slides";
+import { IGame, IWin, PPTVideoElement, Slide, SaveType, PPTElement } from "@/types/slides";
 import { useStore } from "@/store";
 import { PAGE_TYPE } from "@/configs/page";
 
@@ -106,6 +107,10 @@ export default defineComponent({
             emit("openLessonDesign");
         };
 
+        const outElements = (elements: PPTElement[]) => {
+            emit("outElements", elements);
+        };
+
         return {
             currentPageComponent,
             remarkHeight,
@@ -117,7 +122,8 @@ export default defineComponent({
             selectVideo,
             setQuoteVideo,
             updateQuoteVideo,
-            openLessonDesign
+            openLessonDesign,
+            outElements
         };
     }
 });

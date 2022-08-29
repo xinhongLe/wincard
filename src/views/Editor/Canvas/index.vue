@@ -84,6 +84,7 @@
                     :isMultiSelect="activeElementIdList.length > 1"
                     :selectElement="selectElement"
                     :openLinkDialog="openLinkDialog"
+                    @outElements="outElements"
                 />
             </div>
         </div>
@@ -156,7 +157,7 @@ export default defineComponent({
         AddElementStep,
         SvgCustomAnimation
     },
-    setup() {
+    setup(props, { emit }) {
         const store = useStore();
         const handleElementId = computed(() => store.state.handleElementId);
         const activeGroupElementId = computed(
@@ -320,6 +321,10 @@ export default defineComponent({
             emitter.off(EmitterEvents.OPEN_CUSTOM_ANIMATION, openCustiomAnimation);
         });
 
+        const outElements = (elements: PPTElement[]) => {
+            emit("outElements", elements);
+        };
+
         return {
             handleElementId,
             activeGroupElementId,
@@ -350,7 +355,8 @@ export default defineComponent({
             showCustomAnimationDraw,
             animationPath,
             animationType,
-            animationTarget
+            animationTarget,
+            outElements
         };
     }
 });

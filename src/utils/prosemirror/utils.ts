@@ -57,7 +57,7 @@ export const getMarkAttrs = (view: EditorView) => {
     return node?.marks || [];
 };
 
-export const getAttrValue = (marks: Mark[], markType: string, attr: string) => {
+export const getAttrValue = (marks: readonly Mark[], markType: string, attr: string) => {
     for (const mark of marks) {
         if (mark.type.name === markType && mark.attrs[attr]) {
             return mark.attrs[attr];
@@ -66,7 +66,7 @@ export const getAttrValue = (marks: Mark[], markType: string, attr: string) => {
     return null;
 };
 
-export const isActiveMark = (marks: Mark[], markType: string) => {
+export const isActiveMark = (marks: readonly Mark[], markType: string) => {
     for (const mark of marks) {
         if (mark.type.name === markType) return true;
     }
