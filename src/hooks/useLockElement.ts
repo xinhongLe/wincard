@@ -39,7 +39,6 @@ export default () => {
             for (const element of newElementList) {
                 if (element.groupId === handleElement.groupId) element.lock = false;
             }
-            return newElementList;
         }
 
         for (const element of newElementList) {
@@ -48,6 +47,7 @@ export default () => {
                 break;
             }
         }
+
         store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList });
         store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [
             handleElement.id
