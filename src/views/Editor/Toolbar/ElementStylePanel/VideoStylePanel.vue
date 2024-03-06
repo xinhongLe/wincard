@@ -80,25 +80,52 @@
             <div style="flex: 2;">弹框视频：</div>
             <a-switch v-model:checked="isPopUpVideo" @change="videoModelChange" />
         </div>
+
+        <a-divider />
+        <div class="video-clip">
+            <div class="title">视频剪辑：</div>
+<!--            <VideoPlayer-->
+<!--                :noTransform="true"-->
+<!--                :videoElement="handleElement"-->
+<!--                :src="handleElement.ossSrc"-->
+<!--                :options="{}"-->
+<!--            />-->
+            <video ref="videoRef" controls :src="handleElement.ossSrc"></video>
+
+            <div>
+                <div>
+                    <img :style="{width: 235 / imgUrlList.length + 'px' }" v-for="item in imgUrlList" :src="item" :key="item" alt="">
+                </div>
+                <div>
+                    <el-slider v-model="sliderValue"/>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from "vue";
+import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import { MutationTypes, useStore } from "@/store";
 import { PPTVideoElement } from "@/types/slides";
 import { uploadImage } from "@/utils/image";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
 import { uploadVideo } from "@/utils/video";
 import useElectronUpload from "@/hooks/useElectronUpload";
-
+// import VideoPlayer from "@/components/element/VideoElement/VideoPlayer/index.vue";
+// import { chunk } from "lodash";
 export default defineComponent({
     name: "video-style-panel",
+    // components: {
+    //     VideoPlayer
+    // },
     setup(props, { emit }) {
         const store = useStore();
         const handleElement = computed<PPTVideoElement>(
             () => store.getters.handleElement
         );
+
+        console.log(handleElement, "handleElement-----");
 
         const autoPlay = ref(!!handleElement.value?.autoPlay);
 
@@ -178,8 +205,81 @@ export default defineComponent({
             });
         };
 
+        const videoRef = ref();
+        const duration = ref(0);
+        const imgUrlList = ref<any[]>([]);
+        const sliderValue = ref<number[]>([]);
+
+        const getVideoBase64 = (url:string, imgTime:number, canvasWidth = "200", canvasHeight = "120") => {
+            return new Promise(resolve => {
+                let dataURL = "";
+                const video = document.createElement("video");
+                video.setAttribute("crossOrigin", "anonymous");// 处理跨域
+                video.setAttribute("src", url);
+                video.setAttribute("width", canvasWidth);
+                video.setAttribute("height", canvasHeight);
+                video.currentTime = imgTime; // 这里是截取第几帧
+                video.addEventListener("loadeddata", function() {
+                    const canvas = document.createElement("canvas");
+                    const width = video.width; // canvas的尺寸和图片一样
+                    const height = video.height;
+                    canvas.width = width;
+                    canvas.height = height;
+                    console.log(canvas, "canvas---");
+                    // eslint-disable-next-line no-unused-expressions
+                    canvas.getContext("2d")?.drawImage(video, 0, 0, width, height); // 绘制canvas
+                    dataURL = canvas.toDataURL("image/jpeg"); // 转换为base64
+                    resolve(dataURL);
+                });
+            });
+        };
+
+        const sleep = (time: number) => {
+            return new Promise((resolve) => setTimeout(resolve, time));
+        };
+
+        const initVideoClip = async () => {
+            videoRef.value.addEventListener("loadedmetadata", async () => {
+                imgUrlList.value = [];
+                duration.value = videoRef.value.duration;
+                sliderValue.value = [0, duration.value];
+
+                console.log(Math.floor(duration.value), "-----");
+
+                const step = Math.floor(duration.value / 6);
+
+                console.log(step, "----");
+                const imgTimeList: number[] = [];
+
+                for (let i = 1; i <= Math.floor(duration.value); i++) {
+                    if ((i % step) === 0) {
+                        imgTimeList.push(i);
+                    }
+                    if ((i === Math.floor(duration.value)) && (Math.floor(duration.value) % step) !== 0) {
+                        imgTimeList.push(i);
+                    }
+                }
+
+                for (let i = 0; i < imgTimeList.length; i++) {
+                    sleep(i * 500).then(async () => {
+                        await getVideoBase64(handleElement.value.ossSrc || "", imgTimeList[i]).then((res) => {
+                            console.log(imgTimeList[i], res, "---");
+                            imgUrlList.value.push(res);
+                        });
+                    });
+                }
+            });
+        };
+
+        onMounted(() => {
+            initVideoClip();
+        });
+
         return {
+            videoRef,
+            imgUrlList,
             handleElement,
+            sliderValue,
             updateVideo,
             setVideoPoster,
             setVideoIcon,
@@ -202,6 +302,12 @@ export default defineComponent({
     display: flex !important;
     align-items: center;
     margin-bottom: 10px;
+}
+
+.video-clip {
+    video {
+       width: 100%;
+    }
 }
 .title {
     margin-bottom: 10px;

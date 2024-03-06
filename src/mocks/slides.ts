@@ -7,125 +7,151 @@ export const slides: Slide[] = [
         viewportRatio: 0.5625,
         elements: [
             {
-                name: "形状1",
-                type: "shape",
-                id: "4cbRxp",
-                left: 0,
-                top: 200,
-                width: 645.5646899307785,
-                height: 520,
-                viewBox: 200,
-                path: "M 0 0 L 0 200 L 200 200 Z",
-                fill: "#5b9bd5",
-                fixedRatio: false,
-                opacity: 0.7,
+                groupId: "BliV5t",
+                height: 110.82910321489001,
+                id: "V3SJh_",
+                left: 971.9975395189468,
+                name: "视频(1)",
+                poster: "",
                 rotate: 0,
-                display: true,
-                wins: [{
-                    id: "xxx",
-                    cards: [
-                        {
-                            id: "sdfs",
-                            name: "卡1",
-                            slides: [
-                                { id: "232", name: "页面一", type: 11 },
-                                { id: "23s2", name: "页面一", type: 11 },
-                                { id: "23d2", name: "页面一", type: 11 }
-                            ]
-                        },
-                        {
-                            id: "sdfs",
-                            name: "卡1",
-                            slides: [
-                                { id: "23df2", name: "页面一", type: 11 },
-                                { id: "2ddf32", name: "页面一", type: 11 },
-                                { id: "2sdfsd32", name: "页面一", type: 11 }
-                            ]
-                        }
-                    ]
-                }]
-            },
-            {
-                name: "形状2",
-                type: "shape",
-                id: "ookHrf",
-                left: 0,
-                top: 0,
-                width: 406.8721901091843,
-                height: 459.75594091201026,
-                viewBox: 200,
-                path: "M 0 0 L 0 200 L 200 200 Z",
-                fill: "#5b9bd5",
-                fixedRatio: false,
-                flipV: true,
-                rotate: 0,
-                display: true
-            },
-            {
-                name: "文本1",
-                type: "text",
-                id: "idn7Mx",
-                left: 466.43937772068796,
-                top: 200,
-                width: 585,
-                height: 154,
-                lineHeight: 1.2,
-                content: "<p style=\"\"><strong><span style=\"font-size: 112px\">窗卡页编辑</span></strong></p>",
-                rotate: 0,
-                defaultFontName: "Microsoft Yahei",
-                defaultColor: "#333",
-                defaultFontSize: "14px"
-            },
-            {
-                name: "文本2",
-                type: "text",
-                id: "7stmVP",
-                left: 466.43937772068796,
-                top: 388,
-                width: 585,
-                height: 56,
-                content: "<p style=\"\" class=\"\"><span style=\"font-size: 24px\">基于 Vue 3.x + TypeScript</span></p>",
-                rotate: 0,
-                defaultFontName: "Microsoft Yahei",
-                defaultColor: "#333",
-                defaultFontSize: "14px"
-            },
-            {
-                name: "线条",
-                type: "line",
-                id: "FnpZs4",
-                left: 472.43937772068796,
-                top: 372.75,
-                start: [0, 0],
-                end: [549, 0],
-                points: ["", ""],
-                color: "#5b9bd5",
-                style: "solid",
-                width: 2
-            },
-            {
-                name: "Flash-KtmEq3",
-                type: "flash",
-                id: "KtmEq3",
-                width: 100,
-                height: 100,
-                left: 0,
-                top: 0,
-                src: "ElementFile/bb5b612322e0a2bf01448e4a6f83d191.swf"
-            },
-            {
-                name: "视频-dNM6zU",
-                type: "video",
-                id: "dNM6zU",
-                width: 100,
-                height: 100,
-                rotate: 0,
-                left: 245.34468775344686,
-                top: 253.94160583941607,
-                src: "ElementFile/3cf571d4cf2a4c4b2df823a27852a7d5.mp4",
                 showType: 1,
-                icon: "ElementFile/d4a9c79c7c8e83afa478f2c26cd50492.png"
+                src: "ElementFile/435f9c581336c2582c98a7708699585d.mp4",
+                top: 452.6847971442861,
+                type: "video",
+                width: 102.70727580372251
+            },
+            {
+                height: 300,
+                id: "RRo8cC",
+                left: 390,
+                name: "视频(2)",
+                rotate: 0,
+                showType: 0,
+                src: "ElementFile/afc39f0d00019b81a7ff62d3148e5ccb.mp4",
+                top: 210,
+                type: "video",
+                width: 500
             }
+            // {
+            //     name: "形状1",
+            //     type: "shape",
+            //     id: "4cbRxp",
+            //     left: 0,
+            //     top: 200,
+            //     width: 645.5646899307785,
+            //     height: 520,
+            //     viewBox: 200,
+            //     path: "M 0 0 L 0 200 L 200 200 Z",
+            //     fill: "#5b9bd5",
+            //     fixedRatio: false,
+            //     opacity: 0.7,
+            //     rotate: 0,
+            //     display: true,
+            //     wins: [{
+            //         id: "xxx",
+            //         cards: [
+            //             {
+            //                 id: "sdfs",
+            //                 name: "卡1",
+            //                 slides: [
+            //                     { id: "232", name: "页面一", type: 11 },
+            //                     { id: "23s2", name: "页面一", type: 11 },
+            //                     { id: "23d2", name: "页面一", type: 11 }
+            //                 ]
+            //             },
+            //             {
+            //                 id: "sdfs",
+            //                 name: "卡1",
+            //                 slides: [
+            //                     { id: "23df2", name: "页面一", type: 11 },
+            //                     { id: "2ddf32", name: "页面一", type: 11 },
+            //                     { id: "2sdfsd32", name: "页面一", type: 11 }
+            //                 ]
+            //             }
+            //         ]
+            //     }]
+            // },
+            // {
+            //     name: "形状2",
+            //     type: "shape",
+            //     id: "ookHrf",
+            //     left: 0,
+            //     top: 0,
+            //     width: 406.8721901091843,
+            //     height: 459.75594091201026,
+            //     viewBox: 200,
+            //     path: "M 0 0 L 0 200 L 200 200 Z",
+            //     fill: "#5b9bd5",
+            //     fixedRatio: false,
+            //     flipV: true,
+            //     rotate: 0,
+            //     display: true
+            // },
+            // {
+            //     name: "文本1",
+            //     type: "text",
+            //     id: "idn7Mx",
+            //     left: 466.43937772068796,
+            //     top: 200,
+            //     width: 585,
+            //     height: 154,
+            //     lineHeight: 1.2,
+            //     content: "<p style=\"\"><strong><span style=\"font-size: 112px\">窗卡页编辑</span></strong></p>",
+            //     rotate: 0,
+            //     defaultFontName: "Microsoft Yahei",
+            //     defaultColor: "#333",
+            //     defaultFontSize: "14px"
+            // },
+            // {
+            //     name: "文本2",
+            //     type: "text",
+            //     id: "7stmVP",
+            //     left: 466.43937772068796,
+            //     top: 388,
+            //     width: 585,
+            //     height: 56,
+            //     content: "<p style=\"\" class=\"\"><span style=\"font-size: 24px\">基于 Vue 3.x + TypeScript</span></p>",
+            //     rotate: 0,
+            //     defaultFontName: "Microsoft Yahei",
+            //     defaultColor: "#333",
+            //     defaultFontSize: "14px"
+            // },
+            // {
+            //     name: "线条",
+            //     type: "line",
+            //     id: "FnpZs4",
+            //     left: 472.43937772068796,
+            //     top: 372.75,
+            //     start: [0, 0],
+            //     end: [549, 0],
+            //     points: ["", ""],
+            //     color: "#5b9bd5",
+            //     style: "solid",
+            //     width: 2
+            // },
+            // {
+            //     name: "Flash-KtmEq3",
+            //     type: "flash",
+            //     id: "KtmEq3",
+            //     width: 100,
+            //     height: 100,
+            //     left: 0,
+            //     top: 0,
+            //     src: "ElementFile/bb5b612322e0a2bf01448e4a6f83d191.swf"
+            // },
+            // {
+            //     name: "视频-dNM6zU",
+            //     type: "video",
+            //     id: "dNM6zU",
+            //     width: 100,
+            //     height: 100,
+            //     rotate: 0,
+            //     left: 245.34468775344686,
+            //     top: 253.94160583941607,
+            //     src: "ElementFile/3cf571d4cf2a4c4b2df823a27852a7d5.mp4",
+            //     showType: 1,
+            //     icon: "ElementFile/d4a9c79c7c8e83afa478f2c26cd50492.png"
+            // }
         ],
         background: { type: "solid", color: "#ffffff" },
         listenWords: [
@@ -167,11 +193,11 @@ export const slides: Slide[] = [
         type: "game",
         viewportRatio: 0.5625,
         remark: "",
-        elements: []
-        // game: {
-        //     id: "3A008C601465843E3F4EBB568BA525B1",
-        //     name: "RJYXandSJYX",
-        //     src: "http://uat-game.xixingjia.com/tea-tool/equilibrant"
-        // }
+        elements: [],
+        game: {
+            id: "3A008C601465843E3F4EBB568BA525B1",
+            name: "RJYXandSJYX",
+            src: "http://uat-game.xixingjia.com/tea-tool/equilibrant"
+        }
     }
 ];

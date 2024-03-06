@@ -1,15 +1,16 @@
 <template>
-    <PPTEditor
-        ref="editor"
-        :slide="slide"
-        @onSave="onSave"
-        @addCard="addCard"
-        :isShowSaveAs="isShowSaveAs"
-        v-model:windowName="windowName"
-        :isShowName="true"
-        @outElements="outElements"
-    />
-    <!-- <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @closeWriteBoard="closeWriteBoard" :useScale="true" @openCard="openCard" :keyDisabled="true" :isInit="false" /> -->
+<!--    <PPTEditor-->
+<!--        ref="editor"-->
+<!--        :slide="slide"-->
+<!--        @onSave="onSave"-->
+<!--        @addCard="addCard"-->
+<!--        :isShowSaveAs="isShowSaveAs"-->
+<!--        v-model:windowName="windowName"-->
+<!--        :isShowName="true"-->
+<!--        @outElements="outElements"-->
+<!--    />-->
+<!--    <ThumbnailSlide :slide="slide" :size="600"></ThumbnailSlide>-->
+     <ScreenView ref="screenRef" :slide="slide" @pagePrev="pagePrev()" @pageNext="pageNext()" @closeWriteBoard="closeWriteBoard" :useScale="true" @openCard="openCard" :keyDisabled="true" :isInit="false" />
 </template>
 
 <script lang="ts">
